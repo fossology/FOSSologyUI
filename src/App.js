@@ -1,11 +1,9 @@
-import "./App.css";
+import Routes from './Routes';
 
 function App() {
   return (
-    <div className="App">
-      <h1>FOSSology</h1>
-    </div>
-  );
+    <Routes />
+  )
 }
 
 export default App;
