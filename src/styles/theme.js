@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
  Copyright (C) 2021 Siemens AG
 
  SPDX-License-Identifier: GPL-2.0
@@ -16,3 +16,25 @@
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
+
+/*
+ * This file contains all styling specific to the theme (mainly base colours)
+ */
+
+export const lightTheme = {
+  primaryColor: "#DC3545",
+  body: "#FFFFFF",
+  text: "#363537",
+  primaryText: "#212121",
+  secondaryText: "#FFFFFF",
+  toggleBorder: "#FFF",
+};
+
+export const darkTheme = {
+  primaryColor: "#424242",
+  body: "#363537",
+  text: "#FAFAFA",
+  primaryText: "#212121",
+  secondaryText: "#FFFFFF",
+  toggleBorder: "#6B8096",
+};

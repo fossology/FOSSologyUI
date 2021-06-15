@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
  Copyright (C) 2021 Siemens AG
 
  SPDX-License-Identifier: GPL-2.0
@@ -23,16 +23,16 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 const PublicLayout = ({ component: Component, ...rest }) => (
-    <Route
-        {...rest}
-        render={props =>
-          <React.Fragment>
-            <Header />
-            <Component {...props} />
-            <Footer />
-          </React.Fragment>
-        }
-    ></Route>
+  <Route
+    {...rest}
+    render={(props) => (
+      <React.Fragment>
+        <Header />
+        <Component {...props} />
+        <Footer />
+      </React.Fragment>
+    )}
+  />
 );
 
 export default PublicLayout;
