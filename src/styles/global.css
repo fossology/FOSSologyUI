@@ -1,0 +1,62 @@
+/***************************************************************
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
+ Copyright (C) 2021 Siemens AG
+
+ SPDX-License-Identifier: GPL-2.0
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License
+ version 2 as published by the Free Software Foundation.
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License along
+ with this program; if not, write to the Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+***************************************************************/
+
+/*
+* This file contains all styling which is common for all theme (which defines basic layout)
+*/
+
+/* Font Family */
+@font-face {
+  font-family: Open-sans-bold;
+  src: url(../assets/fonts/OpenSans-ExtraBold.ttf);
+  font-display: swap;
+}
+@font-face {
+  font-family: Open-sans-demi;
+  src: url(../assets/fonts/OpenSans-Bold.ttf);
+  font-display: swap;
+}
+@font-face {
+  font-family: Open-sans-medium;
+  src: url(../assets/fonts/OpenSans-SemiBold.ttf);
+  font-display: swap;
+}
+@font-face {
+  font-family: Open-sans-regular;
+  src: url(../assets/fonts/OpenSans-Regular.ttf);
+  font-display: swap;
+}
+
+/* Font weight */
+.font-bold {
+  margin: 0;
+  font-family: Open-sans-bold;
+}
+.font-demi {
+  margin: 0;
+  font-family: Open-sans-demi;
+}
+.font-medium {
+  margin: 0;
+  font-family: Open-sans-medium;
+}
+.font-regular {
+  margin: 0;
+  font-family: Open-sans-regular;
+}
