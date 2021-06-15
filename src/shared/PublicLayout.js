@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
  Copyright (C) 2021 Siemens AG
 
  SPDX-License-Identifier: GPL-2.0
@@ -18,20 +18,21 @@
 */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { Route } from 'react-router-dom';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+const PublicLayout = ({ component: Component, ...rest }) => (
+    <Route
+        {...rest}
+        render={props =>
+          <React.Fragment>
+            <Header />
+            <Component {...props} />
+            <Footer />
+          </React.Fragment>
+        }
+    ></Route>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+export default PublicLayout;

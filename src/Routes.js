@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
  Copyright (C) 2021 Siemens AG
 
  SPDX-License-Identifier: GPL-2.0
@@ -18,20 +18,25 @@
 */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { BrowserRouter, Switch } from 'react-router-dom';
+import PublicLayout from './shared/PublicLayout';
+import PrivateLayout from './shared/PrivateLayout';
+import Home from './pages/Home';
+import Browse from './pages/Browse';
+import Login from './pages/Login';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const Routes = () => {
+  return ( 
+    <BrowserRouter> 
+      <Switch>          
+        <PublicLayout exact path='/' component={ Home } />
+        <PublicLayout exact path='/login' component={ Login } />
+
+        <PrivateLayout exact path='/browse' component={ Browse } />        
+      </Switch> 
+    </BrowserRouter>
+  );
+};
+
+export default Routes;
