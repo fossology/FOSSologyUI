@@ -33,7 +33,7 @@ export const GlobalStyles = createGlobalStyle`
     padding: 0;
     transition: all 0.25s linear;
   }
-  .bg-primaryColor{
+  .bg-primary-color{
     background: ${({ theme }) => theme.primaryColor};
   }
 }`;

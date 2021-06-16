@@ -17,11 +17,35 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+import React, { useState } from 'react';
+// Bootstrap CSS
+import "bootstrap/dist/css/bootstrap.min.css";
+// Global stylesheet
+import "./styles/global.css";
+// Consists of all the Routes
 import Routes from './Routes';
+// Theme provider
+import { ThemeProvider } from "styled-components";
+import { lightTheme, darkTheme } from "./styles/theme";
+import { GlobalStyles } from "./styles/globalStyle";
+
+
 
 function App() {
+  const [theme, setTheme] = useState("light");
+  const toggleTheme = () => {
+    if (theme === "light") {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
+  };
   return (
-    <Routes />
+    <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
+      <GlobalStyles />
+      <button onClick={toggleTheme} className="btn btn-primary">Toggle theme</button>      
+      <Routes />
+    </ThemeProvider>
   )
 }
 
