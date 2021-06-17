@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
- 
+
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -16,26 +16,8 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from 'react';
-import { BrowserRouter, Switch } from 'react-router-dom';
-import PublicLayout from './shared/PublicLayout';
-import PrivateLayout from './shared/PrivateLayout';
-import Home from './pages/Home';
-import Browse from './pages/Browse';
-import Login from './pages/Login';
-import { routes } from './constants/routes';
-
-const Routes = () => {
-  return ( 
-    <BrowserRouter> 
-      <Switch>          
-        <PublicLayout exact path={routes.home} component={ Home } />
-        <PublicLayout exact path={routes.login} component={ Login } />
-
-        <PrivateLayout exact path={routes.browse} component={ Browse } />        
-      </Switch> 
-    </BrowserRouter>
-  );
-};
-
-export default Routes;
+export const routes = {
+  home: '/',
+  login: '/login',
+  browse: '/browse',
+}
