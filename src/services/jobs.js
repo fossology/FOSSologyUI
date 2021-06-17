@@ -16,16 +16,14 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import {
-  getJobApi
-} from '../api/jobs';
+import { getJobApi } from "../api/jobs";
 
 export function getJob(jobId) {
-  return getJobApi(jobId).then(res => {
-    return res.entity.map(jsonObject => {
+  return getJobApi(jobId).then((res) => {
+    return res.entity.map((jsonObject) => {
       const tag = {};
       tag.stats = { score: jsonObject.score };
       return tag;
-    })
-  })
+    });
+  });
 }

@@ -17,7 +17,7 @@
 */
 
 export const routes = {
-  home: '/',
-  login: '/login',
-  browse: '/browse',
-}
+  home: "/",
+  login: "/login",
+  browse: "/browse",
+};

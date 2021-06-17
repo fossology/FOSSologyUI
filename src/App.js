@@ -16,19 +16,22 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React, { useState } from 'react';
-// Bootstrap CSS
-import "bootstrap/dist/css/bootstrap.min.css";
-// Global stylesheet
-import "./styles/global.css";
-// Consists of all the Routes
-import Routes from './Routes';
-// Theme provider
+// React imports
+import React, { useState } from "react";
+
+// External library imports
 import { ThemeProvider } from "styled-components";
+
+// Custom component imports
+import Routes from "./Routes";
+
+// Bootstrap imports
+import "bootstrap/dist/css/bootstrap.min.css";
+
+// CSS imports
 import { lightTheme, darkTheme } from "./styles/theme";
 import { GlobalStyles } from "./styles/globalStyle";
-
-
+import "./styles/global.css";
 
 function App() {
   const [theme, setTheme] = useState("light");
@@ -40,12 +43,14 @@ function App() {
     }
   };
   return (
-    <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
+    <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
       <GlobalStyles />
-      <button onClick={toggleTheme} className="btn btn-primary">Toggle theme</button>      
+      <button onClick={toggleTheme} className="btn btn-primary">
+        Toggle theme
+      </button>
       <Routes />
     </ThemeProvider>
-  )
+  );
 }
 
 export default App;
