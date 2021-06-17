@@ -16,11 +16,11 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
-import { isAuth } from './helper';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import React from "react";
+import { Route, Redirect } from "react-router-dom";
+import { isAuth } from "./helper";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const PrivateLayout = ({ component: Component, ...rest }) => (
   <Route
@@ -28,8 +28,10 @@ const PrivateLayout = ({ component: Component, ...rest }) => (
     render={(props) =>
       isAuth() ? (
         <React.Fragment>
-          <Header />
-          <Component {...props} />
+          <div className="wrapper">
+            <Header />
+            <Component {...props} />
+          </div>
           <Footer />
         </React.Fragment>
       ) : (

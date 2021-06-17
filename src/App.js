@@ -40,12 +40,12 @@ function App() {
     }
   };
   return (
-    <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
+    <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
       <GlobalStyles />
-      <button onClick={toggleTheme} className="btn btn-primary">Toggle theme</button>      
+      {/* <button onClick={toggleTheme} className="btn btn-primary">Toggle theme</button>       */}
       <Routes />
     </ThemeProvider>
-  )
+  );
 }
 
 export default App;

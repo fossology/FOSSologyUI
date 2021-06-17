@@ -16,18 +16,20 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from 'react';
-import { Route } from 'react-router-dom';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import React from "react";
+import { Route } from "react-router-dom";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const PublicLayout = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={(props) => (
       <React.Fragment>
-        <Header />
-        <Component {...props} />
+        <div className="wrapper">
+          <Header />
+          <Component {...props} />
+        </div>
         <Footer />
       </React.Fragment>
     )}
