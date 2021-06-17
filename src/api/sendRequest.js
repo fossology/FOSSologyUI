@@ -16,7 +16,7 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import { stringify } from 'query-string';
+import { stringify } from "query-string";
 export const sendRequest = ({
   url,
   method,
@@ -30,17 +30,19 @@ export const sendRequest = ({
   let mergedHeaders;
   if (isMultipart) {
     mergedHeaders = new Headers({ ...headers });
-  }
-  else {
-    mergedHeaders = new Headers({ 'content-type': 'application/json', ...headers })
+  } else {
+    mergedHeaders = new Headers({
+      "content-type": "application/json",
+      ...headers,
+    });
   }
   if (noHeaders) {
-    mergedHeaders = {}
+    mergedHeaders = {};
   }
   const options = {
     method: method,
     headers: mergedHeaders,
-    body: body ? (isMultipart ? body : JSON.stringify((body))) : null
+    body: body ? (isMultipart ? body : JSON.stringify(body)) : null,
   };
   if (credentials) {
     options.credentials = credentials;
@@ -48,19 +50,18 @@ export const sendRequest = ({
   if (queryParams) {
     url = `${url}?${stringify(queryParams)}`;
   }
-  return fetch(url, options).then(res => {
+  return fetch(url, options).then((res) => {
     if (res.ok) {
       return res.json();
-    }
-    else {
-      return res.json().then(function(json) {
+    } else {
+      return res.json().then(function (json) {
         return Promise.reject({
           status: res.status,
           ok: false,
           message: json.message,
-          body: json
+          body: json,
         });
       });
     }
-  })
-}
+  });
+};

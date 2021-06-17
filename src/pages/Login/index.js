@@ -16,14 +16,10 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from 'react';
+import React from "react";
 
 const Login = () => {
-  return (
-    <div>
-      Login
-    </div>
-  )
-}
+  return <div>Login</div>;
+};
 
 export default Login;

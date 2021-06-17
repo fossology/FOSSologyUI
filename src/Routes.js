@@ -16,24 +16,24 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from 'react';
-import { BrowserRouter, Switch } from 'react-router-dom';
-import PublicLayout from './shared/PublicLayout';
-import PrivateLayout from './shared/PrivateLayout';
-import Home from './pages/Home';
-import Browse from './pages/Browse';
-import Login from './pages/Login';
-import { routes } from './constants/routes';
+import React from "react";
+import { BrowserRouter, Switch } from "react-router-dom";
+import PublicLayout from "./shared/PublicLayout";
+import PrivateLayout from "./shared/PrivateLayout";
+import Home from "./pages/Home";
+import Browse from "./pages/Browse";
+import Login from "./pages/Login";
+import { routes } from "./constants/routes";
 
 const Routes = () => {
-  return ( 
-    <BrowserRouter> 
-      <Switch>          
-        <PublicLayout exact path={routes.home} component={ Home } />
-        <PublicLayout exact path={routes.login} component={ Login } />
+  return (
+    <BrowserRouter>
+      <Switch>
+        <PublicLayout exact path={routes.home} component={Home} />
+        <PublicLayout exact path={routes.login} component={Login} />
 
-        <PrivateLayout exact path={routes.browse} component={ Browse } />        
-      </Switch> 
+        <PrivateLayout exact path={routes.browse} component={Browse} />
+      </Switch>
     </BrowserRouter>
   );
 };

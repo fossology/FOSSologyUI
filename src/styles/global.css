@@ -19,3 +19,43 @@
 /*
 * This file contains all styling which is common for all theme (which defines basic layout)
 */
+
+/* Font Family */
+@font-face {
+  font-family: Open-sans-bold;
+  /* src: url(../assets/fonts/OpenSans-ExtraBold.ttf); */
+  font-display: swap;
+}
+@font-face {
+  font-family: Open-sans-demi;
+  /* src: url(../assets/fonts/OpenSans-Bold.ttf); */
+  font-display: swap;
+}
+@font-face {
+  font-family: Open-sans-medium;
+  /* src: url(../assets/fonts/OpenSans-SemiBold.ttf); */
+  font-display: swap;
+}
+@font-face {
+  font-family: Open-sans-regular;
+  /* src: url(../assets/fonts/OpenSans-Regular.ttf); */
+  font-display: swap;
+}
+
+/* Font weight */
+.font-bold {
+  margin: 0;
+  font-family: Open-sans-bold;
+}
+.font-demi {
+  margin: 0;
+  font-family: Open-sans-demi;
+}
+.font-medium {
+  margin: 0;
+  font-family: Open-sans-medium;
+}
+.font-regular {
+  margin: 0;
+  font-family: Open-sans-regular;
+}
