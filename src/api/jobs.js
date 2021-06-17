@@ -16,14 +16,14 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import { endpoints } from '../constants/endpoints';
-import sendRequest from '../services/senrequest';
+import { endpoints } from "../constants/endpoints";
+import sendRequest from "../services/senrequest";
 
 export const getJobApi = ({ jobId }) => {
   const url = endpoints.jobs.details(jobId);
   return sendRequest({
     url,
-    method: 'GET',
-    credentials: 'include'
+    method: "GET",
+    credentials: "include",
   });
 };

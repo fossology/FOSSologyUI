@@ -17,6 +17,8 @@
 */
 
 import React from "react";
+import { withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
 import { Route, Redirect } from "react-router-dom";
 import { isAuth } from "./helper";
 import Header from "../components/Header";
@@ -46,4 +48,9 @@ const PrivateLayout = ({ component: Component, ...rest }) => (
   />
 );
 
-export default PrivateLayout;
+PrivateLayout.propTypes = {
+  component: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
+  location: PropTypes.object.isRequired,
+};
+
+export default withRouter(PrivateLayout);

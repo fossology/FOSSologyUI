@@ -16,10 +16,10 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-const serverUrl = 'http://localhost/repo';
+const serverUrl = "http://localhost/repo";
 
 export const endpoints = {
   jobs: {
-    details: (jobId) => `${serverUrl}/jobs/${jobId}`
-  }
-}
+    details: (jobId) => `${serverUrl}/jobs/${jobId}`,
+  },
+};

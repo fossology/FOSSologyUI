@@ -33,7 +33,6 @@ Consider the usual best practice for writing issues, among them:
 - Please determine the version, better the commit id
 - Details on the operating system you are using
 
-
 ## Git Guidelines
 
 Not familiar with git, see [Git basic commands](https://github.com/fossology/fossology/wiki/Git-basic-commands)

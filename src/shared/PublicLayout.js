@@ -17,6 +17,8 @@
 */
 
 import React from "react";
+import { withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
 import { Route } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -36,4 +38,8 @@ const PublicLayout = ({ component: Component, ...rest }) => (
   />
 );
 
-export default PublicLayout;
+PublicLayout.propTypes = {
+  component: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
+};
+
+export default withRouter(PublicLayout);

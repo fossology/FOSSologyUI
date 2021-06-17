@@ -18,29 +18,30 @@
 
 // set in cookie
 export const setCookie = (cname, cvalue, exdays) => {
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     let d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
     let expires = "expires=" + d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
   }
-}
+};
 
 // remove from cookie
 export const removeCookie = (cname) => {
-  if (typeof window !== 'undefined') {
-    document.cookie = cname + "=; expires=Thu, 18 Dec 2013 12:00:00 UTC; path=/";
-  }  
+  if (typeof window !== "undefined") {
+    document.cookie =
+      cname + "=; expires=Thu, 18 Dec 2013 12:00:00 UTC; path=/";
+  }
 };
 
 // get from cookie
 export const getCookie = (cname) => {
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     let name = cname + "=";
-    let ca = document.cookie.split(';');
-    for(let i = 0; i < ca.length; i++) {
+    let ca = document.cookie.split(";");
+    for (let i = 0; i < ca.length; i++) {
       let c = ca[i];
-      while (c.charAt(0) === ' ') {
+      while (c.charAt(0) === " ") {
         c = c.substring(1);
       }
       if (c.indexOf(name) === 0) {
@@ -49,58 +50,56 @@ export const getCookie = (cname) => {
     }
     return "";
   }
-}
+};
 
 // set in localstorage
 export const setLocalStorage = (key, value) => {
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     localStorage.setItem(key, JSON.stringify(value));
   }
 };
 
 // remove from localstorage
-export const removeLocalStorage = key => {
-  if (typeof window !== 'undefined') {
+export const removeLocalStorage = (key) => {
+  if (typeof window !== "undefined") {
     localStorage.removeItem(key);
   }
 };
 
 // authenticate user by passing data to cookie and localstorage during signin
 export const authenticate = (response, next) => {
-  setCookie('token', response.data.token);
-  setLocalStorage('user', response.data.user);
+  setCookie("token", response.data.token);
+  setLocalStorage("user", response.data.user);
   next();
 };
 
 // access user info from localstorage
 export const isAuth = () => {
-  if (typeof window !== 'undefined') {
-    const cookieChecked = getCookie('token');
+  if (typeof window !== "undefined") {
+    const cookieChecked = getCookie("token");
     if (cookieChecked) {
-      if (localStorage.getItem('user')) {
-        return JSON.parse(localStorage.getItem('user'));
-      } 
-      else {
+      if (localStorage.getItem("user")) {
+        return JSON.parse(localStorage.getItem("user"));
+      } else {
         return false;
       }
     }
-  }
-  else {
+  } else {
     return false;
   }
 };
 
-export const signout = next => {
-  removeCookie('token');
-  removeLocalStorage('user');
+export const signout = (next) => {
+  removeCookie("token");
+  removeLocalStorage("user");
   next();
 };
 
 export const updateUser = (response, next) => {
-  if (typeof window !== 'undefined') {
-    let auth = JSON.parse(localStorage.getItem('user'));
+  if (typeof window !== "undefined") {
+    let auth = JSON.parse(localStorage.getItem("user"));
     auth = response.data;
-    localStorage.setItem('user', JSON.stringify(auth));
+    localStorage.setItem("user", JSON.stringify(auth));
   }
   next();
 };
