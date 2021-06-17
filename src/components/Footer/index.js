@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
  
  SPDX-License-Identifier: GPL-2.0
 
@@ -19,7 +19,15 @@
 import React from "react";
 
 const Footer = () => {
-  return <div>Footer</div>;
+  return (
+    <footer
+      className="primary-color-wrapper text-right font-size-small"
+      id="footer"
+    >
+      Version: [3.9.0.160], Branch: [feat/new-ui], Commit: [#0d47ba] 2021/03/19
+      12:55 IST built @ 2021/03/19 12:56 IST
+    </footer>
+  );
 };
 
 export default Footer;

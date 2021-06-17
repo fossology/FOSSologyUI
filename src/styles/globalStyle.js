@@ -27,12 +27,16 @@ export const GlobalStyles = createGlobalStyle`
   body {
     background: ${({ theme }) => theme.body};
     color: ${({ theme }) => theme.text};
-    min-height: 100vh;
     margin: 0;
     padding: 0;
     transition: all 0.25s linear;
   }
   .bg-primary-color{
     background: ${({ theme }) => theme.primaryColor};
+  }
+  .primary-color-wrapper{
+    background: ${({ theme }) => theme.primaryColor};
+    padding: 1rem;
+    color: ${({ theme }) => theme.secondaryText};
   }
 }`;

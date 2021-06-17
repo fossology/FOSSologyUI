@@ -28,8 +28,10 @@ const PublicLayout = ({ component: Component, ...rest }) => (
     {...rest}
     render={(props) => (
       <React.Fragment>
-        <Header />
-        <Component {...props} />
+        <div className="wrapper">
+          <Header />
+          <Component {...props} />
+        </div>
         <Footer />
       </React.Fragment>
     )}

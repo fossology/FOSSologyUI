@@ -30,8 +30,10 @@ const PrivateLayout = ({ component: Component, ...rest }) => (
     render={(props) =>
       isAuth() ? (
         <React.Fragment>
-          <Header />
-          <Component {...props} />
+          <div className="wrapper">
+            <Header />
+            <Component {...props} />
+          </div>
           <Footer />
         </React.Fragment>
       ) : (

@@ -31,7 +31,6 @@ const Routes = () => {
       <Switch>
         <PublicLayout exact path={routes.home} component={Home} />
         <PublicLayout exact path={routes.login} component={Login} />
-
         <PrivateLayout exact path={routes.browse} component={Browse} />
       </Switch>
     </BrowserRouter>
