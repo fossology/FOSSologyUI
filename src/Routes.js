@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
  
  SPDX-License-Identifier: GPL-2.0
 
@@ -16,13 +16,21 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+// React imports
 import React from "react";
 import { BrowserRouter, Switch } from "react-router-dom";
+
+// Guards imports
 import PublicLayout from "./shared/PublicLayout";
 import PrivateLayout from "./shared/PrivateLayout";
+
+// Pages imports
 import Home from "./pages/Home";
 import Browse from "./pages/Browse";
+import Search from "./pages/Search";
 import Login from "./pages/Login";
+
+// Routes imports
 import { routes } from "./constants/routes";
 
 const Routes = () => {
@@ -31,6 +39,7 @@ const Routes = () => {
       <Switch>
         <PublicLayout exact path={routes.home} component={Home} />
         <PublicLayout exact path={routes.login} component={Login} />
+        <PrivateLayout exact path={routes.search} component={Search} />
         <PrivateLayout exact path={routes.browse} component={Browse} />
       </Switch>
     </BrowserRouter>

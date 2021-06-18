@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -19,5 +19,32 @@
 export const routes = {
   home: "/",
   login: "/login",
+  search: "/search",
   browse: "/browse",
+  uploads: {
+    file: "/uploads/file",
+    server: "/uploads/server",
+    url: "/uploads/url",
+    versionControlSystem: "/uploads/vcs",
+    report: "/uploads/report",
+    instructions: "/uploads/instructions",
+  },
+  jobs: {
+    myRecentJobs: "/jobs/myRecentJobs",
+    allRecentJobs: "/jobs/allRecentJobs",
+    scheduleAgents: "/jobs/scheduleAgents",
+  },
+  organize: {
+    folders: {
+      create: "/organize/folders/create",
+      delete: "/organize/folders/delete",
+      edit: "/organize/folders/edit",
+    },
+    licenses: "/organize/licenses",
+    uploads: {
+      delete: "/organize/uploads/delete",
+      edit: "/organize/uploads/edit",
+      move: "/organize/uploads/move",
+    },
+  },
 };
