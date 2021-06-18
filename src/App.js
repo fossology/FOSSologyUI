@@ -17,7 +17,7 @@
 */
 
 // React imports
-import React, { useState } from "react";
+import React from "react";
 
 // External library imports
 import { ThemeProvider } from "styled-components";
@@ -34,18 +34,21 @@ import { GlobalStyles } from "./styles/globalStyle";
 import "./styles/global.css";
 
 function App() {
-  const [theme, setTheme] = useState("light");
-  const toggleTheme = () => {
-    if (theme === "light") {
-      setTheme("dark");
-    } else {
-      setTheme("light");
-    }
-  };
+  const theme = "light";
+  // const [theme, setTheme] = useState("light");
+  // const toggleTheme = () => {
+  //   if (theme === "light") {
+  //     setTheme("dark");
+  //   } else {
+  //     setTheme("light");
+  //   }
+  // };
   return (
     <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
       <GlobalStyles />
-      {/* <button onClick={toggleTheme} className="btn btn-primary">Toggle theme</button>*/}
+      {/* <button onClick={toggleTheme} className="btn btn-primary">
+        Toggle theme
+      </button> */}
       <Routes />
     </ThemeProvider>
   );

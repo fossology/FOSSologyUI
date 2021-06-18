@@ -1,4 +1,4 @@
-/*
+/***************************************************************
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
  
  SPDX-License-Identifier: GPL-2.0
@@ -14,26 +14,12 @@
  You should have received a copy of the GNU General Public License along
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-*/
+***************************************************************/
 
-/*
- * This file contains all styling specific to the theme (mainly base colours)
- */
+import React from "react";
 
-export const lightTheme = {
-  primaryColor: "#DC3545",
-  body: "#FFFFFF",
-  text: "#363537",
-  primaryText: "#212121",
-  secondaryText: "#FFFFFF",
-  toggleBorder: "#FFF",
+const AdviceLicenses = () => {
+  return <div>AdviceLicenses</div>;
 };
 
-export const darkTheme = {
-  primaryColor: "#424242",
-  body: "#FFFFFF",
-  text: "#FAFAFA",
-  primaryText: "#212121",
-  secondaryText: "#FFFFFF",
-  toggleBorder: "#6B8096",
-};
+export default AdviceLicenses;

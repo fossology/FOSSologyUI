@@ -23,7 +23,6 @@
 /* main wrapper for the header and pages */
 .wrapper {
   min-height: calc(100vh - 3.3125rem); /* pushes the footer at bottom*/
-  width: 95%;
   margin: auto;
 }
 

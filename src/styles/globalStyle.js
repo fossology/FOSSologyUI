@@ -28,8 +28,7 @@ export const GlobalStyles = createGlobalStyle`
     background: ${({ theme }) => theme.body};
     color: ${({ theme }) => theme.text};
     margin: 0;
-    padding: 0;
-    transition: all 0.25s linear;
+    padding: 0;    
   }
   .bg-primary-color{
     background: ${({ theme }) => theme.primaryColor};
@@ -38,5 +37,23 @@ export const GlobalStyles = createGlobalStyle`
     background: ${({ theme }) => theme.primaryColor};
     padding: 1rem;
     color: ${({ theme }) => theme.secondaryText};
+  }
+  .navbar-light .navbar-nav .nav-link{
+    color: ${({ theme }) => theme.secondaryText};
+    &:hover{
+      color: ${({ theme }) => theme.secondaryText};
+    }
+    &:focus{
+      color: ${({ theme }) => theme.secondaryText};
+    }
+    &:active{
+      color: ${({ theme }) => theme.secondaryText};
+    }
+  }
+  .dropdown-item{
+    color: ${({ theme }) => theme.primaryText};
+    &:hover:{
+      background: ${({ theme }) => theme.primaryColor};
+    }
   }
 }`;
