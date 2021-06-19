@@ -47,4 +47,8 @@ export const routes = {
       move: "/organize/uploads/move",
     },
   },
+  help: {
+    overview: "/help/overview",
+    licenseBrowser: "/help/licenseBrowser",
+  },
 };

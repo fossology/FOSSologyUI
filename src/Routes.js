@@ -29,6 +29,7 @@ import Home from "./pages/Home";
 import Browse from "./pages/Browse";
 import Search from "./pages/Search";
 import Login from "./pages/Login";
+import Overview from "./pages/Help/Overview";
 
 // Routes imports
 import { routes } from "./constants/routes";
@@ -39,6 +40,7 @@ const Routes = () => {
       <Switch>
         <PublicLayout exact path={routes.home} component={Home} />
         <PublicLayout exact path={routes.login} component={Login} />
+        <PublicLayout exact path={routes.help.overview} component={Overview} />
         <PrivateLayout exact path={routes.search} component={Search} />
         <PrivateLayout exact path={routes.browse} component={Browse} />
       </Switch>
