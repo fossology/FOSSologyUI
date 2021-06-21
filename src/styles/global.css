@@ -1,5 +1,5 @@
 /***************************************************************
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
  
  SPDX-License-Identifier: GPL-2.0
 
@@ -38,4 +38,7 @@
 }
 .font-size-main-heading {
   font-size: 2rem;
+}
+.triangle-bullets {
+  list-style-type: disclosure-closed;
 }

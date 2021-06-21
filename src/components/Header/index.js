@@ -17,16 +17,18 @@
 */
 
 import React from "react";
-import { Navbar, Nav, NavDropdown } from "react-bootstrap";
-import logo from "../../assets/images/logo.svg";
+import { Navbar, Nav, NavDropdown, Dropdown } from "react-bootstrap";
 import { QuestionCircleFill, PersonCircle } from "react-bootstrap-icons";
+import Image from "../../components/Widgets/Image";
+import { routes } from "../../constants/routes";
+import logo from "../../assets/images/logo.svg";
 
 const Header = () => {
   return (
     <div>
       <Navbar expand="lg" className="bg-primary-color py-0 pl-0 text-white">
         <Navbar.Brand href="/" className="py-0">
-          <img src={logo} className="img-fluid bg-white" alt="FOSSology" />
+          <Image src={logo} className="img-fluid bg-white" alt="FOSSology" />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -66,10 +68,17 @@ const Header = () => {
               <NavDropdown.Item href="">Tag</NavDropdown.Item>
             </NavDropdown> */}
           </Nav>
-          <Nav.Link href="/browse">
-            <QuestionCircleFill color="#fff" size={40} />
-            <PersonCircle color="#fff" size={40} className="ml-3" />
-          </Nav.Link>
+          <Dropdown drop="left">
+            <Dropdown.Toggle variant="link" bsPrefix="p-0">
+              <QuestionCircleFill color="#fff" size={40} />
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item href={routes.help.overview}>
+                Getting Started
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+          <PersonCircle color="#fff" size={40} className="ml-3" />
         </Navbar.Collapse>
       </Navbar>
     </div>

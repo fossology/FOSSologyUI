@@ -1,5 +1,5 @@
 /***************************************************************
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
  
  SPDX-License-Identifier: GPL-2.0
 
@@ -19,11 +19,6 @@
 import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyles = createGlobalStyle`
-  *,
-  *::after,
-  *::before {
-    box-sizing: border-box;
-  }
   body {
     background: ${({ theme }) => theme.body};
     color: ${({ theme }) => theme.text};
@@ -37,6 +32,9 @@ export const GlobalStyles = createGlobalStyle`
     background: ${({ theme }) => theme.primaryColor};
     padding: 1rem;
     color: ${({ theme }) => theme.secondaryText};
+  }
+  .text-primary-color{
+    color: ${({ theme }) => theme.primaryColor};
   }
   .navbar-light .navbar-nav .nav-link{
     color: ${({ theme }) => theme.secondaryText};
