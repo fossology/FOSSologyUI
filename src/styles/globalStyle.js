@@ -25,6 +25,7 @@ export const GlobalStyles = createGlobalStyle`
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    font-family: Mulish-regular;
   }
   .bg-primary-color{
     background: ${({ theme }) => theme.primaryColor};
