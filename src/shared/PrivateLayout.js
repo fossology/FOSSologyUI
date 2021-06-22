@@ -20,7 +20,7 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Route, Redirect } from "react-router-dom";
-import { isAuth } from "./helper";
+import { isAuth } from "./authHelper";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
