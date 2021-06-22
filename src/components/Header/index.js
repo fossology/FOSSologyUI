@@ -76,6 +76,9 @@ const Header = () => {
               <Dropdown.Item href={routes.help.overview}>
                 Getting Started
               </Dropdown.Item>
+              <Dropdown.Item href={routes.help.licenseBrowser}>
+                License Browser
+              </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
           <PersonCircle color="#fff" size={40} className="ml-3" />

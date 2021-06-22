@@ -51,7 +51,7 @@ const Home = () => {
       <div className="main-container my-5">
         <b className="font-size-medium">FOSSology</b> is a framework for
         software analysis tools. With it, you can:
-        <ul className="my-3">
+        <ul className="my-3 list-unstyled">
           <li>Upload files into the fossology repository.</li>
           <li>
             Unpack files (zip, tar, bz2, iso's, and many others) into its

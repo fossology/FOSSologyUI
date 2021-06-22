@@ -19,7 +19,38 @@
 import React from "react";
 
 const LicenseBrowser = () => {
-  return <div>LicenseBrowser</div>;
+  return (
+    <div className="main-container my-3">
+      <p>On the top, you see for each scanner ...</p>
+      <ul className="triangle-bullets">
+        <li>if it ever run on this upload</li>
+        <li>the revision of the latest results</li>
+        <li>the newest revision</li>
+        <li>
+          a link to restart the scanner if latest results are not from newest
+          revision
+        </li>
+      </ul>
+      <p>
+        If there are results from different revisions, you can select the
+        results of these runs.
+      </p>
+      <p>
+        On the left side, you see a list of all found licenses. The counters
+        show how often a license is found by scanners and how often it was
+        concluded. Click on the license name to search for where the license is
+        found in the file listing.
+      </p>
+      <p>
+        On the right side, you see a list of all files or directories in the
+        current directory. You also the licenses found by any scanner and what
+        scanners found it. Also old results may be included if they differ from
+        current revision of the scanner. Results from an older version are
+        marked. You can search for any string in the file names or license
+        names.
+      </p>
+    </div>
+  );
 };
 
 export default LicenseBrowser;

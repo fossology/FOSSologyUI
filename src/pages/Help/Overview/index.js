@@ -23,7 +23,7 @@ import fossologyFlow from "../../../assets/images/fossologyFlow.svg";
 
 const Overview = () => {
   return (
-    <div className="m-3">
+    <div className="main-container my-3">
       <div>
         <h2 className="text-primary-color font-size-sub-heading">
           The FOSSology Toolset
