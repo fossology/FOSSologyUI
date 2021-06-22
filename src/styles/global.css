@@ -29,7 +29,6 @@
   width: 95%;
   margin: auto;
 }
-
 /* font size */
 .font-size-small {
   font-size: 0.875rem;
@@ -45,9 +44,6 @@
 }
 
 /* Utility Classes */
-li {
-  list-style: none;
-}
 .triangle-bullets {
   list-style-type: disclosure-closed;
 }
