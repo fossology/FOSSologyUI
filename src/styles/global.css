@@ -29,6 +29,47 @@
   width: 95%;
   margin: auto;
 }
+
+/* font family */
+@font-face {
+  font-family: Mulish-bold;
+  src: url(../assets/fonts/Mulish-Bold.ttf);
+  font-display: swap;
+}
+@font-face {
+  font-family: Mulish-demi;
+  src: url(../assets/fonts/Mulish-Demi.ttf);
+  font-display: swap;
+}
+@font-face {
+  font-family: Mulish-medium;
+  src: url(../assets/fonts/Mulish-Medium.ttf);
+  font-display: swap;
+}
+@font-face {
+  font-family: Mulish-regular;
+  src: url(../assets/fonts/Mulish-Regular.ttf);
+  font-display: swap;
+}
+
+/* font weight */
+.font-bold {
+  margin: 0;
+  font-family: Mulish-bold;
+}
+.font-demi {
+  margin: 0;
+  font-family: Mulish-demi;
+}
+.font-medium {
+  margin: 0;
+  font-family: Mulish-medium;
+}
+.font-regular {
+  margin: 0;
+  font-family: Mulish-regular;
+}
+
 /* font size */
 .font-size-small {
   font-size: 0.875rem;
@@ -46,4 +87,13 @@
 /* Utility Classes */
 .triangle-bullets {
   list-style-type: disclosure-closed;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6{
+  font-family: Mulish-bold;
 }
