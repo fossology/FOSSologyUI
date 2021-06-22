@@ -1,6 +1,6 @@
 /***************************************************************
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
- 
+
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -23,7 +23,8 @@ export const GlobalStyles = createGlobalStyle`
     background: ${({ theme }) => theme.body};
     color: ${({ theme }) => theme.text};
     margin: 0;
-    padding: 0;    
+    padding: 0;
+    overflow-x: hidden;
   }
   .bg-primary-color{
     background: ${({ theme }) => theme.primaryColor};
@@ -52,6 +53,16 @@ export const GlobalStyles = createGlobalStyle`
     color: ${({ theme }) => theme.primaryText};
     &:hover:{
       background: ${({ theme }) => theme.primaryColor};
+    }
+  }
+  .box{
+    background: ${({ theme }) => theme.body};
+    margin: 1rem 0rem;
+    padding: 1.5rem;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+    transition: all 0.25s linear;
+    &:hover{
+      box-shadow: 5px 5px 10px rgba(0,0,0,0.2);
     }
   }
 }`;
