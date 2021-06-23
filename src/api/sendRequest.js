@@ -17,7 +17,7 @@
 */
 
 import { stringify } from "query-string";
-export const sendRequest = ({
+const sendRequest = ({
   url,
   method,
   credentials = null,
@@ -65,3 +65,5 @@ export const sendRequest = ({
     }
   });
 };
+
+export default sendRequest;

@@ -21,6 +21,7 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Route, Redirect } from "react-router-dom";
 import { isAuth } from "./authHelper";
+import { routes } from "../constants/routes";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
@@ -39,7 +40,7 @@ const PrivateLayout = ({ component: Component, ...rest }) => (
       ) : (
         <Redirect
           to={{
-            pathname: "/login",
+            pathname: routes.home,
             state: { from: props.location },
           }}
         />

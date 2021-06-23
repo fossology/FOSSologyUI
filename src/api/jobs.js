@@ -17,7 +17,7 @@
 */
 
 import { endpoints } from "../constants/endpoints";
-import sendRequest from "../services/senrequest";
+import sendRequest from "./sendRequest";
 
 export const getJobApi = ({ jobId }) => {
   const url = endpoints.jobs.details(jobId);

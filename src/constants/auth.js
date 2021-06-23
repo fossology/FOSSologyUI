@@ -16,13 +16,6 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-const apiUrl = "http://localhost/repo/api/v1";
-
-export const endpoints = {
-  jobs: {
-    details: (jobId) => `${apiUrl}/jobs/${jobId}`,
-  },
-  auth: {
-    tokens: () => `${apiUrl}/tokens`,
-  },
-};
+export const tokenNameLength = 40;
+export const tokenScope = "write";
+export const tokenExpiryDays = 1;
