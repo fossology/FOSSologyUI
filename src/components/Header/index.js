@@ -43,8 +43,12 @@ const Header = () => {
   return (
     <div>
       <Navbar expand="lg" className="bg-primary-color py-0 pl-0 text-white">
-        <Navbar.Brand as={Link} to="/" className="py-0">
-          <Image src={logo} className="img-fluid bg-white" alt="FOSSology" />
+        <Navbar.Brand href="/" className="py-0">
+          <Image
+            src={logo}
+            className="img-fluid bg-white py-1 px-2"
+            alt="FOSSology"
+          />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
