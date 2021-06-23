@@ -50,5 +50,6 @@ export const routes = {
   help: {
     overview: "/help/overview",
     licenseBrowser: "/help/licenseBrowser",
+    about: "/help/about",
   },
 };

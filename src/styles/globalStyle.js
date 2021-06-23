@@ -32,7 +32,7 @@ export const GlobalStyles = createGlobalStyle`
   }
   .primary-color-wrapper{
     background: ${({ theme }) => theme.primaryColor};
-    padding: 1rem;
+    padding: 0.6rem 1rem;
     color: ${({ theme }) => theme.secondaryText};
   }
   .text-primary-color{
