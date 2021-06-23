@@ -78,7 +78,7 @@
   font-size: 1rem;
 }
 .font-size-sub-heading {
-  font-size: 1.5rem;
+  font-size: 1.5rem !important;
 }
 .font-size-main-heading {
   font-size: 2rem;
