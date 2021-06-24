@@ -16,13 +16,12 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-const apiUrl = "http://localhost/repo/api/v1";
+import { fetchTokenApi } from "../api/auth";
+import { setCookie } from "../shared/storageHelper";
 
-export const endpoints = {
-  jobs: {
-    details: (jobId) => `${apiUrl}/jobs/${jobId}`,
-  },
-  auth: {
-    tokens: () => `${apiUrl}/tokens`,
-  },
-};
+export function fetchToken({ username, password }) {
+  return fetchTokenApi(username, password).then((res) => {
+    setCookie("token", res.Authorization);
+    return res.Authorization;
+  });
+}

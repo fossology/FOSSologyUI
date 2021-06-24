@@ -17,14 +17,28 @@
 */
 
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { Navbar, Nav, NavDropdown, Dropdown } from "react-bootstrap";
 import { QuestionCircleFill, PersonCircle } from "react-bootstrap-icons";
 import Image from "../../components/Widgets/Image";
 import { routes } from "../../constants/routes";
+import { logout, isAuth } from "../../shared/authHelper";
 import logo from "../../assets/images/logo.svg";
 import { Link } from "react-router-dom";
 
 const Header = () => {
+  const history = useHistory();
+
+  const handleLogout = () => {
+    logout(() => {
+      history.push(routes.home);
+    });
+  };
+
+  const handleLogin = () => {
+    history.push(routes.home);
+  };
+
   return (
     <div>
       <Navbar expand="lg" className="bg-primary-color py-0 pl-0 text-white">
@@ -112,7 +126,20 @@ const Header = () => {
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-          <PersonCircle color="#fff" size={40} className="ml-3" />
+          <Dropdown drop="left">
+            <Dropdown.Toggle variant="link" bsPrefix="p-0">
+              <PersonCircle color="#fff" size={40} className="ml-3" />
+            </Dropdown.Toggle>
+            {isAuth() ? (
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={handleLogout}>Log out</Dropdown.Item>
+              </Dropdown.Menu>
+            ) : (
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={handleLogin}>Log in</Dropdown.Item>
+              </Dropdown.Menu>
+            )}
+          </Dropdown>
         </Navbar.Collapse>
       </Navbar>
     </div>

@@ -14,90 +14,154 @@
 */
 
 // React Imports
-import React from "react";
+import React, { useState } from "react";
 
-// Features Images Report
-import upload from "../../assets/images/upload.svg";
-import scan from "../../assets/images/scan.svg";
-import report from "../../assets/images/report.svg";
+// External library imports
+import { useHistory } from "react-router-dom";
+import { Form, Button, Row, Col, Spinner, Alert } from "react-bootstrap";
+
+// Custom component imports
+import { fetchToken } from "../../services/auth";
+import { routes } from "../../constants/routes";
+import { isAuth } from "../../shared/authHelper";
+import Features from "./Features";
+
+// CSS imports
+import { LoginForm } from "./style";
 
 const Home = () => {
-  // Features Array
-  const features = [
-    {
-      id: 1,
-      img: upload,
-      heading: "Upload Files",
-      description:
-        "Upload files into the fossology repository and get information.",
-    },
-    {
-      id: 2,
-      img: scan,
-      heading: "Scan Documents",
-      description:
-        "Scan for software licenses, copyrights and other author information.",
-    },
-    {
-      id: 3,
-      img: report,
-      heading: "Generate Reports",
-      description:
-        "Report files based on your own custom classification scheme.",
-    },
-  ];
+  const [values, setValues] = useState({
+    username: "",
+    password: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  const { username, password } = values;
+  const history = useHistory();
+
+  const handleChange = (name) => (event) => {
+    setValues({ ...values, [name]: event.target.value });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setLoading(true);
+    fetchToken(values)
+      .then(() => {
+        history.push(routes.browse);
+      })
+      .catch((err) => {
+        setErrorMessage(err.message);
+        setShowError(true);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   return (
     <React.Fragment>
-      <div className="main-container my-5">
-        <b className="font-size-medium">FOSSology</b> is a framework for
-        software analysis tools. With it, you can:
-        <ul className="my-3 list-unstyled">
-          <li>Upload files into the fossology repository.</li>
-          <li>
-            Unpack files (zip, tar, bz2, iso's, and many others) into its
-            component files.
-          </li>
-          <li>Browse upload file trees.</li>
-          <li>View file contents and meta data.</li>
-          <li>Scan for software licenses.</li>
-          <li>Scan for copyrights and other author information.</li>
-          <li>
-            View side-by-side license and bucket differences between file trees.
-          </li>
-          <li>Tag and attach notes to files.</li>
-          <li>Report files based on your own custom classification scheme.</li>
-        </ul>
-        <div className="my-5">
-          <b className="font-size-medium">Where to begin...</b>
-          <ul className="my-3">
-            <li>
-              The menu at the top contains all the primary capabilities of
-              FOSSology.
-            </li>
-            <li>
-              Depending on your account's access rights, you may be able to
-              upload files, schedule analysis tasks, or even add new users.
-            </li>
-          </ul>
-        </div>
-        <div className="row mt-5">
-          {features.map((feature) => (
-            <div
-              className="col-lg-4 col-md-12 col-sm-12 col-12"
-              key={feature.id}
-            >
-              <div className="box">
-                <div className="d-flex">
-                  <img src={feature.img} alt={feature.heading} />
-                  <div className="pl-3">
-                    <h4 className="font-size-sub-heading">{feature.heading}</h4>
-                    <p className="mt-2">{feature.description}</p>
-                  </div>
-                </div>
-              </div>
+      {showError && (
+        <Alert variant="danger" onClose={() => setShowError(false)} dismissible>
+          <Alert.Heading>An error occurred!</Alert.Heading>
+          <p>{errorMessage}</p>
+        </Alert>
+      )}
+      <div className="main-container my-3">
+        <div className="row m-0">
+          <div className="col-md-6">
+            <b className="font-size-medium">FOSSology</b> is a framework for
+            software analysis tools. With it, you can:
+            <ul className="my-3 list-unstyled">
+              <li>Upload files into the fossology repository.</li>
+              <li>
+                Unpack files (zip, tar, bz2, iso's, and many others) into its
+                component files.
+              </li>
+              <li>Browse upload file trees.</li>
+              <li>View file contents and meta data.</li>
+              <li>Scan for software licenses.</li>
+              <li>Scan for copyrights and other author information.</li>
+              <li>
+                View side-by-side license and bucket differences between file
+                trees.
+              </li>
+              <li>Tag and attach notes to files.</li>
+              <li>
+                Report files based on your own custom classification scheme.
+              </li>
+            </ul>
+            <div className="my-3">
+              <b className="font-size-medium">Where to begin...</b>
+              <ul className="my-3">
+                <li>
+                  The menu at the top contains all the primary capabilities of
+                  FOSSology.
+                </li>
+                <li>
+                  Depending on your account's access rights, you may be able to
+                  upload files, schedule analysis tasks, or even add new users.
+                </li>
+              </ul>
             </div>
-          ))}
+          </div>
+          <div className="col-md-6">
+            {!isAuth() && (
+              <LoginForm>
+                <Form>
+                  <Form.Group as={Row} controlId="loginUsername">
+                    <Form.Label column sm="4">
+                      Username
+                    </Form.Label>
+                    <Col sm="8">
+                      <Form.Control
+                        type="text"
+                        placeholder="Enter Username"
+                        onChange={handleChange("username")}
+                        value={username}
+                      />
+                    </Col>
+                  </Form.Group>
+
+                  <Form.Group as={Row} controlId="loginPassword">
+                    <Form.Label column sm="4">
+                      Password
+                    </Form.Label>
+                    <Col sm="8">
+                      <Form.Control
+                        type="password"
+                        placeholder="Enter Password"
+                        onChange={handleChange("password")}
+                        value={password}
+                      />
+                    </Col>
+                  </Form.Group>
+                  <Button
+                    variant="primary"
+                    type="submit"
+                    className="d-block mx-auto"
+                    onClick={handleSubmit}
+                  >
+                    {loading ? (
+                      <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                      />
+                    ) : (
+                      "Login"
+                    )}
+                  </Button>
+                </Form>
+              </LoginForm>
+            )}
+          </div>
         </div>
+        <Features />
       </div>
     </React.Fragment>
   );
