@@ -25,6 +25,7 @@ import Image from "../../components/Widgets/Image";
 import { routes } from "../../constants/routes";
 import { logout, isAuth } from "../../shared/authHelper";
 import logo from "../../assets/images/logo.svg";
+import { externalLinks } from "../../constants/externalLinks";
 
 const Header = () => {
   const history = useHistory();
@@ -123,6 +124,13 @@ const Header = () => {
               </Dropdown.Item>
               <Dropdown.Item as={Link} to={routes.help.licenseBrowser}>
                 License Browser
+              </Dropdown.Item>
+              <Dropdown.Item
+                href={externalLinks.fossologyWiki}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Documentation
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>

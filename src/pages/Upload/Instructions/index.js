@@ -19,6 +19,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { routes } from "../../../constants/routes";
+import { externalLinks } from "../../../constants/externalLinks";
 
 const Instructions = () => {
   return (
@@ -84,11 +85,7 @@ const Instructions = () => {
       must be mounted and accessible to the FOSSology user (fossy) on every
       agent system. See the section
       <em>Configuring the Scheduler in the</em>{" "}
-      <a
-        href="https://github.com/fossology/fossology/wiki/Job-Scheduler"
-        target="_blank"
-        rel="noreferrer"
-      >
+      <a href={externalLinks.jobSchedulerWiki} target="_blank" rel="noreferrer">
         Scheduler documentation
       </a>
       .
