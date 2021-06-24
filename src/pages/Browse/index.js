@@ -1,7 +1,6 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
- Copyright (C) 2021 Siemens AG
-
+ 
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -17,14 +16,10 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from 'react';
+import React from "react";
 
 const Browse = () => {
-  return (
-    <div>
-      Browse
-    </div>
-  )
-}
+  return <div>Browse</div>;
+};
 
 export default Browse;

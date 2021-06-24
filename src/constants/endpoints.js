@@ -1,7 +1,6 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
- Copyright (C) 2021 Siemens AG
-
+ 
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -17,10 +16,13 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-const serverUrl = 'http://localhost/repo';
+const apiUrl = "http://localhost/repo/api/v1";
 
 export const endpoints = {
   jobs: {
-    details: (jobId) => `${serverUrl}/jobs/${jobId}`
-  }
-}
+    details: (jobId) => `${apiUrl}/jobs/${jobId}`,
+  },
+  auth: {
+    tokens: () => `${apiUrl}/tokens`,
+  },
+};

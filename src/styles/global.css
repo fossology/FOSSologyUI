@@ -1,0 +1,99 @@
+/***************************************************************
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
+
+ SPDX-License-Identifier: GPL-2.0
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License
+ version 2 as published by the Free Software Foundation.
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License along
+ with this program; if not, write to the Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+***************************************************************/
+
+/*
+* This file contains all styling which is common for all theme (which defines basic layout)
+*/
+
+/* main wrapper for the header and pages */
+.wrapper {
+  min-height: calc(100vh - 3.3125rem); /* pushes the footer at bottom*/
+  margin: auto;
+}
+.main-container {
+  width: 95%;
+  margin: auto;
+}
+
+/* font family */
+@font-face {
+  font-family: Mulish-bold;
+  src: url(../assets/fonts/Mulish-Bold.ttf);
+  font-display: swap;
+}
+@font-face {
+  font-family: Mulish-demi;
+  src: url(../assets/fonts/Mulish-Demi.ttf);
+  font-display: swap;
+}
+@font-face {
+  font-family: Mulish-medium;
+  src: url(../assets/fonts/Mulish-Medium.ttf);
+  font-display: swap;
+}
+@font-face {
+  font-family: Mulish-regular;
+  src: url(../assets/fonts/Mulish-Regular.ttf);
+  font-display: swap;
+}
+
+/* font weight */
+.font-bold {
+  margin: 0;
+  font-family: Mulish-bold;
+}
+.font-demi {
+  margin: 0;
+  font-family: Mulish-demi;
+}
+.font-medium {
+  margin: 0;
+  font-family: Mulish-medium;
+}
+.font-regular {
+  margin: 0;
+  font-family: Mulish-regular;
+}
+
+/* font size */
+.font-size-small {
+  font-size: 0.875rem;
+}
+.font-size-medium {
+  font-size: 1rem;
+}
+.font-size-sub-heading {
+  font-size: 1.5rem;
+}
+.font-size-main-heading {
+  font-size: 2rem;
+}
+
+/* Utility Classes */
+.triangle-bullets {
+  list-style-type: disclosure-closed;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6{
+  font-family: Mulish-bold;
+}

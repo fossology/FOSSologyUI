@@ -1,6 +1,5 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
- Copyright (C) 2021 Siemens AG
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -17,12 +16,42 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import Routes from './Routes';
+// React imports
+import React from "react";
+
+// External library imports
+import { ThemeProvider } from "styled-components";
+
+// Custom component imports
+import Routes from "./Routes";
+
+// Bootstrap imports
+import "bootstrap/dist/css/bootstrap.min.css";
+
+// CSS imports
+import { lightTheme, darkTheme } from "./styles/theme";
+import { GlobalStyles } from "./styles/globalStyle";
+import "./styles/global.css";
 
 function App() {
+  const theme = "light";
+  // const [theme, setTheme] = useState("light");
+  // const toggleTheme = () => {
+  //   if (theme === "light") {
+  //     setTheme("dark");
+  //   } else {
+  //     setTheme("light");
+  //   }
+  // };
   return (
-    <Routes />
-  )
+    <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
+      <GlobalStyles />
+      {/* <button onClick={toggleTheme} className="btn btn-primary">
+        Toggle theme
+      </button> */}
+      <Routes />
+    </ThemeProvider>
+  );
 }
 
 export default App;

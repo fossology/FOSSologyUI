@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "FOSSology",
+  "name": "Open source license compliance software system",
   "icons": [
     {
       "src": "favicon.ico",
