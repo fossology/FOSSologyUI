@@ -20,11 +20,11 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { Navbar, Nav, NavDropdown, Dropdown } from "react-bootstrap";
 import { QuestionCircleFill, PersonCircle } from "react-bootstrap-icons";
+import { Link } from "react-router-dom";
 import Image from "../../components/Widgets/Image";
 import { routes } from "../../constants/routes";
 import { logout, isAuth } from "../../shared/authHelper";
 import logo from "../../assets/images/logo.svg";
-import { Link } from "react-router-dom";
 
 const Header = () => {
   const history = useHistory();
@@ -48,54 +48,54 @@ const Header = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link as={Link} to="/">
+            <Nav.Link as={Link} to={routes.home}>
               Home
             </Nav.Link>
-            <Nav.Link as={Link} to="/search">
+            <Nav.Link as={Link} to={routes.search}>
               Search
             </Nav.Link>
-            <Nav.Link as={Link} to="/browse">
+            <Nav.Link as={Link} to={routes.browse}>
               Browse
             </Nav.Link>
             <NavDropdown title="Upload" id="uploads">
-              <NavDropdown.Item as={Link} to="">
+              <NavDropdown.Item as={Link} to={routes.upload.file}>
                 From File
               </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="">
+              <NavDropdown.Item as={Link} to={routes.upload.server}>
                 From Server
               </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="">
+              <NavDropdown.Item as={Link} to={routes.upload.url}>
                 From URL
               </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="">
+              <NavDropdown.Item as={Link} to={routes.upload.vcs}>
                 From VCS
               </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="">
+              <NavDropdown.Item as={Link} to={routes.upload.report}>
                 Import Report
               </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="">
+              <NavDropdown.Item as={Link} to={routes.upload.instructions}>
                 Instructions
               </NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="Jobs" id="jobs">
-              <NavDropdown.Item as={Link} to="">
+              <NavDropdown.Item as={Link} to={routes.jobs.myRecentJobs}>
                 My Recent Jobs
               </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="">
+              <NavDropdown.Item as={Link} to={routes.jobs.allRecentJobs}>
                 All Recent Jobs
               </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="">
+              <NavDropdown.Item as={Link} to={routes.jobs.scheduleAgents}>
                 Schedule Agents
               </NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="Organize" id="organize">
-              <NavDropdown.Item as={Link} to="">
+              <NavDropdown.Item as={Link} to={routes.organize.folders.delete}>
                 Folders
               </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="">
+              <NavDropdown.Item as={Link} to={routes.organize.licenses}>
                 Licenses
               </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="">
+              <NavDropdown.Item as={Link} to={routes.organize.uploads.delete}>
                 Uploads
               </NavDropdown.Item>
             </NavDropdown>

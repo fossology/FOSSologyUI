@@ -21,13 +21,13 @@ export const routes = {
   login: "/login",
   search: "/search",
   browse: "/browse",
-  uploads: {
-    file: "/uploads/file",
-    server: "/uploads/server",
-    url: "/uploads/url",
-    versionControlSystem: "/uploads/vcs",
-    report: "/uploads/report",
-    instructions: "/uploads/instructions",
+  upload: {
+    file: "/upload/file",
+    server: "/upload/server",
+    url: "/upload/url",
+    vcs: "/upload/vcs",
+    report: "/upload/report",
+    instructions: "/upload/instructions",
   },
   jobs: {
     myRecentJobs: "/jobs/myRecentJobs",
