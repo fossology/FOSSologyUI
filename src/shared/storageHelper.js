@@ -22,7 +22,9 @@ import cookie from "js-cookie";
 export const setCookie = (key, value) => {
   if (window !== "undefined") {
     cookie.set(key, value, {
-      expires: 7,
+      expires: 1,
+      sameSite: "strict",
+      secure: true,
     });
   }
 };
@@ -31,7 +33,7 @@ export const setCookie = (key, value) => {
 export const removeCookie = (key) => {
   if (window !== "undefined") {
     cookie.remove(key, {
-      expires: 7,
+      expires: 1,
     });
   }
 };
