@@ -16,25 +16,34 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-/*
- * This file contains all styling specific to the theme (mainly base colours)
- */
+import React from "react";
+import PropTypes from "prop-types";
+import styles from "styled-components";
 
-export const lightTheme = {
-  primaryColor: "#DC3545",
-  body: "#FFFFFF",
-  text: "#363537",
-  primaryText: "#212121",
-  secondaryText: "#FFFFFF",
-  hoverBackgroundColor: "#A93232",
+const Button = ({ type, onClick, className, children }) => {
+  return (
+    <ButtonContainer
+      type={type}
+      onClick={onClick}
+      className={`bg-primary-color text-secondary-color font-demi text-center hover-primary-color ${className}`}
+    >
+      {children}
+    </ButtonContainer>
+  );
 };
 
-export const darkTheme = {
-  primaryColor: "#424242",
-  body: "#FFFFFF",
-  text: "#FAFAFA",
-  primaryText: "#212121",
-  secondaryText: "#FFFFFF",
-  toggleBorder: "#6B8096",
-  hoverBackgroundColor: "#212121",
+Button.propTypes = {
+  type: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string,
 };
+
+const ButtonContainer = styles.button`
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.5rem 3rem;
+    transition: all 0.5s ease-in;
+`;
+
+export default Button;
