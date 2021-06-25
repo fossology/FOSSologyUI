@@ -36,7 +36,10 @@ export const GlobalStyles = createGlobalStyle`
     color: ${({ theme }) => theme.secondaryText};
   }
   .text-primary-color{
-    color: ${({ theme }) => theme.primaryColor};
+    color: ${({ theme }) => theme.primaryText};
+  }
+  .text-secondary-color{
+    color: ${({ theme }) => theme.secondaryText};
   }
   .navbar-light .navbar-nav .nav-link{
     color: ${({ theme }) => theme.secondaryText};
@@ -64,6 +67,11 @@ export const GlobalStyles = createGlobalStyle`
     transition: all 0.25s linear;
     &:hover{
       box-shadow: 5px 5px 10px rgba(0,0,0,0.2);
+    }
+  }
+  .hover-primary-color{
+    &:hover{
+      background: ${({ theme }) => theme.hoverBackgroundColor};
     }
   }
 }`;

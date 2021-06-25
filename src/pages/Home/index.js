@@ -18,12 +18,13 @@ import React, { useState } from "react";
 
 // External library imports
 import { useHistory } from "react-router-dom";
-import { Form, Button, Row, Col, Spinner, Alert } from "react-bootstrap";
+import { Form, Row, Col, Spinner, Alert } from "react-bootstrap";
 
 // Custom component imports
 import { fetchToken } from "../../services/auth";
 import { routes } from "../../constants/routes";
 import { isAuth } from "../../shared/authHelper";
+import Button from "../../components/Widgets/Button";
 import Features from "./Features";
 
 // CSS imports
@@ -124,7 +125,6 @@ const Home = () => {
                       />
                     </Col>
                   </Form.Group>
-
                   <Form.Group as={Row} controlId="loginPassword">
                     <Form.Label column sm="4">
                       Password
@@ -139,10 +139,9 @@ const Home = () => {
                     </Col>
                   </Form.Group>
                   <Button
-                    variant="primary"
                     type="submit"
-                    className="d-block mx-auto"
                     onClick={handleSubmit}
+                    className="d-block mx-auto"
                   >
                     {loading ? (
                       <Spinner
