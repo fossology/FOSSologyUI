@@ -123,6 +123,9 @@ const Header = () => {
               <QuestionCircleFill color="#fff" size={40} />
             </Dropdown.Toggle>
             <Dropdown.Menu>
+              <Dropdown.Item as={Link} to={routes.help.about}>
+                About
+              </Dropdown.Item>
               <Dropdown.Item as={Link} to={routes.help.overview}>
                 Getting Started
               </Dropdown.Item>

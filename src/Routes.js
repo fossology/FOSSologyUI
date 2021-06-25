@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
- 
+
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -32,6 +32,7 @@ import Login from "./pages/Login";
 import Overview from "./pages/Help/Overview";
 import LicenseBrowser from "./pages/Help/LicenseBrowser";
 import Instructions from "./pages/Upload/Instructions";
+import About from "./pages/Help/About";
 
 // Routes imports
 import { routes } from "./constants/routes";
@@ -53,6 +54,7 @@ const Routes = () => {
           path={routes.upload.instructions}
           component={Instructions}
         />
+        <PublicLayout exact path={routes.help.about} component={About} />
         <PrivateLayout exact path={routes.search} component={Search} />
         <PrivateLayout exact path={routes.browse} component={Browse} />
       </Switch>
