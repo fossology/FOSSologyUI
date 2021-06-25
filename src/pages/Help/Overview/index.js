@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
- 
+
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -35,7 +35,7 @@ const Overview = () => {
         <ul className="triangle-bullets">
           <li>Find license references in software</li>
           <li>Browse uploaded file hierarchies</li>
-          <li>Find copyrights, url&apos;s and email addresses</li>
+          <li>Find copyrights, url's and email addresses</li>
           <li>
             Classify licenses into user definable categories (aka buckets)
           </li>
@@ -56,7 +56,7 @@ const Overview = () => {
         </div>
         <div className="col-md-6 p-md-0">
           <h2 className="text-primary-color font-size-sub-heading">
-            FOSSology&apos;s Graphical User Interface
+            FOSSology's Graphical User Interface
           </h2>
           <p>
             FOSSology is a framework for software analysis tools. The current
@@ -65,7 +65,7 @@ const Overview = () => {
           <ul className="triangle-bullets">
             <li>Find license references in software</li>
             <li>Browse uploaded file hierarchies</li>
-            <li>Find copyrights, url&apos;s and email addresses</li>
+            <li>Find copyrights, url's and email addresses</li>
             <li>
               Classify licenses into user definable categories (aka buckets)
             </li>
@@ -83,8 +83,8 @@ const Overview = () => {
           accessed. The following functions are available without logging in:
           <br /> <br />
           <b>Login:</b> If you log in, you can access additional capabilities.
-          Depending on your account&apos;s access rights, you may be able to
-          upload files, schedule analysis tasks, or even add new users.
+          Depending on your account's access rights, you may be able to upload
+          files, schedule analysis tasks, or even add new users.
         </p>
       </div>
       <div className="row m-0">
