@@ -18,7 +18,7 @@
 
 // React imports
 import React from "react";
-import { BrowserRouter, Switch } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 // Guards imports
 import PublicLayout from "./shared/PublicLayout";
@@ -35,6 +35,7 @@ import Instructions from "./pages/Upload/Instructions";
 import About from "./pages/Help/About";
 import ThirdPartyLicenses from "./pages/Help/ThirdPartyLicenses";
 import ImportReport from "./pages/Upload/ImportReport";
+import ErrorPage from "./pages/ErrorPage";
 
 // Routes imports
 import { routes } from "./constants/routes";
@@ -69,6 +70,9 @@ const Routes = () => {
           path={routes.upload.report}
           component={ImportReport}
         />
+        <Route path="*">
+          <PublicLayout component={ErrorPage} />
+        </Route>
       </Switch>
     </BrowserRouter>
   );
