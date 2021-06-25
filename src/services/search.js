@@ -1,6 +1,6 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
- 
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
+
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -16,10 +16,19 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from "react";
+import { searchFiles } from "../api/search";
 
-const Login = () => {
-  return <div>Login</div>;
-};
-
-export default Login;
+export function search(searchData) {
+  return searchFiles(searchData).then((res) => {
+    const searchData = [];
+    res.map((data) => {
+      searchData.push({
+        uploadName: data.upload.uploadname,
+        folderName: data.upload.foldername,
+        description: data.upload.description,
+        fileName: data.filename,
+      });
+    });
+    return searchData;
+  });
+}
