@@ -21,7 +21,7 @@ import { createGlobalStyle } from "styled-components";
 export const GlobalStyles = createGlobalStyle`
   body {
     background: ${({ theme }) => theme.body};
-    color: ${({ theme }) => theme.text};
+    color: ${({ theme }) => theme.primaryText};
     margin: 0;
     padding: 0;
     overflow-x: hidden;
@@ -54,10 +54,10 @@ export const GlobalStyles = createGlobalStyle`
     }
   }
   .dropdown-item{
-    color: ${({ theme }) => theme.primaryText};
-    &:hover{
+    color: ${({ theme }) => theme.text};
+    &:hover:{
       background: ${({ theme }) => theme.primaryColor};
-      color: ${({ theme }) => theme.secondaryText};
+      color: ${({ theme }) => theme.text};
     }
   }
   .box{
@@ -81,5 +81,8 @@ export const GlobalStyles = createGlobalStyle`
     &:focus{
       box-shadow: none;
     }
+  }
+  pre{
+    color: ${({ theme }) => theme.primaryText};
   }
 }`;
