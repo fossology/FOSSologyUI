@@ -51,5 +51,7 @@ export const routes = {
     overview: "/help/overview",
     licenseBrowser: "/help/licenseBrowser",
     about: "/help/about",
+    thirdPartyLicenses: "/help/thirdPartyLicenses",
+    thirdPartyLicensesHTML: "/thirdPartyLicenses.html",
   },
 };
