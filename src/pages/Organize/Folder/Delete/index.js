@@ -1,6 +1,6 @@
 /***************************************************************
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
- 
+
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -18,8 +18,8 @@
 
 import React from "react";
 
-const Folder = () => {
-  return <div>Folder</div>;
+const DeleteFolder = () => {
+  return <div>Delete Folder</div>;
 };
 
-export default Folder;
+export default DeleteFolder;

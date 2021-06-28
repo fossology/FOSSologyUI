@@ -55,8 +55,9 @@ export const GlobalStyles = createGlobalStyle`
   }
   .dropdown-item{
     color: ${({ theme }) => theme.primaryText};
-    &:hover:{
+    &:hover{
       background: ${({ theme }) => theme.primaryColor};
+      color: ${({ theme }) => theme.secondaryText};
     }
   }
   .box{
@@ -72,6 +73,13 @@ export const GlobalStyles = createGlobalStyle`
   .hover-primary-color{
     &:hover{
       background: ${({ theme }) => theme.hoverBackgroundColor};
+    }
+  }
+  .btn{
+    box-shadow: none;
+    padding: 0rem 1.5rem;
+    &:focus{
+      box-shadow: none;
     }
   }
 }`;

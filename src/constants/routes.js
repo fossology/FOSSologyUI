@@ -39,6 +39,8 @@ export const routes = {
       create: "/organize/folders/create",
       delete: "/organize/folders/delete",
       edit: "/organize/folders/edit",
+      move: "/organize/folders/move",
+      unlinkContent: "/organize/folders/unlinkContent",
     },
     licenses: "/organize/licenses",
     uploads: {
