@@ -30,6 +30,8 @@ const InputContainer = ({
   placeholder = null,
   disabled = null,
   options = null,
+  multiple = null,
+  property,
 }) => {
   if (type === "radio" || type === "checkbox") {
     return (
@@ -60,13 +62,20 @@ const InputContainer = ({
           className={className && `mr-2 ${className}`}
           value={value}
           onChange={onChange}
+          multiple={multiple && multiple}
+          size={multiple && "15"}
         >
-          {options.map((option, index) => (
-            <option key={option.id || index} value={option.id}>
-              {" "}
-              {option.name}{" "}
+          {options.length > 0 ? (
+            options.map((option, index) => (
+              <option key={option.id || index} value={option.id}>
+                {option[property]}
+              </option>
+            ))
+          ) : (
+            <option className="font-demi" disabled={true}>
+              No Data Found
             </option>
-          ))}
+          )}
         </select>
       </div>
     );
@@ -96,13 +105,15 @@ InputContainer.propTypes = {
   name: PropTypes.string.isRequired,
   id: PropTypes.string,
   placeholder: PropTypes.string,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  value: PropTypes.node,
   className: PropTypes.string,
   onChange: PropTypes.func,
   checked: PropTypes.bool,
   disabled: PropTypes.bool,
   children: PropTypes.node,
   options: PropTypes.array,
+  multiple: PropTypes.string,
+  property: PropTypes.string,
 };
 
 export default InputContainer;

@@ -36,4 +36,9 @@ export const endpoints = {
     create: () => `${apiUrl}/folders`,
     delete: (folderId) => `${apiUrl}/folders/${folderId}`,
   },
+  upload: {
+    uploadCreate: () => `${apiUrl}/uploads`,
+    scheduleAnalysis: () => `${apiUrl}/jobs`,
+    getId: (uploadId) => `${apiUrl}/uploads/${uploadId}`,
+  },
 };
