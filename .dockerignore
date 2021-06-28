@@ -1,0 +1,10 @@
+.github
+.gitignore
+
+*.md
+LICENSE
+NOTICES
+NOTICES.spdx
+Dockerfile
+
+node_modules
