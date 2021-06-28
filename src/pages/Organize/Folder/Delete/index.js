@@ -82,9 +82,17 @@ const DeleteFolder = () => {
   };
 
   useEffect(() => {
-    getAllFolders().then((res) => {
-      setFolderList(res);
-    });
+    getAllFolders()
+      .then((res) => {
+        setFolderList(res);
+      })
+      .catch((error) => {
+        setMessage({
+          type: "danger",
+          text: error.message,
+        });
+        setShowMessage(true);
+      });
   }, []);
   return (
     <>
