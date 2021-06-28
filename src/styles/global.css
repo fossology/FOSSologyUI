@@ -33,22 +33,27 @@
 /* font family */
 @font-face {
   font-family: Mulish-bold;
-  src: url(../assets/fonts/Mulish-Bold.ttf);
+  src: url("../assets/fonts/Mulish-Bold.ttf");
   font-display: swap;
 }
 @font-face {
   font-family: Mulish-demi;
-  src: url(../assets/fonts/Mulish-Demi.ttf);
+  src: url("../assets/fonts/Mulish-Demi.ttf");
   font-display: swap;
 }
 @font-face {
   font-family: Mulish-medium;
-  src: url(../assets/fonts/Mulish-Medium.ttf);
+  src: url("../assets/fonts/Mulish-Medium.ttf");
   font-display: swap;
 }
 @font-face {
   font-family: Mulish-regular;
-  src: url(../assets/fonts/Mulish-Regular.ttf);
+  src: url("../assets/fonts/Mulish-Regular.ttf");
+  font-display: swap;
+}
+@font-face {
+  font-family: IndieFlower-regular;
+  src: url("../assets/fonts/IndieFlower-Regular.ttf");
   font-display: swap;
 }
 
