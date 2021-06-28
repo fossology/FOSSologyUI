@@ -17,10 +17,12 @@
 */
 
 // React imports
-import React from "react";
+import React, { useContext } from "react";
+import { GlobalContext } from "./context";
 
 // External library imports
 import { ThemeProvider } from "styled-components";
+import { lightTheme, darkTheme } from "./styles/theme";
 
 // Custom component imports
 import Routes from "./Routes";
@@ -29,28 +31,21 @@ import Routes from "./Routes";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 // CSS imports
-import { lightTheme, darkTheme } from "./styles/theme";
 import { GlobalStyles } from "./styles/globalStyle";
 import "./styles/global.css";
 
+// Global State Provider
+import { GlobalProvider } from "../src/context";
+
 function App() {
-  const theme = "light";
-  // const [theme, setTheme] = useState("light");
-  // const toggleTheme = () => {
-  //   if (theme === "light") {
-  //     setTheme("dark");
-  //   } else {
-  //     setTheme("light");
-  //   }
-  // };
+  const { theme } = useContext(GlobalContext);
   return (
-    <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
-      <GlobalStyles />
-      {/* <button onClick={toggleTheme} className="btn btn-primary">
-        Toggle theme
-      </button> */}
-      <Routes />
-    </ThemeProvider>
+    <GlobalProvider>
+      <ThemeProvider theme={theme == "light" ? lightTheme : darkTheme}>
+        <GlobalStyles />
+        <Routes />
+      </ThemeProvider>
+    </GlobalProvider>
   );
 }
 
