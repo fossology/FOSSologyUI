@@ -18,7 +18,13 @@
 
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { Navbar, Nav, NavDropdown, Dropdown } from "react-bootstrap";
+import {
+  Navbar,
+  Nav,
+  NavDropdown,
+  Dropdown,
+  DropdownButton,
+} from "react-bootstrap";
 import { QuestionCircleFill, PersonCircle } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import Image from "../../components/Widgets/Image";
@@ -96,35 +102,89 @@ const Header = () => {
                   </NavDropdown.Item>
                 </NavDropdown>
                 <NavDropdown title="Organize" id="organize">
-                  <NavDropdown.Item
-                    as={Link}
-                    to={routes.organize.folders.delete}
+                  <DropdownButton
+                    variant=""
+                    drop="right"
+                    title="Folders"
+                    className="font-regular dropdown-item-bottom w-100"
                   >
-                    Folders
-                  </NavDropdown.Item>
+                    <div className="bg-secondaryColor text-white font-12 py-2">
+                      <NavDropdown.Item
+                        as={Link}
+                        to={routes.organize.folders.create}
+                      >
+                        Create
+                      </NavDropdown.Item>
+                      <NavDropdown.Item
+                        as={Link}
+                        to={routes.organize.folders.delete}
+                      >
+                        Delete Folder
+                      </NavDropdown.Item>
+                      <NavDropdown.Item
+                        as={Link}
+                        to={routes.organize.folders.edit}
+                      >
+                        Edit Properties
+                      </NavDropdown.Item>
+                      <NavDropdown.Item
+                        as={Link}
+                        to={routes.organize.folders.move}
+                      >
+                        Move or Copy
+                      </NavDropdown.Item>
+                      <NavDropdown.Item
+                        as={Link}
+                        to={routes.organize.folders.unlinkContent}
+                      >
+                        Unlink Content
+                      </NavDropdown.Item>
+                    </div>
+                  </DropdownButton>
                   <NavDropdown.Item as={Link} to={routes.organize.licenses}>
                     Licenses
                   </NavDropdown.Item>
-                  <NavDropdown.Item
-                    as={Link}
-                    to={routes.organize.uploads.delete}
+                  <DropdownButton
+                    variant=""
+                    drop="right"
+                    title="Uploads"
+                    className="font-regular dropdown-item-bottom w-100"
                   >
-                    Uploads
-                  </NavDropdown.Item>
+                    <div className="bg-secondaryColor text-white font-12 py-2">
+                      <NavDropdown.Item
+                        as={Link}
+                        to={routes.organize.uploads.delete}
+                      >
+                        Delete Uploaded File
+                      </NavDropdown.Item>
+                      <NavDropdown.Item
+                        as={Link}
+                        to={routes.organize.uploads.edit}
+                      >
+                        Edit Properties
+                      </NavDropdown.Item>
+                      <NavDropdown.Item
+                        as={Link}
+                        to={routes.organize.uploads.move}
+                      >
+                        Move or Copy
+                      </NavDropdown.Item>
+                    </div>
+                  </DropdownButton>
                 </NavDropdown>
                 {/* <NavDropdown title="Admin" id="admin">
-                  <NavDropdown.Item as={Link} to="">Agent</NavDropdown.Item>
-                  <NavDropdown.Item as={Link} to="">Buckets</NavDropdown.Item>
-                  <NavDropdown.Item as={Link} to="">Customize</NavDropdown.Item>
-                  <NavDropdown.Item as={Link} to="">Dashboards</NavDropdown.Item>
-                  <NavDropdown.Item as={Link} to="">Fossdash</NavDropdown.Item>
-                  <NavDropdown.Item as={Link} to="">Groups</NavDropdown.Item>
-                  <NavDropdown.Item as={Link} to="">License Admin</NavDropdown.Item>
-                  <NavDropdown.Item as={Link} to="">Maintenance</NavDropdown.Item>
-                  <NavDropdown.Item as={Link} to="">Obligation Admin</NavDropdown.Item>
-                  <NavDropdown.Item as={Link} to="">Scheduler</NavDropdown.Item>
-                  <NavDropdown.Item as={Link} to="">Tag</NavDropdown.Item>
-                </NavDropdown> */}
+              <NavDropdown.Item as={Link} to="">Agent</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="">Buckets</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="">Customize</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="">Dashboards</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="">Fossdash</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="">Groups</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="">License Admin</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="">Maintenance</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="">Obligation Admin</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="">Scheduler</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="">Tag</NavDropdown.Item>
+            </NavDropdown> */}
               </>
             )}
           </Nav>
