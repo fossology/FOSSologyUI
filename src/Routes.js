@@ -34,6 +34,7 @@ import LicenseBrowser from "./pages/Help/LicenseBrowser";
 import Instructions from "./pages/Upload/Instructions";
 import About from "./pages/Help/About";
 import ThirdPartyLicenses from "./pages/Help/ThirdPartyLicenses";
+import ImportReport from "./pages/Upload/ImportReport";
 
 // Routes imports
 import { routes } from "./constants/routes";
@@ -63,6 +64,11 @@ const Routes = () => {
         />
         <PrivateLayout exact path={routes.search} component={Search} />
         <PrivateLayout exact path={routes.browse} component={Browse} />
+        <PrivateLayout
+          exact
+          path={routes.upload.report}
+          component={ImportReport}
+        />
       </Switch>
     </BrowserRouter>
   );
