@@ -29,7 +29,7 @@ import { QuestionCircleFill, PersonCircle } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import Image from "../../components/Widgets/Image";
 import { routes } from "../../constants/routes";
-import { logout, isAuth } from "../../shared/authHelper";
+import { logout, isAuth, getUserName } from "../../shared/authHelper";
 import logo from "../../assets/images/logo.svg";
 import { externalLinks } from "../../constants/externalLinks";
 import { GlobalContext } from "../../context";
@@ -223,6 +223,10 @@ const Header = () => {
             </Dropdown.Toggle>
             {isAuth() ? (
               <Dropdown.Menu>
+                <Dropdown.Item>
+                  User: <b>{getUserName()}</b>
+                </Dropdown.Item>
+                <Dropdown.Divider />
                 <Dropdown.Item onClick={handleLogout}>Log out</Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item onClick={() => setTheme("light")}>

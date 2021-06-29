@@ -22,6 +22,7 @@ import { Form, Row, Col, Spinner } from "react-bootstrap";
 
 // Custom component imports
 import { fetchToken } from "../../services/auth";
+import { getUserSelf } from "../../services/users";
 import { routes } from "../../constants/routes";
 import { isAuth } from "../../shared/authHelper";
 import Button from "../../components/Widgets/Button";
@@ -52,14 +53,19 @@ const Home = () => {
     setLoading(true);
     fetchToken(values)
       .then(() => {
-        history.push(routes.browse);
+        setLoading(false);
+        getUserSelf()
+          .then(() => {
+            history.push(routes.browse);
+          })
+          .catch((error) => {
+            throw error;
+          });
       })
       .catch((err) => {
+        setLoading(false);
         setErrorMessage(err.message);
         setShowError(true);
-      })
-      .finally(() => {
-        setLoading(false);
       });
   };
 
