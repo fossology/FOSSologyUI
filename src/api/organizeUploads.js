@@ -18,11 +18,23 @@ import { endpoints } from "../constants/endpoints";
 import sendRequest from "./sendRequest";
 import { getToken } from "../shared/authHelper";
 
-export const getAllFolders = () => {
-  const url = endpoints.folders.getAll();
+export const getUploadsByFolderId = (id) => {
+  const url = endpoints.organize.uploads.get(id);
   return sendRequest({
     url,
     method: "GET",
+    credentials: "include",
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+};
+
+export const deleteUploadsApi = (id) => {
+  const url = endpoints.organize.uploads.delete(id);
+  return sendRequest({
+    url,
+    method: "DELETE",
     credentials: "include",
     headers: {
       Authorization: getToken(),
