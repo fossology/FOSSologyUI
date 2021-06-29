@@ -35,6 +35,7 @@ import About from "./pages/Help/About";
 import ThirdPartyLicenses from "./pages/Help/ThirdPartyLicenses";
 import ImportReport from "./pages/Upload/ImportReport";
 import ErrorPage from "./pages/ErrorPage";
+import DeleteFolder from "./pages/Organize/Folder/Delete";
 
 // Routes imports
 import { routes } from "./constants/routes";
@@ -67,6 +68,11 @@ const Routes = () => {
           exact
           path={routes.upload.report}
           component={ImportReport}
+        />
+        <PrivateLayout
+          exact
+          path={routes.organize.folders.delete}
+          component={DeleteFolder}
         />
         <Route path="*">
           <PublicLayout component={ErrorPage} />
