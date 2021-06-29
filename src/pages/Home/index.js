@@ -18,13 +18,14 @@ import React, { useState } from "react";
 
 // External library imports
 import { useHistory } from "react-router-dom";
-import { Form, Row, Col, Spinner, Alert } from "react-bootstrap";
+import { Form, Row, Col, Spinner } from "react-bootstrap";
 
 // Custom component imports
 import { fetchToken } from "../../services/auth";
 import { routes } from "../../constants/routes";
 import { isAuth } from "../../shared/authHelper";
 import Button from "../../components/Widgets/Button";
+import Alert from "../../components/Widgets/Alert";
 import Features from "./Features";
 
 // CSS imports
@@ -65,10 +66,14 @@ const Home = () => {
   return (
     <React.Fragment>
       {showError && (
-        <Alert variant="danger" onClose={() => setShowError(false)} dismissible>
-          <Alert.Heading>An error occurred!</Alert.Heading>
-          <p>{errorMessage}</p>
-        </Alert>
+        <>
+          <Alert
+            type="danger"
+            setShow={setShowError}
+            message={errorMessage}
+            heading="An error occured"
+          />
+        </>
       )}
       <div className="main-container my-3">
         <div className="row m-0">
