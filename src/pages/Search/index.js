@@ -1,5 +1,5 @@
-/***************************************************************
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
+/*
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -14,9 +14,10 @@
  You should have received a copy of the GNU General Public License along
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-***************************************************************/
+*/
 
 import React, { useState } from "react";
+import { Spinner, Alert } from "react-bootstrap";
 import { search } from "../../services/search";
 import InputContainer from "../../components/Widgets/Input";
 import Button from "../../components/Widgets/Button";
@@ -33,157 +34,200 @@ const Search = () => {
     license: "",
     copyright: "",
   };
+  const initialMessage = {
+    type: "danger",
+    text: "",
+  };
   const [searchData, setSearchData] = useState(initialState);
   const [searchResult, setSearchResult] = useState("");
-  const handleSubmit = async (e) => {
+  const [loading, setLoading] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
+  const [message, setMessage] = useState(initialMessage);
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const result = await search(searchData);
-    setSearchResult(result);
+    setLoading(true);
+    search(searchData)
+      .then((result) => {
+        setSearchResult(result);
+      })
+      .catch((error) => {
+        setMessage({
+          type: "danger",
+          text: error.message,
+        });
+        setShowMessage(true);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
+
   const handleChange = (e) => {
     setSearchData({ ...searchData, [e.target.name]: e.target.value });
   };
+
   return (
-    <div className="main-container my-3">
-      <div className="row">
-        <div className="col-lg-8 col-md-12 col-sm-12 col-12">
-          <form>
-            <InputContainer
-              value="directory"
-              name="searchType"
-              type="radio"
-              id="upload"
-              onChange={(e) => handleChange(e)}
-              checked={searchData.searchType === "directory"}
-            >
-              Containers only (rpms, tars, isos, etc), including directories.
-            </InputContainer>
-            <InputContainer
-              value="containers"
-              name="searchType"
-              type="radio"
-              id="upload"
-              onChange={(e) => handleChange(e)}
-              checked={searchData.searchType === "containers"}
-            >
-              Containers only (rpms, tars, isos, etc), excluding directories.
-              The filtering for license or copyright is not supported in this
-              case.
-            </InputContainer>
-            <InputContainer
-              value="allfiles"
-              name="searchType"
-              type="radio"
-              id="upload"
-              onChange={(e) => handleChange(e)}
-              checked={searchData.searchType === "allfiles"}
-            >
-              All Files
-            </InputContainer>
-            <div className="font-demi mt-4">
-              You must choose one or more search criteria (not case sensitive).
-            </div>
-            <div className="mb-2">
+    <>
+      {showMessage && (
+        <Alert
+          variant={message.type}
+          onClose={() => setShowMessage(false)}
+          dismissible
+        >
+          <p>{message.text}</p>
+        </Alert>
+      )}
+      <div className="main-container my-3">
+        <h1 className="font-size-main-heading text-center">Search</h1>
+        <br />
+        <div className="row">
+          <div className="col-lg-8 col-md-12 col-sm-12 col-12 bg-white home-box-shadow">
+            <form>
               <InputContainer
-                value={searchData.uploadId}
-                name="uploadId"
-                type="text"
-                id="search-upload-id"
-                onChange={(e) => handleChange(e)}
+                value="directory"
+                name="searchType"
+                type="radio"
+                id="search-upload-type-directory"
+                onChange={handleChange}
+                checked={searchData.searchType === "directory"}
               >
-                Choose upload to search into
+                Containers only (rpms, tars, isos, etc), including directories.
               </InputContainer>
-            </div>
-            <InputContainer
-              value={searchData.filename}
-              name="filename"
-              type="text"
-              id="search-file-name"
-              onChange={(e) => handleChange(e)}
-            >
-              Enter the filename to find:
-            </InputContainer>
-            <InputContainer
-              value={searchData.tag}
-              name="tag"
-              type="text"
-              id="search-tag"
-              onChange={(e) => handleChange(e)}
-            >
-              Tag to find
-            </InputContainer>
-            <InputContainer
-              value={searchData.filesizemin}
-              name="filesizemin"
-              type="text"
-              id="search-file-size-min"
-              placeholder="in Bytes"
-              onChange={(e) => handleChange(e)}
-            >
-              File size is &ge;
-            </InputContainer>
-            <InputContainer
-              value={searchData.filesizemax}
-              name="filesizemax"
-              type="text"
-              id="search-file-size-max"
-              placeholder="in Bytes"
-              onChange={(e) => handleChange(e)}
-            >
-              File size is &le;
-            </InputContainer>
-            <div className="font-demi mt-4">
-              You may also choose one or more optional search filters (not case
-              sensitive).
-            </div>
-            <InputContainer
-              value={searchData.license}
-              name="license"
-              type="text"
-              id="search-license"
-              onChange={(e) => handleChange(e)}
-            >
-              License
-            </InputContainer>
-            <InputContainer
-              value={searchData.copyright}
-              name="copyright"
-              type="text"
-              id="search-copyright"
-              onChange={(e) => handleChange(e)}
-            >
-              Copyright
-            </InputContainer>
-            <Button
-              type="submit"
-              onClick={(e) => handleSubmit(e)}
-              className="mt-4"
-            >
-              Search
-            </Button>
-          </form>
-          {searchResult && (
-            <>
-              <h3 className="font-size-sub-heading mt-4">
-                {searchResult.length} files matching your search result.
-              </h3>
-              {searchResult.map(
-                ({ uploadName, folderName, fileName }, index) => (
-                  <div key={index} className="box p-3 mt-2">
-                    <div className="font-demi">
-                      {index + 1}. Folder: {folderName}
+              <InputContainer
+                value="containers"
+                name="searchType"
+                type="radio"
+                id="search-upload-type-containers"
+                onChange={handleChange}
+                checked={searchData.searchType === "containers"}
+              >
+                Containers only (rpms, tars, isos, etc), excluding directories.
+                The filtering for license or copyright is not supported in this
+                case.
+              </InputContainer>
+              <InputContainer
+                value="allfiles"
+                name="searchType"
+                type="radio"
+                id="search-upload-type-all-files"
+                onChange={handleChange}
+                checked={searchData.searchType === "allfiles"}
+              >
+                All Files
+              </InputContainer>
+              <div className="font-demi mt-4">
+                You must choose one or more search criteria (not case
+                sensitive).
+              </div>
+              <div className="mb-2">
+                <InputContainer
+                  value={searchData.uploadId}
+                  name="uploadId"
+                  type="text"
+                  id="search-upload-id"
+                  onChange={handleChange}
+                >
+                  Choose upload to search into
+                </InputContainer>
+              </div>
+              <InputContainer
+                value={searchData.filename}
+                name="filename"
+                type="text"
+                id="search-file-name"
+                onChange={handleChange}
+              >
+                Enter the filename to find:
+              </InputContainer>
+              <InputContainer
+                value={searchData.tag}
+                name="tag"
+                type="text"
+                id="search-tag"
+                onChange={handleChange}
+              >
+                Tag to find
+              </InputContainer>
+              <InputContainer
+                value={searchData.filesizemin}
+                name="filesizemin"
+                type="text"
+                id="search-file-size-min"
+                placeholder="in Bytes"
+                onChange={handleChange}
+              >
+                File size is &ge;
+              </InputContainer>
+              <InputContainer
+                value={searchData.filesizemax}
+                name="filesizemax"
+                type="text"
+                id="search-file-size-max"
+                placeholder="in Bytes"
+                onChange={handleChange}
+              >
+                File size is &le;
+              </InputContainer>
+              <div className="font-demi mt-4">
+                You may also choose one or more optional search filters (not
+                case sensitive).
+              </div>
+              <InputContainer
+                value={searchData.license}
+                name="license"
+                type="text"
+                id="search-license"
+                onChange={handleChange}
+              >
+                License
+              </InputContainer>
+              <InputContainer
+                value={searchData.copyright}
+                name="copyright"
+                type="text"
+                id="search-copyright"
+                onChange={handleChange}
+              >
+                Copyright
+              </InputContainer>
+              <Button type="submit" onClick={handleSubmit} className="mt-4">
+                {loading ? (
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                ) : (
+                  "Search"
+                )}
+              </Button>
+            </form>
+            {searchResult && (
+              <>
+                <h3 className="font-size-sub-heading mt-4">
+                  {searchResult.length} files matching your search result.
+                </h3>
+                {searchResult.map(
+                  ({ uploadName, folderName, fileName }, index) => (
+                    <div key={index} className="card p-3 mt-2">
+                      <div className="font-demi">
+                        {index + 1}. Folder: {folderName}
+                      </div>
+                      <div className="font-medium ml-3">
+                        {uploadName}/{fileName}
+                      </div>
                     </div>
-                    <div className="font-medium ml-3">
-                      {uploadName}/{fileName}
-                    </div>
-                  </div>
-                )
-              )}
-            </>
-          )}
+                  )
+                )}
+              </>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
