@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
-
+ 
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -16,19 +16,18 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-const apiUrl = "http://localhost/repo/api/v1";
+import sendRequest from "./sendRequest";
+import { endpoints } from "../constants/endpoints";
+import { getToken } from "../shared/authHelper";
 
-export const endpoints = {
-  jobs: {
-    details: (jobId) => `${apiUrl}/jobs/${jobId}`,
-  },
-  auth: {
-    tokens: () => `${apiUrl}/tokens`,
-  },
-  search: {
-    search: () => `${apiUrl}/search`,
-  },
-  users: {
-    self: () => `${apiUrl}/users/self`,
-  },
+export const getUserSelfApi = async () => {
+  const url = endpoints.users.self();
+  return sendRequest({
+    url,
+    method: "GET",
+    credentials: "include",
+    headers: {
+      Authorization: await getToken(),
+    },
+  });
 };
