@@ -61,6 +61,7 @@ const Home = () => {
           .catch((error) => {
             throw error;
           });
+        history.push(routes.browse);
       })
       .catch((err) => {
         setLoading(false);
