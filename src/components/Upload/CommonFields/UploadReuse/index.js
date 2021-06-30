@@ -6,18 +6,6 @@ function UploadReuse({ reuse, handleChange }) {
   return (
     <div id="upload-reuse" className="mt-4">
       <p className="font-demi">(Optional) Reuse</p>
-      {/* <InputContainer
-        type="checkbox"
-        checked={reuse.main}
-        name="licenseConcluded"
-        id="upload-file"
-        onChange={(e) => handleChange(e)}
-      >
-        Select an already uploaded package for reuse in specific folder
-      </InputContainer>
-      <select>
-        <option value="Software Repository">Software Repository</option>
-      </select> */}
       <InputContainer
         type="checkbox"
         checked={reuse.reuseEnhanced}
@@ -36,24 +24,6 @@ function UploadReuse({ reuse, handleChange }) {
       >
         Reuse main license/s
       </InputContainer>
-      {/* <InputContainer
-        type="checkbox"
-        checked={reuse.main}
-        name="licenseConcluded"
-        id="upload-file"
-        onChange={(e) => handleChange(e)}
-      >
-        Reuse report configuration settings
-      </InputContainer>
-      <InputContainer
-        type="checkbox"
-        checked={reuse.main}
-        name="licenseConcluded"
-        id="upload-file"
-        onChange={(e) => handleChange(e)}
-      >
-        Reuse deactivated copyright when agent version changes
-      </InputContainer> */}
     </div>
   );
 }

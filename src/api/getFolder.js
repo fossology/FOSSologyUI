@@ -24,7 +24,7 @@ export const getAllFolders = () => {
   return sendRequest({
     url,
     method: "GET",
-    credentials: false,
+    credentials: "include",
     headers: {
       Authorization: getToken(),
     },

@@ -45,7 +45,7 @@ export const createUpload = async (
       uploadDescription,
       accessLevel,
       ignoreScm,
-      uploadType: "vcs",
+      uploadType: "",
       groupName: "",
     },
     body: formdata,

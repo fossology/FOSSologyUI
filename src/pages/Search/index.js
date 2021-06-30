@@ -46,7 +46,7 @@ const Search = () => {
   return (
     <div className="main-container my-3">
       <div className="row">
-        <div className="col-lg-8 col-md-12 col-sm-12 col-12 bg-white home-box-shadow">
+        <div className="col-lg-8 col-md-12 col-sm-12 col-12">
           <form>
             <InputContainer
               value="directory"
@@ -169,7 +169,7 @@ const Search = () => {
               </h3>
               {searchResult.map(
                 ({ uploadName, folderName, fileName }, index) => (
-                  <div key={index} className="card p-3 mt-2">
+                  <div key={index} className="box p-3 mt-2">
                     <div className="font-demi">
                       {index + 1}. Folder: {folderName}
                     </div>

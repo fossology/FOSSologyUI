@@ -84,8 +84,8 @@ const UploadFile = () => {
           type: "success",
           text: "Successfully uploaded the files",
         });
-        uploadId = res.message;
         scrollTo({ top: 0 });
+        uploadId = res.message;
       })
       .then(() => {
         setTimeout(
@@ -97,6 +97,8 @@ const UploadFile = () => {
                   text: "Analysis for the file is scheduled.",
                 });
                 scrollTo({ top: 0 });
+                setUploadFileData(initialState);
+                setScanFileData(initialScanFileData);
               })
               .catch((error) => {
                 setMessage({
@@ -105,7 +107,7 @@ const UploadFile = () => {
                 });
                 scrollTo({ top: 0 });
               }),
-          1000
+          1200
         );
       })
       .catch((error) => {
