@@ -28,7 +28,6 @@ import PrivateLayout from "./shared/PrivateLayout";
 import Home from "./pages/Home";
 import Browse from "./pages/Browse";
 import Search from "./pages/Search";
-import Login from "./pages/Login";
 import Overview from "./pages/Help/Overview";
 import LicenseBrowser from "./pages/Help/LicenseBrowser";
 import Instructions from "./pages/Upload/Instructions";
@@ -45,7 +44,6 @@ const Routes = () => {
     <BrowserRouter>
       <Switch>
         <PublicLayout exact path={routes.home} component={Home} />
-        <PublicLayout exact path={routes.login} component={Login} />
         <PublicLayout exact path={routes.help.overview} component={Overview} />
         <PublicLayout
           exact
