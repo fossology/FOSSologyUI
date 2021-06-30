@@ -18,12 +18,20 @@
 
 import {
   getAllFoldersApi,
+  getSingleFolderApi,
   createFolderApi,
   deleteFolderApi,
+  editFolderApi,
 } from "../api/folders";
 
 export function getAllFolders() {
   return getAllFoldersApi().then((res) => {
+    return res;
+  });
+}
+
+export function getSingleFolder(id) {
+  return getSingleFolderApi(id).then((res) => {
     return res;
   });
 }
@@ -40,4 +48,10 @@ export function createFolder({ parentFolder, folderName, folderDescription }) {
       return res;
     }
   );
+}
+
+export function editFolder({ name, description, id }) {
+  return editFolderApi(name, description, id).then((res) => {
+    return res;
+  });
 }
