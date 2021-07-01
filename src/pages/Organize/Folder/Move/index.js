@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
- 
+
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -17,8 +17,8 @@
 */
 
 import React, { useState, useEffect } from "react";
-import { Alert } from "react-bootstrap";
 import InputContainer from "../../../../components/Widgets/Input";
+import Alert from "../../../../components/Widgets/Alert";
 import Button from "../../../../components/Widgets/Button";
 import {
   getAllFolders,
@@ -114,12 +114,10 @@ const MoveFolder = () => {
     <>
       {showMessage && (
         <Alert
-          variant={message.type}
-          onClose={() => setShowMessage(false)}
-          dismissible
-        >
-          <p>{message.text}</p>
-        </Alert>
+          type={message.type}
+          setShow={setShowMessage}
+          message={message.text}
+        />
       )}
       <div className="main-container my-3">
         <h1 className="font-size-main-heading text-center">Move folder</h1>

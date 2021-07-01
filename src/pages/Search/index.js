@@ -17,9 +17,10 @@
 */
 
 import React, { useState } from "react";
-import { Spinner, Alert } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 import { search } from "../../services/search";
 import InputContainer from "../../components/Widgets/Input";
+import Alert from "../../components/Widgets/Alert";
 import Button from "../../components/Widgets/Button";
 
 const Search = () => {
@@ -71,12 +72,10 @@ const Search = () => {
     <>
       {showMessage && (
         <Alert
-          variant={message.type}
-          onClose={() => setShowMessage(false)}
-          dismissible
-        >
-          <p>{message.text}</p>
-        </Alert>
+          type={message.type}
+          setShow={setShowMessage}
+          message={message.text}
+        />
       )}
       <div className="main-container my-3">
         <h1 className="font-size-main-heading">Search</h1>
