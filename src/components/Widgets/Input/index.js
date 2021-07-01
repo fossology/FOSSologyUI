@@ -44,6 +44,7 @@ const InputContainer = ({
           onChange={onChange}
           checked={checked}
           disabled={disabled}
+          id={id}
         />
         <label htmlFor={id} className="font-medium ml-2">
           {children}
@@ -64,6 +65,7 @@ const InputContainer = ({
           onChange={onChange}
           multiple={multiple && multiple}
           size={multiple && "15"}
+          id={id}
         >
           {options.length > 0 ? (
             options.map((option, index) => (
@@ -95,6 +97,7 @@ const InputContainer = ({
         onChange={onChange}
         checked={checked}
         placeholder={placeholder}
+        id={id}
       />
     </div>
   );
