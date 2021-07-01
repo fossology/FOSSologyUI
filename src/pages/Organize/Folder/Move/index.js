@@ -134,6 +134,7 @@ const MoveFolder = () => {
                 onChange={handleChange}
                 options={folderList}
                 value={id}
+                property="name"
               >
                 Select the folder you wish to move:
               </InputContainer>
@@ -145,6 +146,7 @@ const MoveFolder = () => {
                 onChange={handleChange}
                 options={folderList}
                 value={parent}
+                property="name"
               >
                 Select the folder where the content shall be placed:
               </InputContainer>

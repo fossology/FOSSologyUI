@@ -116,6 +116,7 @@ const CreateFolder = () => {
                 onChange={handleChange}
                 options={folderList}
                 value={parentFolder}
+                property="name"
               >
                 Select the parent folder:
               </InputContainer>
