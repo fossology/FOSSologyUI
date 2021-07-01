@@ -38,6 +38,7 @@ export const endpoints = {
     read: (folderId) => `${apiUrl}/folders/${folderId}`,
     edit: (folderId) => `${apiUrl}/folders/${folderId}`,
     delete: (folderId) => `${apiUrl}/folders/${folderId}`,
+    move: (folderId) => `${apiUrl}/folders/${folderId}`,
   },
   upload: {
     uploadCreate: () => `${apiUrl}/uploads`,

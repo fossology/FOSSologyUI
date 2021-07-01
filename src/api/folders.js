@@ -88,3 +88,17 @@ export const editFolderApi = async (name, description, id) => {
     },
   });
 };
+
+export const moveCopyFolderApi = async (parent, id, action) => {
+  const url = endpoints.folders.move(id);
+  return sendRequest({
+    url,
+    method: "PUT",
+    credentials: "include",
+    headers: {
+      Authorization: await getToken(),
+      parent,
+      action,
+    },
+  });
+};

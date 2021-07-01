@@ -22,6 +22,7 @@ import {
   createFolderApi,
   deleteFolderApi,
   editFolderApi,
+  moveCopyFolderApi,
 } from "../api/folders";
 
 export function getAllFolders() {
@@ -52,6 +53,18 @@ export function createFolder({ parentFolder, folderName, folderDescription }) {
 
 export function editFolder({ name, description, id }) {
   return editFolderApi(name, description, id).then((res) => {
+    return res;
+  });
+}
+
+export function moveFolder({ parent, id }) {
+  return moveCopyFolderApi(parent, id, "move").then((res) => {
+    return res;
+  });
+}
+
+export function copyFolder({ parent, id }) {
+  return moveCopyFolderApi(parent, id, "copy").then((res) => {
     return res;
   });
 }
