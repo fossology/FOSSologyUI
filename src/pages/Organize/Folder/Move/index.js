@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
- 
+
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -122,7 +122,7 @@ const MoveFolder = () => {
         </Alert>
       )}
       <div className="main-container my-3">
-        <h1 className="font-size-main-heading text-center">Move folder</h1>
+        <h1 className="font-size-main-heading">Move folder</h1>
         <br />
         <div className="row">
           <div className="col-12 col-lg-8">

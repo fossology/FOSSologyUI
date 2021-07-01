@@ -19,7 +19,16 @@
 import React from "react";
 
 const UploadMove = () => {
-  return <div>Move</div>;
+  return (
+    <div className="main-container my-3">
+      <div className="row">
+        <div className="col-lg-8 col-md-12 col-sm-12 col-12">
+          <h1 className="font-size-main-heading">Move upload or folder</h1>
+          <br />
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default UploadMove;

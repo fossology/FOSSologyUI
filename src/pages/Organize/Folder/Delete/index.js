@@ -106,9 +106,7 @@ const DeleteFolder = () => {
         </Alert>
       )}
       <div className="main-container my-3">
-        <h1 className="font-size-main-heading text-center">
-          Delete a Fossology Folder
-        </h1>
+        <h1 className="font-size-main-heading">Delete a Fossology Folder</h1>
         <br />
         <div className="row">
           <div className="col-12 col-lg-8">

@@ -191,8 +191,9 @@ const UploadFile = () => {
       <div className="main-container my-3">
         <div className="row">
           <div className="col-lg-8 col-md-12 col-sm-12 col-12">
-            <h3 className="font-size-sub-heading">Upload a New file</h3>
-            <p className="font-demi my-3">
+            <h1 className="font-size-main-heading">Upload a New file</h1>
+            <br />
+            <p className="font-demi">
               To manage your own group permissions go into Admin &gt; Groups
               &gt; Manage Group Users. To manage permissions for this one
               upload, go to Admin &gt; Upload Permissions.
