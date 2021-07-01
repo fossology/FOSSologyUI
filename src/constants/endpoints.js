@@ -33,7 +33,10 @@ export const endpoints = {
   },
   folders: {
     getAll: () => `${apiUrl}/folders`,
+    getSingle: (folderId) => `${apiUrl}/folders/${folderId}`,
     create: () => `${apiUrl}/folders`,
+    read: (folderId) => `${apiUrl}/folders/${folderId}`,
+    edit: (folderId) => `${apiUrl}/folders/${folderId}`,
     delete: (folderId) => `${apiUrl}/folders/${folderId}`,
   },
   upload: {

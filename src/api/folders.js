@@ -32,6 +32,18 @@ export const getAllFoldersApi = async () => {
   });
 };
 
+export const getSingleFolderApi = async (id) => {
+  const url = endpoints.folders.getSingle(id);
+  return sendRequest({
+    url,
+    method: "GET",
+    credentials: "include",
+    headers: {
+      Authorization: await getToken(),
+    },
+  });
+};
+
 export const deleteFolderApi = async (id) => {
   const url = endpoints.folders.delete(id);
   return sendRequest({
@@ -59,6 +71,20 @@ export const createFolderApi = async (
       parentFolder,
       folderName,
       folderDescription,
+    },
+  });
+};
+
+export const editFolderApi = async (name, description, id) => {
+  const url = endpoints.folders.edit(id);
+  return sendRequest({
+    url,
+    method: "PATCH",
+    credentials: "include",
+    headers: {
+      Authorization: await getToken(),
+      name,
+      description,
     },
   });
 };
