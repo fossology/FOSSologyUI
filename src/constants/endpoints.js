@@ -44,4 +44,8 @@ export const endpoints = {
     scheduleAnalysis: () => `${apiUrl}/jobs`,
     getId: (uploadId) => `${apiUrl}/uploads/${uploadId}`,
   },
+  browse: {
+    get: (folderId, recursive) =>
+      `${apiUrl}/uploads?folderId=${folderId}&recursive=${recursive}`,
+  },
 };
