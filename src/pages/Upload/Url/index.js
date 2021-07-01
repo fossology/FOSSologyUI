@@ -19,7 +19,7 @@
 import React from "react";
 import CommonFields from "../../../components/Upload/CommonFields";
 
-const UploadFromServer = () => {
+const UploadFromUrl = () => {
   return (
     <div className="main-container my-3">
       <CommonFields />
@@ -27,4 +27,4 @@ const UploadFromServer = () => {
   );
 };
 
-export default UploadFromServer;
+export default UploadFromUrl;

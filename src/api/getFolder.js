@@ -1,4 +1,4 @@
-/***************************************************************
+/*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
@@ -10,21 +10,23 @@
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
-
  You should have received a copy of the GNU General Public License along
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-***************************************************************/
+*/
 
-import React from "react";
-import CommonFields from "../../../components/Upload/CommonFields";
+import { endpoints } from "../constants/endpoints";
+import sendRequest from "./sendRequest";
+import { getToken } from "../shared/authHelper";
 
-const UploadFromServer = () => {
-  return (
-    <div className="main-container my-3">
-      <CommonFields />
-    </div>
-  );
+export const getAllFolders = () => {
+  const url = endpoints.folders.getAll();
+  return sendRequest({
+    url,
+    method: "GET",
+    credentials: "include",
+    headers: {
+      Authorization: getToken(),
+    },
+  });
 };
-
-export default UploadFromServer;

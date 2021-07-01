@@ -1,8 +1,7 @@
-/***************************************************************
+/*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
-
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
  version 2 as published by the Free Software Foundation.
@@ -10,21 +9,15 @@
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
-
  You should have received a copy of the GNU General Public License along
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-***************************************************************/
+*/
 
-import React from "react";
-import CommonFields from "../../../components/Upload/CommonFields";
+import { getAllFolders } from "../api/getFolder";
 
-const UploadFromServer = () => {
-  return (
-    <div className="main-container my-3">
-      <CommonFields />
-    </div>
-  );
-};
-
-export default UploadFromServer;
+export function getFolders() {
+  return getAllFolders().then((res) => {
+    return res;
+  });
+}

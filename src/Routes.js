@@ -40,6 +40,7 @@ import CreateFolder from "./pages/Organize/Folder/Create";
 
 // Routes imports
 import { routes } from "./constants/routes";
+import UploadFile from "./pages/Upload/File";
 
 const Routes = () => {
   return (
@@ -57,6 +58,7 @@ const Routes = () => {
           path={routes.upload.instructions}
           component={Instructions}
         />
+        <PrivateLayout exact path={routes.upload.file} component={UploadFile} />
         <PublicLayout exact path={routes.help.about} component={About} />
         <PublicLayout
           exact

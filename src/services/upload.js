@@ -1,4 +1,4 @@
-/***************************************************************
+/*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
@@ -14,17 +14,36 @@
  You should have received a copy of the GNU General Public License along
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-***************************************************************/
+*/
 
-import React from "react";
-import CommonFields from "../../../components/Upload/CommonFields";
+import { createUpload, scheduleAnalysis, getUploadById } from "../api/upload";
 
-const UploadFromServer = () => {
-  return (
-    <div className="main-container my-3">
-      <CommonFields />
-    </div>
-  );
-};
+export function createUploadFile({
+  folderId,
+  uploadDescription,
+  accessLevel,
+  ignoreScm,
+  fileInput,
+}) {
+  return createUpload(
+    folderId,
+    uploadDescription,
+    accessLevel,
+    ignoreScm,
+    fileInput
+  ).then((res) => {
+    return res;
+  });
+}
 
-export default UploadFromServer;
+export function scheduleJobs(folderId, uploadId, scanData) {
+  return scheduleAnalysis(folderId, uploadId, scanData).then((res) => {
+    return res;
+  });
+}
+
+export function getId(uploadId) {
+  return getUploadById(uploadId).then((res) => {
+    return res;
+  });
+}
