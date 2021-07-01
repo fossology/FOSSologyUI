@@ -79,10 +79,10 @@ const Search = () => {
         </Alert>
       )}
       <div className="main-container my-3">
-        <h1 className="font-size-main-heading text-center">Search</h1>
+        <h1 className="font-size-main-heading">Search</h1>
         <br />
         <div className="row">
-          <div className="col-lg-8 col-md-12 col-sm-12 col-12 bg-white home-box-shadow">
+          <div className="col-lg-8 col-md-12 col-sm-12 col-12">
             <form>
               <InputContainer
                 value="directory"

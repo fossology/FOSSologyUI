@@ -1,8 +1,6 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
-
  SPDX-License-Identifier: GPL-2.0
-
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
  version 2 as published by the Free Software Foundation.
@@ -53,14 +51,18 @@ const InputContainer = ({
     );
   } else if (type === "select") {
     return (
-      <div className="my-0">
-        <label htmlFor={id} className="font-demi">
-          {children}
-        </label>
+      <div className="my-0 py-0">
+        {children && (
+          <label htmlFor={id} className="font-demi">
+            {children}
+          </label>
+        )}
         &emsp;
         <select
           name={name}
-          className={className && `mr-2 ${className}`}
+          className={
+            className ? `mr-2 form-control ${className}` : `mr-2 form-control`
+          }
           value={value}
           onChange={onChange}
           multiple={multiple && multiple}
@@ -70,7 +72,7 @@ const InputContainer = ({
           {options.length > 0 ? (
             options.map((option, index) => (
               <option key={option.id || index} value={option.id}>
-                {option[property]}
+                {property ? option[property] : option}
               </option>
             ))
           ) : (
