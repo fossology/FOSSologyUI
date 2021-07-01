@@ -139,6 +139,7 @@ const DeleteFolder = () => {
                 onChange={handleChange}
                 options={folderList}
                 value={deleteFolderData.id}
+                property="name"
               >
                 Select the folder to delete:
               </InputContainer>

@@ -38,6 +38,7 @@ import ErrorPage from "./pages/ErrorPage";
 import DeleteFolder from "./pages/Organize/Folder/Delete";
 import CreateFolder from "./pages/Organize/Folder/Create";
 import EditFolder from "./pages/Organize/Folder/Edit";
+import MoveFolder from "./pages/Organize/Folder/Move";
 
 // Routes imports
 import { routes } from "./constants/routes";
@@ -87,6 +88,11 @@ const Routes = () => {
           exact
           path={routes.organize.folders.edit}
           component={EditFolder}
+        />
+        <PrivateLayout
+          exact
+          path={routes.organize.folders.move}
+          component={MoveFolder}
         />
         <Route path="*">
           <PublicLayout component={ErrorPage} />

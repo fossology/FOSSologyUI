@@ -140,6 +140,7 @@ const EditFolder = () => {
                 onChange={handleChange}
                 options={folderList}
                 value={id}
+                property="name"
               >
                 Select the folder to edit:
               </InputContainer>
