@@ -30,6 +30,7 @@ const sendRequest = ({
   queryParams,
   isMultipart = false,
   noHeaders = false,
+  retries = 0,
 }) => {
   let mergedHeaders;
   if (isMultipart) {
@@ -37,6 +38,7 @@ const sendRequest = ({
   } else {
     mergedHeaders = new Headers({
       "content-type": "application/json",
+      accept: "application/json",
       ...headers,
     });
   }
@@ -62,6 +64,17 @@ const sendRequest = ({
         }
       }
       return res.json();
+    }
+    if (retries > 0) {
+      setTimeout(() => {
+        retries--;
+        sendRequest({
+          url,
+          method,
+          headers,
+          retries,
+        });
+      }, 10000);
     } else {
       return res.json().then(function (json) {
         if (json.code === 403) {

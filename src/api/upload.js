@@ -51,6 +51,19 @@ export const createUpload = async (
   });
 };
 
+export const createUploadVcs = async (header, body) => {
+  const url = endpoints.upload.uploadCreate();
+  const token = await getToken();
+  header.Authorization = token;
+  return sendRequest({
+    url,
+    method: "POST",
+    credentials: false,
+    headers: header,
+    body: body,
+  });
+};
+
 export const scheduleAnalysis = async (folderId, uploadId, scanData) => {
   const url = endpoints.upload.scheduleAnalysis();
   const token = await getToken();
@@ -95,15 +108,15 @@ export const scheduleAnalysis = async (folderId, uploadId, scanData) => {
   });
 };
 
-export const getUploadById = async (uploadId) => {
+export const getUploadById = async (uploadId, retries) => {
   const url = endpoints.upload.getId(uploadId);
   const token = await getToken();
   return sendRequest({
     url,
     method: "GET",
+    retries,
     headers: {
       Authorization: token,
-      uploadId,
       groupName: "",
     },
   });
