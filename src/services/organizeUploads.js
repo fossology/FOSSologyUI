@@ -1,6 +1,5 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
-
  SPDX-License-Identifier: GPL-2.0
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -14,16 +13,31 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import { getUploadsByFolderId, deleteUploadsApi } from "../api/organizeUploads";
+import {
+  getUploadsByFolderId,
+  deleteUploadsApi,
+  moveUploadApi,
+  copyUploadApi,
+} from "../api/organizeUploads";
 
 export function getUploadsFolderId(folderId) {
   return getUploadsByFolderId(folderId).then((res) => {
     return res;
   });
 }
-
 export function deleteUploadsbyId(deleteId) {
   return deleteUploadsApi(deleteId).then((res) => {
+    return res;
+  });
+}
+export function moveUpload(folderId, id, groupName) {
+  return moveUploadApi(folderId, id, groupName).then((res) => {
+    return res;
+  });
+}
+
+export function copyUpload(folderId, id, groupName) {
+  return copyUploadApi(folderId, id, groupName).then((res) => {
     return res;
   });
 }

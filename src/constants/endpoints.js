@@ -53,6 +53,8 @@ export const endpoints = {
     uploads: {
       get: (folder) => `${apiUrl}/uploads?folderId=${folder}`,
       delete: (deleteId) => `${apiUrl}/uploads/${deleteId}`,
+      move: (moveId) => `${apiUrl}/uploads/${moveId}?recursive=false`,
+      copy: (copyId) => `${apiUrl}/uploads/${copyId}?recursive=false`,
     },
   },
 };
