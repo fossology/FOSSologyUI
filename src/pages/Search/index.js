@@ -211,7 +211,7 @@ const Search = () => {
                 </h3>
                 {searchResult.map(
                   ({ uploadName, folderName, fileName }, index) => (
-                    <div key={index} className="card p-3 mt-2">
+                    <div key={index} className="box p-3 mt-2">
                       <div className="font-demi">
                         {index + 1}. Folder: {folderName}
                       </div>

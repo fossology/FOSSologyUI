@@ -120,7 +120,7 @@ const MoveFolder = () => {
         />
       )}
       <div className="main-container my-3">
-        <h1 className="font-size-main-heading">Move folder</h1>
+        <h1 className="font-size-main-heading">Move or Copy folder</h1>
         <br />
         <div className="row">
           <div className="col-12 col-lg-8">
