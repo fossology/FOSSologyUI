@@ -35,7 +35,13 @@ export const getDate = (day) => {
     return date;
   };
   let date = new Date();
-  return date.addDays(day).toISOString().split("T")[0];
+  return date
+    .addDays(day)
+    .toLocaleString("en-GB", { timeZone: "UTC" })
+    .split(",")[0]
+    .split("/")
+    .reverse()
+    .join("-");
 };
 
 // get the Authorization token
