@@ -130,8 +130,14 @@ const Overview = () => {
           <br />
           The following resources will provide additional help and information:{" "}
           <br /> <br />
-          <a href="https://fossology.org">FOSSology web site</a> - Where you can
-          find more information and get help on FOSSology.
+          <a
+            href="https://fossology.org"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            FOSSology web site
+          </a>
+          - Where you can find more information and get help on FOSSology.
         </p>
       </div>
     </div>
