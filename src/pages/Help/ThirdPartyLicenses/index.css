@@ -1,0 +1,10 @@
+.thirdPartyIframe {
+  display: block;
+  width: 100%;
+  border: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-left: 2rem;
+  /* document.querySelectorAll("iframe")[0].contentWindow.document.documentElement.scrollHeight */
+  height: 342547px;
+}

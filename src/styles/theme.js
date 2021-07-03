@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
- 
+
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -23,17 +23,18 @@
 export const lightTheme = {
   primaryColor: "#DC3545",
   body: "#FFFFFF",
-  text: "#363537",
+  text: "#212121",
   primaryText: "#212121",
   secondaryText: "#FFFFFF",
-  toggleBorder: "#FFF",
+  hoverBackgroundColor: "#A93232",
 };
 
 export const darkTheme = {
-  primaryColor: "#424242",
-  body: "#FFFFFF",
-  text: "#FAFAFA",
-  primaryText: "#212121",
+  primaryColor: "#525252",
+  body: "#212121",
+  text: "#212121",
+  primaryText: "#FFF",
   secondaryText: "#FFFFFF",
   toggleBorder: "#6B8096",
+  hoverBackgroundColor: "#212121",
 };

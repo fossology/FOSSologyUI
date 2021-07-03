@@ -29,23 +29,23 @@ const Features = () => {
     {
       id: 1,
       img: upload,
-      heading: "Upload Files",
+      heading: "Upload and Scan files",
       description:
-        "Upload files into the fossology repository and get information.",
+        "Upload and scan files into the fossology server and get information.",
     },
     {
       id: 2,
       img: scan,
-      heading: "Scan Documents",
+      heading: "Review Documents",
       description:
-        "Scan for software licenses, copyrights and other author information.",
+        "Review licenses, copyrights, export control and other information.",
     },
     {
       id: 3,
       img: report,
       heading: "Generate Reports",
       description:
-        "Report files based on your own custom classification scheme.",
+        "Generate report files based on your own custom classification scheme.",
     },
   ];
   return (

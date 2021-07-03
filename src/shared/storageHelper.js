@@ -1,6 +1,6 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
- 
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
+
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -49,6 +49,13 @@ export const getCookie = (key) => {
 export const setLocalStorage = (key, value) => {
   if (typeof window !== "undefined") {
     localStorage.setItem(key, JSON.stringify(value));
+  }
+};
+
+// get from localstorage
+export const getLocalStorage = (key) => {
+  if (typeof window !== "undefined") {
+    return JSON.parse(localStorage.getItem(key));
   }
 };
 

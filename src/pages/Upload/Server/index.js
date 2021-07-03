@@ -1,6 +1,6 @@
 /***************************************************************
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
- 
+
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -17,9 +17,14 @@
 ***************************************************************/
 
 import React from "react";
+import CommonFields from "../../../components/Upload/CommonFields";
 
-const UploadSrvFiles = () => {
-  return <div>UploadSrvFiles</div>;
+const UploadFromServer = () => {
+  return (
+    <div className="main-container my-3">
+      <CommonFields />
+    </div>
+  );
 };
 
-export default UploadSrvFiles;
+export default UploadFromServer;

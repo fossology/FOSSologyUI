@@ -16,19 +16,23 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import { getCookie, removeCookie } from "./storageHelper";
+import {
+  getCookie,
+  getLocalStorage,
+  removeCookie,
+  removeLocalStorage,
+} from "./storageHelper";
 
 // access user info from localstorage
 export const isAuth = () => {
   if (typeof window !== "undefined") {
     const cookieChecked = getCookie("token");
     if (cookieChecked) {
-      return true;
-      // if (localStorage.getItem("user")) {
-      //   return JSON.parse(localStorage.getItem("user"));
-      // } else {
-      //   return false;
-      // }
+      if (localStorage.getItem("user")) {
+        return true;
+      } else {
+        return false;
+      }
     }
   } else {
     return false;
@@ -37,7 +41,7 @@ export const isAuth = () => {
 
 export const logout = (next) => {
   removeCookie("token");
-  // removeLocalStorage("user");
+  removeLocalStorage("user");
   next();
 };
 
@@ -52,4 +56,12 @@ export const updateUser = (response, next) => {
 
 export const getToken = () => {
   return getCookie("token");
+};
+
+export const getUser = () => {
+  return getLocalStorage("user");
+};
+
+export const getUserName = () => {
+  return getLocalStorage("user").name;
 };

@@ -1,6 +1,6 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
- 
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
+
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -52,6 +52,11 @@ const sendRequest = ({
   }
   return fetch(url, options).then((res) => {
     if (res.ok) {
+      for (var pair of res.headers.entries()) {
+        if (pair[0] === "x-total-pages") {
+          console.log(pair[1]);
+        }
+      }
       return res.json();
     } else {
       return res.json().then(function (json) {

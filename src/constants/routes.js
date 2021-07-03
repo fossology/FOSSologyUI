@@ -21,13 +21,13 @@ export const routes = {
   login: "/login",
   search: "/search",
   browse: "/browse",
-  uploads: {
-    file: "/uploads/file",
-    server: "/uploads/server",
-    url: "/uploads/url",
-    versionControlSystem: "/uploads/vcs",
-    report: "/uploads/report",
-    instructions: "/uploads/instructions",
+  upload: {
+    file: "/upload/file",
+    server: "/upload/server",
+    url: "/upload/url",
+    vcs: "/upload/vcs",
+    report: "/upload/report",
+    instructions: "/upload/instructions",
   },
   jobs: {
     myRecentJobs: "/jobs/myRecentJobs",
@@ -39,6 +39,8 @@ export const routes = {
       create: "/organize/folders/create",
       delete: "/organize/folders/delete",
       edit: "/organize/folders/edit",
+      move: "/organize/folders/move",
+      unlinkContent: "/organize/folders/unlinkContent",
     },
     licenses: "/organize/licenses",
     uploads: {
@@ -50,5 +52,8 @@ export const routes = {
   help: {
     overview: "/help/overview",
     licenseBrowser: "/help/licenseBrowser",
+    about: "/help/about",
+    thirdPartyLicenses: "/help/thirdPartyLicenses",
+    thirdPartyLicensesHTML: "/thirdPartyLicenses.html",
   },
 };

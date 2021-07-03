@@ -16,17 +16,27 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from "react";
+import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
-import { Navbar, Nav, NavDropdown, Dropdown } from "react-bootstrap";
+import {
+  Navbar,
+  Nav,
+  NavDropdown,
+  Dropdown,
+  DropdownButton,
+} from "react-bootstrap";
 import { QuestionCircleFill, PersonCircle } from "react-bootstrap-icons";
+import { Link } from "react-router-dom";
 import Image from "../../components/Widgets/Image";
 import { routes } from "../../constants/routes";
-import { logout, isAuth } from "../../shared/authHelper";
+import { logout, isAuth, getUserName } from "../../shared/authHelper";
 import logo from "../../assets/images/logo.svg";
-import { Link } from "react-router-dom";
+import { externalLinks } from "../../constants/externalLinks";
+import { GlobalContext } from "../../context";
 
 const Header = () => {
+  const { setTheme } = useContext(GlobalContext);
+
   const history = useHistory();
 
   const handleLogout = () => {
@@ -42,64 +52,130 @@ const Header = () => {
   return (
     <div>
       <Navbar expand="lg" className="bg-primary-color py-0 pl-0 text-white">
-        <Navbar.Brand as={Link} to="/" className="py-0">
-          <Image src={logo} className="img-fluid bg-white" alt="FOSSology" />
+        <Navbar.Brand href="/" className="py-0">
+          <Image
+            src={logo}
+            className="img-fluid bg-white py-1 px-2"
+            alt="FOSSology"
+          />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link as={Link} to="/">
+            <Nav.Link as={Link} to={routes.home}>
               Home
             </Nav.Link>
-            <Nav.Link as={Link} to="/search">
-              Search
-            </Nav.Link>
-            <Nav.Link as={Link} to="/browse">
-              Browse
-            </Nav.Link>
-            <NavDropdown title="Upload" id="uploads">
-              <NavDropdown.Item as={Link} to="">
-                From File
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="">
-                From Server
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="">
-                From URL
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="">
-                From VCS
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="">
-                Import Report
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="">
-                Instructions
-              </NavDropdown.Item>
-            </NavDropdown>
-            <NavDropdown title="Jobs" id="jobs">
-              <NavDropdown.Item as={Link} to="">
-                My Recent Jobs
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="">
-                All Recent Jobs
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="">
-                Schedule Agents
-              </NavDropdown.Item>
-            </NavDropdown>
-            <NavDropdown title="Organize" id="organize">
-              <NavDropdown.Item as={Link} to="">
-                Folders
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="">
-                Licenses
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="">
-                Uploads
-              </NavDropdown.Item>
-            </NavDropdown>
-            {/* <NavDropdown title="Admin" id="admin">
+            {isAuth() && (
+              <>
+                <Nav.Link as={Link} to={routes.search}>
+                  Search
+                </Nav.Link>
+                <Nav.Link as={Link} to={routes.browse}>
+                  Browse
+                </Nav.Link>
+                <NavDropdown title="Upload" id="uploads">
+                  <NavDropdown.Item as={Link} to={routes.upload.file}>
+                    From File
+                  </NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to={routes.upload.server}>
+                    From Server
+                  </NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to={routes.upload.url}>
+                    From URL
+                  </NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to={routes.upload.vcs}>
+                    From VCS
+                  </NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to={routes.upload.report}>
+                    Import Report
+                  </NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to={routes.upload.instructions}>
+                    Instructions
+                  </NavDropdown.Item>
+                </NavDropdown>
+                <NavDropdown title="Jobs" id="jobs">
+                  <NavDropdown.Item as={Link} to={routes.jobs.myRecentJobs}>
+                    My Recent Jobs
+                  </NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to={routes.jobs.allRecentJobs}>
+                    All Recent Jobs
+                  </NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to={routes.jobs.scheduleAgents}>
+                    Schedule Agents
+                  </NavDropdown.Item>
+                </NavDropdown>
+                <NavDropdown title="Organize" id="organize">
+                  <DropdownButton
+                    variant=""
+                    drop="right"
+                    title="Folders"
+                    className="font-regular dropdown-item-bottom w-100"
+                  >
+                    <div className="bg-secondaryColor text-white font-12 py-2">
+                      <NavDropdown.Item
+                        as={Link}
+                        to={routes.organize.folders.create}
+                      >
+                        Create
+                      </NavDropdown.Item>
+                      <NavDropdown.Item
+                        as={Link}
+                        to={routes.organize.folders.delete}
+                      >
+                        Delete Folder
+                      </NavDropdown.Item>
+                      <NavDropdown.Item
+                        as={Link}
+                        to={routes.organize.folders.edit}
+                      >
+                        Edit Properties
+                      </NavDropdown.Item>
+                      <NavDropdown.Item
+                        as={Link}
+                        to={routes.organize.folders.move}
+                      >
+                        Move or Copy
+                      </NavDropdown.Item>
+                      <NavDropdown.Item
+                        as={Link}
+                        to={routes.organize.folders.unlinkContent}
+                      >
+                        Unlink Content
+                      </NavDropdown.Item>
+                    </div>
+                  </DropdownButton>
+                  <NavDropdown.Item as={Link} to={routes.organize.licenses}>
+                    Licenses
+                  </NavDropdown.Item>
+                  <DropdownButton
+                    variant=""
+                    drop="right"
+                    title="Uploads"
+                    className="font-regular dropdown-item-bottom w-100"
+                  >
+                    <div className="bg-secondaryColor text-white font-12 py-2">
+                      <NavDropdown.Item
+                        as={Link}
+                        to={routes.organize.uploads.delete}
+                      >
+                        Delete Uploaded File
+                      </NavDropdown.Item>
+                      <NavDropdown.Item
+                        as={Link}
+                        to={routes.organize.uploads.edit}
+                      >
+                        Edit Properties
+                      </NavDropdown.Item>
+                      <NavDropdown.Item
+                        as={Link}
+                        to={routes.organize.uploads.move}
+                      >
+                        Move or Copy
+                      </NavDropdown.Item>
+                    </div>
+                  </DropdownButton>
+                </NavDropdown>
+                {/* <NavDropdown title="Admin" id="admin">
               <NavDropdown.Item as={Link} to="">Agent</NavDropdown.Item>
               <NavDropdown.Item as={Link} to="">Buckets</NavDropdown.Item>
               <NavDropdown.Item as={Link} to="">Customize</NavDropdown.Item>
@@ -112,17 +188,32 @@ const Header = () => {
               <NavDropdown.Item as={Link} to="">Scheduler</NavDropdown.Item>
               <NavDropdown.Item as={Link} to="">Tag</NavDropdown.Item>
             </NavDropdown> */}
+              </>
+            )}
           </Nav>
           <Dropdown drop="left">
             <Dropdown.Toggle variant="link" bsPrefix="p-0">
               <QuestionCircleFill color="#fff" size={40} />
             </Dropdown.Toggle>
             <Dropdown.Menu>
+              <Dropdown.Item as={Link} to={routes.help.about}>
+                About
+              </Dropdown.Item>
               <Dropdown.Item as={Link} to={routes.help.overview}>
                 Getting Started
               </Dropdown.Item>
               <Dropdown.Item as={Link} to={routes.help.licenseBrowser}>
                 License Browser
+              </Dropdown.Item>
+              <Dropdown.Item
+                href={externalLinks.fossologyWiki}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Documentation
+              </Dropdown.Item>
+              <Dropdown.Item as={Link} to={routes.help.thirdPartyLicenses}>
+                Third Party Licenses
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
@@ -132,11 +223,29 @@ const Header = () => {
             </Dropdown.Toggle>
             {isAuth() ? (
               <Dropdown.Menu>
+                <Dropdown.Item>
+                  User: <b>{getUserName()}</b>
+                </Dropdown.Item>
+                <Dropdown.Divider />
                 <Dropdown.Item onClick={handleLogout}>Log out</Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item onClick={() => setTheme("light")}>
+                  Light Theme
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => setTheme("dark")}>
+                  Dark Theme
+                </Dropdown.Item>
               </Dropdown.Menu>
             ) : (
               <Dropdown.Menu>
                 <Dropdown.Item onClick={handleLogin}>Log in</Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item onClick={() => setTheme("light")}>
+                  Light Theme
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => setTheme("dark")}>
+                  Dark Theme
+                </Dropdown.Item>
               </Dropdown.Menu>
             )}
           </Dropdown>

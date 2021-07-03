@@ -1,6 +1,6 @@
-/*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
- 
+/***************************************************************
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
+
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -14,12 +14,17 @@
  You should have received a copy of the GNU General Public License along
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-*/
+***************************************************************/
 
 import React from "react";
+import CommonFields from "../../../components/Upload/CommonFields";
 
-const Login = () => {
-  return <div>Login</div>;
+const UploadFromUrl = () => {
+  return (
+    <div className="main-container my-3">
+      <CommonFields />
+    </div>
+  );
 };
 
-export default Login;
+export default UploadFromUrl;

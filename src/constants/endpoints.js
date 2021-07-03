@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
- 
+
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -24,5 +24,29 @@ export const endpoints = {
   },
   auth: {
     tokens: () => `${apiUrl}/tokens`,
+  },
+  search: {
+    search: () => `${apiUrl}/search`,
+  },
+  users: {
+    self: () => `${apiUrl}/users/self`,
+  },
+  folders: {
+    getAll: () => `${apiUrl}/folders`,
+    getSingle: (folderId) => `${apiUrl}/folders/${folderId}`,
+    create: () => `${apiUrl}/folders`,
+    read: (folderId) => `${apiUrl}/folders/${folderId}`,
+    edit: (folderId) => `${apiUrl}/folders/${folderId}`,
+    delete: (folderId) => `${apiUrl}/folders/${folderId}`,
+    move: (folderId) => `${apiUrl}/folders/${folderId}`,
+  },
+  upload: {
+    uploadCreate: () => `${apiUrl}/uploads`,
+    scheduleAnalysis: () => `${apiUrl}/jobs`,
+    getId: (uploadId) => `${apiUrl}/uploads/${uploadId}`,
+  },
+  browse: {
+    get: (folderId, recursive) =>
+      `${apiUrl}/uploads?folderId=${folderId}&recursive=${recursive}`,
   },
 };

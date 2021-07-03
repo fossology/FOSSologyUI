@@ -1,6 +1,6 @@
-/***************************************************************
+/*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
- 
+
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -14,12 +14,39 @@
  You should have received a copy of the GNU General Public License along
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-***************************************************************/
+*/
 
-import React from "react";
+import sendRequest from "./sendRequest";
+import { endpoints } from "../constants/endpoints";
+import { getToken } from "../shared/helper";
+import PropTypes from "prop-types";
 
-const Upload = () => {
-  return <div>Upload</div>;
+export const browseFiles = async ({
+  folderId,
+  page,
+  limit,
+  groupName,
+  recursive,
+}) => {
+  const url = endpoints.browse.get(folderId, recursive);
+  const token = await getToken();
+  return sendRequest({
+    url,
+    method: "GET",
+    credentials: "include",
+    headers: {
+      Authorization: token,
+      page,
+      limit,
+      groupName,
+    },
+  });
 };
 
-export default Upload;
+browseFiles.propTypes = {
+  groupName: PropTypes.string,
+  page: PropTypes.number,
+  limit: PropTypes.number,
+  folderId: PropTypes.number,
+  recursive: PropTypes.bool,
+};

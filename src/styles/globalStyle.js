@@ -21,7 +21,7 @@ import { createGlobalStyle } from "styled-components";
 export const GlobalStyles = createGlobalStyle`
   body {
     background: ${({ theme }) => theme.body};
-    color: ${({ theme }) => theme.text};
+    color: ${({ theme }) => theme.primaryText};
     margin: 0;
     padding: 0;
     overflow-x: hidden;
@@ -32,11 +32,14 @@ export const GlobalStyles = createGlobalStyle`
   }
   .primary-color-wrapper{
     background: ${({ theme }) => theme.primaryColor};
-    padding: 1rem;
+    padding: 0.6rem 1rem;
     color: ${({ theme }) => theme.secondaryText};
   }
   .text-primary-color{
-    color: ${({ theme }) => theme.primaryColor};
+    color: ${({ theme }) => theme.primaryText};
+  }
+  .text-secondary-color{
+    color: ${({ theme }) => theme.secondaryText};
   }
   .navbar-light .navbar-nav .nav-link{
     color: ${({ theme }) => theme.secondaryText};
@@ -51,9 +54,10 @@ export const GlobalStyles = createGlobalStyle`
     }
   }
   .dropdown-item{
-    color: ${({ theme }) => theme.primaryText};
+    color: ${({ theme }) => theme.text};
     &:hover:{
       background: ${({ theme }) => theme.primaryColor};
+      color: ${({ theme }) => theme.text};
     }
   }
   .box{
@@ -65,5 +69,20 @@ export const GlobalStyles = createGlobalStyle`
     &:hover{
       box-shadow: 5px 5px 10px rgba(0,0,0,0.2);
     }
+  }
+  .hover-primary-color{
+    &:hover{
+      background: ${({ theme }) => theme.hoverBackgroundColor};
+    }
+  }
+  .btn{
+    box-shadow: none;
+    padding: 0rem 1.5rem;
+    &:focus{
+      box-shadow: none;
+    }
+  }
+  pre{
+    color: ${({ theme }) => theme.primaryText};
   }
 }`;

@@ -18,12 +18,15 @@ import React, { useState } from "react";
 
 // External library imports
 import { useHistory } from "react-router-dom";
-import { Form, Button, Row, Col, Spinner, Alert } from "react-bootstrap";
+import { Form, Row, Col, Spinner } from "react-bootstrap";
 
 // Custom component imports
 import { fetchToken } from "../../services/auth";
+import { getUserSelf } from "../../services/users";
 import { routes } from "../../constants/routes";
 import { isAuth } from "../../shared/authHelper";
+import Button from "../../components/Widgets/Button";
+import Alert from "../../components/Widgets/Alert";
 import Features from "./Features";
 
 // CSS imports
@@ -50,24 +53,34 @@ const Home = () => {
     setLoading(true);
     fetchToken(values)
       .then(() => {
+        setLoading(false);
+        getUserSelf()
+          .then(() => {
+            history.push(routes.browse);
+          })
+          .catch((error) => {
+            throw error;
+          });
         history.push(routes.browse);
       })
       .catch((err) => {
+        setLoading(false);
         setErrorMessage(err.message);
         setShowError(true);
-      })
-      .finally(() => {
-        setLoading(false);
       });
   };
 
   return (
     <React.Fragment>
       {showError && (
-        <Alert variant="danger" onClose={() => setShowError(false)} dismissible>
-          <Alert.Heading>An error occurred!</Alert.Heading>
-          <p>{errorMessage}</p>
-        </Alert>
+        <>
+          <Alert
+            type="danger"
+            setShow={setShowError}
+            message={errorMessage}
+            heading="An error occured"
+          />
+        </>
       )}
       <div className="main-container my-3">
         <div className="row m-0">
@@ -124,7 +137,6 @@ const Home = () => {
                       />
                     </Col>
                   </Form.Group>
-
                   <Form.Group as={Row} controlId="loginPassword">
                     <Form.Label column sm="4">
                       Password
@@ -139,10 +151,9 @@ const Home = () => {
                     </Col>
                   </Form.Group>
                   <Button
-                    variant="primary"
                     type="submit"
-                    className="d-block mx-auto"
                     onClick={handleSubmit}
+                    className="d-block mx-auto"
                   >
                     {loading ? (
                       <Spinner
