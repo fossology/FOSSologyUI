@@ -19,4 +19,5 @@
 export const externalLinks = {
   fossologyWiki: "https://github.com/fossology/fossology/wiki",
   jobSchedulerWiki: "https://github.com/fossology/fossology/wiki/Job-Scheduler",
+  fossologyWebsite: "https://www.fossology.org/",
 };
