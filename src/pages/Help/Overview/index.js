@@ -20,6 +20,7 @@ import React from "react";
 import Image from "../../../components/Widgets/Image";
 import microscope from "../../../assets/images/microscope.svg";
 import fossologyFlow from "../../../assets/images/fossologyFlow.svg";
+import { externalLinks } from "../../../constants/externalLinks";
 
 const Overview = () => {
   return (
@@ -131,12 +132,13 @@ const Overview = () => {
           The following resources will provide additional help and information:{" "}
           <br /> <br />
           <a
-            href="https://fossology.org"
+            href={externalLinks.fossologyWebsite}
             target="_blank"
-            rel="noopener noreferrer"
+            rel="noreferrer"
           >
+            {" "}
             FOSSology web site
-          </a>
+          </a>{" "}
           - Where you can find more information and get help on FOSSology.
         </p>
       </div>
