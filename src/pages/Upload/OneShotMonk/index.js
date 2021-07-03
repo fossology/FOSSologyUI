@@ -21,7 +21,7 @@ import React from "react";
 import Button from "../../../components/Widgets/Button";
 import InputContainer from "../../../components/Widgets/Input";
 
-const OneShotCopyright = () => {
+const OneShotMonk = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
   };
@@ -30,19 +30,21 @@ const OneShotCopyright = () => {
     <div className="main-container my-3">
       <div className="row">
         <div className="col-lg-8 col-md-12 col-sm-12 col-12">
-          <h1 className="font-size-main-heading">
-            One-Shot Copyright/Email/URL Analysis
-          </h1>
+          <h1 className="font-size-main-heading">One-Shot Monk</h1>
           <br />
           <div className="font-size-medium">
-            This analyzer allows you to upload a single file for
-            copyright/email/url analysis.
+            This analyzer allows you to upload a single file for license
+            analysis. The limitations:
             <ul>
-              <li>The analysis is done in real-time.</li>
               <li>
-                Files that contain files are not unpacked. If you upload a
-                container like a gzip file, then only that binary file will be
-                scanned.
+                The analysis is done in real-time. Large files may take a while.
+                This method is not recommended for files larger than a few
+                hundred kilobytes.
+              </li>
+              <li>
+                Files that contain files are not unpacked. If you upload a 'zip'
+                or 'deb' file, then the binary file will be scanned for licenses
+                and nothing will likely be found.
               </li>
               <li>
                 Results are not stored. As soon as you get your results, your
@@ -53,7 +55,7 @@ const OneShotCopyright = () => {
           <InputContainer
             type="file"
             name="folderId"
-            id="upload-one-shot-copyright"
+            id="upload-one-shot-monk"
             onChange={(e) => handleChange(e)}
           >
             Select the file to upload:
@@ -71,4 +73,4 @@ const OneShotCopyright = () => {
   );
 };
 
-export default OneShotCopyright;
+export default OneShotMonk;

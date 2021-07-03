@@ -63,6 +63,7 @@ import ErrorPage from "./pages/ErrorPage";
 // Routes imports
 import { routes } from "./constants/routes";
 import OneShotCopyright from "./pages/Upload/OneShotCopyright";
+import OneShotMonk from "./pages/Upload/OneShotMonk";
 
 const Routes = () => {
   return (
@@ -122,6 +123,11 @@ const Routes = () => {
           exact
           path={routes.upload.oneShotCopyright}
           component={OneShotCopyright}
+        />
+        <PublicLayout
+          exact
+          path={routes.upload.oneShotMonk}
+          component={OneShotMonk}
         />
 
         {/* Jobs Page */}
