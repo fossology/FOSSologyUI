@@ -62,6 +62,7 @@ import ErrorPage from "./pages/ErrorPage";
 
 // Routes imports
 import { routes } from "./constants/routes";
+import OneShotCopyright from "./pages/Upload/OneShotCopyright";
 
 const Routes = () => {
   return (
@@ -116,6 +117,11 @@ const Routes = () => {
           exact
           path={routes.upload.instructions}
           component={Instructions}
+        />
+        <PublicLayout
+          exact
+          path={routes.upload.oneShotCopyright}
+          component={OneShotCopyright}
         />
 
         {/* Jobs Page */}
