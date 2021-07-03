@@ -17,8 +17,9 @@
 */
 
 import React, { useState, useEffect } from "react";
-import { Spinner, Alert } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 import InputContainer from "../../../../components/Widgets/Input";
+import Alert from "../../../../components/Widgets/Alert";
 import Button from "../../../../components/Widgets/Button";
 import { getAllFolders, createFolder } from "../../../../services/folders";
 
@@ -94,12 +95,10 @@ const CreateFolder = () => {
     <>
       {showMessage && (
         <Alert
-          variant={message.type}
-          onClose={() => setShowMessage(false)}
-          dismissible
-        >
-          <p>{message.text}</p>
-        </Alert>
+          type={message.type}
+          setShow={setShowMessage}
+          message={message.text}
+        />
       )}
       <div className="main-container my-3">
         <h1 className="font-size-main-heading">
