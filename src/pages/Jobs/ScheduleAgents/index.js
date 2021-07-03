@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
- 
+
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -15,3 +15,20 @@
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
+
+import React from "react";
+
+const ScheduleAgents = () => {
+  return (
+    <div className="main-container my-3">
+      <div className="row">
+        <div className="col-lg-8 col-md-12 col-sm-12 col-12">
+          <h1 className="font-size-main-heading">Schedule an Analysis</h1>
+          <br />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ScheduleAgents;

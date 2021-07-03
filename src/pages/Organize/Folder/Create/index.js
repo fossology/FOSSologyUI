@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
- 
+
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -102,7 +102,7 @@ const CreateFolder = () => {
         </Alert>
       )}
       <div className="main-container my-3">
-        <h1 className="font-size-main-heading text-center">
+        <h1 className="font-size-main-heading">
           Create a new Fossology Folder
         </h1>
         <br />

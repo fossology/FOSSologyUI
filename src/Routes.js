@@ -26,29 +26,58 @@ import PrivateLayout from "./shared/PrivateLayout";
 
 // Pages imports
 import Home from "./pages/Home";
-import Browse from "./pages/Browse";
 import Search from "./pages/Search";
+import Browse from "./pages/Browse";
+
+// Help Pages
+import About from "./pages/Help/About";
 import Overview from "./pages/Help/Overview";
 import LicenseBrowser from "./pages/Help/LicenseBrowser";
-import Instructions from "./pages/Upload/Instructions";
-import About from "./pages/Help/About";
 import ThirdPartyLicenses from "./pages/Help/ThirdPartyLicenses";
+
+// Upload Pages
+import UploadFile from "./pages/Upload/File";
+import UploadFromServer from "./pages/Upload/Server";
+import UploadFromVcs from "./pages/Upload/Vcs";
+import UploadFromUrl from "./pages/Upload/Url";
 import ImportReport from "./pages/Upload/ImportReport";
-import ErrorPage from "./pages/ErrorPage";
+import Instructions from "./pages/Upload/Instructions";
+
+// Jobs Pages
+import AllJobs from "./pages/Jobs/AllJobs";
+import MyRecentJobs from "./pages/Jobs/MyRecentJobs";
+import ScheduleAgents from "./pages/Jobs/ScheduleAgents";
+
+// Organize Pages
 import DeleteFolder from "./pages/Organize/Folder/Delete";
 import CreateFolder from "./pages/Organize/Folder/Create";
 import EditFolder from "./pages/Organize/Folder/Edit";
 import MoveFolder from "./pages/Organize/Folder/Move";
+import AdviceLicenses from "./pages/Organize/License";
+import UploadEdit from "./pages/Organize/Uploads/Edit";
+import UploadMove from "./pages/Organize/Uploads/Move";
+
+// Default Page
+import ErrorPage from "./pages/ErrorPage";
 
 // Routes imports
 import { routes } from "./constants/routes";
-import UploadFile from "./pages/Upload/File";
 
 const Routes = () => {
   return (
     <BrowserRouter>
       <Switch>
+        {/* Home Page */}
         <PublicLayout exact path={routes.home} component={Home} />
+
+        {/* Search Page */}
+        <PrivateLayout exact path={routes.search} component={Search} />
+
+        {/* Browse Page */}
+        <PrivateLayout exact path={routes.browse} component={Browse} />
+
+        {/* Help Pages */}
+        <PublicLayout exact path={routes.help.about} component={About} />
         <PublicLayout exact path={routes.help.overview} component={Overview} />
         <PublicLayout
           exact
@@ -57,23 +86,56 @@ const Routes = () => {
         />
         <PublicLayout
           exact
-          path={routes.upload.instructions}
-          component={Instructions}
-        />
-        <PrivateLayout exact path={routes.upload.file} component={UploadFile} />
-        <PublicLayout exact path={routes.help.about} component={About} />
-        <PublicLayout
-          exact
           path={routes.help.thirdPartyLicenses}
           component={ThirdPartyLicenses}
         />
-        <PrivateLayout exact path={routes.search} component={Search} />
-        <PrivateLayout exact path={routes.browse} component={Browse} />
+
+        {/* Upload Pages */}
+        <PrivateLayout exact path={routes.upload.file} component={UploadFile} />
+        <PrivateLayout
+          exact
+          path={routes.upload.server}
+          component={UploadFromServer}
+        />
+        <PrivateLayout
+          exact
+          path={routes.upload.url}
+          component={UploadFromUrl}
+        />
+        <PrivateLayout
+          exact
+          path={routes.upload.vcs}
+          component={UploadFromVcs}
+        />
         <PrivateLayout
           exact
           path={routes.upload.report}
           component={ImportReport}
         />
+        <PublicLayout
+          exact
+          path={routes.upload.instructions}
+          component={Instructions}
+        />
+
+        {/* Jobs Page */}
+        <PrivateLayout
+          exact
+          path={routes.jobs.allRecentJobs}
+          component={AllJobs}
+        />
+        <PrivateLayout
+          exact
+          path={routes.jobs.myRecentJobs}
+          component={MyRecentJobs}
+        />
+        <PrivateLayout
+          exact
+          path={routes.jobs.scheduleAgents}
+          component={ScheduleAgents}
+        />
+
+        {/* Organize Folder pages */}
         <PrivateLayout
           exact
           path={routes.organize.folders.delete}
@@ -94,6 +156,23 @@ const Routes = () => {
           path={routes.organize.folders.move}
           component={MoveFolder}
         />
+        <PrivateLayout
+          exact
+          path={routes.organize.licenses}
+          component={AdviceLicenses}
+        />
+        <PrivateLayout
+          exact
+          path={routes.organize.uploads.edit}
+          component={UploadEdit}
+        />
+        <PrivateLayout
+          exact
+          path={routes.organize.uploads.move}
+          component={UploadMove}
+        />
+
+        {/* Default Page */}
         <Route path="*">
           <PublicLayout component={ErrorPage} />
         </Route>

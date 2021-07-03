@@ -17,12 +17,16 @@
 ***************************************************************/
 
 import React from "react";
-import CommonFields from "../../../components/Upload/CommonFields";
 
 const UploadFromServer = () => {
   return (
     <div className="main-container my-3">
-      <CommonFields />
+      <div className="row">
+        <div className="col-lg-8 col-md-12 col-sm-12 col-12">
+          <h1 className="font-size-main-heading">Upload from Server</h1>
+          <br />
+        </div>
+      </div>
     </div>
   );
 };
