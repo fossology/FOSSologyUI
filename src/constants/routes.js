@@ -59,4 +59,10 @@ export const routes = {
     thirdPartyLicenses: "/help/thirdPartyLicenses",
     thirdPartyLicensesHTML: "/thirdPartyLicenses.html",
   },
+  admin: {
+    group: {
+      create: "/admin/group/create",
+      delete: "/admin/group/delete",
+    },
+  },
 };

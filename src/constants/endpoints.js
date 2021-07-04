@@ -57,4 +57,10 @@ export const endpoints = {
       copy: (copyId) => `${apiUrl}/uploads/${copyId}?recursive=false`,
     },
   },
+  admin: {
+    groups: {
+      create: () => `${apiUrl}/groups`,
+      getAll: () => `${apiUrl}/groups`,
+    },
+  },
 };

@@ -22,7 +22,7 @@ import Button from "../../../../components/Widgets/Button";
 import Alert from "../../../../components/Widgets/Alert";
 import { moveUpload, copyUpload } from "../../../../services/organizeUploads";
 import { getUploadsFolderId } from "../../../../services/organizeUploads";
-import { getFolders } from "../../../../services/getFolder";
+import { getAllFolders } from "../../../../services/folders";
 
 const UploadMove = () => {
   const initialState = {
@@ -130,7 +130,7 @@ const UploadMove = () => {
       });
   };
   useEffect(() => {
-    getFolders()
+    getAllFolders()
       .then((res) => {
         setFolderList(res);
       })
