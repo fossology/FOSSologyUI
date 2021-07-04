@@ -20,7 +20,7 @@ import { stringify } from "query-string";
 const sendRequest = ({
   url,
   method,
-  credentials = null,
+  credentials = "include",
   body,
   headers = {},
   queryParams,

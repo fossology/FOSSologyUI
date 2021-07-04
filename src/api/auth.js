@@ -1,6 +1,6 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
- 
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
+
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -30,7 +30,6 @@ export const fetchTokenApi = (username, password) => {
   return sendRequest({
     url,
     method: "POST",
-    credentials: "include",
     body: {
       username,
       password,
