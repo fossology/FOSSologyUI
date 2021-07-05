@@ -30,6 +30,9 @@ export const endpoints = {
   },
   users: {
     self: () => `${apiUrl}/users/self`,
+    getAll: () => `${apiUrl}/users`,
+    getSingle: (userId) => `${apiUrl}/users/${userId}`,
+    delete: (userId) => `${apiUrl}/users/${userId}`,
   },
   folders: {
     getAll: () => `${apiUrl}/folders`,

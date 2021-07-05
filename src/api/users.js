@@ -30,3 +30,27 @@ export const getUserSelfApi = async () => {
     },
   });
 };
+
+export const getAllUsersApi = async () => {
+  const url = endpoints.users.getAll();
+  return sendRequest({
+    url,
+    method: "GET",
+    credentials: "include",
+    headers: {
+      Authorization: await getToken(),
+    },
+  });
+};
+
+export const deleteUserApi = async (id) => {
+  const url = endpoints.users.delete(id);
+  return sendRequest({
+    url,
+    method: "DELETE",
+    credentials: "include",
+    headers: {
+      Authorization: await getToken(),
+    },
+  });
+};

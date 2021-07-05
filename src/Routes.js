@@ -63,6 +63,7 @@ import UploadDelete from "./pages/Organize/Uploads/Delete";
 
 // Admin Pages
 import GroupCreate from "./pages/Admin/Group/Create";
+import DeleteUser from "./pages/Admin/Users/Delete";
 
 // Default Page
 import ErrorPage from "./pages/ErrorPage";
@@ -208,6 +209,11 @@ const Routes = () => {
           exact
           path={routes.admin.group.create}
           component={GroupCreate}
+        />
+        <PrivateLayout
+          exact
+          path={routes.admin.users.delete}
+          component={DeleteUser}
         />
 
         {/* Default Page */}
