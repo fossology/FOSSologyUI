@@ -14,14 +14,14 @@
 */
 
 import {
-  getUploadsByFolderId,
+  getUploadsByFolderIdApi,
   deleteUploadsApi,
   moveUploadApi,
   copyUploadApi,
 } from "../api/organizeUploads";
 
 export function getUploadsFolderId(folderId) {
-  return getUploadsByFolderId(folderId).then((res) => {
+  return getUploadsByFolderIdApi(folderId).then((res) => {
     return res;
   });
 }
