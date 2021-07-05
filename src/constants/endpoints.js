@@ -46,7 +46,6 @@ export const endpoints = {
     getId: (uploadId) => `${apiUrl}/uploads/${uploadId}`,
   },
   browse: {
-    get: (folderId, recursive) =>
-      `${apiUrl}/uploads?folderId=${folderId}&recursive=${recursive}`,
+    get: () => `${apiUrl}/uploads`,
   },
 };
