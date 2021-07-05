@@ -19,6 +19,7 @@
 import { stringify } from "query-string";
 import { logout } from "../shared/authHelper";
 import { routes } from "../constants/routes";
+import { setLocalStorage } from "../shared/storageHelper";
 
 const sendRequest = ({
   url,
@@ -57,7 +58,7 @@ const sendRequest = ({
     if (res.ok) {
       for (var pair of res.headers.entries()) {
         if (pair[0] === "x-total-pages") {
-          console.log(pair[1]);
+          setLocalStorage("pages", pair[1]);
         }
       }
       return res.json();
