@@ -17,6 +17,9 @@
 */
 
 import { stringify } from "query-string";
+import { logout } from "../shared/authHelper";
+import { routes } from "../constants/routes";
+
 const sendRequest = ({
   url,
   method,
@@ -60,6 +63,9 @@ const sendRequest = ({
       return res.json();
     } else {
       return res.json().then(function (json) {
+        if (json.code === 403) {
+          return logout(() => (location.href = routes.home));
+        }
         return Promise.reject({
           status: res.status,
           ok: false,
