@@ -61,6 +61,9 @@ import UploadEdit from "./pages/Organize/Uploads/Edit";
 import UploadMove from "./pages/Organize/Uploads/Move";
 import UploadDelete from "./pages/Organize/Uploads/Delete";
 
+// Admin Pages
+import GroupCreate from "./pages/Admin/Group/Create";
+
 // Default Page
 import ErrorPage from "./pages/ErrorPage";
 import UnlinkFolder from "./pages/Organize/Folder/Unlink";
@@ -200,6 +203,11 @@ const Routes = () => {
           exact
           path={routes.organize.folders.unlinkContent}
           component={UnlinkFolder}
+        />
+        <PrivateLayout
+          exact
+          path={routes.admin.group.create}
+          component={GroupCreate}
         />
 
         {/* Default Page */}

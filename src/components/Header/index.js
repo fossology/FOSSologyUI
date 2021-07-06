@@ -29,7 +29,7 @@ import { QuestionCircleFill, PersonCircle } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import Image from "../../components/Widgets/Image";
 import { routes } from "../../constants/routes";
-import { logout, isAuth, getUserName } from "../../shared/authHelper";
+import { logout, isAuth, getUserName, isAdmin } from "../../shared/authHelper";
 import logo from "../../assets/images/logo.svg";
 import { externalLinks } from "../../constants/externalLinks";
 import { GlobalContext } from "../../context";
@@ -190,19 +190,31 @@ const Header = () => {
                     </div>
                   </DropdownButton>
                 </NavDropdown>
-                {/* <NavDropdown title="Admin" id="admin">
-              <NavDropdown.Item as={Link} to="">Agent</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="">Buckets</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="">Customize</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="">Dashboards</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="">Fossdash</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="">Groups</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="">License Admin</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="">Maintenance</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="">Obligation Admin</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="">Scheduler</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="">Tag</NavDropdown.Item>
-            </NavDropdown> */}
+                {isAdmin() && (
+                  <NavDropdown title="Admin" id="admin">
+                    <DropdownButton
+                      variant=""
+                      drop="right"
+                      title="Groups"
+                      className="font-regular dropdown-item-bottom w-100"
+                    >
+                      <div className="bg-secondaryColor text-white font-12 py-2">
+                        <NavDropdown.Item
+                          as={Link}
+                          to={routes.admin.group.create}
+                        >
+                          Add Group
+                        </NavDropdown.Item>
+                        <NavDropdown.Item
+                          as={Link}
+                          to={routes.admin.group.delete}
+                        >
+                          Delete Group
+                        </NavDropdown.Item>
+                      </div>
+                    </DropdownButton>
+                  </NavDropdown>
+                )}
               </>
             )}
           </Nav>
