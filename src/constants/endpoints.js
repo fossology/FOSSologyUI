@@ -49,4 +49,10 @@ export const endpoints = {
     get: (folderId, recursive) =>
       `${apiUrl}/uploads?folderId=${folderId}&recursive=${recursive}`,
   },
+  organize: {
+    uploads: {
+      get: (folder) => `${apiUrl}/uploads?folderId=${folder}`,
+      delete: (deleteId) => `${apiUrl}/uploads/${deleteId}`,
+    },
+  },
 };

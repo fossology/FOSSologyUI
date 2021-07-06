@@ -56,6 +56,7 @@ import MoveFolder from "./pages/Organize/Folder/Move";
 import AdviceLicenses from "./pages/Organize/License";
 import UploadEdit from "./pages/Organize/Uploads/Edit";
 import UploadMove from "./pages/Organize/Uploads/Move";
+import UploadDelete from "./pages/Organize/Uploads/Delete";
 
 // Default Page
 import ErrorPage from "./pages/ErrorPage";
@@ -170,6 +171,11 @@ const Routes = () => {
           exact
           path={routes.organize.uploads.move}
           component={UploadMove}
+        />
+        <PrivateLayout
+          exact
+          path={routes.organize.uploads.delete}
+          component={UploadDelete}
         />
 
         {/* Default Page */}
