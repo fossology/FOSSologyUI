@@ -63,6 +63,7 @@ import UploadDelete from "./pages/Organize/Uploads/Delete";
 
 // Default Page
 import ErrorPage from "./pages/ErrorPage";
+import UnlinkFolder from "./pages/Organize/Folder/Unlink";
 
 // Routes imports
 import { routes } from "./constants/routes";
@@ -194,6 +195,11 @@ const Routes = () => {
           exact
           path={routes.organize.uploads.delete}
           component={UploadDelete}
+        />
+        <PrivateLayout
+          exact
+          path={routes.organize.folders.unlinkContent}
+          component={UnlinkFolder}
         />
 
         {/* Default Page */}
