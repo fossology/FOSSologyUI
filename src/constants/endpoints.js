@@ -65,4 +65,7 @@ export const endpoints = {
       getAll: () => `${apiUrl}/groups`,
     },
   },
+  license: {
+    getAll: () => `${apiUrl}/license`,
+  },
 };

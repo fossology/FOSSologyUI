@@ -44,7 +44,6 @@ export const moveUploadApi = (folderId, id, groupName) => {
   return sendRequest({
     url,
     method: "PATCH",
-    credentials: "include",
     headers: {
       Authorization: getToken(),
       folderId,
@@ -58,7 +57,6 @@ export const copyUploadApi = (folderId, id, groupName) => {
   return sendRequest({
     url,
     method: "PUT",
-    credentials: "include",
     headers: {
       Authorization: getToken(),
       folderId,

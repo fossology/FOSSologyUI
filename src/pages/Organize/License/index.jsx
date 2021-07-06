@@ -16,9 +16,11 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../../../components/Widgets/Button";
 import InputContainer from "../../../components/Widgets/Input";
+import Alert from "../../../components/Widgets/Alert";
+import { getAllLicense } from "../../../services/licenses";
 
 const AdviceLicenses = () => {
   const entriesOptions = [
@@ -39,64 +41,106 @@ const AdviceLicenses = () => {
       value: 100,
     },
   ];
-  const handleChange = () => {};
-  const handleSubmit = () => {};
+
+  const initialState = {
+    page: 1,
+    limit: 100,
+    groupName: "",
+  };
+  const initialMessage = {
+    type: "success",
+    text: "",
+  };
+  const [licenseData, setLicenseData] = useState(initialState);
+  const [licenseDataList, setLicenseDataList] = useState();
+  const [showMessage, setShowMessage] = useState(false);
+  const [message, setMessage] = useState(initialMessage);
+  const handleChange = (e) => {
+    setLicenseData({
+      ...licenseData,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+  useEffect(() => {
+    getAllLicense(licenseData)
+      .then((res) => {
+        setLicenseDataList(res);
+      })
+      .catch((error) => {
+        setMessage({
+          type: "danger",
+          text: error.message,
+        });
+        setShowMessage(true);
+      });
+  }, [licenseData]);
   return (
-    <div className="main-container my-3">
-      <div className="row">
-        <div className="col-lg-12 col-md-12 col-sm-12 col-12">
-          <h1 className="font-size-main-heading">Candidate Licenses</h1>
-          <br />
-          <div className="d-flex justify-content-between">
-            <InputContainer
-              name="limit"
-              type="select"
-              onChange={(e) => handleChange(e)}
-              options={entriesOptions}
-              property="value"
-            />
-            <input
-              type="search"
-              className="form-control w-25 mt-4"
-              placeholder="Search"
-            />
+    <>
+      {showMessage && (
+        <Alert
+          type={message.type}
+          setShow={setShowMessage}
+          message={message.text}
+        />
+      )}
+      <div className="main-container my-3">
+        <div className="row">
+          <div className="col-lg-12 col-md-12 col-sm-12 col-12">
+            <h1 className="font-size-main-heading">Candidate Licenses</h1>
+            <br />
+            <div className="d-flex justify-content-between">
+              <InputContainer
+                name="limit"
+                type="select"
+                onChange={(e) => handleChange(e)}
+                options={entriesOptions}
+                property="value"
+              />
+              <input
+                type="search"
+                className="form-control w-25 mt-4"
+                placeholder="Search"
+              />
+            </div>
+            <table className="table table-striped text-primary-color font-size-medium table-responsive-sm table-bordered">
+              <thead>
+                <tr className="font-bold text-center font-size-sub-heading">
+                  <th>Edit</th>
+                  <th>Short Name</th>
+                  <th>Full Name</th>
+                  <th>Text</th>
+                  <th>URL</th>
+                  <th>Merge Request</th>
+                </tr>
+              </thead>
+              <tbody>
+                {licenseDataList &&
+                  licenseDataList.map((license) => (
+                    <tr className="text-center" key={license.id}>
+                      <td></td>
+                      <td>{license.shortName}</td>
+                      <td>{license.fullName}</td>
+                      <td>{license.text}</td>
+                      <td>{license.url}</td>
+                      <td></td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+            <Button
+              type="submit"
+              onClick={(e) => handleSubmit(e)}
+              className="mt-4"
+            >
+              New License
+            </Button>
           </div>
-          <table className="table table-striped text-primary-color font-size-medium table-responsive-sm table-bordered">
-            <thead>
-              <tr className="font-bold text-center font-size-sub-heading">
-                <th>Edit</th>
-                <th>Short Name</th>
-                <th>Full Name</th>
-                <th>Text</th>
-                <th>URL</th>
-                <th>Merge Request</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="text-center">
-                <td></td>
-                <td>AGPL-3.0+ </td>
-                <td></td>
-                <td>License by OJO.</td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr className="text-center">
-                <td></td>
-                <td>GFDL-1.3-or-later </td>
-                <td></td>
-                <td>License by OJO.</td>
-                <td></td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-          <Button type="Button" onClick={handleSubmit} className="mt-4">
-            New License
-          </Button>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
