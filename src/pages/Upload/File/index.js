@@ -22,7 +22,7 @@ import Alert from "../../../components/Widgets/Alert";
 import Button from "../../../components/Widgets/Button";
 import CommonFields from "../../../components/Upload/CommonFields";
 import { createUploadFile, scheduleJobs } from "../../../services/upload";
-import { getFolders } from "../../../services/getFolder";
+import { getAllFolders } from "../../../services/folders";
 import { Spinner } from "react-bootstrap";
 
 const UploadFile = () => {
@@ -174,7 +174,7 @@ const UploadFile = () => {
     }
   };
   useEffect(() => {
-    getFolders().then((res) => {
+    getAllFolders().then((res) => {
       setFolderList(res);
     });
   }, []);

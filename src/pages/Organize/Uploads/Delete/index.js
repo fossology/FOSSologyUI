@@ -20,7 +20,7 @@ import React, { useState, useEffect } from "react";
 import { Spinner, Alert } from "react-bootstrap";
 import InputContainer from "../../../../components/Widgets/Input";
 import Button from "../../../../components/Widgets/Button";
-import { getFolders } from "../../../../services/getFolder";
+import { getAllFolders } from "../../../../services/folders";
 import {
   getUploadsFolderId,
   deleteUploadsbyId,
@@ -96,7 +96,7 @@ const UploadDelete = () => {
   };
 
   useEffect(() => {
-    getFolders().then((res) => {
+    getAllFolders().then((res) => {
       setFolderList(res);
     });
     getUploadsFolderId(deleteUploadFolderData.folderId).then((res) => {
