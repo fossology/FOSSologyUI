@@ -65,6 +65,8 @@ import UploadDelete from "./pages/Organize/Uploads/Delete";
 // Admin Pages
 import GroupCreate from "./pages/Admin/Group/Create";
 import DeleteUser from "./pages/Admin/Users/Delete";
+import AddLicense from "./pages/Admin/License/Create";
+import SelectLicense from "./pages/Admin/License/SelectLicense";
 
 // Default Page
 import ErrorPage from "./pages/ErrorPage";
@@ -206,10 +208,22 @@ const Routes = () => {
           path={routes.organize.folders.unlinkContent}
           component={UnlinkFolder}
         />
+
+        {/* Admin Page */}
         <AdminLayout
           exact
           path={routes.admin.group.create}
           component={GroupCreate}
+        />
+        <PrivateLayout
+          exact
+          path={routes.admin.license.create}
+          component={AddLicense}
+        />
+        <PrivateLayout
+          exact
+          path={routes.admin.license.selectLicense}
+          component={SelectLicense}
         />
         <PrivateLayout
           exact

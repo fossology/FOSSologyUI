@@ -67,5 +67,9 @@ export const routes = {
     users: {
       delete: "/admin/users/delete",
     },
+    license: {
+      create: "/admin/license/create",
+      selectLicense: "/admin/selectLicense",
+    },
   },
 };

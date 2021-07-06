@@ -228,6 +228,33 @@ const Header = () => {
                         </NavDropdown.Item>
                       </div>
                     </DropdownButton>
+                    <DropdownButton
+                      variant=""
+                      drop="right"
+                      title="License Administration"
+                      className="font-regular dropdown-item-bottom w-100"
+                    >
+                      <div className="bg-secondaryColor text-white font-12 py-2">
+                        <NavDropdown.Item
+                          as={Link}
+                          to={routes.admin.license.create}
+                        >
+                          Add License
+                        </NavDropdown.Item>
+                        <NavDropdown.Item
+                          href="/licenseCSV/fossology-license-export.csv"
+                          download="fossology-license-export.csv"
+                        >
+                          CSV Export
+                        </NavDropdown.Item>
+                        <NavDropdown.Item
+                          as={Link}
+                          to={routes.admin.license.selectLicense}
+                        >
+                          Select License
+                        </NavDropdown.Item>
+                      </div>
+                    </DropdownButton>
                   </NavDropdown>
                 )}
               </>
