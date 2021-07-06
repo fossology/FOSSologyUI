@@ -37,7 +37,6 @@ export const createUpload = async (
   return sendRequest({
     url,
     method: "POST",
-    credentials: "include",
     isMultipart: true,
     headers: {
       Authorization: token,
@@ -62,7 +61,6 @@ export const scheduleAnalysis = async (folderId, uploadId, scanData) => {
   return sendRequest({
     url,
     method: "POST",
-    credentials: "include",
     headers: {
       Authorization: token,
       folderId,
@@ -103,7 +101,6 @@ export const getUploadById = async (uploadId) => {
   return sendRequest({
     url,
     method: "GET",
-    credentials: "include",
     headers: {
       Authorization: token,
       uploadId,

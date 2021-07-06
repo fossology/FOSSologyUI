@@ -23,7 +23,7 @@ import { routes } from "../constants/routes";
 const sendRequest = ({
   url,
   method,
-  credentials = null,
+  credentials = "include",
   body,
   headers = {},
   queryParams,

@@ -33,7 +33,6 @@ export const browseFiles = async ({
   return sendRequest({
     url,
     method: "GET",
-    credentials: "include",
     headers: {
       Authorization: token,
       page,

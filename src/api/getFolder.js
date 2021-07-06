@@ -23,7 +23,6 @@ export const getAllFolders = () => {
   return sendRequest({
     url,
     method: "GET",
-    credentials: "include",
     headers: {
       Authorization: getToken(),
     },
