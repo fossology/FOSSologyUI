@@ -20,7 +20,7 @@ import React, { useState, useEffect } from "react";
 import InputContainer from "../../../../components/Widgets/Input";
 import Button from "../../../../components/Widgets/Button";
 import Alert from "../../../../components/Widgets/Alert";
-import { getFolders } from "../../../../services/getFolder";
+import { getAllFolders } from "../../../../services/folders";
 import { getUploadsFolderId } from "../../../../services/organizeUploads";
 import { getId } from "../../../../services/upload";
 
@@ -62,7 +62,7 @@ const UploadEdit = () => {
     e.preventDefault();
   };
   useEffect(() => {
-    getFolders()
+    getAllFolders()
       .then((res) => {
         setFolderList(res);
       })
