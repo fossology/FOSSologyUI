@@ -41,3 +41,31 @@ export const deleteUploadsApi = (id) => {
     },
   });
 };
+
+export const moveUploadApi = (folderId, id, groupName) => {
+  const url = endpoints.organize.uploads.move(id);
+  return sendRequest({
+    url,
+    method: "PATCH",
+    credentials: "include",
+    headers: {
+      Authorization: getToken(),
+      folderId,
+      groupName,
+    },
+  });
+};
+
+export const copyUploadApi = (folderId, id, groupName) => {
+  const url = endpoints.organize.uploads.copy(id);
+  return sendRequest({
+    url,
+    method: "PUT",
+    credentials: "include",
+    headers: {
+      Authorization: getToken(),
+      folderId,
+      groupName,
+    },
+  });
+};
