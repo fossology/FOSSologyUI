@@ -57,7 +57,7 @@ import DeleteFolder from "./pages/Organize/Folder/Delete";
 import CreateFolder from "./pages/Organize/Folder/Create";
 import EditFolder from "./pages/Organize/Folder/Edit";
 import MoveFolder from "./pages/Organize/Folder/Move";
-import AdviceLicenses from "./pages/Organize/License";
+import AdviceLicenses from "./pages/Organize/License/index";
 import UploadEdit from "./pages/Organize/Uploads/Edit";
 import UploadMove from "./pages/Organize/Uploads/Move";
 import UploadDelete from "./pages/Organize/Uploads/Delete";
