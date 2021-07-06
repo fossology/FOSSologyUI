@@ -23,6 +23,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 // Guards imports
 import PublicLayout from "./shared/PublicLayout";
 import PrivateLayout from "./shared/PrivateLayout";
+import AdminLayout from "./shared/AdminLayout";
 
 // Pages imports
 import Home from "./pages/Home";
@@ -205,7 +206,7 @@ const Routes = () => {
           path={routes.organize.folders.unlinkContent}
           component={UnlinkFolder}
         />
-        <PrivateLayout
+        <AdminLayout
           exact
           path={routes.admin.group.create}
           component={GroupCreate}
