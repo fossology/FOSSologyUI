@@ -42,6 +42,9 @@ import UploadFromVcs from "./pages/Upload/Vcs";
 import UploadFromUrl from "./pages/Upload/Url";
 import ImportReport from "./pages/Upload/ImportReport";
 import Instructions from "./pages/Upload/Instructions";
+import OneShotAnalysis from "./pages/Upload/OneShotAnalysis";
+import OneShotCopyright from "./pages/Upload/OneShotCopyright";
+import OneShotMonk from "./pages/Upload/OneShotMonk";
 
 // Jobs Pages
 import AllJobs from "./pages/Jobs/AllJobs";
@@ -117,6 +120,21 @@ const Routes = () => {
           exact
           path={routes.upload.instructions}
           component={Instructions}
+        />
+        <PublicLayout
+          exact
+          path={routes.upload.oneShotAnalysis}
+          component={OneShotAnalysis}
+        />
+        <PublicLayout
+          exact
+          path={routes.upload.oneShotCopyright}
+          component={OneShotCopyright}
+        />
+        <PublicLayout
+          exact
+          path={routes.upload.oneShotMonk}
+          component={OneShotMonk}
         />
 
         {/* Jobs Page */}

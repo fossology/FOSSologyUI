@@ -92,6 +92,21 @@ const Header = () => {
                   <NavDropdown.Item as={Link} to={routes.upload.instructions}>
                     Instructions
                   </NavDropdown.Item>
+                  <NavDropdown.Item
+                    as={Link}
+                    to={routes.upload.oneShotAnalysis}
+                  >
+                    One-Shot Analysis
+                  </NavDropdown.Item>
+                  <NavDropdown.Item
+                    as={Link}
+                    to={routes.upload.oneShotCopyright}
+                  >
+                    One-Shot Copyright/Email/URL
+                  </NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to={routes.upload.oneShotMonk}>
+                    One-Shot Monk
+                  </NavDropdown.Item>
                 </NavDropdown>
                 <NavDropdown title="Jobs" id="jobs">
                   <NavDropdown.Item as={Link} to={routes.jobs.myRecentJobs}>

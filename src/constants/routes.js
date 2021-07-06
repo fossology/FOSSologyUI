@@ -28,6 +28,9 @@ export const routes = {
     vcs: "/upload/vcs",
     report: "/upload/report",
     instructions: "/upload/instructions",
+    oneShotAnalysis: "/upload/oneShotAnalysis",
+    oneShotCopyright: "/upload/oneShotCopyright",
+    oneShotMonk: "/upload/oneShotMonk",
   },
   jobs: {
     myRecentJobs: "/jobs/myRecentJobs",
