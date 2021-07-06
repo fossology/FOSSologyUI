@@ -64,5 +64,8 @@ export const routes = {
       create: "/admin/group/create",
       delete: "/admin/group/delete",
     },
+    users: {
+      delete: "/admin/users/delete",
+    },
   },
 };

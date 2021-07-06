@@ -213,6 +213,21 @@ const Header = () => {
                         </NavDropdown.Item>
                       </div>
                     </DropdownButton>
+                    <DropdownButton
+                      variant=""
+                      drop="right"
+                      title="Users"
+                      className="font-regular dropdown-item-bottom w-100"
+                    >
+                      <div className="bg-secondaryColor text-white font-12 py-2">
+                        <NavDropdown.Item
+                          as={Link}
+                          to={routes.admin.users.delete}
+                        >
+                          Delete User
+                        </NavDropdown.Item>
+                      </div>
+                    </DropdownButton>
                   </NavDropdown>
                 )}
               </>
