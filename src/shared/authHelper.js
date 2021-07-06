@@ -67,5 +67,5 @@ export const getUserName = () => {
 };
 
 export const isAdmin = () => {
-  return getLocalStorage("user").accessLevel === "admin" ? true : false;
+  return getLocalStorage("user")?.accessLevel === "admin" ? true : false;
 };
