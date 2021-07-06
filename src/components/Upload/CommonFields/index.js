@@ -35,11 +35,19 @@ function CommonFields({
 }) {
   return (
     <>
-      <IgnoreScm ignoreScm={ignoreScm} handleChange={handleChange} />
-      <AccessLevel accessLevel={accessLevel} handleChange={handleChange} />
-      <OptionalAnalysis analysis={analysis} handleChange={handleScanChange} />
-      <LicenseDecider decider={decider} handleChange={handleScanChange} />
-      <UploadReuse reuse={reuse} handleChange={handleScanChange} />
+      {ignoreScm && (
+        <IgnoreScm ignoreScm={ignoreScm} handleChange={handleChange} />
+      )}
+      {accessLevel && (
+        <AccessLevel accessLevel={accessLevel} handleChange={handleChange} />
+      )}
+      {analysis && (
+        <OptionalAnalysis analysis={analysis} handleChange={handleScanChange} />
+      )}
+      {decider && (
+        <LicenseDecider decider={decider} handleChange={handleScanChange} />
+      )}
+      {reuse && <UploadReuse reuse={reuse} handleChange={handleScanChange} />}
     </>
   );
 }
