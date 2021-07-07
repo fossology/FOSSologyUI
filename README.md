@@ -42,18 +42,23 @@ FOSSology comes with a Dockerfile allowing the containerized execution.
 Run the following commands inside the project directory.
 
 ``` sh
-docker build -t fossologyui:react1.0 .
+docker build \
+-t fossologyui:react1.0 \
+--build-arg REACT_APP_SERVER_URL="localhost/repo/api/v1" \
+--build-arg REACT_APP_HTTPS="false" .
 ```
 
 ``` sh
 docker run -p 3000:3000 fossologyui:react1.0
 ```
 
-The docker image can then be used using http://IP_OF_DOCKER_HOST:3000/ user fossy passwd fossy.
+The docker image can then be used using http://IP_OF_DOCKER_HOST:3000/ user fossy password fossy.
 
 <hr />
 
 In the project directory, you can run:
+
+create  a ```.env``` in root directory of project and copy the contents from ```.env.sample```
 
 #### `yarn`
 #### `yarn start`

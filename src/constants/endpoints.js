@@ -16,7 +16,9 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-const apiUrl = "http://localhost/repo/api/v1";
+const apiUrl = `${
+  process.env.REACT_APP_HTTPS === "true" ? "https" : "http"
+}://${process.env.REACT_APP_SERVER_URL}`;
 
 export const endpoints = {
   jobs: {

@@ -23,6 +23,12 @@ FROM node:14.15.4-slim
 
 LABEL maintainer="Fossology <fossology@fossology.org>"
 
+ARG REACT_APP_SERVER_URL
+ENV REACT_APP_SERVER_URL=$REACT_APP_SERVER_URL
+
+ARG REACT_APP_HTTPS
+ENV REACT_APP_HTTPS=$REACT_APP_HTTPS
+
 WORKDIR /fossologyui
 
 COPY . .
