@@ -18,129 +18,183 @@
 
 import React, { useState, useEffect } from "react";
 import InputContainer from "../../components/Widgets/Input";
+import { Spinner } from "react-bootstrap";
 import { getBrowseData } from "../../services/browse";
+import "./index.css";
 
 const Browse = () => {
   const initialState = {
     folderId: 1,
     page: 1,
-    limit: 100,
+    limit: 10,
     groupName: "",
     recursive: true,
   };
 
   const statusOptions = ["open", "in progress", "closed", "rejected"];
+  const entriesOptions = [
+    {
+      id: 10,
+      entry: "10",
+    },
+    {
+      id: 25,
+      entry: "25",
+    },
+    {
+      id: 50,
+      entry: "50",
+    },
+    {
+      id: 100,
+      entry: "100",
+    },
+  ];
   const assignOptions = ["me", "unassigned"];
 
   const [browseData, setBrowseData] = useState(initialState);
   const [browseDataList, setBrowseDataList] = useState();
+  const [loading, setLoading] = useState(true);
+  const [pagesOptions, setPagesOptions] = useState();
+
   useEffect(() => {
-    getBrowseData(browseData).then((res) => setBrowseDataList(res));
+    getBrowseData(browseData).then((res) => {
+      setBrowseDataList(res.res);
+      let arr = [];
+      for (let i = 0; i < res.pages; i++) {
+        arr.push({
+          id: i + 1,
+          value: i + 1,
+        });
+      }
+      setPagesOptions(arr);
+      setLoading(false);
+    });
   }, [browseData]);
+
   const handleChange = (e) => {
-    setBrowseData({ ...browseData, [e.target.name]: e.target.value });
+    if (e.target.name === "limit") {
+      setBrowseData({
+        ...browseData,
+        [e.target.name]: e.target.value,
+        page: 1,
+      });
+    } else {
+      setBrowseData({ ...browseData, [e.target.name]: e.target.value });
+    }
   };
-  return (
-    <div className="main-container my-3">
-      <table className="table table-striped text-primary-color font-size-medium table-responsive-sm table-bordered">
-        <thead>
-          <tr>
-            <th colSpan="6" className="font-size-main-heading text-center">
-              Uploads in Software Repository
-            </th>
-          </tr>
-          <tr>
-            <th>
-              <input
-                type="search"
-                className="form-control"
-                placeholder="Search"
-              />
-            </th>
-            <th>
+
+  if (loading) {
+    return (
+      <Spinner animation="border" role="status">
+        <span className="sr-only">Loading...</span>
+      </Spinner>
+    );
+  } else
+    return (
+      <div className="main-container my-3">
+        <table className="table table-striped text-primary-color font-size-medium table-responsive-sm table-bordered">
+          <thead>
+            <tr>
+              <th colSpan="6" className="font-size-main-heading text-center">
+                Uploads in Software Repository
+              </th>
+            </tr>
+            <tr className="d-flex font-demi">
+              <span className="mt-1">Show entries: </span>
               <InputContainer
-                name="status"
+                name="limit"
                 type="select"
                 onChange={(e) => handleChange(e)}
-                options={statusOptions}
+                options={entriesOptions}
+                property="entry"
+                className="mt-n4 ml-3"
               />
-            </th>
-            <th></th>
-            <th></th>
-            <th>
-              <InputContainer
-                name="status"
-                type="select"
-                onChange={(e) => handleChange(e)}
-                options={assignOptions}
-              />
-            </th>
-            <th></th>
-          </tr>
-          <tr className="font-bold text-center font-size-sub-heading">
-            <th>Upload Name and Description</th>
-            <th>Status</th>
-            <th>Comment</th>
-            <th>Main Licenses</th>
-            <th>Assigned to</th>
-            <th>Upload Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          {browseDataList?.map((data) => (
-            <tr key={data.id} className="text-center">
-              <td>
-                <div className="font-demi">{data?.uploadname}</div>
-                <div className="font-size-small">{data?.description}</div>
-              </td>
-              <td>
+            </tr>
+            <tr>
+              <th>
+                <input
+                  type="search"
+                  className="form-control"
+                  placeholder="Search"
+                />
+              </th>
+              <th>
                 <InputContainer
                   name="status"
                   type="select"
                   onChange={(e) => handleChange(e)}
                   options={statusOptions}
                 />
-              </td>
-              <td>-</td>
-              <td>-</td>
-              <td>
+              </th>
+              <th></th>
+              <th></th>
+              <th>
                 <InputContainer
                   name="status"
                   type="select"
                   onChange={(e) => handleChange(e)}
                   options={assignOptions}
                 />
-              </td>
-              <td>{data?.uploaddate.split(".")[0]}</td>
+              </th>
+              <th></th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-      <nav aria-label="Page navigation">
-        <ul className="pagination justify-content-center">
-          <li className="page-item disabled">
-            <a className="page-link" href="#" tabIndex="-1">
-              Previous
-            </a>
-          </li>
-          <li className="page-item">
-            <button
-              className="page-link"
-              onClick={(e) => handleChange(e)}
-              name="page"
-            >
-              1
-            </button>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="#">
-              Next
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  );
+            <tr className="font-bold text-center font-size-sub-heading">
+              <th>Upload Name and Description</th>
+              <th>Status</th>
+              <th>Comment</th>
+              <th>Main Licenses</th>
+              <th>Assigned to</th>
+              <th>Upload Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {browseDataList?.map((data) => (
+              <tr key={data.id} className="text-center">
+                <td>
+                  <div className="font-demi">{data?.uploadname}</div>
+                  <div className="font-size-small">{data?.description}</div>
+                </td>
+                <td>
+                  <InputContainer
+                    name="status"
+                    type="select"
+                    onChange={(e) => handleChange(e)}
+                    options={statusOptions}
+                  />
+                </td>
+                <td>-</td>
+                <td>-</td>
+                <td>
+                  <InputContainer
+                    name="status"
+                    type="select"
+                    onChange={(e) => handleChange(e)}
+                    options={assignOptions}
+                  />
+                </td>
+                <td>{data?.uploaddate.split(".")[0]}</td>
+              </tr>
+            ))}
+            <tr>
+              <td colSpan="6">
+                Page:
+                {pagesOptions && (
+                  <InputContainer
+                    name="page"
+                    type="select"
+                    onChange={(e) => handleChange(e)}
+                    options={pagesOptions}
+                    property="value"
+                    className="mt-n4"
+                  />
+                )}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    );
 };
 
 export default Browse;
