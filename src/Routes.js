@@ -215,17 +215,17 @@ const Routes = () => {
           path={routes.admin.group.create}
           component={GroupCreate}
         />
-        <PrivateLayout
+        <AdminLayout
           exact
           path={routes.admin.license.create}
           component={AddLicense}
         />
-        <PrivateLayout
+        <AdminLayout
           exact
           path={routes.admin.license.selectLicense}
           component={SelectLicense}
         />
-        <PrivateLayout
+        <AdminLayout
           exact
           path={routes.admin.users.delete}
           component={DeleteUser}

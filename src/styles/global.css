@@ -113,3 +113,8 @@ h6 {
     padding: 2rem;
   }
 }
+
+.candidate-license-text {
+  min-height: 100px;
+  min-width: 500px;
+}

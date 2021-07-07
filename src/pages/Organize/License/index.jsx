@@ -105,7 +105,7 @@ const AdviceLicenses = () => {
                 placeholder="Search"
               />
             </div>
-            <table className="table table-striped text-primary-color font-size-medium table-responsive-sm table-bordered">
+            <table className="table table-striped text-primary-color font-size-medium table-responsive-md table-bordered">
               <thead>
                 <tr className="font-bold text-center font-size-sub-heading">
                   <th>Edit</th>
@@ -123,8 +123,16 @@ const AdviceLicenses = () => {
                       <td></td>
                       <td>{license.shortName}</td>
                       <td>{license.fullName}</td>
-                      <td>{license.text}</td>
-                      <td>{license.url}</td>
+                      <td className="py-0 px-0">
+                        <textarea
+                          disabled
+                          className="w-100 px-3 h-100 candidate-license-text"
+                          value={license.text}
+                        />
+                      </td>
+                      <td>
+                        <a href={license.url}>{license.url}</a>
+                      </td>
                       <td></td>
                     </tr>
                   ))}
