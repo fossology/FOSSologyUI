@@ -65,3 +65,25 @@ export const removeLocalStorage = (key) => {
     localStorage.removeItem(key);
   }
 };
+
+export const defaultAgentsList = () => {
+  if (getLocalStorage("user")?.agents) {
+    const agentsList = getLocalStorage("user")?.agents;
+    agentsList.copyrightEmailAuthor = agentsList.copyright_email_author;
+    delete agentsList.copyright_email_author;
+    agentsList.mime = agentsList.mimetype;
+    delete agentsList.mimetype;
+    return agentsList;
+  }
+  return {
+    bucket: false,
+    copyrightEmailAuthor: false,
+    ecc: false,
+    keyword: false,
+    mime: false,
+    monk: false,
+    nomos: false,
+    ojo: false,
+    package: false,
+  };
+};

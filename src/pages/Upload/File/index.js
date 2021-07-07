@@ -24,6 +24,7 @@ import CommonFields from "../../../components/Upload/CommonFields";
 import { createUploadFile, scheduleJobs } from "../../../services/upload";
 import { getAllFolders } from "../../../services/folders";
 import { Spinner } from "react-bootstrap";
+import { defaultAgentsList } from "../../../shared/storageHelper";
 
 const UploadFile = () => {
   const initialState = {
@@ -34,17 +35,7 @@ const UploadFile = () => {
     fileInput: null,
   };
   const initialScanFileData = {
-    analysis: {
-      bucket: true,
-      copyrightEmailAuthor: false,
-      ecc: false,
-      keyword: false,
-      mime: false,
-      monk: false,
-      nomos: false,
-      ojo: false,
-      package: false,
-    },
+    analysis: defaultAgentsList(),
     decider: {
       nomosMonk: false,
       bulkReused: false,
