@@ -235,7 +235,7 @@ const Header = () => {
           </Nav>
           <Dropdown drop="left">
             <Dropdown.Toggle variant="link" bsPrefix="p-0">
-              <QuestionCircleFill color="#fff" size={40} />
+              <QuestionCircleFill color="#fff" size={40} className="m-2" />
             </Dropdown.Toggle>
             <Dropdown.Menu>
               <Dropdown.Item as={Link} to={routes.help.about}>
@@ -261,7 +261,7 @@ const Header = () => {
           </Dropdown>
           <Dropdown drop="left">
             <Dropdown.Toggle variant="link" bsPrefix="p-0">
-              <PersonCircle color="#fff" size={40} className="ml-3" />
+              <PersonCircle color="#fff" size={40} className="m-2" />
             </Dropdown.Toggle>
             {isAuth() ? (
               <Dropdown.Menu>

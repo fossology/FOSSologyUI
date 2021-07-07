@@ -53,6 +53,7 @@ exports[`renders learn react link 1`] = `
               type="button"
             >
               <svg
+                class="m-2"
                 fill="#fff"
                 height="40"
                 viewBox="0 0 16 16"
@@ -75,7 +76,7 @@ exports[`renders learn react link 1`] = `
               type="button"
             >
               <svg
-                class="ml-3"
+                class="m-2"
                 fill="#fff"
                 height="40"
                 viewBox="0 0 16 16"
