@@ -25,6 +25,7 @@ import Button from "../../../components/Widgets/Button";
 import { getAllFolders } from "../../../services/folders";
 import { scheduleJobs } from "../../../services/upload";
 import { getBrowseData } from "../../../services/browse";
+import { defaultAgentsList } from "../../../shared/storageHelper";
 
 const ScheduleAgents = () => {
   const initialScheduleAnalysisData = {
@@ -32,17 +33,7 @@ const ScheduleAgents = () => {
     uploadId: 1,
   };
   const initialScanFileData = {
-    analysis: {
-      bucket: false,
-      copyrightEmailAuthor: false,
-      ecc: false,
-      keyword: false,
-      mime: false,
-      monk: false,
-      nomos: false,
-      ojo: false,
-      package: false,
-    },
+    analysis: defaultAgentsList(),
     decider: {
       nomosMonk: false,
       bulkReused: false,
