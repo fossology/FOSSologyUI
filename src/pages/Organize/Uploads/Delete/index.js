@@ -1,4 +1,4 @@
-/***************************************************************
+/*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
@@ -14,12 +14,13 @@
  You should have received a copy of the GNU General Public License along
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-***************************************************************/
+*/
 
 import React, { useState, useEffect } from "react";
-import { Spinner, Alert } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 import InputContainer from "../../../../components/Widgets/Input";
 import Button from "../../../../components/Widgets/Button";
+import Alert from "../../../../components/Widgets/Alert";
 import { getAllFolders } from "../../../../services/folders";
 import {
   getUploadsFolderId,
@@ -108,12 +109,10 @@ const UploadDelete = () => {
     <>
       {showMessage && (
         <Alert
-          variant={message.type}
-          onClose={() => setShowMessage(false)}
-          dismissible
-        >
-          <p>{message.text}</p>
-        </Alert>
+          type={message.type}
+          onClose={setShowMessage}
+          message={message.text}
+        />
       )}
       <div className="main-container my-3">
         <h1 className="font-size-main-heading mb-4">Delete Uploaded File</h1>

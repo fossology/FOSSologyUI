@@ -17,9 +17,10 @@
 */
 
 import React, { useState, useEffect } from "react";
-import { Spinner, Alert } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 import InputContainer from "../../../../components/Widgets/Input";
 import Button from "../../../../components/Widgets/Button";
+import Alert from "../../../../components/Widgets/Alert";
 import { getAllFolders, deleteFolder } from "../../../../services/folders";
 
 const UnlinkFolder = () => {
@@ -98,12 +99,10 @@ const UnlinkFolder = () => {
     <>
       {showMessage && (
         <Alert
-          variant={message.type}
-          onClose={() => setShowMessage(false)}
-          dismissible
-        >
-          <p>{message.text}</p>
-        </Alert>
+          type={message.type}
+          onClose={setShowMessage}
+          message={message.text}
+        />
       )}
       <div className="main-container my-3">
         <h1 className="font-size-main-heading text-center">Unlink folder</h1>
