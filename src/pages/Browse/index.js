@@ -17,9 +17,12 @@
 */
 
 import React, { useState, useEffect } from "react";
-import InputContainer from "../../components/Widgets/Input";
 import { Spinner } from "react-bootstrap";
+import arrayToTree from "array-to-tree";
+import InputContainer from "../../components/Widgets/Input";
+import TreeContainer from "../../components/TreeContainer";
 import { getBrowseData } from "../../services/browse";
+import { getAllFolders } from "../../services/folders";
 import "./index.css";
 
 const Browse = () => {
@@ -56,6 +59,7 @@ const Browse = () => {
   const [browseDataList, setBrowseDataList] = useState();
   const [loading, setLoading] = useState(true);
   const [pagesOptions, setPagesOptions] = useState();
+  const [folderList, setFolderList] = useState();
 
   useEffect(() => {
     getBrowseData(browseData).then((res) => {
@@ -71,6 +75,29 @@ const Browse = () => {
       setLoading(false);
     });
   }, [browseData]);
+
+  useEffect(() => {
+    getAllFolders()
+      .then((res) => {
+        const folders = res;
+        folders.forEach((folder) => {
+          folder.state = {
+            expanded: true,
+            favorite: false,
+            deletable: false,
+          };
+        });
+        setFolderList(
+          arrayToTree(folders, {
+            parentProperty: "parent",
+            customID: "id",
+          })
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   const handleChange = (e) => {
     if (e.target.name === "limit") {
@@ -93,106 +120,117 @@ const Browse = () => {
   } else
     return (
       <div className="main-container my-3">
-        <table className="table table-striped text-primary-color font-size-medium table-responsive-sm table-bordered">
-          <thead>
-            <tr>
-              <th colSpan="6" className="font-size-main-heading text-center">
-                Uploads in Software Repository
-              </th>
-            </tr>
-            <tr className="d-flex font-demi">
-              <span className="mt-1">Show entries: </span>
-              <InputContainer
-                name="limit"
-                type="select"
-                onChange={(e) => handleChange(e)}
-                options={entriesOptions}
-                property="entry"
-                className="mt-n4 ml-3"
-              />
-            </tr>
-            <tr>
-              <th>
-                <input
-                  type="search"
-                  className="form-control"
-                  placeholder="Search"
-                />
-              </th>
-              <th>
-                <InputContainer
-                  name="status"
-                  type="select"
-                  onChange={(e) => handleChange(e)}
-                  options={statusOptions}
-                />
-              </th>
-              <th></th>
-              <th></th>
-              <th>
-                <InputContainer
-                  name="status"
-                  type="select"
-                  onChange={(e) => handleChange(e)}
-                  options={assignOptions}
-                />
-              </th>
-              <th></th>
-            </tr>
-            <tr className="font-bold text-center font-size-sub-heading">
-              <th>Upload Name and Description</th>
-              <th>Status</th>
-              <th>Comment</th>
-              <th>Main Licenses</th>
-              <th>Assigned to</th>
-              <th>Upload Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {browseDataList?.map((data) => (
-              <tr key={data.id} className="text-center">
-                <td>
-                  <div className="font-demi">{data?.uploadname}</div>
-                  <div className="font-size-small">{data?.description}</div>
-                </td>
-                <td>
+        <div className="row">
+          <div className="col-md-3 col-lg-2">
+            <h2 className="font-size-sub-heading">Folder Navagation</h2>
+            {folderList && <TreeContainer data={folderList} />}
+          </div>
+          <div className="col-md-9 col-lg-10">
+            <table className="table table-striped text-primary-color font-size-medium table-responsive-sm table-bordered">
+              <thead>
+                <tr>
+                  <th
+                    colSpan="6"
+                    className="font-size-main-heading text-center"
+                  >
+                    Uploads in Software Repository
+                  </th>
+                </tr>
+                <tr className="d-flex font-demi">
+                  <span className="mt-1">Show entries: </span>
                   <InputContainer
-                    name="status"
+                    name="limit"
                     type="select"
                     onChange={(e) => handleChange(e)}
-                    options={statusOptions}
+                    options={entriesOptions}
+                    property="entry"
+                    className="mt-n4 ml-3"
                   />
-                </td>
-                <td>-</td>
-                <td>-</td>
-                <td>
-                  <InputContainer
-                    name="status"
-                    type="select"
-                    onChange={(e) => handleChange(e)}
-                    options={assignOptions}
-                  />
-                </td>
-                <td>{data?.uploaddate.split(".")[0]}</td>
-              </tr>
-            ))}
-            <tr>
-              <td colSpan="6">
-                Page:
-                {pagesOptions && (
-                  <InputContainer
-                    name="page"
-                    type="select"
-                    onChange={(e) => handleChange(e)}
-                    options={pagesOptions}
-                    property="value"
-                    className="mt-n4"
-                  />
-                )}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                </tr>
+                <tr>
+                  <th>
+                    <input
+                      type="search"
+                      className="form-control"
+                      placeholder="Search"
+                    />
+                  </th>
+                  <th>
+                    <InputContainer
+                      name="status"
+                      type="select"
+                      onChange={(e) => handleChange(e)}
+                      options={statusOptions}
+                    />
+                  </th>
+                  <th></th>
+                  <th></th>
+                  <th>
+                    <InputContainer
+                      name="status"
+                      type="select"
+                      onChange={(e) => handleChange(e)}
+                      options={assignOptions}
+                    />
+                  </th>
+                  <th></th>
+                </tr>
+                <tr className="font-bold text-center font-size-sub-heading">
+                  <th>Upload Name and Description</th>
+                  <th>Status</th>
+                  <th>Comment</th>
+                  <th>Main Licenses</th>
+                  <th>Assigned to</th>
+                  <th>Upload Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {browseDataList?.map((data) => (
+                  <tr key={data.id} className="text-center">
+                    <td>
+                      <div className="font-demi">{data?.uploadname}</div>
+                      <div className="font-size-small">{data?.description}</div>
+                    </td>
+                    <td>
+                      <InputContainer
+                        name="status"
+                        type="select"
+                        onChange={(e) => handleChange(e)}
+                        options={statusOptions}
+                      />
+                    </td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>
+                      <InputContainer
+                        name="status"
+                        type="select"
+                        onChange={(e) => handleChange(e)}
+                        options={assignOptions}
+                      />
+                    </td>
+                    <td>{data?.uploaddate.split(".")[0]}</td>
+                  </tr>
+                ))}
+                <tr>
+                  <td colSpan="6">
+                    Page:
+                    {pagesOptions && (
+                      <InputContainer
+                        name="page"
+                        type="select"
+                        onChange={(e) => handleChange(e)}
+                        options={pagesOptions}
+                        property="value"
+                        className="mt-n4"
+                      />
+                    )}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     );
 };
