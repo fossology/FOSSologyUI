@@ -30,6 +30,10 @@ import Routes from "./Routes";
 // Bootstrap imports
 import "bootstrap/dist/css/bootstrap.min.css";
 
+// react-virtualized-tree imports
+import "react-virtualized-tree/lib/main.css";
+import "material-icons/css/material-icons.min.css";
+
 // CSS imports
 import { GlobalStyles } from "./styles/globalStyle";
 import "./styles/global.css";
