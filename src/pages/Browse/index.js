@@ -122,7 +122,7 @@ const Browse = () => {
       <div className="main-container my-3">
         <div className="row">
           <div className="col-md-3 col-lg-2">
-            <h2 className="font-size-sub-heading">Folder Navagation</h2>
+            <h2 className="font-size-sub-heading">Folder Navigation</h2>
             {folderList && <TreeContainer data={folderList} />}
           </div>
           <div className="col-md-9 col-lg-10">
