@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -16,10 +16,10 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import { browseFiles } from "../api/browse";
+import browseFiles from "../api/browse";
 import { getLocalStorage } from "../shared/storageHelper";
 
-export function getBrowseData(browseData) {
+const getBrowseData = (browseData) => {
   return browseFiles(browseData).then((res) => {
     const data = {
       res,
@@ -27,4 +27,6 @@ export function getBrowseData(browseData) {
     };
     return data;
   });
-}
+};
+
+export default getBrowseData;

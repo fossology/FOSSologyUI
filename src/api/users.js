@@ -17,7 +17,7 @@
 */
 
 import sendRequest from "./sendRequest";
-import { endpoints } from "../constants/endpoints";
+import endpoints from "../constants/endpoints";
 import { getToken } from "../shared/authHelper";
 
 export const getUserSelfApi = async () => {

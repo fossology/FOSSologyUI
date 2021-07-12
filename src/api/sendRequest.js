@@ -18,7 +18,7 @@
 
 import { stringify } from "query-string";
 import { logout } from "../shared/authHelper";
-import { routes } from "../constants/routes";
+import routes from "../constants/routes";
 import { setLocalStorage } from "../shared/storageHelper";
 
 const sendRequest = ({
@@ -46,19 +46,31 @@ const sendRequest = ({
     mergedHeaders = {};
   }
   const options = {
-    method: method,
+    method,
     headers: mergedHeaders,
-    body: body ? (isMultipart ? body : JSON.stringify(body)) : null,
+    body,
   };
+  let URL = url;
+  if (body) {
+    if (isMultipart) {
+      options.body = body;
+    } else {
+      options.body = JSON.stringify(body);
+    }
+  } else {
+    options.body = null;
+  }
+
   if (credentials) {
     options.credentials = credentials;
   }
   if (queryParams) {
-    url = `${url}?${stringify(queryParams)}`;
+    URL = `${url}?${stringify(queryParams)}`;
   }
-  return fetch(url, options).then((res) => {
+  return fetch(URL, options).then((res) => {
     if (res.ok) {
-      for (var pair of res.headers.entries()) {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const pair of res.headers.entries()) {
         if (pair[0] === "x-total-pages") {
           setLocalStorage("pages", pair[1]);
         }
@@ -67,27 +79,31 @@ const sendRequest = ({
     }
     if (retries > 0) {
       setTimeout(() => {
-        retries--;
+        const retriesLeft = retries - 1;
         sendRequest({
           url,
           method,
           headers,
-          retries,
+          retriesLeft,
         });
       }, 10000);
-    } else {
-      return res.json().then(function (json) {
-        if (json.code === 403) {
-          return logout(() => (location.href = routes.home));
-        }
-        return Promise.reject({
+    }
+    return res.json().then((json) => {
+      if (json.code === 403) {
+        return logout(() => {
+          window.location.href = routes.home;
+          return true;
+        });
+      }
+      return Promise.reject(
+        new Error({
           status: res.status,
           ok: false,
           message: json.message,
           body: json,
-        });
-      });
-    }
+        })
+      );
+    });
   });
 };
 

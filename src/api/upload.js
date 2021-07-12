@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -16,10 +16,10 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import sendRequest from "./sendRequest";
-import { endpoints } from "../constants/endpoints";
-import { getToken } from "../shared/helper";
 import PropTypes from "prop-types";
+import sendRequest from "./sendRequest";
+import endpoints from "../constants/endpoints";
+import { getToken } from "../shared/helper";
 
 export const createUpload = async (
   folderId,
@@ -30,7 +30,7 @@ export const createUpload = async (
 ) => {
   const url = endpoints.upload.uploadCreate();
   const token = await getToken();
-  var formdata = new FormData();
+  const formdata = new FormData();
   if (fileInput) {
     formdata.append("fileInput", fileInput, fileInput?.name);
   }
@@ -54,13 +54,15 @@ export const createUpload = async (
 export const createUploadVcs = async (header, body) => {
   const url = endpoints.upload.uploadCreate();
   const token = await getToken();
-  header.Authorization = token;
   return sendRequest({
     url,
     method: "POST",
     credentials: false,
-    headers: header,
-    body: body,
+    headers: {
+      ...header,
+      Authorization: token,
+    },
+    body,
   });
 };
 

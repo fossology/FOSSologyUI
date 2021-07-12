@@ -43,6 +43,7 @@ export const getCookie = (key) => {
   if (window !== "undefined") {
     return cookie.get(key);
   }
+  return null;
 };
 
 // set in localstorage
@@ -57,6 +58,7 @@ export const getLocalStorage = (key) => {
   if (typeof window !== "undefined") {
     return JSON.parse(localStorage.getItem(key));
   }
+  return null;
 };
 
 // remove from localstorage

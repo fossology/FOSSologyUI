@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const LoginForm = styled.div`
+const LoginForm = styled.div`
   border: 1px black dashed;
   min-width: 35vw;
   padding: 1rem;
@@ -12,3 +12,5 @@ export const LoginForm = styled.div`
     float: right;
   }
 `;
+
+export default LoginForm;

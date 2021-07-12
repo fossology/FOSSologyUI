@@ -17,7 +17,7 @@
 */
 
 import sendRequest from "./sendRequest";
-import { endpoints } from "../constants/endpoints";
+import endpoints from "../constants/endpoints";
 import {
   tokenNameLength,
   tokenScope,
@@ -25,7 +25,7 @@ import {
 } from "../constants/auth";
 import { randomString, getDate } from "../shared/helper";
 
-export const fetchTokenApi = (username, password) => {
+const fetchTokenApi = (username, password) => {
   const url = endpoints.auth.tokens();
   return sendRequest({
     url,
@@ -39,3 +39,5 @@ export const fetchTokenApi = (username, password) => {
     },
   });
 };
+
+export default fetchTokenApi;
