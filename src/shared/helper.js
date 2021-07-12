@@ -29,12 +29,13 @@ export const randomString = (length) => {
 
 // get date in YYYY-MM-DD format
 export const getDate = (day) => {
+  // eslint-disable-next-line no-extend-native, func-names
   Date.prototype.addDays = function (days) {
-    let date = new Date(this.valueOf());
+    const date = new Date(this.valueOf());
     date.setDate(date.getDate() + days);
     return date;
   };
-  let date = new Date();
+  const date = new Date();
   return date.addDays(day).toISOString().split("T")[0];
 };
 

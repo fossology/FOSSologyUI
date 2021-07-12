@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -16,19 +16,22 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import { searchFiles } from "../api/search";
+import searchFiles from "../api/search";
 
-export function search(searchData) {
+const search = (searchData) => {
   return searchFiles(searchData).then((res) => {
-    const searchData = [];
-    res.map((data) => {
-      searchData.push({
+    const modifiedSearchData = [];
+    res.forEach((data) => {
+      modifiedSearchData.push({
+        uploadTreeId: data.upload.uploadTreeId,
         uploadName: data.upload.uploadname,
         folderName: data.upload.foldername,
         description: data.upload.description,
         fileName: data.filename,
       });
     });
-    return searchData;
+    return modifiedSearchData;
   });
-}
+};
+
+export default search;

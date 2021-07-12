@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -23,13 +23,13 @@ import {
   createUploadVcs,
 } from "../api/upload";
 
-export function createUploadFile({
+export const createUploadFile = ({
   folderId,
   uploadDescription,
   accessLevel,
   ignoreScm,
   fileInput,
-}) {
+}) => {
   return createUpload(
     folderId,
     uploadDescription,
@@ -39,22 +39,22 @@ export function createUploadFile({
   ).then((res) => {
     return res;
   });
-}
+};
 
-export function createUploadVCS(header, body) {
+export const createUploadVCS = (header, body) => {
   return createUploadVcs(header, body).then((res) => {
     return res;
   });
-}
+};
 
-export function scheduleJobs(folderId, uploadId, scanData) {
+export const scheduleJobs = (folderId, uploadId, scanData) => {
   return scheduleAnalysis(folderId, uploadId, scanData).then((res) => {
     return res;
   });
-}
+};
 
-export function getId(uploadId, retries) {
+export const getId = (uploadId, retries) => {
   return getUploadById(uploadId, retries).then((res) => {
     return res;
   });
-}
+};

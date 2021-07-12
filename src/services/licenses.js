@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -16,10 +16,12 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import { getAllLicenseApi } from "../api/licenses";
+import getAllLicenseApi from "../api/licenses";
 
-export function getAllLicense(licenseData) {
+const getAllLicense = (licenseData) => {
   return getAllLicenseApi(licenseData).then((res) => {
     return res;
   });
-}
+};
+
+export default getAllLicense;
