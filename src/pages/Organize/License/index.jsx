@@ -124,7 +124,7 @@ const AdviceLicenses = () => {
                       <td></td>
                       <td>{license.shortName}</td>
                       <td>{license.fullName}</td>
-                      <td className="py-0 px-0">
+                      <td className="py-0 px-0 candidate-license-text">
                         <textarea
                           disabled
                           className="w-100 px-3"
