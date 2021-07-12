@@ -17,20 +17,20 @@
 import { getUserSelfApi, getAllUsersApi, deleteUserApi } from "../api/users";
 import { setLocalStorage } from "../shared/storageHelper";
 
-export function getUserSelf() {
+export const getUserSelf = () => {
   return getUserSelfApi().then((res) => {
     setLocalStorage("user", res);
     return res;
   });
-}
+};
 
-export function getAllUsers() {
+export const getAllUsers = () => {
   return getAllUsersApi().then((res) => {
     return res;
   });
-}
+};
 
-export function getAllUsersName() {
+export const getAllUsersName = () => {
   return getAllUsersApi().then((res) => {
     const modifiedUser = [];
     res.forEach((user) => {
@@ -41,10 +41,10 @@ export function getAllUsersName() {
     });
     return modifiedUser;
   });
-}
+};
 
-export function deleteUser(id) {
+export const deleteUser = (id) => {
   return deleteUserApi(id).then((res) => {
     return res;
   });
-}
+};

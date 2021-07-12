@@ -20,7 +20,7 @@ const apiUrl = `${
   process.env.REACT_APP_HTTPS === "true" ? "https" : "http"
 }://${process.env.REACT_APP_SERVER_URL}`;
 
-export const endpoints = {
+const endpoints = {
   jobs: {
     details: (jobId) => `${apiUrl}/jobs/${jobId}`,
   },
@@ -71,3 +71,5 @@ export const endpoints = {
     get: (kind) => `${apiUrl}/license?kind=${kind}`,
   },
 };
+
+export default endpoints;

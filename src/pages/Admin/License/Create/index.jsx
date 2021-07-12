@@ -73,7 +73,7 @@ const AddLicense = () => {
               SPDX Compatible
             </InputContainer>
             <InputContainer
-              value={""}
+              value=""
               name=""
               type="text"
               id="admin-add-license-short-name"
@@ -83,7 +83,7 @@ const AddLicense = () => {
               Short name
             </InputContainer>
             <InputContainer
-              value={""}
+              value=""
               name=""
               type="text"
               id="admin-add-license-full-name"
@@ -94,15 +94,15 @@ const AddLicense = () => {
             <div className="my-2">
               <label htmlFor="upload" className="font-demi font-15">
                 License Text
+                <textarea
+                  name="uploadDescription"
+                  className="form-control"
+                  value=""
+                  id="admin-add-license-text"
+                  rows="3"
+                  onChange={(e) => handleChange(e)}
+                />
               </label>
-              <textarea
-                name="uploadDescription"
-                className="form-control"
-                value={""}
-                id="admin-add-license-text"
-                rows="3"
-                onChange={(e) => handleChange(e)}
-              ></textarea>
             </div>
             <InputContainer
               options={options}
@@ -115,7 +115,7 @@ const AddLicense = () => {
               Text Updatable
             </InputContainer>
             <InputContainer
-              value={""}
+              value=""
               name=""
               type="text"
               id="admin-add-license-detector-type"
@@ -124,7 +124,7 @@ const AddLicense = () => {
               Detector Type
             </InputContainer>
             <InputContainer
-              value={""}
+              value=""
               name=""
               type="text"
               id="admin-add-license-url"
@@ -135,18 +135,18 @@ const AddLicense = () => {
             <div className="my-2">
               <label htmlFor="upload" className="font-demi font-15">
                 Public Notes
+                <textarea
+                  name="uploadDescription"
+                  className="form-control"
+                  value=""
+                  id="admin-add-license-public-notes"
+                  rows="3"
+                  onChange={(e) => handleChange(e)}
+                />
               </label>
-              <textarea
-                name="uploadDescription"
-                className="form-control"
-                value={""}
-                id="admin-add-license-public-notes"
-                rows="3"
-                onChange={(e) => handleChange(e)}
-              ></textarea>
             </div>
             <InputContainer
-              value={""}
+              value=""
               name=""
               type="text"
               id="admin-add-license-conclusion"
@@ -155,7 +155,7 @@ const AddLicense = () => {
               Conclusion
             </InputContainer>
             <InputContainer
-              value={""}
+              value=""
               name=""
               type="text"
               id="admin-add-license-report"
@@ -164,7 +164,7 @@ const AddLicense = () => {
               Reported License
             </InputContainer>
             <InputContainer
-              value={""}
+              value=""
               name=""
               type="text"
               id="admin-add-license-risk-level"
@@ -173,7 +173,7 @@ const AddLicense = () => {
               Risk level
             </InputContainer>
             <InputContainer
-              value={""}
+              value=""
               name=""
               type="text"
               id="admin-add-license-obligations"

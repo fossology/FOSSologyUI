@@ -16,12 +16,14 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import { fetchTokenApi } from "../api/auth";
+import fetchTokenApi from "../api/auth";
 import { setCookie } from "../shared/storageHelper";
 
-export function fetchToken({ username, password }) {
+const fetchToken = ({ username, password }) => {
   return fetchTokenApi(username, password).then((res) => {
     setCookie("token", res.Authorization);
     return res.Authorization;
   });
-}
+};
+
+export default fetchToken;
