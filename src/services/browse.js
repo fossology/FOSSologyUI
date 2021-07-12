@@ -17,10 +17,14 @@
 */
 
 import { browseFiles } from "../api/browse";
+import { getLocalStorage } from "../shared/storageHelper";
 
 export function getBrowseData(browseData) {
   return browseFiles(browseData).then((res) => {
-    console.log(res);
-    return res;
+    const data = {
+      res,
+      pages: getLocalStorage("pages"),
+    };
+    return data;
   });
 }

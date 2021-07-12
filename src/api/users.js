@@ -1,6 +1,6 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
- 
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
+
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -25,6 +25,29 @@ export const getUserSelfApi = async () => {
   return sendRequest({
     url,
     method: "GET",
+    headers: {
+      Authorization: await getToken(),
+    },
+  });
+};
+
+export const getAllUsersApi = async () => {
+  const url = endpoints.users.getAll();
+  return sendRequest({
+    url,
+    method: "GET",
+    credentials: "include",
+    headers: {
+      Authorization: await getToken(),
+    },
+  });
+};
+
+export const deleteUserApi = async (id) => {
+  const url = endpoints.users.delete(id);
+  return sendRequest({
+    url,
+    method: "DELETE",
     credentials: "include",
     headers: {
       Authorization: await getToken(),

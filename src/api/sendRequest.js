@@ -17,15 +17,20 @@
 */
 
 import { stringify } from "query-string";
+import { logout } from "../shared/authHelper";
+import { routes } from "../constants/routes";
+import { setLocalStorage } from "../shared/storageHelper";
+
 const sendRequest = ({
   url,
   method,
-  credentials = null,
+  credentials = "include",
   body,
   headers = {},
   queryParams,
   isMultipart = false,
   noHeaders = false,
+  retries = 0,
 }) => {
   let mergedHeaders;
   if (isMultipart) {
@@ -33,6 +38,7 @@ const sendRequest = ({
   } else {
     mergedHeaders = new Headers({
       "content-type": "application/json",
+      accept: "application/json",
       ...headers,
     });
   }
@@ -54,12 +60,26 @@ const sendRequest = ({
     if (res.ok) {
       for (var pair of res.headers.entries()) {
         if (pair[0] === "x-total-pages") {
-          console.log(pair[1]);
+          setLocalStorage("pages", pair[1]);
         }
       }
       return res.json();
+    }
+    if (retries > 0) {
+      setTimeout(() => {
+        retries--;
+        sendRequest({
+          url,
+          method,
+          headers,
+          retries,
+        });
+      }, 10000);
     } else {
       return res.json().then(function (json) {
+        if (json.code === 403) {
+          return logout(() => (location.href = routes.home));
+        }
         return Promise.reject({
           status: res.status,
           ok: false,

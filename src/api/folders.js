@@ -25,7 +25,6 @@ export const getAllFoldersApi = async () => {
   return sendRequest({
     url,
     method: "GET",
-    credentials: "include",
     headers: {
       Authorization: await getToken(),
     },
@@ -37,7 +36,6 @@ export const getSingleFolderApi = async (id) => {
   return sendRequest({
     url,
     method: "GET",
-    credentials: "include",
     headers: {
       Authorization: await getToken(),
     },
@@ -49,7 +47,6 @@ export const deleteFolderApi = async (id) => {
   return sendRequest({
     url,
     method: "DELETE",
-    credentials: "include",
     headers: {
       Authorization: await getToken(),
     },
@@ -65,7 +62,6 @@ export const createFolderApi = async (
   return sendRequest({
     url,
     method: "POST",
-    credentials: "include",
     headers: {
       Authorization: await getToken(),
       parentFolder,
@@ -80,7 +76,6 @@ export const editFolderApi = async (name, description, id) => {
   return sendRequest({
     url,
     method: "PATCH",
-    credentials: "include",
     headers: {
       Authorization: await getToken(),
       name,
@@ -94,7 +89,6 @@ export const moveCopyFolderApi = async (parent, id, action) => {
   return sendRequest({
     url,
     method: "PUT",
-    credentials: "include",
     headers: {
       Authorization: await getToken(),
       parent,

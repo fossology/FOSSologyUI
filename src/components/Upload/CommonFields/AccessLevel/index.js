@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import InputContainer from "../../../Widgets/Input";
+import Tooltip from "../../../Widgets/Tooltip";
 
 function AccessLevel({ accessLevel, handleChange }) {
   return (
@@ -13,7 +14,8 @@ function AccessLevel({ accessLevel, handleChange }) {
         checked={accessLevel === "private"}
         onChange={(e) => handleChange(e)}
       >
-        Visible only for active group
+        Visible only for active group&nbsp;
+        <Tooltip title="which is the currently selected group" />
       </InputContainer>
       <InputContainer
         type="radio"
@@ -23,7 +25,8 @@ function AccessLevel({ accessLevel, handleChange }) {
         checked={accessLevel === "protected"}
         onChange={(e) => handleChange(e)}
       >
-        Visible for all groups
+        Visible for all groups&nbsp;
+        <Tooltip title="which are accessible by you now" />
       </InputContainer>
       <InputContainer
         type="radio"
@@ -33,7 +36,8 @@ function AccessLevel({ accessLevel, handleChange }) {
         checked={accessLevel === "public"}
         onChange={(e) => handleChange(e)}
       >
-        Make Public
+        Make Public&nbsp;
+        <Tooltip title="visible for all users" />
       </InputContainer>
     </div>
   );

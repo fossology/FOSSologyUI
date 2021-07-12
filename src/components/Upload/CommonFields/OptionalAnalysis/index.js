@@ -8,6 +8,15 @@ function OptionalAnalysis({ analysis, handleChange }) {
       <p className="font-demi">Select optional analysis</p>
       <InputContainer
         type="checkbox"
+        checked={analysis.bucket}
+        name="bucket"
+        id="upload-file-bucket"
+        onChange={(e) => handleChange(e)}
+      >
+        Bucket Analysis
+      </InputContainer>
+      <InputContainer
+        type="checkbox"
         checked={analysis.copyrightEmailAuthor}
         name="copyrightEmailAuthor"
         id="upload-file-copyright-email-author"

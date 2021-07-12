@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
- 
+
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -17,7 +17,8 @@
 */
 
 import React, { useState, useEffect } from "react";
-import { Spinner, Alert } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
+import Alert from "../../../../components/Widgets/Alert";
 import InputContainer from "../../../../components/Widgets/Input";
 import Button from "../../../../components/Widgets/Button";
 import {
@@ -112,17 +113,13 @@ const EditFolder = () => {
     <>
       {showMessage && (
         <Alert
-          variant={message.type}
-          onClose={() => setShowMessage(false)}
-          dismissible
-        >
-          <p>{message.text}</p>
-        </Alert>
+          type={message.type}
+          setShow={setShowMessage}
+          message={message.text}
+        />
       )}
       <div className="main-container my-3">
-        <h1 className="font-size-main-heading text-center">
-          Edit Folder Properties
-        </h1>
+        <h1 className="font-size-main-heading">Edit Folder Properties</h1>
         <br />
         <div className="row">
           <div className="col-12 col-lg-8">

@@ -99,6 +99,17 @@ h2,
 h3,
 h4,
 h5,
-h6{
+h6 {
   font-family: Mulish-bold;
+}
+
+@media (max-width: 991px) {
+  .dropleft .dropdown-menu {
+    right: unset !important;
+    left: 3.5em !important;
+    padding: 1.5rem;
+  }
+  #basic-navbar-nav {
+    padding: 2rem;
+  }
 }

@@ -117,7 +117,7 @@ InputContainer.propTypes = {
   disabled: PropTypes.bool,
   children: PropTypes.node,
   options: PropTypes.array,
-  multiple: PropTypes.string,
+  multiple: PropTypes.bool,
   property: PropTypes.string,
 };
 

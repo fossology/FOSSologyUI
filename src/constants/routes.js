@@ -28,6 +28,9 @@ export const routes = {
     vcs: "/upload/vcs",
     report: "/upload/report",
     instructions: "/upload/instructions",
+    oneShotAnalysis: "/upload/oneShotAnalysis",
+    oneShotCopyright: "/upload/oneShotCopyright",
+    oneShotMonk: "/upload/oneShotMonk",
   },
   jobs: {
     myRecentJobs: "/jobs/myRecentJobs",
@@ -55,5 +58,18 @@ export const routes = {
     about: "/help/about",
     thirdPartyLicenses: "/help/thirdPartyLicenses",
     thirdPartyLicensesHTML: "/thirdPartyLicenses.html",
+  },
+  admin: {
+    group: {
+      create: "/admin/group/create",
+      delete: "/admin/group/delete",
+    },
+    users: {
+      delete: "/admin/users/delete",
+    },
+    license: {
+      create: "/admin/license/create",
+      selectLicense: "/admin/selectLicense",
+    },
   },
 };

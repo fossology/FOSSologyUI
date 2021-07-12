@@ -17,8 +17,9 @@
 */
 
 import React, { useState, useEffect } from "react";
-import { Spinner, Alert } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 import InputContainer from "../../../../components/Widgets/Input";
+import Alert from "../../../../components/Widgets/Alert";
 import Button from "../../../../components/Widgets/Button";
 import { getAllFolders, deleteFolder } from "../../../../services/folders";
 
@@ -98,17 +99,13 @@ const DeleteFolder = () => {
     <>
       {showMessage && (
         <Alert
-          variant={message.type}
-          onClose={() => setShowMessage(false)}
-          dismissible
-        >
-          <p>{message.text}</p>
-        </Alert>
+          type={message.type}
+          setShow={setShowMessage}
+          message={message.text}
+        />
       )}
       <div className="main-container my-3">
-        <h1 className="font-size-main-heading text-center">
-          Delete a Fossology Folder
-        </h1>
+        <h1 className="font-size-main-heading">Delete a Fossology Folder</h1>
         <br />
         <div className="row">
           <div className="col-12 col-lg-8">

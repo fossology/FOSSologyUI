@@ -85,4 +85,8 @@ export const GlobalStyles = createGlobalStyle`
   pre{
     color: ${({ theme }) => theme.primaryText};
   }
+  .candidate-license-text textarea:disabled{
+    background: transparent;
+    color: ${({ theme }) => theme.primaryText};
+  }
 }`;

@@ -1,11 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 import InputContainer from "../../../Widgets/Input";
+import Tooltip from "../../../Widgets/Tooltip";
 
 function LicenseDecider({ decider, handleChange }) {
   return (
     <div id="upload-concluded-license-decider" className="mt-4">
-      <p className="font-demi">Automatic Concluded License Decider, based on</p>
+      <p className="font-demi">
+        Automatic Concluded License Decider,
+        <Tooltip title="only for relevant files" /> based on
+      </p>
       <InputContainer
         type="checkbox"
         checked={decider.nomosMonk}

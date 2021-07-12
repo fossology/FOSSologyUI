@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
- 
+
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -18,4 +18,4 @@
 
 export const tokenNameLength = 40;
 export const tokenScope = "write";
-export const tokenExpiryDays = 1;
+export const tokenExpiryDays = 2;

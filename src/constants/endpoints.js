@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -32,6 +32,9 @@ export const endpoints = {
   },
   users: {
     self: () => `${apiUrl}/users/self`,
+    getAll: () => `${apiUrl}/users`,
+    getSingle: (userId) => `${apiUrl}/users/${userId}`,
+    delete: (userId) => `${apiUrl}/users/${userId}`,
   },
   folders: {
     getAll: () => `${apiUrl}/folders`,
@@ -48,7 +51,23 @@ export const endpoints = {
     getId: (uploadId) => `${apiUrl}/uploads/${uploadId}`,
   },
   browse: {
-    get: (folderId, recursive) =>
-      `${apiUrl}/uploads?folderId=${folderId}&recursive=${recursive}`,
+    get: () => `${apiUrl}/uploads`,
+  },
+  organize: {
+    uploads: {
+      get: (folder) => `${apiUrl}/uploads?folderId=${folder}`,
+      delete: (deleteId) => `${apiUrl}/uploads/${deleteId}`,
+      move: (moveId) => `${apiUrl}/uploads/${moveId}?recursive=false`,
+      copy: (copyId) => `${apiUrl}/uploads/${copyId}?recursive=false`,
+    },
+  },
+  admin: {
+    groups: {
+      create: () => `${apiUrl}/groups`,
+      getAll: () => `${apiUrl}/groups`,
+    },
+  },
+  license: {
+    get: (kind) => `${apiUrl}/license?kind=${kind}`,
   },
 };

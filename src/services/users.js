@@ -14,12 +14,37 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import { getUserSelfApi } from "../api/users";
+import { getUserSelfApi, getAllUsersApi, deleteUserApi } from "../api/users";
 import { setLocalStorage } from "../shared/storageHelper";
 
 export function getUserSelf() {
   return getUserSelfApi().then((res) => {
     setLocalStorage("user", res);
+    return res;
+  });
+}
+
+export function getAllUsers() {
+  return getAllUsersApi().then((res) => {
+    return res;
+  });
+}
+
+export function getAllUsersName() {
+  return getAllUsersApi().then((res) => {
+    const modifiedUser = [];
+    res.forEach((user) => {
+      modifiedUser.push({
+        id: user?.id,
+        name: user?.name,
+      });
+    });
+    return modifiedUser;
+  });
+}
+
+export function deleteUser(id) {
+  return deleteUserApi(id).then((res) => {
     return res;
   });
 }

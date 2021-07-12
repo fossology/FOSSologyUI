@@ -1,6 +1,6 @@
-/***************************************************************
+/*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
- 
+
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -14,12 +14,23 @@
  You should have received a copy of the GNU General Public License along
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-***************************************************************/
+*/
 
-import React from "react";
+import sendRequest from "./sendRequest";
+import { endpoints } from "../constants/endpoints";
+import { getToken } from "../shared/helper";
 
-const AdviceLicenses = () => {
-  return <div>AdviceLicenses</div>;
+export const getAllLicenseApi = async ({ page, limit, groupName, kind }) => {
+  const url = endpoints.license.get(kind);
+  const token = await getToken();
+  return sendRequest({
+    url,
+    method: "GET",
+    headers: {
+      Authorization: token,
+      page,
+      limit,
+      groupName,
+    },
+  });
 };
-
-export default AdviceLicenses;

@@ -43,11 +43,14 @@ jobs:
     - name: Install dependencies
       run: yarn install --frozen-lockfile
 
+    - name: Run eslint test
+      run: yarn lint:check
+
+    - name: Run prettier test
+      run: yarn format:check
+
     - name: Run the tests and generate coverage report
       run: yarn test
-
-    - name: Run eslint test
-      run: yarn run test:js
 
     - name: Build
       run: yarn build

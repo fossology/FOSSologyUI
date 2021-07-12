@@ -28,17 +28,20 @@ export const browseFiles = async ({
   groupName,
   recursive,
 }) => {
-  const url = endpoints.browse.get(folderId, recursive);
+  const url = endpoints.browse.get();
   const token = await getToken();
   return sendRequest({
     url,
     method: "GET",
-    credentials: "include",
     headers: {
       Authorization: token,
       page,
       limit,
       groupName,
+    },
+    queryParams: {
+      folderId,
+      recursive,
     },
   });
 };

@@ -18,11 +18,13 @@
 
 import React, { useState, useEffect } from "react";
 import InputContainer from "../../../components/Widgets/Input";
+import Alert from "../../../components/Widgets/Alert";
 import Button from "../../../components/Widgets/Button";
 import CommonFields from "../../../components/Upload/CommonFields";
 import { createUploadFile, scheduleJobs } from "../../../services/upload";
-import { getFolders } from "../../../services/getFolder";
-import { Spinner, Alert } from "react-bootstrap";
+import { getAllFolders } from "../../../services/folders";
+import { Spinner } from "react-bootstrap";
+import { defaultAgentsList } from "../../../shared/storageHelper";
 
 const UploadFile = () => {
   const initialState = {
@@ -33,17 +35,7 @@ const UploadFile = () => {
     fileInput: null,
   };
   const initialScanFileData = {
-    analysis: {
-      bucket: true,
-      copyrightEmailAuthor: false,
-      ecc: false,
-      keyword: false,
-      mime: false,
-      monk: false,
-      nomos: false,
-      ojo: false,
-      package: false,
-    },
+    analysis: defaultAgentsList(),
     decider: {
       nomosMonk: false,
       bulkReused: false,
@@ -173,7 +165,7 @@ const UploadFile = () => {
     }
   };
   useEffect(() => {
-    getFolders().then((res) => {
+    getAllFolders().then((res) => {
       setFolderList(res);
     });
   }, []);
@@ -181,18 +173,17 @@ const UploadFile = () => {
     <>
       {showMessage && (
         <Alert
-          variant={message.type}
-          onClose={() => setShowMessage(false)}
-          dismissible
-        >
-          <p>{message.text}</p>
-        </Alert>
+          type={message.type}
+          setShow={setShowMessage}
+          message={message.text}
+        />
       )}
       <div className="main-container my-3">
         <div className="row">
           <div className="col-lg-8 col-md-12 col-sm-12 col-12">
-            <h3 className="font-size-sub-heading">Upload a New file</h3>
-            <p className="font-demi my-3">
+            <h1 className="font-size-main-heading">Upload a New file</h1>
+            <br />
+            <p className="font-demi">
               To manage your own group permissions go into Admin &gt; Groups
               &gt; Manage Group Users. To manage permissions for this one
               upload, go to Admin &gt; Upload Permissions.
