@@ -57,7 +57,7 @@ import DeleteFolder from "./pages/Organize/Folder/Delete";
 import CreateFolder from "./pages/Organize/Folder/Create";
 import EditFolder from "./pages/Organize/Folder/Edit";
 import MoveFolder from "./pages/Organize/Folder/Move";
-import AdviceLicenses from "./pages/Organize/License";
+import AdviceLicenses from "./pages/Organize/License/index";
 import UploadEdit from "./pages/Organize/Uploads/Edit";
 import UploadMove from "./pages/Organize/Uploads/Move";
 import UploadDelete from "./pages/Organize/Uploads/Delete";
@@ -65,6 +65,8 @@ import UploadDelete from "./pages/Organize/Uploads/Delete";
 // Admin Pages
 import GroupCreate from "./pages/Admin/Group/Create";
 import DeleteUser from "./pages/Admin/Users/Delete";
+import AddLicense from "./pages/Admin/License/Create";
+import SelectLicense from "./pages/Admin/License/SelectLicense";
 
 // Default Page
 import ErrorPage from "./pages/ErrorPage";
@@ -206,12 +208,24 @@ const Routes = () => {
           path={routes.organize.folders.unlinkContent}
           component={UnlinkFolder}
         />
+
+        {/* Admin Page */}
         <AdminLayout
           exact
           path={routes.admin.group.create}
           component={GroupCreate}
         />
-        <PrivateLayout
+        <AdminLayout
+          exact
+          path={routes.admin.license.create}
+          component={AddLicense}
+        />
+        <AdminLayout
+          exact
+          path={routes.admin.license.selectLicense}
+          component={SelectLicense}
+        />
+        <AdminLayout
           exact
           path={routes.admin.users.delete}
           component={DeleteUser}
