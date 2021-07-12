@@ -66,6 +66,6 @@ export const endpoints = {
     },
   },
   license: {
-    getAll: () => `${apiUrl}/license`,
+    get: (kind) => `${apiUrl}/license?kind=${kind}`,
   },
 };

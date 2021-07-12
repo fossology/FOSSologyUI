@@ -21,8 +21,11 @@ import Button from "../../../components/Widgets/Button";
 import InputContainer from "../../../components/Widgets/Input";
 import Alert from "../../../components/Widgets/Alert";
 import { getAllLicense } from "../../../services/licenses";
+import { routes } from "../../../constants/routes";
+import { useHistory } from "react-router-dom";
 
 const AdviceLicenses = () => {
+  const history = useHistory();
   const entriesOptions = [
     {
       id: 10,
@@ -44,8 +47,9 @@ const AdviceLicenses = () => {
 
   const initialState = {
     page: 1,
-    limit: 100,
+    limit: 10,
     groupName: "",
+    kind: "candidate",
   };
   const initialMessage = {
     type: "success",
@@ -60,9 +64,6 @@ const AdviceLicenses = () => {
       ...licenseData,
       [e.target.name]: e.target.value,
     });
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
   };
   useEffect(() => {
     getAllLicense(licenseData)
@@ -126,7 +127,7 @@ const AdviceLicenses = () => {
                       <td className="py-0 px-0">
                         <textarea
                           disabled
-                          className="w-100 px-3 h-100 candidate-license-text"
+                          className="w-100 px-3"
                           value={license.text}
                         />
                       </td>
@@ -139,8 +140,8 @@ const AdviceLicenses = () => {
               </tbody>
             </table>
             <Button
-              type="submit"
-              onClick={(e) => handleSubmit(e)}
+              type="button"
+              onClick={() => history.push(routes.admin.license.create)}
               className="mt-4"
             >
               New License

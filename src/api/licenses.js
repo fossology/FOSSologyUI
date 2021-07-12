@@ -20,8 +20,8 @@ import sendRequest from "./sendRequest";
 import { endpoints } from "../constants/endpoints";
 import { getToken } from "../shared/helper";
 
-export const getAllLicenseApi = async ({ page, limit, groupName }) => {
-  const url = endpoints.license.getAll();
+export const getAllLicenseApi = async ({ page, limit, groupName, kind }) => {
+  const url = endpoints.license.get(kind);
   const token = await getToken();
   return sendRequest({
     url,

@@ -20,9 +20,6 @@ import { getAllLicenseApi } from "../api/licenses";
 
 export function getAllLicense(licenseData) {
   return getAllLicenseApi(licenseData).then((res) => {
-    const candidateLicense = res.filter(
-      (license) => license.isCandidate === true
-    );
-    return candidateLicense;
+    return res;
   });
 }

@@ -24,7 +24,7 @@ import { setLocalStorage } from "../shared/storageHelper";
 const sendRequest = ({
   url,
   method,
-  credentials = "include",
+  credentials = false,
   body,
   headers = {},
   queryParams,
