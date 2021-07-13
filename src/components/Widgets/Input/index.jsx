@@ -28,7 +28,7 @@ const InputContainer = ({
   placeholder = null,
   disabled = null,
   options = null,
-  multiple = null,
+  multiple = false,
   property,
 }) => {
   if (type === "radio" || type === "checkbox") {
@@ -67,7 +67,7 @@ const InputContainer = ({
           value={value}
           onChange={onChange}
           multiple={multiple && multiple}
-          size={multiple && "15"}
+          size={multiple ? "15" : ""}
           id={id}
         >
           {options.length > 0 ? (
