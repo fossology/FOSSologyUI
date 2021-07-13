@@ -53,8 +53,8 @@ function CommonFields({
 }
 
 CommonFields.propTypes = {
-  accessLevel: PropTypes.string.isRequired,
-  ignoreScm: PropTypes.bool.isRequired,
+  accessLevel: PropTypes.string,
+  ignoreScm: PropTypes.bool,
   analysis: PropTypes.shape({
     bucket: PropTypes.bool.isRequired,
     copyrightEmailAuthor: PropTypes.bool.isRequired,
