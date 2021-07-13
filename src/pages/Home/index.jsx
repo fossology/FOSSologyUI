@@ -18,15 +18,14 @@ import React, { useState } from "react";
 
 // External library imports
 import { useHistory } from "react-router-dom";
-import { Form, Row, Col, Spinner } from "react-bootstrap";
+import { Form, Row, Col } from "react-bootstrap";
 
 // Custom component imports
 import fetchToken from "../../services/auth";
 import { getUserSelf } from "../../services/users";
 import routes from "../../constants/routes";
 import { isAuth } from "../../shared/authHelper";
-import Button from "../../components/Widgets/Button";
-import Alert from "../../components/Widgets/Alert";
+import { Alert, Button, Spinner } from "../../components/Widgets";
 import Features from "./Features";
 
 // CSS imports

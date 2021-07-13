@@ -18,9 +18,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import Button from "../../../components/Widgets/Button";
-import InputContainer from "../../../components/Widgets/Input";
-import Alert from "../../../components/Widgets/Alert";
+import { Alert, Button, InputContainer } from "../../../components/Widgets";
 import getAllLicense from "../../../services/licenses";
 import routes from "../../../constants/routes";
 

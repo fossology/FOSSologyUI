@@ -17,13 +17,11 @@
 */
 
 import React, { useState, useEffect } from "react";
-import { Spinner } from "react-bootstrap";
 import arrayToTree from "array-to-tree";
-import InputContainer from "../../components/Widgets/Input";
+import { InputContainer, Alert, Spinner } from "../../components/Widgets";
 import TreeContainer from "../../components/TreeContainer";
 import getBrowseData from "../../services/browse";
 import { getAllFolders } from "../../services/folders";
-import Alert from "../../components/Widgets/Alert";
 import "./index.css";
 
 const Browse = () => {

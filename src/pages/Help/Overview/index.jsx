@@ -17,7 +17,7 @@
 */
 
 import React from "react";
-import Image from "../../../components/Widgets/Image";
+import { Image } from "../../../components/Widgets";
 import microscope from "../../../assets/images/microscope.svg";
 import fossologyFlow from "../../../assets/images/fossologyFlow.svg";
 import externalLinks from "../../../constants/externalLinks";

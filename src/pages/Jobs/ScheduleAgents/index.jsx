@@ -17,11 +17,13 @@
 */
 
 import React, { useState, useEffect } from "react";
-import { Spinner } from "react-bootstrap";
 import CommonFields from "../../../components/Upload/CommonFields";
-import InputContainer from "../../../components/Widgets/Input";
-import Alert from "../../../components/Widgets/Alert";
-import Button from "../../../components/Widgets/Button";
+import {
+  Alert,
+  Button,
+  InputContainer,
+  Spinner,
+} from "../../../components/Widgets";
 import { getAllFolders } from "../../../services/folders";
 import { scheduleJobs } from "../../../services/upload";
 import getBrowseData from "../../../services/browse";
