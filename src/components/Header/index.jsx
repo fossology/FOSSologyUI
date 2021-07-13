@@ -28,11 +28,7 @@ import {
   Dropdown,
   DropdownButton,
 } from "react-bootstrap";
-import {
-  QuestionCircleFill,
-  PersonCircle,
-  PeopleFill,
-} from "react-bootstrap-icons";
+import { QuestionCircleFill, PersonCircle } from "react-bootstrap-icons";
 
 // List of all accessible groups
 import { getAllGroups } from "services/groups";
@@ -313,7 +309,7 @@ const Header = () => {
           {/* User Info */}
           <Dropdown drop="left">
             <Dropdown.Toggle variant="link" bsPrefix="p-0">
-              <PeopleFill color="#fff" size={40} className="m-2" />
+              <TextIcon text="GN" className="m-2" />
             </Dropdown.Toggle>
             <Dropdown.Menu>
               {getAllGroups() &&
