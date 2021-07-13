@@ -16,10 +16,12 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+// Api Url set in the env file
 const apiUrl = `${
   process.env.REACT_APP_HTTPS === "true" ? "https" : "http"
 }://${process.env.REACT_APP_SERVER_URL}`;
 
+// Endpoints for all the REST APIs
 const endpoints = {
   jobs: {
     details: (jobId) => `${apiUrl}/jobs/${jobId}`,
@@ -57,6 +59,7 @@ const endpoints = {
     uploads: {
       get: (folder) => `${apiUrl}/uploads?folderId=${folder}`,
       delete: (deleteId) => `${apiUrl}/uploads/${deleteId}`,
+      // Set the recursive false to reduce amount of data in response
       move: (moveId) => `${apiUrl}/uploads/${moveId}?recursive=false`,
       copy: (copyId) => `${apiUrl}/uploads/${copyId}?recursive=false`,
     },

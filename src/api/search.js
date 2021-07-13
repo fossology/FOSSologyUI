@@ -19,8 +19,9 @@
 import PropTypes from "prop-types";
 import sendRequest from "./sendRequest";
 import endpoints from "../constants/endpoints";
-import { getToken } from "../shared/helper";
+import { getToken } from "../shared/authHelper";
 
+// Fetching all the uploads on the basis of search criteria
 const searchFiles = async ({
   groupName,
   searchType,

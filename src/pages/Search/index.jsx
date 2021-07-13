@@ -17,13 +17,17 @@
 */
 
 import React, { useState } from "react";
-import search from "../../services/search";
+
+// Widgets
 import {
   Alert,
   Button,
   InputContainer,
   Spinner,
 } from "../../components/Widgets";
+
+// Required functions for calling APIs
+import search from "../../services/search";
 
 const Search = () => {
   const initialState = {
@@ -41,8 +45,14 @@ const Search = () => {
     type: "danger",
     text: "",
   };
+
+  // Data for searching specific uploads
   const [searchData, setSearchData] = useState(initialState);
+
+  // Required uploads on the basis of search criteria
   const [searchResult, setSearchResult] = useState("");
+
+  // State Variables for handling Error Boundaries
   const [loading, setLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState(initialMessage);

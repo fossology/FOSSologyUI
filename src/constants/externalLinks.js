@@ -16,6 +16,7 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+// External links
 const externalLinks = {
   fossologyWiki: "https://github.com/fossology/fossology/wiki",
   jobSchedulerWiki: "https://github.com/fossology/fossology/wiki/Job-Scheduler",

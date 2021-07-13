@@ -1,6 +1,6 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
- 
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
+
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -18,7 +18,8 @@
 
 import getJobApi from "../api/jobs";
 
-const getJob = (jobId) => {
+// Fetching the jobs
+export const getJob = (jobId) => {
   return getJobApi(jobId).then((res) => {
     return res.entity.map((jsonObject) => {
       const tag = {};

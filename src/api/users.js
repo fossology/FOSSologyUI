@@ -20,6 +20,7 @@ import sendRequest from "./sendRequest";
 import endpoints from "../constants/endpoints";
 import { getToken } from "../shared/authHelper";
 
+// Fetching the self information
 export const getUserSelfApi = async () => {
   const url = endpoints.users.self();
   return sendRequest({
@@ -31,6 +32,7 @@ export const getUserSelfApi = async () => {
   });
 };
 
+// Fetching all the users and returning their complete info
 export const getAllUsersApi = async () => {
   const url = endpoints.users.getAll();
   return sendRequest({
@@ -43,6 +45,7 @@ export const getAllUsersApi = async () => {
   });
 };
 
+// Deleting the user info
 export const deleteUserApi = async (id) => {
   const url = endpoints.users.delete(id);
   return sendRequest({

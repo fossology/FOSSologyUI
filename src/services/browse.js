@@ -19,6 +19,7 @@
 import browseFiles from "../api/browse";
 import { getLocalStorage } from "../shared/storageHelper";
 
+// Fetching all the Uploads
 const getBrowseData = (browseData) => {
   return browseFiles(browseData).then((res) => {
     const data = {

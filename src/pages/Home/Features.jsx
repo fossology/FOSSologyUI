@@ -18,10 +18,10 @@
 
 import React from "react";
 
-// Custom imports
-import Image from "../../components/Widgets/Image";
+// Widgets
+import { Image } from "../../components/Widgets";
 
-// Features images import
+// Assets
 import upload from "../../assets/images/upload.svg";
 import scan from "../../assets/images/scan.svg";
 import report from "../../assets/images/report.svg";

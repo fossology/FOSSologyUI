@@ -1,6 +1,6 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
- 
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
+
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -16,12 +16,16 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+// React Imports
 import React from "react";
 import { withRouter, Route, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 
+// Helper Functions
 import { isAdmin } from "./authHelper";
 import routes from "../constants/routes";
+
+// Header, Footer
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 

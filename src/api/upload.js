@@ -19,8 +19,9 @@
 import PropTypes from "prop-types";
 import sendRequest from "./sendRequest";
 import endpoints from "../constants/endpoints";
-import { getToken } from "../shared/helper";
+import { getToken } from "../shared/authHelper";
 
+// Create Uploads from File
 export const createUpload = async (
   folderId,
   uploadDescription,
@@ -51,6 +52,7 @@ export const createUpload = async (
   });
 };
 
+// Create Uploads from Version Control System
 export const createUploadVcs = async (header, body) => {
   const url = endpoints.upload.uploadCreate();
   const token = await getToken();
@@ -66,6 +68,7 @@ export const createUploadVcs = async (header, body) => {
   });
 };
 
+// Scheduling the analysis for the uploads
 export const scheduleAnalysis = async (folderId, uploadId, scanData) => {
   const url = endpoints.upload.scheduleAnalysis();
   const token = await getToken();
@@ -110,6 +113,7 @@ export const scheduleAnalysis = async (folderId, uploadId, scanData) => {
   });
 };
 
+// Getting a Upload by id
 export const getUploadById = async (uploadId, retries) => {
   const url = endpoints.upload.getId(uploadId);
   const token = await getToken();

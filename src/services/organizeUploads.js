@@ -23,22 +23,28 @@ import {
   copyUploadApi,
 } from "../api/organizeUploads";
 
+// Getting uploads with folder id
 export const getUploadsFolderId = (folderId) => {
   return getUploadsByFolderIdApi(folderId).then((res) => {
     return res;
   });
 };
+
+// Deleting a upload its upload id
 export const deleteUploadsbyId = (deleteId) => {
   return deleteUploadsApi(deleteId).then((res) => {
     return res;
   });
 };
+
+// Moving the upload into another folder
 export const moveUpload = (folderId, id, groupName) => {
   return moveUploadApi(folderId, id, groupName).then((res) => {
     return res;
   });
 };
 
+// Copying the upload into another folder
 export const copyUpload = (folderId, id, groupName) => {
   return copyUploadApi(folderId, id, groupName).then((res) => {
     return res;

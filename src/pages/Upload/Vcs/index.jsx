@@ -17,13 +17,19 @@
 */
 
 import React, { useState, useEffect } from "react";
+
+// Widgets
 import {
   Alert,
   Button,
   InputContainer,
   Spinner,
 } from "../../../components/Widgets";
+
+// Common Fields for all the Uploads
 import CommonFields from "../../../components/Upload/CommonFields";
+
+// Required functions for calling APIs
 import { getAllFolders } from "../../../services/folders";
 import { createUploadVCS, getId, scheduleJobs } from "../../../services/upload";
 
@@ -82,14 +88,25 @@ const UploadFromVcs = () => {
     vcsUsername: "",
     vcsPassword: "",
   };
+
+  // Upload Id required for scheduling Analysis
   let uploadId;
 
+  // Data required for creating the upload
   const [uploadVcsData, setUploadFileData] = useState(initialState);
+
+  // Setting the list for all the folders names
   const [folderList, setFolderList] = useState(initialFolderList);
+
+  // Setting the data for scheduling analysis of an uploads
   const [scanFileData, setScanFileData] = useState(initialScanFileData);
+
+  // Data required for creating the upload from Version Control System
   const [vcsData, setVcsData] = useState(initialVcsData);
   const [loading, setLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
+
+  // State Variables for handling Error Boundaries
   const [message, setMessage] = useState();
 
   const handleSubmit = (e) => {
@@ -103,6 +120,7 @@ const UploadFromVcs = () => {
         });
         uploadId = res.message;
       })
+      // Calling the api for maximum 10 times to check whether the upload is unpacked by the agent
       .then(() => getId(uploadId, 10))
       .then(() =>
         setTimeout(

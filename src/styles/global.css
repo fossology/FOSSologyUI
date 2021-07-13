@@ -20,7 +20,7 @@
 * This file contains all styling which is common for all theme (which defines basic layout)
 */
 
-/* main wrapper for the header and pages */
+/* Main wrapper for the header and pages */
 .wrapper {
   min-height: calc(100vh - 3.3125rem); /* pushes the footer at bottom*/
   margin: auto;
@@ -30,7 +30,7 @@
   margin: auto;
 }
 
-/* font family */
+/* Font family */
 @font-face {
   font-family: Mulish-bold;
   src: url("../assets/fonts/Mulish-Bold.ttf");
@@ -57,7 +57,7 @@
   font-display: swap;
 }
 
-/* font weight */
+/* Font weight */
 .font-bold {
   margin: 0;
   font-family: Mulish-bold;
@@ -75,7 +75,7 @@
   font-family: Mulish-regular;
 }
 
-/* font size */
+/* Font size */
 .font-size-small {
   font-size: 0.875rem;
 }
@@ -103,6 +103,7 @@ h6 {
   font-family: Mulish-bold;
 }
 
+/* Header */
 @media (max-width: 991px) {
   .dropleft .dropdown-menu {
     right: unset !important;
