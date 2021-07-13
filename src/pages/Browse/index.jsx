@@ -18,11 +18,16 @@
 
 import React, { useState, useEffect } from "react";
 import arrayToTree from "array-to-tree";
+
+// Widgets
 import { InputContainer, Alert, Spinner } from "../../components/Widgets";
+
+// Tree View of folders
 import TreeContainer from "../../components/TreeContainer";
+
+// Required functions for calling APIs
 import getBrowseData from "../../services/browse";
 import { getAllFolders } from "../../services/folders";
-import "./index.css";
 
 const Browse = () => {
   const initialState = {
@@ -58,11 +63,20 @@ const Browse = () => {
     text: "",
   };
 
+  // Data required for getting the browse data list
   const [browseData, setBrowseData] = useState(initialState);
+
+  // Setting the browse data to the table
   const [browseDataList, setBrowseDataList] = useState();
-  const [loading, setLoading] = useState(true);
+
+  // Setting the count of pages
   const [pagesOptions, setPagesOptions] = useState();
+
+  // Setting the list for all the folders names
   const [folderList, setFolderList] = useState();
+
+  // State Variables for handling Error Boundaries
+  const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState(initialMessage);
   const [showMessage, setShowMessage] = useState(false);
 

@@ -57,6 +57,7 @@ import DeleteFolder from "./pages/Organize/Folder/Delete";
 import CreateFolder from "./pages/Organize/Folder/Create";
 import EditFolder from "./pages/Organize/Folder/Edit";
 import MoveFolder from "./pages/Organize/Folder/Move";
+import UnlinkFolder from "./pages/Organize/Folder/Unlink";
 import AdviceLicenses from "./pages/Organize/License/index";
 import UploadEdit from "./pages/Organize/Uploads/Edit";
 import UploadMove from "./pages/Organize/Uploads/Move";
@@ -70,7 +71,6 @@ import SelectLicense from "./pages/Admin/License/SelectLicense";
 
 // Default Page
 import ErrorPage from "./pages/ErrorPage";
-import UnlinkFolder from "./pages/Organize/Folder/Unlink";
 
 // Routes imports
 import routes from "./constants/routes";
@@ -162,7 +162,7 @@ const Routes = () => {
           component={ScheduleAgents}
         />
 
-        {/* Organize Folder pages */}
+        {/* Organize pages */}
         <PrivateLayout
           exact
           path={routes.organize.folders.delete}
@@ -185,6 +185,11 @@ const Routes = () => {
         />
         <PrivateLayout
           exact
+          path={routes.organize.folders.unlinkContent}
+          component={UnlinkFolder}
+        />
+        <PrivateLayout
+          exact
           path={routes.organize.licenses}
           component={AdviceLicenses}
         />
@@ -202,11 +207,6 @@ const Routes = () => {
           exact
           path={routes.organize.uploads.delete}
           component={UploadDelete}
-        />
-        <PrivateLayout
-          exact
-          path={routes.organize.folders.unlinkContent}
-          component={UnlinkFolder}
         />
 
         {/* Admin Page */}

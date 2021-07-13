@@ -20,6 +20,7 @@ import endpoints from "../constants/endpoints";
 import sendRequest from "./sendRequest";
 import { getToken } from "../shared/authHelper";
 
+// Fetching all the folders
 export const getAllFoldersApi = async () => {
   const url = endpoints.folders.getAll();
   return sendRequest({
@@ -31,6 +32,7 @@ export const getAllFoldersApi = async () => {
   });
 };
 
+// Fetching a single folder by its id
 export const getSingleFolderApi = async (id) => {
   const url = endpoints.folders.getSingle(id);
   return sendRequest({
@@ -42,6 +44,7 @@ export const getSingleFolderApi = async (id) => {
   });
 };
 
+// Deleting a folder by its id
 export const deleteFolderApi = async (id) => {
   const url = endpoints.folders.delete(id);
   return sendRequest({
@@ -53,6 +56,7 @@ export const deleteFolderApi = async (id) => {
   });
 };
 
+// Creating a folder
 export const createFolderApi = async (
   parentFolder,
   folderName,
@@ -71,6 +75,7 @@ export const createFolderApi = async (
   });
 };
 
+// Editing a folder properties
 export const editFolderApi = async (name, description, id) => {
   const url = endpoints.folders.edit(id);
   return sendRequest({
@@ -84,6 +89,7 @@ export const editFolderApi = async (name, description, id) => {
   });
 };
 
+// Moving and copying a folder into another folder
 export const moveCopyFolderApi = async (parent, id, action) => {
   const url = endpoints.folders.move(id);
   return sendRequest({

@@ -17,12 +17,16 @@
 */
 
 import React, { useState, useEffect } from "react";
+
+// Widgets
 import {
   Alert,
   Button,
   InputContainer,
   Spinner,
 } from "../../../../components/Widgets";
+
+// Required functions for calling APIs
 import { getAllFolders, createFolder } from "../../../../services/folders";
 
 const CreateFolder = () => {
@@ -43,11 +47,18 @@ const CreateFolder = () => {
     type: "success",
     text: "",
   };
+
+  // Data required for creating a folder
   const [createFolderData, setCreateFolderData] = useState(initialState);
+
+  // Setting the list for all the folders names
   const [folderList, setFolderList] = useState(initialFolderList);
+
+  // State Variables for handling Error Boundaries
   const [loading, setLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState(initialMessage);
+
   const { parentFolder, folderName, folderDescription } = createFolderData;
 
   const handleChange = (e) => {

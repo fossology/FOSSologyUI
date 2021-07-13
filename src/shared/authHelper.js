@@ -1,6 +1,6 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
- 
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
+
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -16,6 +16,7 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+// Helper Functions
 import {
   getCookie,
   getLocalStorage,
@@ -23,7 +24,7 @@ import {
   removeLocalStorage,
 } from "./storageHelper";
 
-// access user info from localstorage
+// Access user info from localstorage
 export const isAuth = () => {
   if (typeof window !== "undefined") {
     const cookieChecked = getCookie("token");
@@ -37,12 +38,14 @@ export const isAuth = () => {
   return false;
 };
 
+// Logging out the user
 export const logout = (next) => {
   removeCookie("token");
   removeLocalStorage("user");
   next();
 };
 
+// Updating the user info
 export const updateUser = (response, next) => {
   if (typeof window !== "undefined") {
     let auth = JSON.parse(localStorage.getItem("user"));
@@ -52,18 +55,22 @@ export const updateUser = (response, next) => {
   next();
 };
 
+// Getting the Bearer Token for Authorization
 export const getToken = () => {
   return getCookie("token");
 };
 
+// Getting the user info
 export const getUser = () => {
   return getLocalStorage("user");
 };
 
+// Getting the user name
 export const getUserName = () => {
   return getLocalStorage("user").name;
 };
 
+// Checking the role of a user
 export const isAdmin = () => {
   return getLocalStorage("user")?.accessLevel === "admin";
 };

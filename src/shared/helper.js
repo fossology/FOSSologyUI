@@ -16,9 +16,7 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import { getCookie } from "./storageHelper";
-
-// random string generator
+// Random string generator
 export const randomString = (length) => {
   let result = "";
   const characters =
@@ -30,7 +28,7 @@ export const randomString = (length) => {
   return result;
 };
 
-// get date in YYYY-MM-DD format
+// Get date in YYYY-MM-DD format
 export const getDate = (day) => {
   // eslint-disable-next-line no-extend-native, func-names
   Date.prototype.addDays = function (days) {
@@ -40,9 +38,4 @@ export const getDate = (day) => {
   };
   const date = new Date();
   return date.addDays(day).toISOString().split("T")[0];
-};
-
-// get the Authorization token
-export const getToken = () => {
-  return getCookie("token");
 };

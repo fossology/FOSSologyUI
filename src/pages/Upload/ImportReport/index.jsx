@@ -17,6 +17,8 @@
 */
 
 import React, { useState } from "react";
+
+// Widgets
 import { Button, InputContainer } from "../../../components/Widgets";
 
 const ImportReport = () => {
@@ -32,6 +34,8 @@ const ImportReport = () => {
     importDiscussed: true,
     copyright: false,
   };
+
+  // Data required for importing report
   const [importReportData, setImportReportData] = useState(initialState);
 
   const handleSubmit = (e) => {

@@ -16,8 +16,9 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-// React imports
 import React from "react";
+
+// Widgets
 import { Button, InputContainer } from "../../../components/Widgets";
 
 const OneShotCopyright = () => {

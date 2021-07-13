@@ -18,6 +18,7 @@
 
 import getAllLicenseApi from "../api/licenses";
 
+// Fetching the licenses with their kind i.e (candidate, main, all)
 const getAllLicense = (licenseData) => {
   return getAllLicenseApi(licenseData).then((res) => {
     return res;

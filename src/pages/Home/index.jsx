@@ -23,28 +23,40 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Form, Row, Col } from "react-bootstrap";
 
-// Custom component imports
+// Required functions for calling APIs
 import fetchToken from "../../services/auth";
 import { getUserSelf } from "../../services/users";
+
+// Routes
 import routes from "../../constants/routes";
+
+// Helper function for user authentication
 import { isAuth } from "../../shared/authHelper";
+
+// Widgets
 import { Alert, Button, Spinner } from "../../components/Widgets";
+
+// Features cards
 import Features from "./Features";
 
 // CSS imports
 import LoginForm from "./style";
 
 const Home = () => {
+  const history = useHistory();
+
+  // Data required for user login
   const [values, setValues] = useState({
     username: "",
     password: "",
   });
+
+  // State Variables for handling Error Boundaries
   const [loading, setLoading] = useState(false);
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
   const { username, password } = values;
-  const history = useHistory();
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });

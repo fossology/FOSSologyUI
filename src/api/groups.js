@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -20,6 +20,7 @@ import endpoints from "../constants/endpoints";
 import sendRequest from "./sendRequest";
 import { getToken } from "../shared/authHelper";
 
+// Fetching all the groups
 export const getAllGroupsApi = async () => {
   const url = endpoints.admin.groups.getAll();
   return sendRequest({
@@ -32,6 +33,7 @@ export const getAllGroupsApi = async () => {
   });
 };
 
+// Creating a group
 export const createGroupApi = async (name) => {
   const url = endpoints.admin.groups.create();
   return sendRequest({

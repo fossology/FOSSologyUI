@@ -20,6 +20,7 @@ import endpoints from "../constants/endpoints";
 import sendRequest from "./sendRequest";
 import { getToken } from "../shared/authHelper";
 
+// Getting uploads with folder id
 export const getUploadsByFolderIdApi = (id) => {
   const url = endpoints.organize.uploads.get(id);
   return sendRequest({
@@ -31,6 +32,7 @@ export const getUploadsByFolderIdApi = (id) => {
   });
 };
 
+// Deleting a upload with its id
 export const deleteUploadsApi = (id) => {
   const url = endpoints.organize.uploads.delete(id);
   return sendRequest({
@@ -42,6 +44,7 @@ export const deleteUploadsApi = (id) => {
   });
 };
 
+// Moving the upload into another folder
 export const moveUploadApi = (folderId, id, groupName) => {
   const url = endpoints.organize.uploads.move(id);
   return sendRequest({
@@ -55,6 +58,7 @@ export const moveUploadApi = (folderId, id, groupName) => {
   });
 };
 
+// Copying the upload into another folder
 export const copyUploadApi = (folderId, id, groupName) => {
   const url = endpoints.organize.uploads.copy(id);
   return sendRequest({
