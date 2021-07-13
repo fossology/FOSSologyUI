@@ -54,7 +54,7 @@ const treeDataFormat = {
 };
 treeDataFormat.children = PropTypes.arrayOf(PropTypes.shape(treeDataFormat));
 TreeContainer.propTypes = {
-  data: PropTypes.shape(PropTypes.arrayOf(treeDataFormat)),
+  data: PropTypes.arrayOf(PropTypes.shape(treeDataFormat)),
 };
 
 export default TreeContainer;
