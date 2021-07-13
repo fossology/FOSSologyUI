@@ -36,7 +36,9 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build pages
-        run: yarn build
+        run: |
+          export PUBLIC_URL=/FOSSologyUI
+          yarn build
 
       - name: Release to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.4
