@@ -35,7 +35,24 @@ const Browse = () => {
     recursive: true,
   };
 
-  const statusOptions = ["open", "in progress", "closed", "rejected"];
+  const statusOptions = [
+    {
+      id: 0,
+      name: "open",
+    },
+    {
+      id: 1,
+      name: "in progress",
+    },
+    {
+      id: 2,
+      name: "closed",
+    },
+    {
+      id: 3,
+      name: "rejected",
+    },
+  ];
   const entriesOptions = [
     {
       id: 10,
@@ -54,7 +71,16 @@ const Browse = () => {
       entry: "100",
     },
   ];
-  const assignOptions = ["me", "unassigned"];
+  const assignOptions = [
+    {
+      id: 0,
+      name: "me",
+    },
+    {
+      id: 1,
+      name: "unassigned",
+    },
+  ];
   const initialMessage = {
     type: "success",
     text: "",
@@ -183,19 +209,20 @@ const Browse = () => {
                       type="select"
                       onChange={(e) => handleChange(e)}
                       options={statusOptions}
+                      property="name"
                     />
                   </th>
-                  {/* <th />
-                <th /> */}
+                  <th />
+                  <th />
                   <th>
                     <InputContainer
                       name="status"
                       type="select"
                       onChange={(e) => handleChange(e)}
                       options={assignOptions}
+                      property="name"
                     />
                   </th>
-                  {/* <th /> */}
                 </tr>
                 <tr className="font-bold text-center font-size-sub-heading">
                   <th>Upload Name and Description</th>
@@ -219,6 +246,7 @@ const Browse = () => {
                         type="select"
                         onChange={(e) => handleChange(e)}
                         options={statusOptions}
+                        property="name"
                       />
                     </td>
                     <td>-</td>
@@ -229,6 +257,7 @@ const Browse = () => {
                         type="select"
                         onChange={(e) => handleChange(e)}
                         options={assignOptions}
+                        property="name"
                       />
                     </td>
                     <td>{data?.uploaddate.split(".")[0]}</td>
