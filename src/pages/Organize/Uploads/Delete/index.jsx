@@ -169,7 +169,7 @@ const UploadDelete = () => {
                   options={uploadFolderList}
                   value={uploadFolderList.id}
                   property="uploadname"
-                  multiple="multiple"
+                  multiple
                 >
                   Select the uploaded project to delete:
                 </InputContainer>
