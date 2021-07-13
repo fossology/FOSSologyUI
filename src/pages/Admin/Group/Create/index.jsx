@@ -17,12 +17,16 @@
 */
 
 import React, { useState } from "react";
+
+// Widgets
 import {
   Alert,
   Button,
   InputContainer,
   Spinner,
 } from "../../../../components/Widgets";
+
+// Required functions for calling APIs
 import { createGroup } from "../../../../services/groups";
 
 const GroupCreate = () => {
@@ -30,7 +34,10 @@ const GroupCreate = () => {
     type: "success",
     text: "",
   };
+
   const [groupName, setGroupName] = useState("");
+
+  // State Variables for handling Error Boundaries
   const [loading, setLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState(initialMessage);

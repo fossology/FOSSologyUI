@@ -18,11 +18,15 @@
 
 import sendRequest from "./sendRequest";
 import endpoints from "../constants/endpoints";
+
+// Constants for the user login
 import {
   tokenNameLength,
   tokenScope,
   tokenExpiryDays,
 } from "../constants/auth";
+
+// Helper functions for generating random string and getting date in the requied format
 import { randomString, getDate } from "../shared/helper";
 
 const fetchTokenApi = (username, password) => {

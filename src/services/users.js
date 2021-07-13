@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -19,6 +19,7 @@
 import { getUserSelfApi, getAllUsersApi, deleteUserApi } from "../api/users";
 import { setLocalStorage } from "../shared/storageHelper";
 
+// Fetching the self information
 export const getUserSelf = () => {
   return getUserSelfApi().then((res) => {
     setLocalStorage("user", res);
@@ -26,12 +27,14 @@ export const getUserSelf = () => {
   });
 };
 
+// Fetching all the users and returning their complete info
 export const getAllUsers = () => {
   return getAllUsersApi().then((res) => {
     return res;
   });
 };
 
+// Fetching all the users and returning their names
 export const getAllUsersName = () => {
   return getAllUsersApi().then((res) => {
     const modifiedUser = [];
@@ -45,6 +48,7 @@ export const getAllUsersName = () => {
   });
 };
 
+// Deleting the user info
 export const deleteUser = (id) => {
   return deleteUserApi(id).then((res) => {
     return res;

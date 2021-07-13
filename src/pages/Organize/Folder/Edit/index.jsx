@@ -17,12 +17,16 @@
 */
 
 import React, { useState, useEffect } from "react";
+
+// Widgets
 import {
   Alert,
   Button,
   InputContainer,
   Spinner,
 } from "../../../../components/Widgets";
+
+// Required functions for calling APIs
 import {
   getAllFolders,
   editFolder,
@@ -47,11 +51,18 @@ const EditFolder = () => {
     type: "success",
     text: "",
   };
+
+  // Data required for editing the folder properties
   const [editFolderData, setEditFolderData] = useState(initialState);
+
+  // Setting the list for all the folders names
   const [folderList, setFolderList] = useState(initialFolderList);
+
+  // State Variables for handling Error Boundaries
   const [loading, setLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState(initialMessage);
+
   const { name, description, id } = editFolderData;
 
   const handleChange = (e) => {

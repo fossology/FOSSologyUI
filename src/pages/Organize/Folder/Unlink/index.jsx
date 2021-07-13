@@ -17,12 +17,16 @@
 */
 
 import React, { useState, useEffect } from "react";
+
+// Widgets
 import {
   Alert,
   Button,
   InputContainer,
   Spinner,
 } from "../../../../components/Widgets";
+
+// Required functions for calling APIs
 import { getAllFolders, deleteFolder } from "../../../../services/folders";
 
 const UnlinkFolder = () => {
@@ -44,8 +48,14 @@ const UnlinkFolder = () => {
     type: "success",
     text: "",
   };
+
+  // Data required for unlinking a folder
   const [unlinkFolderData, setUnlinkFolderData] = useState(initialState);
+
+  // Setting the list for all the folders names
   const [folderList, setFolderList] = useState(initialFolderList);
+
+  // State Variables for handling Error Boundaries
   const [loading, setLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState(initialMessage);

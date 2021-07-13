@@ -17,13 +17,19 @@
 */
 
 import React, { useState, useEffect } from "react";
+
+// Widgets
 import {
   Alert,
   Button,
   InputContainer,
   Spinner,
 } from "../../../components/Widgets";
+
+// Common Fields for all the Uploads
 import CommonFields from "../../../components/Upload/CommonFields";
+
+// Required functions for calling APIs
 import { createUploadFile, scheduleJobs } from "../../../services/upload";
 import { getAllFolders } from "../../../services/folders";
 import { defaultAgentsList } from "../../../shared/storageHelper";
@@ -60,11 +66,19 @@ const UploadFile = () => {
     },
   ];
 
+  // Upload Id required for scheduling Analysis
   let uploadId;
 
+  // Data required for creating the upload
   const [uploadFileData, setUploadFileData] = useState(initialState);
+
+  // Setting the list for all the folders names
   const [folderList, setFolderList] = useState(initialFolderList);
+
+  // Setting the data for scheduling analysis of an uploads
   const [scanFileData, setScanFileData] = useState(initialScanFileData);
+
+  // State Variables for handling Error Boundaries
   const [loading, setLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState();

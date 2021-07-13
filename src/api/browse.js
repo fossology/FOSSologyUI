@@ -19,8 +19,9 @@
 import PropTypes from "prop-types";
 import sendRequest from "./sendRequest";
 import endpoints from "../constants/endpoints";
-import { getToken } from "../shared/helper";
+import { getToken } from "../shared/authHelper";
 
+// Fetching all the Uploads with the give parameters of page, limit
 const browseFiles = async ({ folderId, page, limit, groupName, recursive }) => {
   const url = endpoints.browse.get();
   const token = await getToken();

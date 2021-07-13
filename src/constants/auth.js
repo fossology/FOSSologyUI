@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -16,6 +16,11 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+// Length of the random string for login
 export const tokenNameLength = process.env.TOKEN_NAME_LENGTH || 40;
+
+// By default the scope for user is to write
 export const tokenScope = process.env.TOKEN_SCOPE || "write";
+
+// Authorization token expiry days
 export const tokenExpiryDays = process.env.TOKEN_EXPIRY_DAYS || 2;

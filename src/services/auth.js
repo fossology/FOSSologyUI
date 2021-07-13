@@ -1,6 +1,6 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
- 
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
+
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -19,6 +19,7 @@
 import fetchTokenApi from "../api/auth";
 import { setCookie } from "../shared/storageHelper";
 
+// Fetching the Token
 const fetchToken = ({ username, password }) => {
   return fetchTokenApi(username, password).then((res) => {
     setCookie("token", res.Authorization);

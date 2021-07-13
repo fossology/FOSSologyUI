@@ -18,8 +18,9 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import InputContainer from "../../../Widgets/Input";
-import Tooltip from "../../../Widgets/Tooltip";
+
+// Widgets
+import { InputContainer, Tooltip } from "../../../Widgets";
 
 function IgnoreScm({ ignoreScm, handleChange }) {
   return (

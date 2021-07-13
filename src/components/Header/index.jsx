@@ -16,8 +16,11 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+// React Imports
 import React, { useContext } from "react";
 import { useHistory, Link } from "react-router-dom";
+
+// React Bootstrap Imports
 import {
   Navbar,
   Nav,
@@ -27,28 +30,35 @@ import {
 } from "react-bootstrap";
 import { QuestionCircleFill, PersonCircle } from "react-bootstrap-icons";
 
-import Image from "../Widgets/Image";
-import routes from "../../constants/routes";
-import { logout, isAuth, getUserName, isAdmin } from "../../shared/authHelper";
+// Widgets
+import { Image } from "../Widgets";
+
+// Assets
 import logo from "../../assets/images/logo.svg";
+
+// Routes for all the pages
+import routes from "../../constants/routes";
+
+// External Link for documention
 import externalLinks from "../../constants/externalLinks";
+
+// Global Context for theme
 import { GlobalContext } from "../../context";
+
+// Helper Functions
+import { logout, isAuth, getUserName, isAdmin } from "../../shared/authHelper";
 
 const Header = () => {
   const { setTheme } = useContext(GlobalContext);
-
   const history = useHistory();
-
   const handleLogout = () => {
     logout(() => {
       history.push(routes.home);
     });
   };
-
   const handleLogin = () => {
     history.push(routes.home);
   };
-
   return (
     <div>
       <Navbar expand="lg" className="bg-primary-color py-0 pl-0 text-white">
@@ -65,6 +75,8 @@ const Header = () => {
             <Nav.Link as={Link} to={routes.home}>
               Home
             </Nav.Link>
+
+            {/* Checking whether the user is authenticated */}
             {isAuth() && (
               <>
                 <Nav.Link as={Link} to={routes.search}>
@@ -190,6 +202,8 @@ const Header = () => {
                     </div>
                   </DropdownButton>
                 </NavDropdown>
+
+                {/* Checking whether user is having the role of admin */}
                 {isAdmin() && (
                   <NavDropdown title="Admin" id="admin">
                     <DropdownButton
@@ -260,6 +274,8 @@ const Header = () => {
               </>
             )}
           </Nav>
+
+          {/* Help Pages */}
           <Dropdown drop="left">
             <Dropdown.Toggle variant="link" bsPrefix="p-0">
               <QuestionCircleFill color="#fff" size={40} className="m-2" />
@@ -286,6 +302,8 @@ const Header = () => {
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
+
+          {/* User Info */}
           <Dropdown drop="left">
             <Dropdown.Toggle variant="link" bsPrefix="p-0">
               <PersonCircle color="#fff" size={40} className="m-2" />

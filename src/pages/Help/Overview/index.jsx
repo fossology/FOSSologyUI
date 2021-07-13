@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -17,9 +17,15 @@
 */
 
 import React from "react";
+
+// Widgets
 import { Image } from "../../../components/Widgets";
+
+// Assets
 import microscope from "../../../assets/images/microscope.svg";
 import fossologyFlow from "../../../assets/images/fossologyFlow.svg";
+
+// External Link
 import externalLinks from "../../../constants/externalLinks";
 
 const Overview = () => {

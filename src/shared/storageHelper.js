@@ -18,7 +18,7 @@
 
 import cookie from "js-cookie";
 
-// set in cookie
+// Set in cookie
 export const setCookie = (key, value) => {
   if (window !== "undefined") {
     cookie.set(key, value, {
@@ -29,7 +29,7 @@ export const setCookie = (key, value) => {
   }
 };
 
-// remove from cookie
+// Remove from cookie
 export const removeCookie = (key) => {
   if (window !== "undefined") {
     cookie.remove(key, {
@@ -38,7 +38,7 @@ export const removeCookie = (key) => {
   }
 };
 
-// get from cookie
+// Get from cookie
 export const getCookie = (key) => {
   if (window !== "undefined") {
     return cookie.get(key);
@@ -46,14 +46,14 @@ export const getCookie = (key) => {
   return null;
 };
 
-// set in localstorage
+// Set in localstorage
 export const setLocalStorage = (key, value) => {
   if (typeof window !== "undefined") {
     localStorage.setItem(key, JSON.stringify(value));
   }
 };
 
-// get from localstorage
+// Get from localstorage
 export const getLocalStorage = (key) => {
   if (typeof window !== "undefined") {
     return JSON.parse(localStorage.getItem(key));
@@ -61,7 +61,7 @@ export const getLocalStorage = (key) => {
   return null;
 };
 
-// remove from localstorage
+// Remove from localstorage
 export const removeLocalStorage = (key) => {
   if (typeof window !== "undefined") {
     localStorage.removeItem(key);

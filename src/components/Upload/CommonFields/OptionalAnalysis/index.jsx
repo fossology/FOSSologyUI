@@ -18,7 +18,9 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import InputContainer from "../../../Widgets/Input";
+
+// Widgets
+import { InputContainer } from "../../../Widgets";
 
 function OptionalAnalysis({ analysis, handleChange }) {
   return (

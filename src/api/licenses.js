@@ -18,8 +18,9 @@
 
 import sendRequest from "./sendRequest";
 import endpoints from "../constants/endpoints";
-import { getToken } from "../shared/helper";
+import { getToken } from "../shared/authHelper";
 
+// Fetching the licenses with their kind i.e (candidate, main, all)
 const getAllLicenseApi = async ({ page, limit, groupName, kind }) => {
   const url = endpoints.license.get(kind);
   const token = await getToken();
