@@ -122,7 +122,7 @@ InputContainer.propTypes = {
   children: PropTypes.node,
   options: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number,
+      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
       name: PropTypes.string,
       description: PropTypes.string,
       parent: PropTypes.number,
