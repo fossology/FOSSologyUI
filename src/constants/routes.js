@@ -16,7 +16,7 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-export const routes = {
+const routes = {
   home: "/",
   login: "/login",
   search: "/search",
@@ -73,3 +73,5 @@ export const routes = {
     },
   },
 };
+
+export default routes;

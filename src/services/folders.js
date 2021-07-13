@@ -25,46 +25,50 @@ import {
   moveCopyFolderApi,
 } from "../api/folders";
 
-export function getAllFolders() {
+export const getAllFolders = () => {
   return getAllFoldersApi().then((res) => {
     return res;
   });
-}
+};
 
-export function getSingleFolder(id) {
+export const getSingleFolder = (id) => {
   return getSingleFolderApi(id).then((res) => {
     return res;
   });
-}
+};
 
-export function deleteFolder({ id }) {
+export const deleteFolder = ({ id }) => {
   return deleteFolderApi(id).then((res) => {
     return res;
   });
-}
+};
 
-export function createFolder({ parentFolder, folderName, folderDescription }) {
+export const createFolder = ({
+  parentFolder,
+  folderName,
+  folderDescription,
+}) => {
   return createFolderApi(parentFolder, folderName, folderDescription).then(
     (res) => {
       return res;
     }
   );
-}
+};
 
-export function editFolder({ name, description, id }) {
+export const editFolder = ({ name, description, id }) => {
   return editFolderApi(name, description, id).then((res) => {
     return res;
   });
-}
+};
 
-export function moveFolder({ parent, id }) {
+export const moveFolder = ({ parent, id }) => {
   return moveCopyFolderApi(parent, id, "move").then((res) => {
     return res;
   });
-}
+};
 
-export function copyFolder({ parent, id }) {
+export const copyFolder = ({ parent, id }) => {
   return moveCopyFolderApi(parent, id, "copy").then((res) => {
     return res;
   });
-}
+};

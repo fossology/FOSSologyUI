@@ -18,14 +18,14 @@
 
 import { getAllGroupsApi, createGroupApi } from "../api/groups";
 
-export function getAllGroups() {
+export const getAllGroups = () => {
   return getAllGroupsApi().then((res) => {
     return res;
   });
-}
+};
 
-export function createGroup(name) {
+export const createGroup = (name) => {
   return createGroupApi(name).then((res) => {
     return res;
   });
-}
+};

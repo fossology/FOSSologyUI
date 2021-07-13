@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -17,12 +17,12 @@
 */
 
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import Button from "../../../components/Widgets/Button";
 import InputContainer from "../../../components/Widgets/Input";
 import Alert from "../../../components/Widgets/Alert";
-import { getAllLicense } from "../../../services/licenses";
-import { routes } from "../../../constants/routes";
-import { useHistory } from "react-router-dom";
+import getAllLicense from "../../../services/licenses";
+import routes from "../../../constants/routes";
 
 const AdviceLicenses = () => {
   const history = useHistory();
@@ -121,7 +121,7 @@ const AdviceLicenses = () => {
                 {licenseDataList &&
                   licenseDataList.map((license) => (
                     <tr className="text-center" key={license.id}>
-                      <td></td>
+                      <td />
                       <td>{license.shortName}</td>
                       <td>{license.fullName}</td>
                       <td className="py-0 px-0 candidate-license-text">
@@ -134,7 +134,7 @@ const AdviceLicenses = () => {
                       <td>
                         <a href={license.url}>{license.url}</a>
                       </td>
-                      <td></td>
+                      <td />
                     </tr>
                   ))}
               </tbody>

@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -17,10 +17,10 @@
 */
 
 import sendRequest from "./sendRequest";
-import { endpoints } from "../constants/endpoints";
+import endpoints from "../constants/endpoints";
 import { getToken } from "../shared/helper";
 
-export const getAllLicenseApi = async ({ page, limit, groupName, kind }) => {
+const getAllLicenseApi = async ({ page, limit, groupName, kind }) => {
   const url = endpoints.license.get(kind);
   const token = await getToken();
   return sendRequest({
@@ -34,3 +34,5 @@ export const getAllLicenseApi = async ({ page, limit, groupName, kind }) => {
     },
   });
 };
+
+export default getAllLicenseApi;
