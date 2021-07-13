@@ -28,7 +28,14 @@ import {
   Dropdown,
   DropdownButton,
 } from "react-bootstrap";
-import { QuestionCircleFill, PersonCircle } from "react-bootstrap-icons";
+import {
+  QuestionCircleFill,
+  PersonCircle,
+  PeopleFill,
+} from "react-bootstrap-icons";
+
+// List of all accessible groups
+import { getAllGroups } from "services/groups";
 
 // Widgets
 import Image from "components/Widgets/Image";
@@ -304,6 +311,17 @@ const Header = () => {
           </Dropdown>
 
           {/* User Info */}
+          <Dropdown drop="left">
+            <Dropdown.Toggle variant="link" bsPrefix="p-0">
+              <PeopleFill color="#fff" size={40} className="m-2" />
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              {getAllGroups() &&
+                getAllGroups().map((group) => (
+                  <Dropdown.Item key={group.id}>{group.name}</Dropdown.Item>
+                ))}
+            </Dropdown.Menu>
+          </Dropdown>
           <Dropdown drop="left">
             <Dropdown.Toggle variant="link" bsPrefix="p-0">
               <PersonCircle color="#fff" size={40} className="m-2" />
