@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -17,10 +17,12 @@
 */
 
 import React, { useState, useEffect } from "react";
-import { Spinner } from "react-bootstrap";
-import InputContainer from "../../../../components/Widgets/Input";
-import Alert from "../../../../components/Widgets/Alert";
-import Button from "../../../../components/Widgets/Button";
+import {
+  Alert,
+  Button,
+  InputContainer,
+  Spinner,
+} from "../../../../components/Widgets";
 import { getAllUsersName, deleteUser } from "../../../../services/users";
 
 const DeleteUser = () => {

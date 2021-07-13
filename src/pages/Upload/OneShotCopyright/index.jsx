@@ -18,8 +18,7 @@
 
 // React imports
 import React from "react";
-import Button from "../../../components/Widgets/Button";
-import InputContainer from "../../../components/Widgets/Input";
+import { Button, InputContainer } from "../../../components/Widgets";
 
 const OneShotCopyright = () => {
   const handleSubmit = (e) => {

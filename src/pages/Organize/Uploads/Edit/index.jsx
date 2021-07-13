@@ -17,9 +17,7 @@
 */
 
 import React, { useState, useEffect } from "react";
-import InputContainer from "../../../../components/Widgets/Input";
-import Button from "../../../../components/Widgets/Button";
-import Alert from "../../../../components/Widgets/Alert";
+import { Alert, Button, InputContainer } from "../../../../components/Widgets";
 import { getAllFolders } from "../../../../services/folders";
 import { getUploadsFolderId } from "../../../../services/organizeUploads";
 import { getId } from "../../../../services/upload";
