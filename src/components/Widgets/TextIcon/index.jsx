@@ -16,10 +16,12 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from "react";
+import React, { useContext } from "react";
+import { ThemeContext } from "styled-components";
 import PropTypes from "prop-types";
 
 const TextIcon = ({ text, className }) => {
+  const themeContext = useContext(ThemeContext);
   return (
     <svg width="40" height="40" className={className}>
       <circle cx="20" cy="20" r="20" fill="white" />
@@ -27,7 +29,7 @@ const TextIcon = ({ text, className }) => {
         x="50%"
         y="50%"
         textAnchor="middle"
-        fill="#DC3545"
+        fill={themeContext.primaryColor}
         fontSize="18px"
         alignmentBaseline="middle"
         fontWeight="bold"
