@@ -17,11 +17,13 @@
 */
 
 import React, { useState } from "react";
-import { Spinner } from "react-bootstrap";
 import search from "../../services/search";
-import InputContainer from "../../components/Widgets/Input";
-import Alert from "../../components/Widgets/Alert";
-import Button from "../../components/Widgets/Button";
+import {
+  Alert,
+  Button,
+  InputContainer,
+  Spinner,
+} from "../../components/Widgets";
 
 const Search = () => {
   const initialState = {

@@ -17,8 +17,7 @@
 */
 
 import React from "react";
-import InputContainer from "../../../../components/Widgets/Input";
-import Button from "../../../../components/Widgets/Button";
+import { InputContainer, Button } from "../../../../components/Widgets";
 
 const AddLicense = () => {
   const options = [
