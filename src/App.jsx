@@ -23,7 +23,6 @@ import { lightTheme, darkTheme } from "./styles/theme";
 import Routes from "./Routes";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-virtualized-tree/lib/main.css";
-// import "material-icons/css/material-icons.min.css";
 import GlobalStyles from "./styles/globalStyle";
 import "./styles/global.css";
 
