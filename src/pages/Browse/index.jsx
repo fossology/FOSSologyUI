@@ -157,16 +157,17 @@ const Browse = () => {
                     Uploads in Software Repository
                   </th>
                 </tr>
-                <tr className="d-flex font-demi">
-                  <span className="mt-1">Show entries: </span>
-                  <InputContainer
-                    name="limit"
-                    type="select"
-                    onChange={(e) => handleChange(e)}
-                    options={entriesOptions}
-                    property="entry"
-                    className="mt-n4 ml-3"
-                  />
+                <tr className="font-demi">
+                  <td colSpan="6" className="p-2 m-2">
+                    <span className="mt-1">Show entries: </span>
+                    <InputContainer
+                      name="limit"
+                      type="select"
+                      onChange={(e) => handleChange(e)}
+                      options={entriesOptions}
+                      property="entry"
+                    />
+                  </td>
                 </tr>
                 <tr>
                   <th>
