@@ -112,7 +112,7 @@ const UnlinkFolder = () => {
       {showMessage && (
         <Alert
           type={message.type}
-          onClose={setShowMessage}
+          setShow={setShowMessage}
           message={message.text}
         />
       )}
