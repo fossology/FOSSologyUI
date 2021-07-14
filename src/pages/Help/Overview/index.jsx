@@ -19,7 +19,7 @@
 import React from "react";
 
 // Widgets
-import { Image } from "../../../components/Widgets";
+import Image from "../../../components/Widgets/Image";
 
 // Assets
 import microscope from "../../../assets/images/microscope.svg";

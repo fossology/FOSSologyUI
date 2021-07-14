@@ -20,7 +20,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 // Widgets
-import { InputContainer } from "../../../Widgets";
+import InputContainer from "../../../Widgets/Input";
 
 function OptionalAnalysis({ analysis, handleChange }) {
   return (
