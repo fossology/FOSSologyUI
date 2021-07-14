@@ -31,7 +31,7 @@ import {
 import { QuestionCircleFill, PersonCircle } from "react-bootstrap-icons";
 
 // Widgets
-import { Image } from "../Widgets";
+import Image from "../Widgets/Image";
 
 // Assets
 import logo from "../../assets/images/logo.svg";
