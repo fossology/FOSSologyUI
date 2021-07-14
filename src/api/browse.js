@@ -22,14 +22,13 @@ import endpoints from "../constants/endpoints";
 import { getToken } from "../shared/authHelper";
 
 // Fetching all the Uploads with the give parameters of page, limit
-const browseFiles = async ({ folderId, page, limit, groupName, recursive }) => {
+const browseFiles = ({ folderId, page, limit, groupName, recursive }) => {
   const url = endpoints.browse.get();
-  const token = await getToken();
   return sendRequest({
     url,
     method: "GET",
     headers: {
-      Authorization: token,
+      Authorization: getToken(),
       page,
       limit,
       groupName,
