@@ -19,7 +19,7 @@
 import getJobApi from "../api/jobs";
 
 // Fetching the jobs
-export const getJob = (jobId) => {
+const getJob = (jobId) => {
   return getJobApi(jobId).then((res) => {
     return res.entity.map((jsonObject) => {
       const tag = {};
