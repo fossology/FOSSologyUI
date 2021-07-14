@@ -16,6 +16,6 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-export const tokenNameLength = 40;
-export const tokenScope = "write";
-export const tokenExpiryDays = 2;
+export const tokenNameLength = process.env.TOKEN_NAME_LENGTH || 40;
+export const tokenScope = process.env.TOKEN_SCOPE || "write";
+export const tokenExpiryDays = process.env.TOKEN_EXPIRY_DAYS || 2;
