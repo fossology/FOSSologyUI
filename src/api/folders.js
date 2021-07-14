@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -21,43 +21,43 @@ import sendRequest from "./sendRequest";
 import { getToken } from "../shared/authHelper";
 
 // Fetching all the folders
-export const getAllFoldersApi = async () => {
+export const getAllFoldersApi = () => {
   const url = endpoints.folders.getAll();
   return sendRequest({
     url,
     method: "GET",
     headers: {
-      Authorization: await getToken(),
+      Authorization: getToken(),
     },
   });
 };
 
 // Fetching a single folder by its id
-export const getSingleFolderApi = async (id) => {
+export const getSingleFolderApi = (id) => {
   const url = endpoints.folders.getSingle(id);
   return sendRequest({
     url,
     method: "GET",
     headers: {
-      Authorization: await getToken(),
+      Authorization: getToken(),
     },
   });
 };
 
 // Deleting a folder by its id
-export const deleteFolderApi = async (id) => {
+export const deleteFolderApi = (id) => {
   const url = endpoints.folders.delete(id);
   return sendRequest({
     url,
     method: "DELETE",
     headers: {
-      Authorization: await getToken(),
+      Authorization: getToken(),
     },
   });
 };
 
 // Creating a folder
-export const createFolderApi = async (
+export const createFolderApi = (
   parentFolder,
   folderName,
   folderDescription
@@ -67,7 +67,7 @@ export const createFolderApi = async (
     url,
     method: "POST",
     headers: {
-      Authorization: await getToken(),
+      Authorization: getToken(),
       parentFolder,
       folderName,
       folderDescription,
@@ -76,13 +76,13 @@ export const createFolderApi = async (
 };
 
 // Editing a folder properties
-export const editFolderApi = async (name, description, id) => {
+export const editFolderApi = (name, description, id) => {
   const url = endpoints.folders.edit(id);
   return sendRequest({
     url,
     method: "PATCH",
     headers: {
-      Authorization: await getToken(),
+      Authorization: getToken(),
       name,
       description,
     },
@@ -90,13 +90,13 @@ export const editFolderApi = async (name, description, id) => {
 };
 
 // Moving and copying a folder into another folder
-export const moveCopyFolderApi = async (parent, id, action) => {
+export const moveCopyFolderApi = (parent, id, action) => {
   const url = endpoints.folders.move(id);
   return sendRequest({
     url,
     method: "PUT",
     headers: {
-      Authorization: await getToken(),
+      Authorization: getToken(),
       parent,
       action,
     },

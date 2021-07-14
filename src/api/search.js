@@ -22,7 +22,7 @@ import endpoints from "../constants/endpoints";
 import { getToken } from "../shared/authHelper";
 
 // Fetching all the uploads on the basis of search criteria
-const searchFiles = async ({
+const searchFiles = ({
   groupName,
   searchType,
   uploadId,
@@ -34,12 +34,11 @@ const searchFiles = async ({
   copyright,
 }) => {
   const url = endpoints.search.search();
-  const token = await getToken();
   return sendRequest({
     url,
     method: "GET",
     headers: {
-      Authorization: token,
+      Authorization: getToken(),
       groupName,
       searchType,
       uploadId,

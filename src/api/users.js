@@ -21,39 +21,39 @@ import endpoints from "../constants/endpoints";
 import { getToken } from "../shared/authHelper";
 
 // Fetching the self information
-export const getUserSelfApi = async () => {
+export const getUserSelfApi = () => {
   const url = endpoints.users.self();
   return sendRequest({
     url,
     method: "GET",
     headers: {
-      Authorization: await getToken(),
+      Authorization: getToken(),
     },
   });
 };
 
 // Fetching all the users and returning their complete info
-export const getAllUsersApi = async () => {
+export const getAllUsersApi = () => {
   const url = endpoints.users.getAll();
   return sendRequest({
     url,
     method: "GET",
     credentials: "include",
     headers: {
-      Authorization: await getToken(),
+      Authorization: getToken(),
     },
   });
 };
 
 // Deleting the user info
-export const deleteUserApi = async (id) => {
+export const deleteUserApi = (id) => {
   const url = endpoints.users.delete(id);
   return sendRequest({
     url,
     method: "DELETE",
     credentials: "include",
     headers: {
-      Authorization: await getToken(),
+      Authorization: getToken(),
     },
   });
 };

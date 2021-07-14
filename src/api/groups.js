@@ -21,27 +21,27 @@ import sendRequest from "./sendRequest";
 import { getToken } from "../shared/authHelper";
 
 // Fetching all the groups
-export const getAllGroupsApi = async () => {
+export const getAllGroupsApi = () => {
   const url = endpoints.admin.groups.getAll();
   return sendRequest({
     url,
     method: "GET",
     credentials: "include",
     headers: {
-      Authorization: await getToken(),
+      Authorization: getToken(),
     },
   });
 };
 
 // Creating a group
-export const createGroupApi = async (name) => {
+export const createGroupApi = (name) => {
   const url = endpoints.admin.groups.create();
   return sendRequest({
     url,
     method: "POST",
     credentials: "include",
     headers: {
-      Authorization: await getToken(),
+      Authorization: getToken(),
       name,
     },
   });
