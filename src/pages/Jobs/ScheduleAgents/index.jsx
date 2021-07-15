@@ -165,7 +165,7 @@ const ScheduleAgents = () => {
       ...initialBrowseData,
       folderId: scheduleAnalysisData.folderId,
     }).then((res) => {
-      setUploadList(res);
+      setUploadList(res.res);
     });
   }, [scheduleAnalysisData.folderId]);
 
