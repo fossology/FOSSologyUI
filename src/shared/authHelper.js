@@ -29,7 +29,7 @@ export const isAuth = () => {
   if (typeof window !== "undefined") {
     const cookieChecked = getCookie("token");
     if (cookieChecked) {
-      if (localStorage.getItem("user")) {
+      if (localStorage.getItem("user") && localStorage.getItem("groups")) {
         return true;
       }
       return false;
@@ -42,6 +42,7 @@ export const isAuth = () => {
 export const logout = (next) => {
   removeCookie("token");
   removeLocalStorage("user");
+  removeLocalStorage("groups");
   next();
 };
 
