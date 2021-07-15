@@ -77,7 +77,7 @@ import { routes } from "./constants/routes";
 
 const Routes = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Switch>
         {/* Home Page */}
         <PublicLayout exact path={routes.home} component={Home} />
