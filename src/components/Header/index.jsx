@@ -35,6 +35,7 @@ import { getAllGroups } from "services/groups";
 
 // Widgets
 import Image from "components/Widgets/Image";
+import TextIcon from "components/Widgets/TextIcon";
 
 // Assets
 import logo from "assets/images/logo.svg";
