@@ -19,7 +19,7 @@
 import React, { useState } from "react";
 
 // Widgets
-import { Button, InputContainer } from "../../../components/Widgets";
+import { Button, InputContainer } from "components/Widgets";
 
 const ImportReport = () => {
   const initialState = {

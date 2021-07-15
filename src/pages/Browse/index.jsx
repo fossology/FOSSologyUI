@@ -20,14 +20,14 @@ import React, { useState, useEffect } from "react";
 import arrayToTree from "array-to-tree";
 
 // Widgets
-import { InputContainer, Alert } from "../../components/Widgets";
+import { InputContainer, Alert } from "components/Widgets";
 
 // Tree View of folders
-import TreeContainer from "../../components/TreeContainer";
+import TreeContainer from "components/TreeContainer";
 
 // Required functions for calling APIs
-import getBrowseData from "../../services/browse";
-import { getAllFolders } from "../../services/folders";
+import getBrowseData from "services/browse";
+import { getAllFolders } from "services/folders";
 
 const Browse = () => {
   const initialState = {

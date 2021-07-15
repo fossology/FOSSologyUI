@@ -23,7 +23,7 @@ import {
   deleteFolderApi,
   editFolderApi,
   moveCopyFolderApi,
-} from "../api/folders";
+} from "api/folders";
 
 // Fetching all the folders
 export const getAllFolders = () => {

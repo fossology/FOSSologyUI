@@ -16,7 +16,7 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import { getAllGroupsApi, createGroupApi } from "../api/groups";
+import { getAllGroupsApi, createGroupApi } from "api/groups";
 
 // Fetching all the groups
 export const getAllGroups = () => {

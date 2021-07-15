@@ -20,13 +20,13 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
 // Widgets
-import { Alert, Button, InputContainer } from "../../../components/Widgets";
+import { Alert, Button, InputContainer } from "components/Widgets";
 
 // Required functions for calling APIs
-import getAllLicense from "../../../services/licenses";
+import getAllLicense from "services/licenses";
 
 // Routes
-import routes from "../../../constants/routes";
+import routes from "constants/routes";
 
 const AdviceLicenses = () => {
   const history = useHistory();
