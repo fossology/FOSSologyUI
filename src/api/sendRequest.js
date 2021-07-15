@@ -17,13 +17,13 @@
 */
 
 import { stringify } from "query-string";
-import { logout } from "../shared/authHelper";
+import { logout } from "shared/authHelper";
 
 // Route for the home
-import routes from "../constants/routes";
+import routes from "constants/routes";
 
 // Helper function for setting the item in Localstorage
-import { setLocalStorage } from "../shared/storageHelper";
+import { setLocalStorage } from "shared/storageHelper";
 
 const sendRequest = ({
   url,
