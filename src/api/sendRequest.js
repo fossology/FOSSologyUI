@@ -24,7 +24,7 @@ import { setLocalStorage } from "../shared/storageHelper";
 const sendRequest = ({
   url,
   method,
-  credentials = "include",
+  credentials = false,
   body,
   headers = {},
   queryParams,
@@ -95,14 +95,11 @@ const sendRequest = ({
           return true;
         });
       }
-      return Promise.reject(
-        new Error({
-          status: res.status,
-          ok: false,
-          message: json.message,
-          body: json,
-        })
-      );
+      const error = new Error(json.message);
+      error.body = json;
+      error.status = res.status;
+      error.ok = false;
+      return Promise.reject(error);
     });
   });
 };
