@@ -19,14 +19,14 @@
 import React from "react";
 
 // Widgets
-import Image from "../../../components/Widgets/Image";
+import Image from "components/Widgets/Image";
 
 // Assets
-import microscope from "../../../assets/images/microscope.svg";
-import fossologyFlow from "../../../assets/images/fossologyFlow.svg";
+import microscope from "assets/images/microscope.svg";
+import fossologyFlow from "assets/images/fossologyFlow.svg";
 
 // External Link
-import externalLinks from "../../../constants/externalLinks";
+import externalLinks from "constants/externalLinks";
 
 const Overview = () => {
   return (

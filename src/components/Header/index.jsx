@@ -31,22 +31,22 @@ import {
 import { QuestionCircleFill, PersonCircle } from "react-bootstrap-icons";
 
 // Widgets
-import Image from "../Widgets/Image";
+import Image from "components/Widgets/Image";
 
 // Assets
-import logo from "../../assets/images/logo.svg";
+import logo from "assets/images/logo.svg";
 
 // Routes for all the pages
-import routes from "../../constants/routes";
+import routes from "constants/routes";
 
 // External Link for documention
-import externalLinks from "../../constants/externalLinks";
+import externalLinks from "constants/externalLinks";
 
 // Global Context for theme
-import { GlobalContext } from "../../context";
+import { GlobalContext } from "context";
 
 // Helper Functions
-import { logout, isAuth, getUserName, isAdmin } from "../../shared/authHelper";
+import { logout, isAuth, getUserName, isAdmin } from "shared/authHelper";
 
 const Header = () => {
   const { setTheme } = useContext(GlobalContext);

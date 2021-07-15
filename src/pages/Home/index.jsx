@@ -24,17 +24,17 @@ import { useHistory } from "react-router-dom";
 import { Form, Row, Col } from "react-bootstrap";
 
 // Required functions for calling APIs
-import fetchToken from "../../services/auth";
-import { getUserSelf } from "../../services/users";
+import fetchToken from "services/auth";
+import { getUserSelf } from "services/users";
 
 // Routes
-import routes from "../../constants/routes";
+import routes from "constants/routes";
 
 // Helper function for user authentication
-import { isAuth } from "../../shared/authHelper";
+import { isAuth } from "shared/authHelper";
 
 // Widgets
-import { Alert, Button, Spinner } from "../../components/Widgets";
+import { Alert, Button, Spinner } from "components/Widgets";
 
 // Features cards
 import Features from "./Features";

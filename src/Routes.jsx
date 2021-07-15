@@ -21,59 +21,59 @@ import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 // Guards imports
-import PublicLayout from "./shared/PublicLayout";
-import PrivateLayout from "./shared/PrivateLayout";
-import AdminLayout from "./shared/AdminLayout";
+import PublicLayout from "shared/PublicLayout";
+import PrivateLayout from "shared/PrivateLayout";
+import AdminLayout from "shared/AdminLayout";
 
 // Pages imports
-import Home from "./pages/Home";
-import Search from "./pages/Search";
-import Browse from "./pages/Browse";
+import Home from "pages/Home";
+import Search from "pages/Search";
+import Browse from "pages/Browse";
 
 // Help Pages
-import About from "./pages/Help/About";
-import Overview from "./pages/Help/Overview";
-import LicenseBrowser from "./pages/Help/LicenseBrowser";
-import ThirdPartyLicenses from "./pages/Help/ThirdPartyLicenses";
+import About from "pages/Help/About";
+import Overview from "pages/Help/Overview";
+import LicenseBrowser from "pages/Help/LicenseBrowser";
+import ThirdPartyLicenses from "pages/Help/ThirdPartyLicenses";
 
 // Upload Pages
-import UploadFile from "./pages/Upload/File";
-import UploadFromServer from "./pages/Upload/Server";
-import UploadFromVcs from "./pages/Upload/Vcs";
-import UploadFromUrl from "./pages/Upload/Url";
-import ImportReport from "./pages/Upload/ImportReport";
-import Instructions from "./pages/Upload/Instructions";
-import OneShotAnalysis from "./pages/Upload/OneShotAnalysis";
-import OneShotCopyright from "./pages/Upload/OneShotCopyright";
-import OneShotMonk from "./pages/Upload/OneShotMonk";
+import UploadFile from "pages/Upload/File";
+import UploadFromServer from "pages/Upload/Server";
+import UploadFromVcs from "pages/Upload/Vcs";
+import UploadFromUrl from "pages/Upload/Url";
+import ImportReport from "pages/Upload/ImportReport";
+import Instructions from "pages/Upload/Instructions";
+import OneShotAnalysis from "pages/Upload/OneShotAnalysis";
+import OneShotCopyright from "pages/Upload/OneShotCopyright";
+import OneShotMonk from "pages/Upload/OneShotMonk";
 
 // Jobs Pages
-import AllJobs from "./pages/Jobs/AllJobs";
-import MyRecentJobs from "./pages/Jobs/MyRecentJobs";
-import ScheduleAgents from "./pages/Jobs/ScheduleAgents";
+import AllJobs from "pages/Jobs/AllJobs";
+import MyRecentJobs from "pages/Jobs/MyRecentJobs";
+import ScheduleAgents from "pages/Jobs/ScheduleAgents";
 
 // Organize Pages
-import DeleteFolder from "./pages/Organize/Folder/Delete";
-import CreateFolder from "./pages/Organize/Folder/Create";
-import EditFolder from "./pages/Organize/Folder/Edit";
-import MoveFolder from "./pages/Organize/Folder/Move";
-import UnlinkFolder from "./pages/Organize/Folder/Unlink";
-import AdviceLicenses from "./pages/Organize/License/index";
-import UploadEdit from "./pages/Organize/Uploads/Edit";
-import UploadMove from "./pages/Organize/Uploads/Move";
-import UploadDelete from "./pages/Organize/Uploads/Delete";
+import DeleteFolder from "pages/Organize/Folder/Delete";
+import CreateFolder from "pages/Organize/Folder/Create";
+import EditFolder from "pages/Organize/Folder/Edit";
+import MoveFolder from "pages/Organize/Folder/Move";
+import UnlinkFolder from "pages/Organize/Folder/Unlink";
+import AdviceLicenses from "pages/Organize/License/index";
+import UploadEdit from "pages/Organize/Uploads/Edit";
+import UploadMove from "pages/Organize/Uploads/Move";
+import UploadDelete from "pages/Organize/Uploads/Delete";
 
 // Admin Pages
-import GroupCreate from "./pages/Admin/Group/Create";
-import DeleteUser from "./pages/Admin/Users/Delete";
-import AddLicense from "./pages/Admin/License/Create";
-import SelectLicense from "./pages/Admin/License/SelectLicense";
+import GroupCreate from "pages/Admin/Group/Create";
+import DeleteUser from "pages/Admin/Users/Delete";
+import AddLicense from "pages/Admin/License/Create";
+import SelectLicense from "pages/Admin/License/SelectLicense";
 
 // Default Page
-import ErrorPage from "./pages/ErrorPage";
+import ErrorPage from "pages/ErrorPage";
 
 // Routes imports
-import routes from "./constants/routes";
+import routes from "constants/routes";
 
 const Routes = () => {
   return (

@@ -19,19 +19,14 @@
 import React, { useState, useEffect } from "react";
 
 // Widgets
-import {
-  Alert,
-  Button,
-  InputContainer,
-  Spinner,
-} from "../../../components/Widgets";
+import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 
 // Common Fields for all the Uploads
-import CommonFields from "../../../components/Upload/CommonFields";
+import CommonFields from "components/Upload/CommonFields";
 
 // Required functions for calling APIs
-import { getAllFolders } from "../../../services/folders";
-import { createUploadVCS, getId, scheduleJobs } from "../../../services/upload";
+import { getAllFolders } from "services/folders";
+import { createUploadVCS, getId, scheduleJobs } from "services/upload";
 
 const UploadFromVcs = () => {
   const initialState = {

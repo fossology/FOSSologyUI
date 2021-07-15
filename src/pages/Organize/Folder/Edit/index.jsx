@@ -19,19 +19,10 @@
 import React, { useState, useEffect } from "react";
 
 // Widgets
-import {
-  Alert,
-  Button,
-  InputContainer,
-  Spinner,
-} from "../../../../components/Widgets";
+import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 
 // Required functions for calling APIs
-import {
-  getAllFolders,
-  editFolder,
-  getSingleFolder,
-} from "../../../../services/folders";
+import { getAllFolders, editFolder, getSingleFolder } from "services/folders";
 
 const EditFolder = () => {
   const initialState = {

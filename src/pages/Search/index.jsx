@@ -19,15 +19,10 @@
 import React, { useState } from "react";
 
 // Widgets
-import {
-  Alert,
-  Button,
-  InputContainer,
-  Spinner,
-} from "../../components/Widgets";
+import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 
 // Required functions for calling APIs
-import search from "../../services/search";
+import search from "services/search";
 
 const Search = () => {
   const initialState = {

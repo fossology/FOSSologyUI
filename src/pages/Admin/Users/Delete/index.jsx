@@ -19,15 +19,10 @@
 import React, { useState, useEffect } from "react";
 
 // Widgets
-import {
-  Alert,
-  Button,
-  InputContainer,
-  Spinner,
-} from "../../../../components/Widgets";
+import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 
 // Required functions for calling APIs
-import { getAllUsersName, deleteUser } from "../../../../services/users";
+import { getAllUsersName, deleteUser } from "services/users";
 
 const DeleteUser = () => {
   const initialDeleteUserData = {

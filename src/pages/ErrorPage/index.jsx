@@ -1,6 +1,6 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
- 
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
+
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -20,7 +20,7 @@ import React from "react";
 import styles from "styled-components";
 import { Link } from "react-router-dom";
 import { ExclamationTriangleFill } from "react-bootstrap-icons";
-import routes from "../../constants/routes";
+import routes from "constants/routes";
 
 const ErrorPage = () => {
   return (
