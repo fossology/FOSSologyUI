@@ -17,9 +17,13 @@
 */
 
 import PropTypes from "prop-types";
+import endpoints from "constants/endpoints";
+
+// Getting Authorization Token
+import { getToken } from "shared/authHelper";
+
+// Function for calling the fetch function for the APIs
 import sendRequest from "./sendRequest";
-import endpoints from "../constants/endpoints";
-import { getToken } from "../shared/authHelper";
 
 // Create Uploads from File
 export const createUpload = (
