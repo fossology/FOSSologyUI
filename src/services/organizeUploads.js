@@ -21,7 +21,7 @@ import {
   deleteUploadsApi,
   moveUploadApi,
   copyUploadApi,
-} from "../api/organizeUploads";
+} from "api/organizeUploads";
 
 // Getting uploads with folder id
 export const getUploadsFolderId = (folderId) => {

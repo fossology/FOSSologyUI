@@ -20,7 +20,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 // Widgets
-import { InputContainer, Tooltip } from "../../../Widgets";
+import { InputContainer, Tooltip } from "components/Widgets";
 
 function IgnoreScm({ ignoreScm, handleChange }) {
   return (

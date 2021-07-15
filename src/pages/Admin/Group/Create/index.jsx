@@ -19,15 +19,10 @@
 import React, { useState } from "react";
 
 // Widgets
-import {
-  Alert,
-  Button,
-  InputContainer,
-  Spinner,
-} from "../../../../components/Widgets";
+import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 
 // Required functions for calling APIs
-import { createGroup } from "../../../../services/groups";
+import { createGroup } from "services/groups";
 
 const GroupCreate = () => {
   const initialMessage = {

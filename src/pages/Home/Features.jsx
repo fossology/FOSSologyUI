@@ -19,12 +19,12 @@
 import React from "react";
 
 // Widgets
-import Image from "../../components/Widgets/Image";
+import Image from "components/Widgets/Image";
 
 // Assets
-import upload from "../../assets/images/upload.svg";
-import scan from "../../assets/images/scan.svg";
-import report from "../../assets/images/report.svg";
+import upload from "assets/images/upload.svg";
+import scan from "assets/images/scan.svg";
+import report from "assets/images/report.svg";
 
 const Features = () => {
   // Features Array

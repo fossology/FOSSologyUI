@@ -19,14 +19,10 @@
 import React, { useState, useEffect } from "react";
 
 // Widgets
-import { Alert, Button, InputContainer } from "../../../../components/Widgets";
+import { Alert, Button, InputContainer } from "components/Widgets";
 
 // Required functions for calling APIs
-import {
-  getAllFolders,
-  moveFolder,
-  copyFolder,
-} from "../../../../services/folders";
+import { getAllFolders, moveFolder, copyFolder } from "services/folders";
 
 const MoveFolder = () => {
   const initialState = {

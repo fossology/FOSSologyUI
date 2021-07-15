@@ -19,12 +19,12 @@
 import React, { useState, useEffect } from "react";
 
 // Widgets
-import { Alert, Button, InputContainer } from "../../../../components/Widgets";
+import { Alert, Button, InputContainer } from "components/Widgets";
 
 // Required functions for calling APIs
-import { getAllFolders } from "../../../../services/folders";
-import { getUploadsFolderId } from "../../../../services/organizeUploads";
-import { getId } from "../../../../services/upload";
+import { getAllFolders } from "services/folders";
+import { getUploadsFolderId } from "services/organizeUploads";
+import { getId } from "services/upload";
 
 const UploadEdit = () => {
   const initialState = {

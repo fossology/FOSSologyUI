@@ -19,15 +19,15 @@
 import React, { useState, useEffect } from "react";
 
 // Widgets
-import { Alert, Button, InputContainer } from "../../../../components/Widgets";
+import { Alert, Button, InputContainer } from "components/Widgets";
 
 // Required functions for calling APIs
 import {
   moveUpload,
   copyUpload,
   getUploadsFolderId,
-} from "../../../../services/organizeUploads";
-import { getAllFolders } from "../../../../services/folders";
+} from "services/organizeUploads";
+import { getAllFolders } from "services/folders";
 
 const UploadMove = () => {
   const initialState = {

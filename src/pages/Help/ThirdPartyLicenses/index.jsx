@@ -19,7 +19,7 @@
 import React from "react";
 
 // Routes
-import routes from "../../../constants/routes";
+import routes from "constants/routes";
 
 // CSS Imports
 import "./index.css";

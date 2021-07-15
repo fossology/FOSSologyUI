@@ -16,8 +16,8 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import { getUserSelfApi, getAllUsersApi, deleteUserApi } from "../api/users";
-import { setLocalStorage } from "../shared/storageHelper";
+import { getUserSelfApi, getAllUsersApi, deleteUserApi } from "api/users";
+import { setLocalStorage } from "shared/storageHelper";
 
 // Fetching the self information
 export const getUserSelf = () => {
