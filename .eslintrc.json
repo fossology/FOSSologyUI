@@ -22,7 +22,8 @@
       "node": {
         "paths": ["src"]
       }
-    }
+    },
+    "import/parser": "babel-eslint"
   },
   "rules": {
     "react/no-unescaped-entities": ["error", { "forbid": [">", "}"] }],
