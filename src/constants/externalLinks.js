@@ -21,6 +21,10 @@ const externalLinks = {
   fossologyWiki: "https://github.com/fossology/fossology/wiki",
   jobSchedulerWiki: "https://github.com/fossology/fossology/wiki/Job-Scheduler",
   fossologyWebsite: "https://www.fossology.org/",
+  latestReleaseGithub:
+    "https://github.com/fossology/fossology/releases/tag/3.10.0",
+  latestReleaseDownload:
+    "https://api.github.com/repos/fossology/fossology/zipball/3.10.0",
 };
 
 export default externalLinks;
