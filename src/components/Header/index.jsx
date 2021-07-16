@@ -62,7 +62,7 @@ const Header = () => {
   return (
     <div>
       <Navbar expand="lg" className="bg-primary-color py-0 pl-0 text-white">
-        <Navbar.Brand href="/" className="py-0">
+        <Navbar.Brand as={Link} to={routes.home} className="py-0">
           <Image
             src={logo}
             className="img-fluid bg-white py-1 px-2"
@@ -256,8 +256,8 @@ const Header = () => {
                           Add License
                         </NavDropdown.Item>
                         <NavDropdown.Item
-                          href="/licenseCSV/fossology-license-export.csv"
-                          download="fossology-license-export.csv"
+                          href={routes.admin.license.licenseCSV}
+                          download={routes.admin.license.licenseCSV}
                         >
                           CSV Export
                         </NavDropdown.Item>
