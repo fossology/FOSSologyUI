@@ -37,7 +37,7 @@ exports[`renders learn react link 1`] = `
             class="mr-auto navbar-nav"
           >
             <a
-              class="nav-link"
+              class="active-nav-item nav-link"
               href="/"
             >
               Home
