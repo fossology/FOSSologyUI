@@ -18,7 +18,7 @@
 
 // React Imports
 import React, { useState, useContext } from "react";
-import { useHistory, Link } from "react-router-dom";
+import { useHistory, Link, useLocation } from "react-router-dom";
 
 // React Bootstrap Imports
 import {
@@ -60,6 +60,7 @@ const Header = () => {
   );
   const { setTheme } = useContext(GlobalContext);
   const history = useHistory();
+  const location = useLocation();
   const handleLogin = () => {
     history.push(routes.home);
   };
@@ -80,17 +81,33 @@ const Header = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link as={Link} to={routes.home}>
+            <Nav.Link
+              as={Link}
+              to={routes.home}
+              className={location.pathname === routes.home && "active-nav-item"}
+            >
               Home
             </Nav.Link>
 
             {/* Checking whether the user is authenticated */}
             {isAuth() && (
               <>
-                <Nav.Link as={Link} to={routes.search}>
+                <Nav.Link
+                  as={Link}
+                  to={routes.search}
+                  className={
+                    location.pathname === routes.search && "active-nav-item"
+                  }
+                >
                   Search
                 </Nav.Link>
-                <Nav.Link as={Link} to={routes.browse}>
+                <Nav.Link
+                  as={Link}
+                  to={routes.browse}
+                  className={
+                    location.pathname === routes.browse && "active-nav-item"
+                  }
+                >
                   Browse
                 </Nav.Link>
                 <NavDropdown title="Upload" id="uploads">
