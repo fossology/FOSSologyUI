@@ -83,27 +83,29 @@ const sendRequest = ({
     }
     // Checking the retries for hitting the request several times
     if (retries > 0) {
-      setTimeout(() => {
+      return setTimeout(() => {
         const retriesLeft = retries - 1;
         sendRequest({
           url,
           method,
           headers,
-          retriesLeft,
+          retries: retriesLeft,
         });
       }, 10000);
     }
     return res.json().then((json) => {
+      const error = {
+        status: res.status,
+        ok: false,
+        message: json.message,
+        body: json,
+      };
       if (json.code === 403) {
         return logout(() => {
           window.location.href = routes.home;
           return true;
         });
       }
-      const error = new Error(json.message);
-      error.body = json;
-      error.status = res.status;
-      error.ok = false;
       return Promise.reject(error);
     });
   });
