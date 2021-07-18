@@ -87,7 +87,7 @@ const UploadFromVcs = () => {
   let uploadId;
 
   // Data required for creating the upload
-  const [uploadVcsData, setUploadFileData] = useState(initialState);
+  const [uploadVcsData, setUploadVcsData] = useState(initialState);
 
   // Setting the list for all the folders names
   const [folderList, setFolderList] = useState(initialFolderList);
@@ -97,11 +97,11 @@ const UploadFromVcs = () => {
 
   // Data required for creating the upload from Version Control System
   const [vcsData, setVcsData] = useState(initialVcsData);
-  const [loading, setLoading] = useState(false);
-  const [showMessage, setShowMessage] = useState(false);
 
   // State Variables for handling Error Boundaries
   const [message, setMessage] = useState();
+  const [loading, setLoading] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -125,7 +125,7 @@ const UploadFromVcs = () => {
                   type: "success",
                   text: "Analysis for the file is scheduled.",
                 });
-                setUploadFileData(initialState);
+                setUploadVcsData(initialState);
                 setScanFileData(initialScanFileData);
               })
               .catch((error) => {
@@ -150,17 +150,17 @@ const UploadFromVcs = () => {
   };
   const handleChange = (e) => {
     if (e.target.type === "checkbox") {
-      setUploadFileData({
+      setUploadVcsData({
         ...uploadVcsData,
         [e.target.name]: e.target.checked,
       });
     } else if (e.target.type === "file") {
-      setUploadFileData({
+      setUploadVcsData({
         ...uploadVcsData,
         [e.target.name]: e.target.files[0],
       });
     } else {
-      setUploadFileData({
+      setUploadVcsData({
         ...uploadVcsData,
         [e.target.name]: e.target.value,
       });
