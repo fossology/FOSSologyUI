@@ -26,7 +26,7 @@ import sendRequest from "./sendRequest";
 
 // Fetching the licenses with their kind i.e (candidate, main, all)
 const getAllLicenseApi = ({ page, limit, groupName, kind }) => {
-  const url = endpoints.license.get(kind);
+  const url = endpoints.license.get();
   return sendRequest({
     url,
     method: "GET",
@@ -35,6 +35,9 @@ const getAllLicenseApi = ({ page, limit, groupName, kind }) => {
       page,
       limit,
       groupName,
+    },
+    queryParams: {
+      kind,
     },
   });
 };

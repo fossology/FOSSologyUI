@@ -59,9 +59,8 @@ const endpoints = {
     uploads: {
       get: (folder) => `${apiUrl}/uploads?folderId=${folder}`,
       delete: (deleteId) => `${apiUrl}/uploads/${deleteId}`,
-      // Set the recursive false to reduce amount of data in response
-      move: (moveId) => `${apiUrl}/uploads/${moveId}?recursive=false`,
-      copy: (copyId) => `${apiUrl}/uploads/${copyId}?recursive=false`,
+      move: (moveId) => `${apiUrl}/uploads/${moveId}`,
+      copy: (copyId) => `${apiUrl}/uploads/${copyId}`,
     },
   },
   admin: {
@@ -71,7 +70,7 @@ const endpoints = {
     },
   },
   license: {
-    get: (kind) => `${apiUrl}/license?kind=${kind}`,
+    get: () => `${apiUrl}/license`,
   },
 };
 

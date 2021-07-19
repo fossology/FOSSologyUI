@@ -59,6 +59,10 @@ export const moveUploadApi = (folderId, id, groupName) => {
       folderId,
       groupName,
     },
+    queryParams: {
+      // Set the recursive false to reduce amount of data in response
+      recursive: false,
+    },
   });
 };
 
@@ -72,6 +76,10 @@ export const copyUploadApi = (folderId, id, groupName) => {
       Authorization: getToken(),
       folderId,
       groupName,
+    },
+    queryParams: {
+      // Set the recursive false to reduce amount of data in response
+      recursive: false,
     },
   });
 };
