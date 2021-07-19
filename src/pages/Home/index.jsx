@@ -19,6 +19,9 @@
 // React Imports
 import React, { useState } from "react";
 
+// Title
+import Title from "components/Title";
+
 // External library imports
 import { useHistory } from "react-router-dom";
 import { Form, Row, Col } from "react-bootstrap";
@@ -79,6 +82,7 @@ const Home = () => {
 
   return (
     <>
+      <Title title="Getting Started with FOSSology" />
       {showError && (
         <>
           <Alert

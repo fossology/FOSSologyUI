@@ -18,6 +18,9 @@
 
 import React, { useState } from "react";
 
+// Title
+import Title from "components/Title";
+
 // Widgets
 import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 
@@ -76,6 +79,7 @@ const Search = () => {
 
   return (
     <>
+      <Title title="Search" />
       {showMessage && (
         <Alert
           type={message.type}

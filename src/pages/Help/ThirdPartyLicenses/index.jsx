@@ -18,6 +18,9 @@
 
 import React from "react";
 
+// Title
+import Title from "components/Title";
+
 // Routes
 import routes from "constants/routes";
 
@@ -26,26 +29,29 @@ import "./index.css";
 
 const ThirdPartyLicenses = () => {
   return (
-    <div className="mx-auto my-3">
-      {/* Loading thirdPartLicenses.html with iframe */}
-      <iframe
-        src={routes.help.thirdPartyLicensesHTML}
-        frameBorder="0"
-        marginHeight="0"
-        marginWidth="0"
-        width="100%"
-        height="100%"
-        scrolling="auto"
-        className="thirdPartyIframe"
-        title="third party licenses"
-      >
-        Your browser does not support iframe. Visit the
-        <a href={routes.help.thirdPartyLicensesHTML}>
-          {" "}
-          third party licenses page
-        </a>
-      </iframe>
-    </div>
+    <>
+      <Title title="Third Party Licenses" />
+      <div className="mx-auto my-3">
+        {/* Loading thirdPartLicenses.html with iframe */}
+        <iframe
+          src={routes.help.thirdPartyLicensesHTML}
+          frameBorder="0"
+          marginHeight="0"
+          marginWidth="0"
+          width="100%"
+          height="100%"
+          scrolling="auto"
+          className="thirdPartyIframe"
+          title="third party licenses"
+        >
+          Your browser does not support iframe. Visit the
+          <a href={routes.help.thirdPartyLicensesHTML}>
+            {" "}
+            third party licenses page
+          </a>
+        </iframe>
+      </div>
+    </>
   );
 };
 

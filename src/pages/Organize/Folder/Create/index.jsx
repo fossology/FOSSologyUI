@@ -18,6 +18,9 @@
 
 import React, { useState, useEffect } from "react";
 
+// Title
+import Title from "components/Title";
+
 // Widgets
 import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 
@@ -98,6 +101,7 @@ const CreateFolder = () => {
 
   return (
     <>
+      <Title title="Create a new FOSSology folder" />
       {showMessage && (
         <Alert
           type={message.type}

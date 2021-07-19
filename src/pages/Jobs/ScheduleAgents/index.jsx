@@ -18,6 +18,9 @@
 
 import React, { useState, useEffect } from "react";
 
+// Title
+import Title from "components/Title";
+
 // Common Fields for all the Uploads
 import CommonFields from "components/Upload/CommonFields";
 
@@ -175,6 +178,7 @@ const ScheduleAgents = () => {
 
   return (
     <>
+      <Title title="Schedule an Analysis" />
       {showMessage && (
         <Alert
           type={message.type}
