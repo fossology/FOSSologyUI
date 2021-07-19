@@ -18,6 +18,9 @@
 
 import React from "react";
 
+// Title
+import Title from "components/Title";
+
 // Widgets
 import { Button, InputContainer } from "components/Widgets";
 
@@ -27,49 +30,54 @@ const OneShotAnalysis = () => {
   };
   const handleChange = () => {};
   return (
-    <div className="main-container my-3">
-      <div className="row">
-        <div className="col-lg-8 col-md-12 col-sm-12 col-12">
-          <h1 className="font-size-main-heading">One-Shot License Analysis</h1>
-          <br />
-          <div className="font-size-medium">
-            This analyzer allows you to upload a single file for license
-            analysis. The limitations:
-            <ul>
-              <li>
-                The analysis is done in real-time. Large files may take a while.
-                This method is not recommended for files larger than a few
-                hundred kilobytes.
-              </li>
-              <li>
-                Files that contain files are not unpacked. If you upload a 'zip'
-                or 'deb' file, then the binary file will be scanned for licenses
-                and nothing will likely be found.
-              </li>
-              <li>
-                Results are not stored. As soon as you get your results, your
-                uploaded file is removed from the system.
-              </li>
-            </ul>
+    <>
+      <Title title="One-Shot License Analysis" />
+      <div className="main-container my-3">
+        <div className="row">
+          <div className="col-lg-8 col-md-12 col-sm-12 col-12">
+            <h1 className="font-size-main-heading">
+              One-Shot License Analysis
+            </h1>
+            <br />
+            <div className="font-size-medium">
+              This analyzer allows you to upload a single file for license
+              analysis. The limitations:
+              <ul>
+                <li>
+                  The analysis is done in real-time. Large files may take a
+                  while. This method is not recommended for files larger than a
+                  few hundred kilobytes.
+                </li>
+                <li>
+                  Files that contain files are not unpacked. If you upload a
+                  'zip' or 'deb' file, then the binary file will be scanned for
+                  licenses and nothing will likely be found.
+                </li>
+                <li>
+                  Results are not stored. As soon as you get your results, your
+                  uploaded file is removed from the system.
+                </li>
+              </ul>
+            </div>
+            <InputContainer
+              type="file"
+              name="folderId"
+              id="upload-one-shot-analysis"
+              onChange={(e) => handleChange(e)}
+            >
+              Select the file to upload:
+            </InputContainer>
+            <Button
+              type="submit"
+              onClick={(e) => handleSubmit(e)}
+              className="mt-4"
+            >
+              Analyze
+            </Button>
           </div>
-          <InputContainer
-            type="file"
-            name="folderId"
-            id="upload-one-shot-analysis"
-            onChange={(e) => handleChange(e)}
-          >
-            Select the file to upload:
-          </InputContainer>
-          <Button
-            type="submit"
-            onClick={(e) => handleSubmit(e)}
-            className="mt-4"
-          >
-            Analyze
-          </Button>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

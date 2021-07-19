@@ -18,6 +18,9 @@
 
 import React, { useState, useEffect } from "react";
 
+// Title
+import Title from "components/Title";
+
 // Widgets
 import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 
@@ -110,6 +113,7 @@ const DeleteUser = () => {
   }, []);
   return (
     <>
+      <Title title="Delete A User" />
       {showMessage && (
         <Alert
           type={message.type}

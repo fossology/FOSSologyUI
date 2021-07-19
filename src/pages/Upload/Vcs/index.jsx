@@ -18,6 +18,9 @@
 
 import React, { useState, useEffect } from "react";
 
+// Title
+import Title from "components/Title";
+
 // Widgets
 import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 
@@ -217,6 +220,7 @@ const UploadFromVcs = () => {
   }, []);
   return (
     <>
+      <Title title="Upload from Version Control System" />
       {showMessage && (
         <Alert
           type={message.type}

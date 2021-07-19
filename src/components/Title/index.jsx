@@ -25,7 +25,7 @@ import { Helmet } from "react-helmet";
 const Title = ({ title }) => {
   return (
     <Helmet>
-      <title>{title}</title>
+      <title>{title} | FOSSology</title>
     </Helmet>
   );
 };
