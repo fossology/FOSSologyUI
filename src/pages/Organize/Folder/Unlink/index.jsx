@@ -18,6 +18,9 @@
 
 import React, { useState, useEffect } from "react";
 
+// Title
+import Title from "components/Title";
+
 // Widgets
 import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 
@@ -101,6 +104,7 @@ const UnlinkFolder = () => {
   }, []);
   return (
     <>
+      <Title title="Unlink Folder" />
       {showMessage && (
         <Alert
           type={message.type}
@@ -109,7 +113,7 @@ const UnlinkFolder = () => {
         />
       )}
       <div className="main-container my-3">
-        <h1 className="font-size-main-heading text-center">Unlink folder</h1>
+        <h1 className="font-size-main-heading">Unlink folder</h1>
         <br />
         <div className="row">
           <div className="col-12 col-lg-8">

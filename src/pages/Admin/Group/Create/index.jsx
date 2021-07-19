@@ -18,6 +18,9 @@
 
 import React, { useState } from "react";
 
+// Title
+import Title from "components/Title";
+
 // Widgets
 import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 
@@ -64,6 +67,7 @@ const GroupCreate = () => {
   };
   return (
     <>
+      <Title title="Add Group" />
       {showMessage && (
         <Alert
           type={message.type}

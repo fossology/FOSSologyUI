@@ -19,6 +19,9 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
+// Title
+import Title from "components/Title";
+
 // Widgets
 import { Alert, Button, InputContainer } from "components/Widgets";
 
@@ -90,6 +93,7 @@ const AdviceLicenses = () => {
   }, [licenseData]);
   return (
     <>
+      <Title title="Candidate Licenses" />
       {showMessage && (
         <Alert
           type={message.type}

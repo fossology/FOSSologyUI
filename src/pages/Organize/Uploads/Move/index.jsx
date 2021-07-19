@@ -18,6 +18,9 @@
 
 import React, { useState, useEffect } from "react";
 
+// Title
+import Title from "components/Title";
+
 // Widgets
 import { Alert, Button, InputContainer } from "components/Widgets";
 
@@ -142,6 +145,7 @@ const UploadMove = () => {
   }, [folderId]);
   return (
     <>
+      <Title title="Move or Copy Upload" />
       {showMessage && (
         <Alert
           type={message.type}
@@ -150,7 +154,7 @@ const UploadMove = () => {
         />
       )}
       <div className="main-container my-3">
-        <h1 className="font-size-main-heading">Move and Copy Upload</h1>
+        <h1 className="font-size-main-heading">Move or Copy Upload</h1>
         <br />
         <div className="row">
           <div className="col-12 col-lg-8">

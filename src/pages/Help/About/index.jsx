@@ -18,13 +18,17 @@
 
 import React from "react";
 
+// Title
+import Title from "components/Title";
+
 // Copyrights array
 import copyrights from "data/copyright";
 import externalLinks from "constants/externalLinks";
 
 const About = () => {
   return (
-    <div>
+    <>
+      <Title title="About FOSSology" />
       <div className="main-container my-5">
         <p className="font-regular">
           The&nbsp;
@@ -1325,7 +1329,7 @@ const About = () => {
           ))}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
