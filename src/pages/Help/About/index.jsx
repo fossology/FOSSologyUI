@@ -20,6 +20,7 @@ import React from "react";
 
 // Copyrights array
 import copyrights from "data/copyright";
+import externalLinks from "constants/externalLinks";
 
 const About = () => {
   return (
@@ -28,16 +29,14 @@ const About = () => {
         <p className="font-regular">
           The&nbsp;
           <a
-            href="https://github.com/fossology/fossology/releases/tag/3.10.0"
-            target="blank"
+            href={externalLinks.latestReleaseGithub}
+            target="_blank"
+            rel="noreferrer"
           >
             latest version 3.10.0
           </a>
           &nbsp;was created at 2021-05-07T09:50:42Z and is ready for&nbsp;
-          <a
-            href="https://api.github.com/repos/fossology/fossology/zipball/3.10.0"
-            download
-          >
+          <a href={externalLinks.latestReleaseDownload} download>
             download.
           </a>
           <br />
