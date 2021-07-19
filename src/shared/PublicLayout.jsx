@@ -22,8 +22,8 @@ import { withRouter, Route } from "react-router-dom";
 import PropTypes from "prop-types";
 
 // Header, Footer
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import Header from "components/Header";
+import Footer from "components/Footer";
 
 /* eslint-disable react/jsx-props-no-spreading */
 const PublicLayout = ({ component: Component, ...rest }) => (
