@@ -43,10 +43,12 @@ const GlobalStyles = createGlobalStyle`
   }
   .navbar-light .navbar-nav .nav-link{
     color: ${({ theme }) => theme.secondaryText};
-    padding-left: 0.8rem;
-    padding-right: 0.8rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
     &:hover{
+      background: ${({ theme }) => theme.secondaryColor};
       color: ${({ theme }) => theme.secondaryText};
+      font-weight: 900;
     }
     &:focus{
       color: ${({ theme }) => theme.secondaryText};
@@ -92,9 +94,7 @@ const GlobalStyles = createGlobalStyle`
     color: ${({ theme }) => theme.primaryText};
   }
   .active-nav-item{
-    background: ${({ theme }) => theme.secondaryColor};
-    color: ${({ theme }) => theme.secondaryText};
-    font-weight: 900;
+    border-bottom: 0.15rem ${({ theme }) => theme.secondaryText} solid;
   }
   .dropdown-item:hover, .dropdown-item:focus{
     color: ${({ theme }) => theme.secondaryText};
