@@ -31,7 +31,7 @@ const InputContainer = ({
   placeholder = null,
   disabled = null,
   options = null,
-  multiple = null,
+  multiple = false,
   property,
 }) => {
   if (type === "radio" || type === "checkbox") {
@@ -70,7 +70,7 @@ const InputContainer = ({
           value={value}
           onChange={onChange}
           multiple={multiple && multiple}
-          size={multiple && "15"}
+          size={multiple ? "15" : ""}
           id={id}
         >
           {options.length > 0 ? (
@@ -122,7 +122,7 @@ InputContainer.propTypes = {
   children: PropTypes.node,
   options: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number,
+      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
       name: PropTypes.string,
       description: PropTypes.string,
       parent: PropTypes.number,
