@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -16,12 +16,11 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-.thirdPartyIframe {
-  display: block;
-  width: 100%;
-  border: none;
-  overflow-y: auto;
-  overflow-x: hidden;
-  margin-left: 2rem;
-  height: 342547px;
-}
+import Spinner from "react-bootstrap/Spinner";
+import Alert from "./Alert";
+import Button from "./Button";
+import Image from "./Image";
+import InputContainer from "./Input";
+import Tooltip from "./Tooltip";
+
+export { Alert, Button, Image, InputContainer, Tooltip, Spinner };

@@ -17,14 +17,17 @@
 */
 
 import React, { useState, useEffect } from "react";
-import { Spinner } from "react-bootstrap";
 import arrayToTree from "array-to-tree";
-import InputContainer from "../../components/Widgets/Input";
-import TreeContainer from "../../components/TreeContainer";
-import getBrowseData from "../../services/browse";
-import { getAllFolders } from "../../services/folders";
-import Alert from "../../components/Widgets/Alert";
-import "./index.css";
+
+// Widgets
+import { InputContainer, Alert } from "components/Widgets";
+
+// Tree View of folders
+import TreeContainer from "components/TreeContainer";
+
+// Required functions for calling APIs
+import getBrowseData from "services/browse";
+import { getAllFolders } from "services/folders";
 
 const Browse = () => {
   const initialState = {
@@ -60,27 +63,49 @@ const Browse = () => {
     text: "",
   };
 
+  // Data required for getting the browse data list
   const [browseData, setBrowseData] = useState(initialState);
+
+  // Setting the browse data to the table
   const [browseDataList, setBrowseDataList] = useState();
-  const [loading, setLoading] = useState(true);
+
+  // Setting the count of pages
   const [pagesOptions, setPagesOptions] = useState();
+
+  // Setting the list for all the folders names
   const [folderList, setFolderList] = useState();
+
+  // State Variables for handling Error Boundaries
+  // const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(initialMessage);
   const [showMessage, setShowMessage] = useState(false);
 
   useEffect(() => {
-    getBrowseData(browseData).then((res) => {
-      setBrowseDataList(res.res);
-      const arr = [];
-      for (let i = 0; i < res.pages; i++) {
-        arr.push({
-          id: i + 1,
-          value: i + 1,
-        });
-      }
-      setPagesOptions(arr);
-      setLoading(false);
+    setMessage({
+      type: "success",
+      text: "Loading...",
     });
+    setShowMessage(true);
+    getBrowseData(browseData)
+      .then((res) => {
+        setBrowseDataList(res.res);
+        const arr = [];
+        for (let i = 0; i < res.pages; i++) {
+          arr.push({
+            id: i + 1,
+            value: i + 1,
+          });
+        }
+        setPagesOptions(arr);
+        setShowMessage(false);
+      })
+      .catch(() => {
+        setMessage({
+          type: "danger",
+          text: "Error occured in fetching",
+        });
+        setShowMessage(true);
+      });
   }, [browseData]);
 
   useEffect(() => {
@@ -124,13 +149,6 @@ const Browse = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <Spinner animation="border" role="status">
-        <span className="sr-only">Loading...</span>
-      </Spinner>
-    );
-  }
   return (
     <>
       {showMessage && (

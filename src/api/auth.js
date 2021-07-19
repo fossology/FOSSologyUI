@@ -16,14 +16,16 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+import endpoints from "constants/endpoints";
+
+// Constants for the user login
+import { tokenNameLength, tokenScope, tokenExpiryDays } from "constants/auth";
+
+// Helper functions for generating random string and getting date in the requied format
+import { randomString, getDate } from "shared/helper";
+
+// Function for calling the fetch function for the APIs
 import sendRequest from "./sendRequest";
-import endpoints from "../constants/endpoints";
-import {
-  tokenNameLength,
-  tokenScope,
-  tokenExpiryDays,
-} from "../constants/auth";
-import { randomString, getDate } from "../shared/helper";
 
 const fetchTokenApi = (username, password) => {
   const url = endpoints.auth.tokens();

@@ -17,18 +17,22 @@
 */
 
 import PropTypes from "prop-types";
-import sendRequest from "./sendRequest";
-import endpoints from "../constants/endpoints";
-import { getToken } from "../shared/helper";
+import endpoints from "constants/endpoints";
 
-const browseFiles = async ({ folderId, page, limit, groupName, recursive }) => {
+// Getting Authorization Token
+import { getToken } from "shared/authHelper";
+
+// Function for calling the fetch function for the APIs
+import sendRequest from "./sendRequest";
+
+// Fetching all the Uploads with the give parameters of page, limit
+const browseFiles = ({ folderId, page, limit, groupName, recursive }) => {
   const url = endpoints.browse.get();
-  const token = await getToken();
   return sendRequest({
     url,
     method: "GET",
     headers: {
-      Authorization: token,
+      Authorization: getToken(),
       page,
       limit,
       groupName,

@@ -17,16 +17,17 @@
 */
 
 import React, { useState, useEffect } from "react";
-import InputContainer from "../../../../components/Widgets/Input";
-import Button from "../../../../components/Widgets/Button";
-import Alert from "../../../../components/Widgets/Alert";
+
+// Widgets
+import { Alert, Button, InputContainer } from "components/Widgets";
+
+// Required functions for calling APIs
 import {
   moveUpload,
   copyUpload,
   getUploadsFolderId,
-} from "../../../../services/organizeUploads";
-
-import { getAllFolders } from "../../../../services/folders";
+} from "services/organizeUploads";
+import { getAllFolders } from "services/folders";
 
 const UploadMove = () => {
   const initialState = {
@@ -45,11 +46,20 @@ const UploadMove = () => {
     type: "success",
     text: "",
   };
+
   const [moveCopyUploadData, setMoveCopyUploadData] = useState(initialState);
   const [moveCopyUploadsList, setMoveCopyUploadsList] = useState([]);
+
+  // Setting the folderId from which data to be moved initially set to 1
   const [folderId, setFolderId] = useState(1);
+
+  // Setting the list for all the folders names
   const [folderList, setFolderList] = useState(initialFolderList);
+
+  // Setting the list for all the uploads of respective folders
   const [uploadList, setUploadList] = useState([]);
+
+  // State Variables for handling Error Boundaries
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState(initialMessage);
 

@@ -17,11 +17,16 @@
 */
 
 import PropTypes from "prop-types";
-import sendRequest from "./sendRequest";
-import endpoints from "../constants/endpoints";
-import { getToken } from "../shared/helper";
+import endpoints from "constants/endpoints";
 
-const searchFiles = async ({
+// Getting Authorization Token
+import { getToken } from "shared/authHelper";
+
+// Function for calling the fetch function for the APIs
+import sendRequest from "./sendRequest";
+
+// Fetching all the uploads on the basis of search criteria
+const searchFiles = ({
   groupName,
   searchType,
   uploadId,
@@ -33,12 +38,11 @@ const searchFiles = async ({
   copyright,
 }) => {
   const url = endpoints.search.search();
-  const token = await getToken();
   return sendRequest({
     url,
     method: "GET",
     headers: {
-      Authorization: token,
+      Authorization: getToken(),
       groupName,
       searchType,
       uploadId,

@@ -17,11 +17,16 @@
 */
 
 import PropTypes from "prop-types";
-import sendRequest from "./sendRequest";
-import endpoints from "../constants/endpoints";
-import { getToken } from "../shared/helper";
+import endpoints from "constants/endpoints";
 
-export const createUpload = async (
+// Getting Authorization Token
+import { getToken } from "shared/authHelper";
+
+// Function for calling the fetch function for the APIs
+import sendRequest from "./sendRequest";
+
+// Create Uploads from File
+export const createUpload = (
   folderId,
   uploadDescription,
   accessLevel,
@@ -29,7 +34,6 @@ export const createUpload = async (
   fileInput
 ) => {
   const url = endpoints.upload.uploadCreate();
-  const token = await getToken();
   const formdata = new FormData();
   if (fileInput) {
     formdata.append("fileInput", fileInput, fileInput?.name);
@@ -39,7 +43,7 @@ export const createUpload = async (
     method: "POST",
     isMultipart: true,
     headers: {
-      Authorization: token,
+      Authorization: getToken(),
       folderId,
       uploadDescription,
       accessLevel,
@@ -51,24 +55,24 @@ export const createUpload = async (
   });
 };
 
-export const createUploadVcs = async (header, body) => {
+// Create Uploads from Version Control System
+export const createUploadVcs = (header, body) => {
   const url = endpoints.upload.uploadCreate();
-  const token = await getToken();
   return sendRequest({
     url,
     method: "POST",
     credentials: false,
     headers: {
       ...header,
-      Authorization: token,
+      Authorization: getToken(),
     },
     body,
   });
 };
 
-export const scheduleAnalysis = async (folderId, uploadId, scanData) => {
+// Scheduling the analysis for the uploads
+export const scheduleAnalysis = (folderId, uploadId, scanData) => {
   const url = endpoints.upload.scheduleAnalysis();
-  const token = await getToken();
   const { bucket, copyrightEmailAuthor, ecc, keyword, mime, monk, nomos, ojo } =
     scanData?.analysis;
   const { nomosMonk, bulkReused, newScanner, ojoDecider } = scanData?.decider;
@@ -77,7 +81,7 @@ export const scheduleAnalysis = async (folderId, uploadId, scanData) => {
     url,
     method: "POST",
     headers: {
-      Authorization: token,
+      Authorization: getToken(),
       folderId,
       uploadId,
       groupName: "",
@@ -110,15 +114,15 @@ export const scheduleAnalysis = async (folderId, uploadId, scanData) => {
   });
 };
 
-export const getUploadById = async (uploadId, retries) => {
+// Getting a Upload by id
+export const getUploadById = (uploadId, retries) => {
   const url = endpoints.upload.getId(uploadId);
-  const token = await getToken();
   return sendRequest({
     url,
     method: "GET",
     retries,
     headers: {
-      Authorization: token,
+      Authorization: getToken(),
       groupName: "",
     },
   });

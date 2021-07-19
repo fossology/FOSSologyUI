@@ -17,15 +17,20 @@
 */
 
 import React, { useState, useEffect } from "react";
-import { Spinner } from "react-bootstrap";
-import CommonFields from "../../../components/Upload/CommonFields";
-import InputContainer from "../../../components/Widgets/Input";
-import Alert from "../../../components/Widgets/Alert";
-import Button from "../../../components/Widgets/Button";
-import { getAllFolders } from "../../../services/folders";
-import { scheduleJobs } from "../../../services/upload";
-import getBrowseData from "../../../services/browse";
-import { defaultAgentsList } from "../../../shared/storageHelper";
+
+// Common Fields for all the Uploads
+import CommonFields from "components/Upload/CommonFields";
+
+// Widgets
+import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
+
+// Required functions for calling APIs
+import { getAllFolders } from "services/folders";
+import { scheduleJobs } from "services/upload";
+import getBrowseData from "services/browse";
+
+// Loading the default agents list
+import { defaultAgentsList } from "shared/storageHelper";
 
 const ScheduleAgents = () => {
   const initialScheduleAnalysisData = {

@@ -21,8 +21,9 @@ import {
   scheduleAnalysis,
   getUploadById,
   createUploadVcs,
-} from "../api/upload";
+} from "api/upload";
 
+// Create Uploads from File
 export const createUploadFile = ({
   folderId,
   uploadDescription,
@@ -41,18 +42,21 @@ export const createUploadFile = ({
   });
 };
 
+// Create Uploads from Version Control System
 export const createUploadVCS = (header, body) => {
   return createUploadVcs(header, body).then((res) => {
     return res;
   });
 };
 
+// Scheduling the analysis for the uploads
 export const scheduleJobs = (folderId, uploadId, scanData) => {
   return scheduleAnalysis(folderId, uploadId, scanData).then((res) => {
     return res;
   });
 };
 
+// Getting a Upload by id
 export const getId = (uploadId, retries) => {
   return getUploadById(uploadId, retries).then((res) => {
     return res;

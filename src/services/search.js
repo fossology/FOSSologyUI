@@ -16,10 +16,12 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import searchFiles from "../api/search";
+import searchFiles from "api/search";
 
+// Fetching all the uploads on the basis of search criteria
 const search = (searchData) => {
   return searchFiles(searchData).then((res) => {
+    // Sending the required data to the search page
     const modifiedSearchData = [];
     res.forEach((data) => {
       modifiedSearchData.push({

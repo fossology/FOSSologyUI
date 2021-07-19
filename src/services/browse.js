@@ -16,9 +16,10 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import browseFiles from "../api/browse";
-import { getLocalStorage } from "../shared/storageHelper";
+import browseFiles from "api/browse";
+import { getLocalStorage } from "shared/storageHelper";
 
+// Fetching all the Uploads
 const getBrowseData = (browseData) => {
   return browseFiles(browseData).then((res) => {
     const data = {

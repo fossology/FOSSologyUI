@@ -17,7 +17,9 @@
 */
 
 import React from "react";
-import copyrights from "../../../data/copyright";
+
+// Copyrights array
+import copyrights from "data/copyright";
 
 const About = () => {
   return (

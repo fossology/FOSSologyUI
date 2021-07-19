@@ -1,6 +1,8 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
+
  SPDX-License-Identifier: GPL-2.0
+
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
  version 2 as published by the Free Software Foundation.
@@ -8,6 +10,7 @@
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
+
  You should have received a copy of the GNU General Public License along
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -18,31 +21,42 @@ import React, { useState } from "react";
 
 // External library imports
 import { useHistory } from "react-router-dom";
-import { Form, Row, Col, Spinner } from "react-bootstrap";
+import { Form, Row, Col } from "react-bootstrap";
 
-// Custom component imports
-import fetchToken from "../../services/auth";
-import { getUserSelf } from "../../services/users";
-import routes from "../../constants/routes";
-import { isAuth } from "../../shared/authHelper";
-import Button from "../../components/Widgets/Button";
-import Alert from "../../components/Widgets/Alert";
+// Required functions for calling APIs
+import fetchToken from "services/auth";
+import { getUserSelf } from "services/users";
+
+// Routes
+import routes from "constants/routes";
+
+// Helper function for user authentication
+import { isAuth } from "shared/authHelper";
+
+// Widgets
+import { Alert, Button, Spinner } from "components/Widgets";
+
+// Features cards
 import Features from "./Features";
 
 // CSS imports
 import LoginForm from "./style";
 
 const Home = () => {
+  const history = useHistory();
+
+  // Data required for user login
   const [values, setValues] = useState({
     username: "",
     password: "",
   });
+
+  // State Variables for handling Error Boundaries
   const [loading, setLoading] = useState(false);
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
   const { username, password } = values;
-  const history = useHistory();
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });

@@ -17,11 +17,12 @@
 */
 
 import React, { useState, useEffect } from "react";
-import { Spinner } from "react-bootstrap";
-import InputContainer from "../../../../components/Widgets/Input";
-import Alert from "../../../../components/Widgets/Alert";
-import Button from "../../../../components/Widgets/Button";
-import { getAllFolders, deleteFolder } from "../../../../services/folders";
+
+// Widgets
+import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
+
+// Required functions for calling APIs
+import { getAllFolders, deleteFolder } from "services/folders";
 
 const DeleteFolder = () => {
   const initialState = {
@@ -42,8 +43,14 @@ const DeleteFolder = () => {
     type: "success",
     text: "",
   };
+
+  // Data required for deleting a folder
   const [deleteFolderData, setDeleteFolderData] = useState(initialState);
+
+  // Setting the list for all the folders names
   const [folderList, setFolderList] = useState(initialFolderList);
+
+  // State Variables for handling Error Boundaries
   const [loading, setLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState(initialMessage);

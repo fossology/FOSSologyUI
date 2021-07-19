@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -16,30 +16,36 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import endpoints from "../constants/endpoints";
-import sendRequest from "./sendRequest";
-import { getToken } from "../shared/authHelper";
+import endpoints from "constants/endpoints";
 
-export const getAllGroupsApi = async () => {
+// Getting Authorization Token
+import { getToken } from "shared/authHelper";
+
+// Function for calling the fetch function for the APIs
+import sendRequest from "./sendRequest";
+
+// Fetching all the groups
+export const getAllGroupsApi = () => {
   const url = endpoints.admin.groups.getAll();
   return sendRequest({
     url,
     method: "GET",
     credentials: "include",
     headers: {
-      Authorization: await getToken(),
+      Authorization: getToken(),
     },
   });
 };
 
-export const createGroupApi = async (name) => {
+// Creating a group
+export const createGroupApi = (name) => {
   const url = endpoints.admin.groups.create();
   return sendRequest({
     url,
     method: "POST",
     credentials: "include",
     headers: {
-      Authorization: await getToken(),
+      Authorization: getToken(),
       name,
     },
   });

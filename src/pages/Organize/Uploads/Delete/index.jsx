@@ -17,15 +17,16 @@
 */
 
 import React, { useState, useEffect } from "react";
-import { Spinner } from "react-bootstrap";
-import InputContainer from "../../../../components/Widgets/Input";
-import Button from "../../../../components/Widgets/Button";
-import Alert from "../../../../components/Widgets/Alert";
-import { getAllFolders } from "../../../../services/folders";
+
+// Widgets
+import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
+
+// Required functions for calling APIs
+import { getAllFolders } from "services/folders";
 import {
   getUploadsFolderId,
   deleteUploadsbyId,
-} from "../../../../services/organizeUploads";
+} from "services/organizeUploads";
 
 const UploadDelete = () => {
   const initialState = {
@@ -45,10 +46,18 @@ const UploadDelete = () => {
     type: "success",
     text: "",
   };
+
+  // Data required for deleting the upload
   const [deleteUploadFolderData, setDeleteUploadFolderData] =
     useState(initialState);
+
+  // Setting the list for all the folders names
   const [folderList, setFolderList] = useState(initialFolderList);
+
+  // Setting the list for all the uploads of respective folders
   const [uploadFolderList, setUploadFolderList] = useState([]);
+
+  // State Variables for handling Error Boundaries
   const [loading, setLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState(initialMessage);
@@ -112,7 +121,7 @@ const UploadDelete = () => {
       {showMessage && (
         <Alert
           type={message.type}
-          onClose={setShowMessage}
+          setShow={setShowMessage}
           message={message.text}
         />
       )}

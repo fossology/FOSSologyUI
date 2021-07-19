@@ -18,7 +18,9 @@
 
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { setLocalStorage, getLocalStorage } from "../shared/storageHelper";
+
+// Helper Functions for setting and getting the item from localstorage
+import { setLocalStorage, getLocalStorage } from "shared/storageHelper";
 
 // Initial state
 const initialState = {

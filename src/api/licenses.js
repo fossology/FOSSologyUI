@@ -16,18 +16,22 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import sendRequest from "./sendRequest";
-import endpoints from "../constants/endpoints";
-import { getToken } from "../shared/helper";
+import endpoints from "constants/endpoints";
 
-const getAllLicenseApi = async ({ page, limit, groupName, kind }) => {
+// Getting Authorization Token
+import { getToken } from "shared/authHelper";
+
+// Function for calling the fetch function for the APIs
+import sendRequest from "./sendRequest";
+
+// Fetching the licenses with their kind i.e (candidate, main, all)
+const getAllLicenseApi = ({ page, limit, groupName, kind }) => {
   const url = endpoints.license.get(kind);
-  const token = await getToken();
   return sendRequest({
     url,
     method: "GET",
     headers: {
-      Authorization: token,
+      Authorization: getToken(),
       page,
       limit,
       groupName,

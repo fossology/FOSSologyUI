@@ -16,10 +16,10 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-// React imports
 import React from "react";
-import Button from "../../../components/Widgets/Button";
-import InputContainer from "../../../components/Widgets/Input";
+
+// Widgets
+import { Button, InputContainer } from "components/Widgets";
 
 const OneShotMonk = () => {
   const handleSubmit = (e) => {

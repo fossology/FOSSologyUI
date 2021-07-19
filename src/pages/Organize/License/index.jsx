@@ -18,11 +18,15 @@
 
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import Button from "../../../components/Widgets/Button";
-import InputContainer from "../../../components/Widgets/Input";
-import Alert from "../../../components/Widgets/Alert";
-import getAllLicense from "../../../services/licenses";
-import routes from "../../../constants/routes";
+
+// Widgets
+import { Alert, Button, InputContainer } from "components/Widgets";
+
+// Required functions for calling APIs
+import getAllLicense from "services/licenses";
+
+// Routes
+import routes from "constants/routes";
 
 const AdviceLicenses = () => {
   const history = useHistory();
@@ -55,10 +59,17 @@ const AdviceLicenses = () => {
     type: "success",
     text: "",
   };
+
+  // Data required for getting the candidate license list
   const [licenseData, setLicenseData] = useState(initialState);
+
+  // Setting the candidate licenses data to the table
   const [licenseDataList, setLicenseDataList] = useState();
+
+  // State Variables for handling Error Boundaries
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState(initialMessage);
+
   const handleChange = (e) => {
     setLicenseData({
       ...licenseData,

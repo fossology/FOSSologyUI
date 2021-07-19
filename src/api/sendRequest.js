@@ -17,9 +17,13 @@
 */
 
 import { stringify } from "query-string";
-import { logout } from "../shared/authHelper";
-import routes from "../constants/routes";
-import { setLocalStorage } from "../shared/storageHelper";
+import { logout } from "shared/authHelper";
+
+// Route for the home
+import routes from "constants/routes";
+
+// Helper function for setting the item in Localstorage
+import { setLocalStorage } from "shared/storageHelper";
 
 const sendRequest = ({
   url,
@@ -77,6 +81,7 @@ const sendRequest = ({
       }
       return res.json();
     }
+    // Checking the retries for hitting the request several times
     if (retries > 0) {
       setTimeout(() => {
         const retriesLeft = retries - 1;

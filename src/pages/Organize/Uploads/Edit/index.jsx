@@ -17,12 +17,14 @@
 */
 
 import React, { useState, useEffect } from "react";
-import InputContainer from "../../../../components/Widgets/Input";
-import Button from "../../../../components/Widgets/Button";
-import Alert from "../../../../components/Widgets/Alert";
-import { getAllFolders } from "../../../../services/folders";
-import { getUploadsFolderId } from "../../../../services/organizeUploads";
-import { getId } from "../../../../services/upload";
+
+// Widgets
+import { Alert, Button, InputContainer } from "components/Widgets";
+
+// Required functions for calling APIs
+import { getAllFolders } from "services/folders";
+import { getUploadsFolderId } from "services/organizeUploads";
+import { getId } from "services/upload";
 
 const UploadEdit = () => {
   const initialState = {
@@ -44,11 +46,18 @@ const UploadEdit = () => {
     type: "success",
     text: "",
   };
+
+  // Data required for editing the upload
   const [editUploadFolderData, setEditUploadFolderData] =
     useState(initialState);
+
+  // Setting the list for all the folders names
   const [folderList, setFolderList] = useState(initialFolderList);
+
+  // Setting the list for all the uploads of respective folders
   const [uploadFolderList, setUploadFolderList] = useState([]);
-  // const [loading, setLoading] = useState(false);
+
+  // State Variables for handling Error Boundaries
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState(initialMessage);
 

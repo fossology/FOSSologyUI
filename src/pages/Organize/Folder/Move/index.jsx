@@ -17,14 +17,12 @@
 */
 
 import React, { useState, useEffect } from "react";
-import InputContainer from "../../../../components/Widgets/Input";
-import Alert from "../../../../components/Widgets/Alert";
-import Button from "../../../../components/Widgets/Button";
-import {
-  getAllFolders,
-  moveFolder,
-  copyFolder,
-} from "../../../../services/folders";
+
+// Widgets
+import { Alert, Button, InputContainer } from "components/Widgets";
+
+// Required functions for calling APIs
+import { getAllFolders, moveFolder, copyFolder } from "services/folders";
 
 const MoveFolder = () => {
   const initialState = {
@@ -43,10 +41,17 @@ const MoveFolder = () => {
     type: "success",
     text: "",
   };
+
+  // Data required for moving a folder
   const [moveFolderData, setMoveFolderData] = useState(initialState);
+
+  // Setting the list for all the folders names
   const [folderList, setFolderList] = useState(initialFolderList);
+
+  // State Variables for handling Error Boundaries
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState(initialMessage);
+
   const { id, parent } = moveFolderData;
 
   const handleChange = (e) =>

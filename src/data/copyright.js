@@ -16,6 +16,8 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+// Copyrights array
+// It can be generated from the command `yarn gencopy`
 const copyrights = [
   "© Skype – Last revised: August 2009",
   "© 2007 Hugh Jackman",
