@@ -26,7 +26,7 @@ import { getToken } from "shared/authHelper";
 import sendRequest from "./sendRequest";
 
 // Create Uploads from File
-export const createUpload = (
+export const createUploadApi = (
   folderId,
   uploadDescription,
   accessLevel,
@@ -55,7 +55,7 @@ export const createUpload = (
 };
 
 // Create Uploads from Version Control System
-export const createUploadVcs = (header, body) => {
+export const createUploadVcsApi = (header, body) => {
   const url = endpoints.upload.uploadCreate();
   return sendRequest({
     url,
@@ -70,7 +70,7 @@ export const createUploadVcs = (header, body) => {
 };
 
 // Scheduling the analysis for the uploads
-export const scheduleAnalysis = (folderId, uploadId, scanData) => {
+export const scheduleAnalysisApi = (folderId, uploadId, scanData) => {
   const url = endpoints.upload.scheduleAnalysis();
   const { bucket, copyrightEmailAuthor, ecc, keyword, mime, monk, nomos, ojo } =
     scanData?.analysis;
@@ -113,7 +113,7 @@ export const scheduleAnalysis = (folderId, uploadId, scanData) => {
 };
 
 // Getting a Upload by id
-export const getUploadById = (uploadId, retries) => {
+export const getUploadByIdApi = (uploadId, retries) => {
   const url = endpoints.upload.getId(uploadId);
   return sendRequest({
     url,
@@ -125,7 +125,7 @@ export const getUploadById = (uploadId, retries) => {
   });
 };
 
-createUpload.propTypes = {
+createUploadApi.propTypes = {
   folderId: PropTypes.number,
   uploadDescription: PropTypes.string,
   accessLevel: PropTypes.string,

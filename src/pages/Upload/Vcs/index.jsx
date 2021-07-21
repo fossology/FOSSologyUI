@@ -26,7 +26,11 @@ import CommonFields from "components/Upload/CommonFields";
 
 // Required functions for calling APIs
 import { getAllFolders } from "services/folders";
-import { createUploadVCS, getId, scheduleJobs } from "services/upload";
+import {
+  createUploadVcs,
+  getUploadById,
+  scheduleAnalysis,
+} from "services/upload";
 
 const UploadFromVcs = () => {
   const initialState = {
@@ -106,7 +110,7 @@ const UploadFromVcs = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    createUploadVCS(uploadVcsData, vcsData)
+    createUploadVcs(uploadVcsData, vcsData)
       .then((res) => {
         setMessage({
           type: "success",
@@ -115,11 +119,11 @@ const UploadFromVcs = () => {
         uploadId = res.message;
       })
       // Calling the api for maximum 10 times to check whether the upload is unpacked by the agent
-      .then(() => getId(uploadId, 10))
+      .then(() => getUploadById(uploadId, 10))
       .then(() =>
         setTimeout(
           () =>
-            scheduleJobs(uploadVcsData.folderId, uploadId, scanFileData)
+            scheduleAnalysis(uploadVcsData.folderId, uploadId, scanFileData)
               .then(() => {
                 setMessage({
                   type: "success",
