@@ -26,7 +26,8 @@ import { getToken } from "shared/authHelper";
 import sendRequest from "./sendRequest";
 
 // Fetching all the uploads on the basis of search criteria
-const searchFiles = ({
+const searchApi = ({
+  groupName,
   searchType,
   uploadId,
   filename,
@@ -42,6 +43,7 @@ const searchFiles = ({
     method: "GET",
     headers: {
       Authorization: getToken(),
+      groupName,
       searchType,
       uploadId,
       filename,
@@ -54,7 +56,8 @@ const searchFiles = ({
   });
 };
 
-searchFiles.propTypes = {
+searchApi.propTypes = {
+  groupName: PropTypes.string,
   searchType: PropTypes.string,
   uploadId: PropTypes.number,
   filename: PropTypes.string,
@@ -65,4 +68,4 @@ searchFiles.propTypes = {
   copyright: PropTypes.string,
 };
 
-export default searchFiles;
+export default searchApi;
