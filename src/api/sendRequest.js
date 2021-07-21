@@ -19,32 +19,39 @@
 import { stringify } from "query-string";
 import { logout } from "shared/authHelper";
 
-// Route for the home
-import routes from "constants/routes";
-
 // Helper function for setting the item in Localstorage
-import { setLocalStorage } from "shared/storageHelper";
+import { getLocalStorage, setLocalStorage } from "shared/storageHelper";
 
 const sendRequest = ({
   url,
   method,
   credentials = false,
   body,
+  groupName,
   headers = {},
   queryParams,
   isMultipart = false,
   noHeaders = false,
+  addGroupName = true,
   retries = 0,
 }) => {
   let mergedHeaders;
   if (isMultipart) {
-    mergedHeaders = new Headers({ ...headers });
+    mergedHeaders = new Headers({
+      ...headers,
+    });
   } else {
     mergedHeaders = new Headers({
       "content-type": "application/json",
       accept: "application/json",
       ...headers,
     });
+  }
+  if (addGroupName) {
+    mergedHeaders.append(
+      "groupName",
+      groupName || getLocalStorage("currentGroup") || "fossy"
+    );
   }
   if (noHeaders) {
     mergedHeaders = {};
@@ -95,10 +102,7 @@ const sendRequest = ({
     }
     return res.json().then((json) => {
       if (json.code === 403) {
-        return logout(() => {
-          window.location.href = routes.home;
-          return true;
-        });
+        return logout();
       }
       const error = new Error(json.message);
       error.body = json;

@@ -23,19 +23,31 @@ import PropTypes from "prop-types";
 const TextIcon = ({ text, className }) => {
   const themeContext = useContext(ThemeContext);
   return (
-    <svg width="40" height="40" className={className}>
-      <circle cx="20" cy="20" r="20" fill="white" />
-      <text
-        x="50%"
-        y="50%"
-        textAnchor="middle"
-        fill={themeContext.primaryColor}
-        fontSize="18px"
-        alignmentBaseline="middle"
-        fontWeight="bold"
-      >
-        {text}
-      </text>
+    <svg width="40" height="40" viewBox="0 0 40 40" className={className}>
+      <g>
+        <circle
+          style={{
+            fill: "white",
+            stroke: themeContext.primaryColor,
+            strokeWidth: 1,
+            strokeMiterlimit: 10,
+          }}
+          cx="20"
+          cy="20"
+          r="20"
+        />
+        <text
+          x="50%"
+          y="50%"
+          textAnchor="middle"
+          stroke={themeContext.primaryColor}
+          fill={themeContext.primaryColor}
+          strokeWidth="0.8px"
+          dy=".3em"
+        >
+          {text}
+        </text>
+      </g>
     </svg>
   );
 };

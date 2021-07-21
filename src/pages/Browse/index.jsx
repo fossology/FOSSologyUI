@@ -34,7 +34,6 @@ const Browse = () => {
     folderId: 1,
     page: 1,
     limit: 10,
-    groupName: "",
     recursive: true,
   };
 
