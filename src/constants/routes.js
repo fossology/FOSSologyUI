@@ -46,7 +46,10 @@ const routes = {
       move: "/organize/folders/move",
       unlinkContent: "/organize/folders/unlinkContent",
     },
-    licenses: "/organize/licenses",
+    licenses: {
+      create: "/organize/license/create",
+      candidate: "/organize/license/candidate",
+    },
     uploads: {
       delete: "/organize/uploads/delete",
       edit: "/organize/uploads/edit",

@@ -58,7 +58,8 @@ import CreateFolder from "pages/Organize/Folder/Create";
 import EditFolder from "pages/Organize/Folder/Edit";
 import MoveFolder from "pages/Organize/Folder/Move";
 import UnlinkFolder from "pages/Organize/Folder/Unlink";
-import AdviceLicenses from "pages/Organize/License/index";
+import AdviceLicenses from "pages/Organize/License/CandidateLicense";
+import AddCandidateLicense from "pages/Organize/License/Create";
 import UploadEdit from "pages/Organize/Uploads/Edit";
 import UploadMove from "pages/Organize/Uploads/Move";
 import UploadDelete from "pages/Organize/Uploads/Delete";
@@ -190,8 +191,13 @@ const Routes = () => {
         />
         <PrivateLayout
           exact
-          path={routes.organize.licenses}
+          path={routes.organize.licenses.candidate}
           component={AdviceLicenses}
+        />
+        <PrivateLayout
+          exact
+          path={routes.organize.licenses.create}
+          component={AddCandidateLicense}
         />
         <PrivateLayout
           exact

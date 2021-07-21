@@ -71,6 +71,7 @@ const endpoints = {
   },
   license: {
     get: () => `${apiUrl}/license`,
+    createCandidateLicense: () => `${apiUrl}/license`,
   },
 };
 
