@@ -93,7 +93,7 @@ const AddLicense = () => {
               Full name
             </InputContainer>
             <div className="my-2">
-              <label htmlFor="upload" className="font-demi font-15">
+              <label htmlFor="upload" className="font-demi">
                 License Text
                 <textarea
                   name="uploadDescription"
@@ -134,7 +134,7 @@ const AddLicense = () => {
               URL
             </InputContainer>
             <div className="my-2">
-              <label htmlFor="upload" className="font-demi font-15">
+              <label htmlFor="upload" className="font-demi">
                 Public Notes
                 <textarea
                   name="uploadDescription"
