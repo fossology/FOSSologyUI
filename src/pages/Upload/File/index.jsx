@@ -222,7 +222,7 @@ const UploadFile = () => {
                 Select file to upload:
               </InputContainer>
               <div className="my-2">
-                <label htmlFor="upload" className="font-demi font-15">
+                <label htmlFor="upload" className="font-demi">
                   (Optional) Enter a description of this file:
                   <textarea
                     name="uploadDescription"
