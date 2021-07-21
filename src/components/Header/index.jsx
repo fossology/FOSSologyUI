@@ -17,7 +17,7 @@
 */
 
 // React Imports
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { useHistory, Link } from "react-router-dom";
 
 // React Bootstrap Imports
@@ -51,17 +51,21 @@ import { GlobalContext } from "context";
 
 // Helper Functions
 import { logout, isAuth, getUserName, isAdmin } from "shared/authHelper";
+import { getLocalStorage, setLocalStorage } from "shared/storageHelper";
+import { getNameInitials } from "shared/helper";
 
 const Header = () => {
+  const [currentGroup, setCurrentGroup] = useState(
+    getLocalStorage("currentGroup") || "fossy"
+  );
   const { setTheme } = useContext(GlobalContext);
   const history = useHistory();
-  const handleLogout = () => {
-    logout(() => {
-      history.push(routes.home);
-    });
-  };
   const handleLogin = () => {
     history.push(routes.home);
+  };
+  const handleGroupChange = (e) => {
+    setLocalStorage("currentGroup", e.target.innerText);
+    setCurrentGroup(e.target.innerText);
   };
   return (
     <div>
@@ -310,12 +314,14 @@ const Header = () => {
           {/* User Info */}
           <Dropdown drop="left">
             <Dropdown.Toggle variant="link" bsPrefix="p-0">
-              <TextIcon text="GN" className="m-2" />
+              <TextIcon className="m-2" text={getNameInitials(currentGroup)} />
             </Dropdown.Toggle>
             <Dropdown.Menu>
               {getAllGroups() &&
                 getAllGroups().map((group) => (
-                  <Dropdown.Item key={group.id}>{group.name}</Dropdown.Item>
+                  <Dropdown.Item key={group.id} onClick={handleGroupChange}>
+                    {group.name}
+                  </Dropdown.Item>
                 ))}
             </Dropdown.Menu>
           </Dropdown>
@@ -329,7 +335,7 @@ const Header = () => {
                   User: <b>{getUserName()}</b>
                 </Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item onClick={handleLogout}>Log out</Dropdown.Item>
+                <Dropdown.Item onClick={logout}>Log out</Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item onClick={() => setTheme("light")}>
                   Light Theme

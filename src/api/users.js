@@ -33,6 +33,7 @@ export const getUserSelfApi = () => {
     headers: {
       Authorization: getToken(),
     },
+    addGroupName: false,
   });
 };
 

@@ -78,25 +78,28 @@ exports[`renders learn react link 1`] = `
               <svg
                 class="m-2"
                 height="40"
+                viewBox="0 0 40 40"
                 width="40"
               >
-                <circle
-                  cx="20"
-                  cy="20"
-                  fill="white"
-                  r="20"
-                />
-                <text
-                  alignment-baseline="middle"
-                  fill="#DC3545"
-                  font-size="18px"
-                  font-weight="bold"
-                  text-anchor="middle"
-                  x="50%"
-                  y="50%"
-                >
-                  GN
-                </text>
+                <g>
+                  <circle
+                    cx="20"
+                    cy="20"
+                    r="20"
+                    style="fill: white; stroke: #DC3545; stroke-width: 1; stroke-miterlimit: 10;"
+                  />
+                  <text
+                    dy=".3em"
+                    fill="#DC3545"
+                    stroke="#DC3545"
+                    stroke-width="0.8px"
+                    text-anchor="middle"
+                    x="50%"
+                    y="50%"
+                  >
+                    FO
+                  </text>
+                </g>
               </svg>
             </button>
           </div>

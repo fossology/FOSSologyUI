@@ -39,3 +39,23 @@ export const getDate = (day) => {
   const date = new Date();
   return date.addDays(day).toISOString().split("T")[0];
 };
+
+// Returns the initials of given name
+export const getNameInitials = (name) => {
+  // Convert name into array of words
+  const nameList = name.split(" ");
+  // For single word name return first 2 characters
+  if (nameList.length === 1) {
+    return nameList[0].substring(0, 2).toUpperCase();
+  }
+  // Return the first 3 characters of the initials
+  return nameList
+    .map((n, index) => {
+      if (index < 3) {
+        return n[0];
+      }
+      return null;
+    })
+    .join("")
+    .toUpperCase();
+};

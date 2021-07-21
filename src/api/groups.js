@@ -34,6 +34,7 @@ export const getAllGroupsApi = () => {
     headers: {
       Authorization: getToken(),
     },
+    addGroupName: false,
   });
 };
 
@@ -48,5 +49,6 @@ export const createGroupApi = (name) => {
       Authorization: getToken(),
       name,
     },
+    addGroupName: false,
   });
 };

@@ -16,6 +16,9 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+// Routes
+import routes from "constants/routes";
+
 // Helper Functions
 import {
   getCookie,
@@ -39,11 +42,12 @@ export const isAuth = () => {
 };
 
 // Logging out the user
-export const logout = (next) => {
+export const logout = () => {
   removeCookie("token");
   removeLocalStorage("user");
   removeLocalStorage("groups");
-  next();
+  removeLocalStorage("currentGroup");
+  window.location.href = routes.home;
 };
 
 // Updating the user info

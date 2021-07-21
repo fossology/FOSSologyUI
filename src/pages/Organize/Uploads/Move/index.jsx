@@ -32,7 +32,6 @@ import { getAllFolders } from "services/folders";
 const UploadMove = () => {
   const initialState = {
     folderId: 1,
-    groupName: "",
   };
   const initialFolderList = [
     {
@@ -92,11 +91,7 @@ const UploadMove = () => {
     e.preventDefault();
     if (moveCopyUploadsList.length > 0) {
       moveCopyUploadsList.map((id) => {
-        return moveUpload(
-          moveCopyUploadData.folderId,
-          parseInt(id, 10),
-          moveCopyUploadData.groupName
-        )
+        return moveUpload(moveCopyUploadData.folderId, parseInt(id, 10))
           .then(() => {
             setMessage({
               type: "success",
@@ -121,11 +116,7 @@ const UploadMove = () => {
     e.preventDefault();
     if (moveCopyUploadsList.length > 0) {
       moveCopyUploadsList.map((id) => {
-        return copyUpload(
-          moveCopyUploadData.folderId,
-          id,
-          moveCopyUploadData.groupName
-        )
+        return copyUpload(moveCopyUploadData.folderId, id)
           .then(() => {
             setMessage({
               type: "success",
