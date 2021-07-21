@@ -62,6 +62,13 @@ const UnlinkFolder = () => {
     });
   };
 
+  const handleError = (error) => {
+    setMessage({
+      type: "danger",
+      text: error.message,
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -78,10 +85,7 @@ const UnlinkFolder = () => {
         });
       })
       .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
+        handleError(error);
       })
       .finally(() => {
         setLoading(false);
@@ -95,10 +99,7 @@ const UnlinkFolder = () => {
         setFolderList(res);
       })
       .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
+        handleError(error);
         setShowMessage(true);
       });
   }, []);

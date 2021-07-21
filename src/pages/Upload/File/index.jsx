@@ -78,6 +78,13 @@ const UploadFile = () => {
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState();
 
+  const handleError = (error) => {
+    setMessage({
+      type: "danger",
+      text: error.message,
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -102,19 +109,13 @@ const UploadFile = () => {
                 setScanFileData(initialScanFileData);
               })
               .catch((error) => {
-                setMessage({
-                  type: "danger",
-                  text: error.message,
-                });
+                handleError(error);
               }),
           1200
         );
       })
       .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
+        handleError(error);
       })
       .finally(() => {
         setLoading(false);

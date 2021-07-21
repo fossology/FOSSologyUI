@@ -66,31 +66,33 @@ const UploadEdit = () => {
       [e.target.name]: e.target.value,
     });
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
   };
+
+  const handleError = (error) => {
+    setMessage({
+      type: "danger",
+      text: error.message,
+    });
+    setShowMessage(true);
+  };
+
   useEffect(() => {
     getAllFolders()
       .then((res) => {
         setFolderList(res);
       })
       .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
-        setShowMessage(true);
+        handleError(error);
       });
     getUploadsFolderId(editUploadFolderData.folderId)
       .then((res) => {
         setUploadFolderList(res);
       })
       .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
-        setShowMessage(true);
+        handleError(error);
       });
     if (editUploadFolderData.uploadId) {
       getUploadById(editUploadFolderData.uploadId)
@@ -102,11 +104,7 @@ const UploadEdit = () => {
           })
         )
         .catch((error) => {
-          setMessage({
-            type: "danger",
-            text: error.message,
-          });
-          setShowMessage(true);
+          handleError(error);
         });
     }
   }, [editUploadFolderData.folderId, editUploadFolderData.uploadId]);
