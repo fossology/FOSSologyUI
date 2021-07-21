@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Gaurav Mishra (mishra.gaurav@siemens.com)
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Gaurav Mishra (mishra.gaurav@siemens.com), Aman Dwivedi(aman.dwivedi5@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -16,18 +16,19 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-var csv = require("csv-parser");
-var fs = require("fs");
+// eslint-disable-next-line import/no-extraneous-dependencies
+const csv = require("csv-parser");
+const fs = require("fs");
 
-var copyrights = [];
+const copyrights = [];
 
 fs.createReadStream("scripts/copyrights.csv")
   .pipe(csv())
-  .on("data", function (data) {
+  .on("data", (data) => {
     copyrights.push(data.copyright);
   })
-  .on("end", function () {
-    let uniqueCopyrights = [...new Set(copyrights)].sort();
+  .on("end", () => {
+    const uniqueCopyrights = [...new Set(copyrights)].sort();
     fs.writeFile(
       "scripts/copyrights.js",
       JSON.stringify(uniqueCopyrights),
