@@ -196,7 +196,10 @@ const Header = () => {
                       </NavDropdown.Item>
                     </div>
                   </DropdownButton>
-                  <NavDropdown.Item as={Link} to={routes.organize.licenses}>
+                  <NavDropdown.Item
+                    as={Link}
+                    to={routes.organize.licenses.candidate}
+                  >
                     Licenses
                   </NavDropdown.Item>
                   <DropdownButton
