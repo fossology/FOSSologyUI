@@ -320,7 +320,7 @@ const UploadFromVcs = () => {
                 name will be used.
               </div>
               <div className="my-2">
-                <label htmlFor="upload" className="font-demi font-15">
+                <label htmlFor="upload" className="font-demi">
                   (Optional) Enter a description of this file:
                   <textarea
                     name="uploadDescription"
