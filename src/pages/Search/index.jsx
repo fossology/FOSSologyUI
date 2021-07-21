@@ -26,7 +26,6 @@ import search from "services/search";
 
 const Search = () => {
   const initialState = {
-    groupName: "",
     searchType: "allfiles",
     uploadId: "",
     filename: "",

@@ -32,7 +32,6 @@ const UploadDelete = () => {
   const initialState = {
     folderId: 1,
     uploadId: null,
-    groupName: "",
   };
   const initialFolderList = [
     {

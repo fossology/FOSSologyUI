@@ -63,7 +63,6 @@ const ScheduleAgents = () => {
   const initialBrowseData = {
     page: 1,
     limit: 100,
-    groupName: "",
     recursive: false,
   };
   const initialUploadList = [

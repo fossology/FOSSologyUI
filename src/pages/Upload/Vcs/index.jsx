@@ -35,7 +35,6 @@ const UploadFromVcs = () => {
     public: "protected",
     ignoreScm: false,
     uploadType: "vcs",
-    groupName: "",
   };
   const initialScanFileData = {
     analysis: {

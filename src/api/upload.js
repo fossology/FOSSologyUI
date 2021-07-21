@@ -49,7 +49,6 @@ export const createUpload = (
       accessLevel,
       ignoreScm,
       uploadType: "",
-      groupName: "",
     },
     body: formdata,
   });
@@ -84,7 +83,6 @@ export const scheduleAnalysis = (folderId, uploadId, scanData) => {
       Authorization: getToken(),
       folderId,
       uploadId,
-      groupName: "",
     },
     body: {
       analysis: {
@@ -123,7 +121,6 @@ export const getUploadById = (uploadId, retries) => {
     retries,
     headers: {
       Authorization: getToken(),
-      groupName: "",
     },
   });
 };
@@ -134,5 +131,4 @@ createUpload.propTypes = {
   accessLevel: PropTypes.string,
   ignoreScm: PropTypes.bool,
   fileInput: PropTypes.string,
-  groupName: PropTypes.string,
 };

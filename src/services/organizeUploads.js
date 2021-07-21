@@ -38,15 +38,15 @@ export const deleteUploadsbyId = (deleteId) => {
 };
 
 // Moving the upload into another folder
-export const moveUpload = (folderId, id, groupName) => {
-  return moveUploadApi(folderId, id, groupName).then((res) => {
+export const moveUpload = (folderId, id) => {
+  return moveUploadApi(folderId, id).then((res) => {
     return res;
   });
 };
 
 // Copying the upload into another folder
-export const copyUpload = (folderId, id, groupName) => {
-  return copyUploadApi(folderId, id, groupName).then((res) => {
+export const copyUpload = (folderId, id) => {
+  return copyUploadApi(folderId, id).then((res) => {
     return res;
   });
 };
