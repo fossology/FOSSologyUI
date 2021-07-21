@@ -63,6 +63,13 @@ const DeleteUser = () => {
     }
   };
 
+  const handleError = (error) => {
+    setMessage({
+      type: "danger",
+      text: error.message,
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (confirm) {
@@ -80,10 +87,7 @@ const DeleteUser = () => {
           });
         })
         .catch((error) => {
-          setMessage({
-            type: "danger",
-            text: error.message,
-          });
+          handleError(error);
         })
         .finally(() => {
           setLoading(false);
@@ -104,10 +108,7 @@ const DeleteUser = () => {
         setUsersList(res);
       })
       .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
+        handleError(error);
         setShowMessage(true);
       });
   }, []);

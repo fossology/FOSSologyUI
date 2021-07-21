@@ -74,19 +74,24 @@ const UploadMove = () => {
     });
   };
 
+  const handleError = (error) => {
+    setMessage({
+      type: "danger",
+      text: error.message,
+    });
+    setShowMessage(true);
+  };
+
   const getUploadList = () => {
     getUploadsFolderId(parseInt(folderId, 10))
       .then((res) => {
         setUploadList(res);
       })
       .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
-        setShowMessage(true);
+        handleError(error);
       });
   };
+
   const handleMove = (e) => {
     e.preventDefault();
     if (moveCopyUploadsList.length > 0) {
@@ -98,15 +103,10 @@ const UploadMove = () => {
               text: "Successfully scheduled the selected uploads movement.",
             });
             getUploadList();
+            setShowMessage(true);
           })
           .catch((error) => {
-            setMessage({
-              type: "danger",
-              text: error.message,
-            });
-          })
-          .finally(() => {
-            setShowMessage(true);
+            handleError(error);
           });
       });
     }
@@ -123,15 +123,10 @@ const UploadMove = () => {
               text: "Successfully scheduled the selected uploads for copy.",
             });
             getUploadList();
+            setShowMessage(true);
           })
           .catch((error) => {
-            setMessage({
-              type: "danger",
-              text: error.message,
-            });
-          })
-          .finally(() => {
-            setShowMessage(true);
+            handleError(error);
           });
       });
     }
@@ -142,11 +137,7 @@ const UploadMove = () => {
         setFolderList(res);
       })
       .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
-        setShowMessage(true);
+        handleError(error);
       });
     getUploadList();
   }, [folderId]);

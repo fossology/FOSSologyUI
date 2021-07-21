@@ -107,6 +107,13 @@ const UploadFromVcs = () => {
   const [loading, setLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
 
+  const handleError = (error) => {
+    setMessage({
+      type: "danger",
+      text: error.message,
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -133,19 +140,13 @@ const UploadFromVcs = () => {
                 setScanFileData(initialScanFileData);
               })
               .catch((error) => {
-                setMessage({
-                  type: "danger",
-                  text: error.message,
-                });
+                handleError(error);
               }),
           200000
         )
       )
       .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
+        handleError(error);
       })
       .finally(() => {
         setLoading(false);
@@ -214,10 +215,7 @@ const UploadFromVcs = () => {
         setFolderList(res);
       })
       .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
+        handleError(error);
         setShowMessage(true);
       });
   }, []);

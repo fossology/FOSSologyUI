@@ -63,6 +63,13 @@ const CreateFolder = () => {
     });
   };
 
+  const handleError = (error) => {
+    setMessage({
+      type: "danger",
+      text: error.message,
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -74,10 +81,7 @@ const CreateFolder = () => {
         });
       })
       .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
+        handleError(error);
       })
       .finally(() => {
         setLoading(false);
@@ -91,10 +95,7 @@ const CreateFolder = () => {
         setFolderList(res);
       })
       .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
+        handleError(error);
         setShowMessage(true);
       });
   }, []);

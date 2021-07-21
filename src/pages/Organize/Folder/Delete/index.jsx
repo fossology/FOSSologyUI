@@ -61,6 +61,13 @@ const DeleteFolder = () => {
       [e.target.name]: e.target.value,
     });
 
+  const handleError = (error) => {
+    setMessage({
+      type: "danger",
+      text: error.message,
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -77,10 +84,7 @@ const DeleteFolder = () => {
         });
       })
       .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
+        handleError(error);
       })
       .finally(() => {
         setLoading(false);
@@ -94,10 +98,7 @@ const DeleteFolder = () => {
         setFolderList(res);
       })
       .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
+        handleError(error);
         setShowMessage(true);
       });
   }, []);
