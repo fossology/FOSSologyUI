@@ -51,13 +51,10 @@ export const logout = () => {
 };
 
 // Updating the user info
-export const updateUser = (response, next) => {
+export const updateUser = (userData) => {
   if (typeof window !== "undefined") {
-    let auth = JSON.parse(localStorage.getItem("user"));
-    auth = response.data;
-    localStorage.setItem("user", JSON.stringify(auth));
+    localStorage.setItem("user", JSON.stringify(userData));
   }
-  next();
 };
 
 // Getting the Bearer Token for Authorization

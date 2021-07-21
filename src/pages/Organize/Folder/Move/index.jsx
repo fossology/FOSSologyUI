@@ -60,6 +60,13 @@ const MoveFolder = () => {
       [e.target.name]: e.target.value,
     });
 
+  const handleError = (error) => {
+    setMessage({
+      type: "danger",
+      text: error.message,
+    });
+  };
+
   const handleMove = (e) => {
     e.preventDefault();
     moveFolder(moveFolderData)
@@ -70,10 +77,7 @@ const MoveFolder = () => {
         });
       })
       .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
+        handleError(error);
       })
       .finally(() => {
         setShowMessage(true);
@@ -90,10 +94,7 @@ const MoveFolder = () => {
         });
       })
       .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
+        handleError(error);
       })
       .finally(() => {
         setShowMessage(true);
@@ -106,10 +107,7 @@ const MoveFolder = () => {
         setFolderList(res);
       })
       .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
+        handleError(error);
         setShowMessage(true);
       });
   }, []);
