@@ -25,7 +25,7 @@ import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 import CommonFields from "components/Upload/CommonFields";
 
 // Required functions for calling APIs
-import { createUploadFile, scheduleJobs } from "services/upload";
+import { createUploadFile, scheduleAnalysis } from "services/upload";
 import { getAllFolders } from "services/folders";
 import { defaultAgentsList } from "shared/storageHelper";
 
@@ -92,7 +92,7 @@ const UploadFile = () => {
       .then(() => {
         setTimeout(
           () =>
-            scheduleJobs(uploadFileData.folderId, uploadId, scanFileData)
+            scheduleAnalysis(uploadFileData.folderId, uploadId, scanFileData)
               .then(() => {
                 setMessage({
                   type: "success",

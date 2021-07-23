@@ -24,7 +24,7 @@ import { Alert, Button, InputContainer } from "components/Widgets";
 // Required functions for calling APIs
 import { getAllFolders } from "services/folders";
 import { getUploadsFolderId } from "services/organizeUploads";
-import { getId } from "services/upload";
+import { getUploadById } from "services/upload";
 
 const UploadEdit = () => {
   const initialState = {
@@ -93,7 +93,7 @@ const UploadEdit = () => {
         setShowMessage(true);
       });
     if (editUploadFolderData.uploadId) {
-      getId(editUploadFolderData.uploadId)
+      getUploadById(editUploadFolderData.uploadId)
         .then((res) =>
           setEditUploadFolderData({
             ...editUploadFolderData,

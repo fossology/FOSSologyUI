@@ -17,10 +17,10 @@
 */
 
 import {
-  createUpload,
-  scheduleAnalysis,
-  getUploadById,
-  createUploadVcs,
+  createUploadApi,
+  scheduleAnalysisApi,
+  getUploadByIdApi,
+  createUploadVcsApi,
 } from "api/upload";
 
 // Create Uploads from File
@@ -31,7 +31,7 @@ export const createUploadFile = ({
   ignoreScm,
   fileInput,
 }) => {
-  return createUpload(
+  return createUploadApi(
     folderId,
     uploadDescription,
     accessLevel,
@@ -43,22 +43,22 @@ export const createUploadFile = ({
 };
 
 // Create Uploads from Version Control System
-export const createUploadVCS = (header, body) => {
-  return createUploadVcs(header, body).then((res) => {
+export const createUploadVcs = (header, body) => {
+  return createUploadVcsApi(header, body).then((res) => {
     return res;
   });
 };
 
 // Scheduling the analysis for the uploads
-export const scheduleJobs = (folderId, uploadId, scanData) => {
-  return scheduleAnalysis(folderId, uploadId, scanData).then((res) => {
+export const scheduleAnalysis = (folderId, uploadId, scanData) => {
+  return scheduleAnalysisApi(folderId, uploadId, scanData).then((res) => {
     return res;
   });
 };
 
 // Getting a Upload by id
-export const getId = (uploadId, retries) => {
-  return getUploadById(uploadId, retries).then((res) => {
+export const getUploadById = (uploadId, retries) => {
+  return getUploadByIdApi(uploadId, retries).then((res) => {
     return res;
   });
 };
