@@ -17,10 +17,16 @@
 */
 
 import { getAllGroupsApi, createGroupApi } from "api/groups";
+import { setLocalStorage, getLocalStorage } from "shared/storageHelper";
 
 // Fetching all the groups
 export const getAllGroups = () => {
+  return getLocalStorage("groups");
+};
+
+export const fetchAllGroups = () => {
   return getAllGroupsApi().then((res) => {
+    setLocalStorage("groups", res);
     return res;
   });
 };

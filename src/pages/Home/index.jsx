@@ -26,6 +26,7 @@ import { Form, Row, Col } from "react-bootstrap";
 // Required functions for calling APIs
 import fetchToken from "services/auth";
 import { getUserSelf } from "services/users";
+import { fetchAllGroups } from "services/groups";
 
 // Routes
 import routes from "constants/routes";
@@ -66,17 +67,9 @@ const Home = () => {
     event.preventDefault();
     setLoading(true);
     fetchToken(values)
-      .then(() => {
-        setLoading(false);
-        getUserSelf()
-          .then(() => {
-            history.push(routes.browse);
-          })
-          .catch((error) => {
-            throw error;
-          });
-        history.push(routes.browse);
-      })
+      .then(() => getUserSelf())
+      .then(() => fetchAllGroups())
+      .then(() => history.push(routes.browse))
       .catch((err) => {
         setLoading(false);
         setErrorMessage(err.message);

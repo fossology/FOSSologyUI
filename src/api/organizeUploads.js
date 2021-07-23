@@ -49,7 +49,7 @@ export const deleteUploadsApi = (id) => {
 };
 
 // Moving the upload into another folder
-export const moveUploadApi = (folderId, id, groupName) => {
+export const moveUploadApi = (folderId, id) => {
   const url = endpoints.organize.uploads.move(id);
   return sendRequest({
     url,
@@ -57,7 +57,6 @@ export const moveUploadApi = (folderId, id, groupName) => {
     headers: {
       Authorization: getToken(),
       folderId,
-      groupName,
     },
     queryParams: {
       // Set the recursive false to reduce amount of data in response
@@ -67,7 +66,7 @@ export const moveUploadApi = (folderId, id, groupName) => {
 };
 
 // Copying the upload into another folder
-export const copyUploadApi = (folderId, id, groupName) => {
+export const copyUploadApi = (folderId, id) => {
   const url = endpoints.organize.uploads.copy(id);
   return sendRequest({
     url,
@@ -75,7 +74,6 @@ export const copyUploadApi = (folderId, id, groupName) => {
     headers: {
       Authorization: getToken(),
       folderId,
-      groupName,
     },
     queryParams: {
       // Set the recursive false to reduce amount of data in response

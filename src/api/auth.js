@@ -39,6 +39,7 @@ const fetchTokenApi = (username, password) => {
       token_scope: tokenScope,
       token_expire: getDate(tokenExpiryDays),
     },
+    addGroupName: false,
   });
 };
 

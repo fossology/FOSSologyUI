@@ -52,7 +52,6 @@ const AdviceLicenses = () => {
   const initialState = {
     page: 1,
     limit: 10,
-    groupName: "",
     kind: "candidate",
   };
   const initialMessage = {

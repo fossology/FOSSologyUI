@@ -30,7 +30,6 @@ const UploadEdit = () => {
   const initialState = {
     folderId: 1,
     uploadId: null,
-    groupName: "",
     uploadName: "",
     uploadDescription: "",
   };
