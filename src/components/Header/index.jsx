@@ -312,19 +312,24 @@ const Header = () => {
           </Dropdown>
 
           {/* User Info */}
-          <Dropdown drop="left">
-            <Dropdown.Toggle variant="link" bsPrefix="p-0">
-              <TextIcon className="m-2" text={getNameInitials(currentGroup)} />
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              {getAllGroups() &&
-                getAllGroups().map((group) => (
+          {getAllGroups() && (
+            <Dropdown drop="left">
+              <Dropdown.Toggle variant="link" bsPrefix="p-0">
+                <TextIcon
+                  className="m-2"
+                  text={getNameInitials(currentGroup)}
+                />
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                {getAllGroups().map((group) => (
                   <Dropdown.Item key={group.id} onClick={handleGroupChange}>
                     {group.name}
                   </Dropdown.Item>
                 ))}
-            </Dropdown.Menu>
-          </Dropdown>
+              </Dropdown.Menu>
+            </Dropdown>
+          )}
+
           <Dropdown drop="left">
             <Dropdown.Toggle variant="link" bsPrefix="p-0">
               <PersonCircle color="#fff" size={40} className="m-2" />
