@@ -30,7 +30,6 @@ export const getAllGroupsApi = () => {
   return sendRequest({
     url,
     method: "GET",
-    credentials: "include",
     headers: {
       Authorization: getToken(),
     },
@@ -44,7 +43,6 @@ export const createGroupApi = (name) => {
   return sendRequest({
     url,
     method: "POST",
-    credentials: "include",
     headers: {
       Authorization: getToken(),
       name,
