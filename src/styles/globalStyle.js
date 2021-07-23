@@ -43,8 +43,12 @@ const GlobalStyles = createGlobalStyle`
   }
   .navbar-light .navbar-nav .nav-link{
     color: ${({ theme }) => theme.secondaryText};
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
     &:hover{
+      background: ${({ theme }) => theme.secondaryColor};
       color: ${({ theme }) => theme.secondaryText};
+      font-weight: 900;
     }
     &:focus{
       color: ${({ theme }) => theme.secondaryText};
@@ -88,6 +92,13 @@ const GlobalStyles = createGlobalStyle`
   .candidate-license-text textarea:disabled{
     background: transparent;
     color: ${({ theme }) => theme.primaryText};
+  }
+  .active-nav-item{
+    border-bottom: 0.15rem ${({ theme }) => theme.secondaryText} solid;
+  }
+  .dropdown-item:hover, .dropdown-item:focus{
+    color: ${({ theme }) => theme.secondaryText};
+    background: ${({ theme }) => theme.primaryColor};
   }
 }`;
 
