@@ -29,6 +29,9 @@ import {
 } from "services/organizeUploads";
 import { getAllFolders } from "services/folders";
 
+// Helper function for error handling
+import { handleError } from "shared/helper";
+
 const UploadMove = () => {
   const initialState = {
     folderId: 1,
@@ -74,21 +77,14 @@ const UploadMove = () => {
     });
   };
 
-  const handleError = (error) => {
-    setMessage({
-      type: "danger",
-      text: error.message,
-    });
-    setShowMessage(true);
-  };
-
   const getUploadList = () => {
     getUploadsFolderId(parseInt(folderId, 10))
       .then((res) => {
         setUploadList(res);
       })
       .catch((error) => {
-        handleError(error);
+        handleError(error, setMessage);
+        setShowMessage(true);
       });
   };
 
@@ -106,7 +102,8 @@ const UploadMove = () => {
             setShowMessage(true);
           })
           .catch((error) => {
-            handleError(error);
+            handleError(error, setMessage);
+            setShowMessage(true);
           });
       });
     }
@@ -126,7 +123,8 @@ const UploadMove = () => {
             setShowMessage(true);
           })
           .catch((error) => {
-            handleError(error);
+            handleError(error, setMessage);
+            setShowMessage(true);
           });
       });
     }
@@ -137,7 +135,8 @@ const UploadMove = () => {
         setFolderList(res);
       })
       .catch((error) => {
-        handleError(error);
+        handleError(error, setMessage);
+        setShowMessage(true);
       });
     getUploadList();
   }, [folderId]);
