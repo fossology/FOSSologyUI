@@ -24,6 +24,9 @@ import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 // Required functions for calling APIs
 import { getAllFolders, deleteFolder } from "services/folders";
 
+// Helper function for error handling
+import { handleError } from "shared/helper";
+
 const UnlinkFolder = () => {
   const initialState = {
     id: 1,
@@ -62,13 +65,6 @@ const UnlinkFolder = () => {
     });
   };
 
-  const handleError = (error) => {
-    setMessage({
-      type: "danger",
-      text: error.message,
-    });
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -85,7 +81,7 @@ const UnlinkFolder = () => {
         });
       })
       .catch((error) => {
-        handleError(error);
+        handleError(error, setMessage);
       })
       .finally(() => {
         setLoading(false);
@@ -99,7 +95,7 @@ const UnlinkFolder = () => {
         setFolderList(res);
       })
       .catch((error) => {
-        handleError(error);
+        handleError(error, setMessage);
         setShowMessage(true);
       });
   }, []);

@@ -29,6 +29,9 @@ import { createUploadFile, scheduleAnalysis } from "services/upload";
 import { getAllFolders } from "services/folders";
 import { defaultAgentsList } from "shared/storageHelper";
 
+// Helper function for error handling
+import { handleError } from "shared/helper";
+
 const UploadFile = () => {
   const initialState = {
     folderId: 1,
@@ -78,13 +81,6 @@ const UploadFile = () => {
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState();
 
-  const handleError = (error) => {
-    setMessage({
-      type: "danger",
-      text: error.message,
-    });
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -109,13 +105,13 @@ const UploadFile = () => {
                 setScanFileData(initialScanFileData);
               })
               .catch((error) => {
-                handleError(error);
+                handleError(error, setMessage);
               }),
           1200
         );
       })
       .catch((error) => {
-        handleError(error);
+        handleError(error, setMessage);
       })
       .finally(() => {
         setLoading(false);

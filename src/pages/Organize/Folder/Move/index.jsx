@@ -24,6 +24,9 @@ import { Alert, Button, InputContainer } from "components/Widgets";
 // Required functions for calling APIs
 import { getAllFolders, moveFolder, copyFolder } from "services/folders";
 
+// Helper function for error handling
+import { handleError } from "shared/helper";
+
 const MoveFolder = () => {
   const initialState = {
     parent: 1,
@@ -60,13 +63,6 @@ const MoveFolder = () => {
       [e.target.name]: e.target.value,
     });
 
-  const handleError = (error) => {
-    setMessage({
-      type: "danger",
-      text: error.message,
-    });
-  };
-
   const handleMove = (e) => {
     e.preventDefault();
     moveFolder(moveFolderData)
@@ -77,7 +73,7 @@ const MoveFolder = () => {
         });
       })
       .catch((error) => {
-        handleError(error);
+        handleError(error, setMessage);
       })
       .finally(() => {
         setShowMessage(true);
@@ -94,7 +90,7 @@ const MoveFolder = () => {
         });
       })
       .catch((error) => {
-        handleError(error);
+        handleError(error, setMessage);
       })
       .finally(() => {
         setShowMessage(true);
@@ -107,7 +103,7 @@ const MoveFolder = () => {
         setFolderList(res);
       })
       .catch((error) => {
-        handleError(error);
+        handleError(error, setMessage);
         setShowMessage(true);
       });
   }, []);

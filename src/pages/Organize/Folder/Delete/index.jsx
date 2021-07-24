@@ -24,6 +24,9 @@ import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 // Required functions for calling APIs
 import { getAllFolders, deleteFolder } from "services/folders";
 
+// Helper function for error handling
+import { handleError } from "shared/helper";
+
 const DeleteFolder = () => {
   const initialState = {
     id: 1,
@@ -61,13 +64,6 @@ const DeleteFolder = () => {
       [e.target.name]: e.target.value,
     });
 
-  const handleError = (error) => {
-    setMessage({
-      type: "danger",
-      text: error.message,
-    });
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -84,7 +80,7 @@ const DeleteFolder = () => {
         });
       })
       .catch((error) => {
-        handleError(error);
+        handleError(error, setMessage);
       })
       .finally(() => {
         setLoading(false);
@@ -98,7 +94,7 @@ const DeleteFolder = () => {
         setFolderList(res);
       })
       .catch((error) => {
-        handleError(error);
+        handleError(error, setMessage);
         setShowMessage(true);
       });
   }, []);

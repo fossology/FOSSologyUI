@@ -59,3 +59,11 @@ export const getNameInitials = (name) => {
     .join("")
     .toUpperCase();
 };
+
+// Common handle error component
+export const handleError = (error, setMessage) => {
+  setMessage({
+    type: "danger",
+    text: error.message,
+  });
+};
