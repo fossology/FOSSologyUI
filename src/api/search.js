@@ -27,7 +27,6 @@ import sendRequest from "./sendRequest";
 
 // Fetching all the uploads on the basis of search criteria
 const searchApi = ({
-  groupName,
   searchType,
   uploadId,
   filename,
@@ -43,7 +42,7 @@ const searchApi = ({
     method: "GET",
     headers: {
       Authorization: getToken(),
-      groupName,
+
       searchType,
       uploadId,
       filename,
@@ -57,7 +56,6 @@ const searchApi = ({
 };
 
 searchApi.propTypes = {
-  groupName: PropTypes.string,
   searchType: PropTypes.string,
   uploadId: PropTypes.number,
   filename: PropTypes.string,

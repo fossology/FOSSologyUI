@@ -23,7 +23,7 @@ import { useHistory } from "react-router-dom";
 import { Alert, Button, InputContainer } from "components/Widgets";
 
 // Required functions for calling APIs
-import getAllLicense from "services/licenses";
+import { getAllLicense } from "services/licenses";
 
 // Routes
 import routes from "constants/routes";
@@ -151,7 +151,7 @@ const AdviceLicenses = () => {
             </table>
             <Button
               type="button"
-              onClick={() => history.push(routes.admin.license.create)}
+              onClick={() => history.push(routes.organize.licenses.create)}
               className="mt-4"
             >
               New License
