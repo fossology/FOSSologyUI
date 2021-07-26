@@ -18,6 +18,9 @@
 
 import React, { useState } from "react";
 
+// Title
+import Title from "components/Title";
+
 // Widgets
 import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 
@@ -104,6 +107,7 @@ const AddCandidateLicense = () => {
   };
   return (
     <>
+      <Title title="Create Candidate License" />
       {showMessage && (
         <Alert
           type={message.type}
