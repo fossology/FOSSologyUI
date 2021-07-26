@@ -26,7 +26,7 @@ import { getToken } from "shared/authHelper";
 import sendRequest from "./sendRequest";
 
 // Fetching all the Uploads with the give parameters of page, limit
-const getBrowseDataApi = ({ folderId, page, limit, groupName, recursive }) => {
+const getBrowseDataApi = ({ folderId, page, limit, recursive }) => {
   const url = endpoints.browse.get();
   return sendRequest({
     url,
@@ -35,7 +35,6 @@ const getBrowseDataApi = ({ folderId, page, limit, groupName, recursive }) => {
       Authorization: getToken(),
       page,
       limit,
-      groupName,
     },
     queryParams: {
       folderId,
@@ -45,7 +44,6 @@ const getBrowseDataApi = ({ folderId, page, limit, groupName, recursive }) => {
 };
 
 getBrowseDataApi.propTypes = {
-  groupName: PropTypes.string,
   page: PropTypes.number,
   limit: PropTypes.number,
   folderId: PropTypes.number,
