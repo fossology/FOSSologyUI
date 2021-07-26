@@ -25,7 +25,7 @@ import { getToken } from "shared/authHelper";
 import sendRequest from "./sendRequest";
 
 // Fetching the licenses with their kind i.e (candidate, main, all)
-export const getAllLicenseApi = ({ page, limit, groupName, kind }) => {
+export const getAllLicenseApi = ({ page, limit, kind }) => {
   const url = endpoints.license.get();
   return sendRequest({
     url,
@@ -34,7 +34,6 @@ export const getAllLicenseApi = ({ page, limit, groupName, kind }) => {
       Authorization: getToken(),
       page,
       limit,
-      groupName,
     },
     queryParams: {
       kind,
@@ -56,7 +55,6 @@ export const createCandidateLicenseApi = ({
     method: "POST",
     headers: {
       Authorization: getToken(),
-      groupName: "",
     },
     body: {
       shortName,
