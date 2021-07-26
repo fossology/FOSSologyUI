@@ -17,7 +17,7 @@
 */
 
 // React Imports
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 // Title
 import Title from "components/Title";
@@ -25,6 +25,8 @@ import Title from "components/Title";
 // External library imports
 import { useHistory } from "react-router-dom";
 import { Form, Row, Col } from "react-bootstrap";
+import queryString from "query-string";
+import PropTypes from "prop-types";
 
 // Required functions for calling APIs
 import fetchToken from "services/auth";
@@ -46,7 +48,7 @@ import Features from "./Features";
 // CSS imports
 import LoginForm from "./style";
 
-const Home = () => {
+const Home = ({ location }) => {
   const history = useHistory();
 
   // Data required for user login
@@ -79,6 +81,16 @@ const Home = () => {
         setShowError(true);
       });
   };
+
+  useEffect(() => {
+    const queryParams = queryString.parse(location.search);
+    const { message } = queryParams;
+    if (message) {
+      setErrorMessage(message);
+      setShowError(true);
+    }
+    window.history.replaceState(null, null, window.location.pathname);
+  }, [location.search]);
 
   return (
     <>
@@ -187,6 +199,12 @@ const Home = () => {
       </div>
     </>
   );
+};
+
+Home.propTypes = {
+  location: PropTypes.shape({
+    search: PropTypes.string,
+  }),
 };
 
 export default Home;
