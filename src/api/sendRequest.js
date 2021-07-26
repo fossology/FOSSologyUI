@@ -108,7 +108,10 @@ const sendRequest = ({
         body: json,
       };
       if (json.code === 403) {
-        return logout();
+        if (json.message) {
+          return logout({ message: json.message });
+        }
+        return logout({ message: "Requested resource is forbidden" });
       }
       return Promise.reject(error);
     });
