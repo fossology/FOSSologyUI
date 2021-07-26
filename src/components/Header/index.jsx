@@ -360,7 +360,9 @@ const Header = () => {
                   User: <b>{getUserName()}</b>
                 </Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item onClick={logout}>Log out</Dropdown.Item>
+                <Dropdown.Item onClick={() => logout(null)}>
+                  Log out
+                </Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item onClick={() => setTheme("light")}>
                   Light Theme
