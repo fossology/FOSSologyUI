@@ -24,6 +24,9 @@ import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 // Required functions for calling APIs
 import { getAllFolders, editFolder, getSingleFolder } from "services/folders";
 
+// Helper function for error handling
+import { handleError } from "shared/helper";
+
 const EditFolder = () => {
   const initialState = {
     name: "",
@@ -74,10 +77,7 @@ const EditFolder = () => {
         });
       })
       .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
+        handleError(error, setMessage);
       })
       .finally(() => {
         setLoading(false);
@@ -91,10 +91,7 @@ const EditFolder = () => {
         setFolderList(res);
       })
       .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
+        handleError(error, setMessage);
         setShowMessage(true);
       });
   }, []);
@@ -105,10 +102,7 @@ const EditFolder = () => {
         setEditFolderData(res);
       })
       .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
+        handleError(error, setMessage);
         setShowMessage(true);
       });
   }, [id]);

@@ -29,6 +29,9 @@ import {
 } from "services/organizeUploads";
 import { getAllFolders } from "services/folders";
 
+// Helper function for error handling
+import { handleError } from "shared/helper";
+
 const UploadMove = () => {
   const initialState = {
     folderId: 1,
@@ -80,13 +83,11 @@ const UploadMove = () => {
         setUploadList(res);
       })
       .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
+        handleError(error, setMessage);
         setShowMessage(true);
       });
   };
+
   const handleMove = (e) => {
     e.preventDefault();
     if (moveCopyUploadsList.length > 0) {
@@ -98,14 +99,10 @@ const UploadMove = () => {
               text: "Successfully scheduled the selected uploads movement.",
             });
             getUploadList();
+            setShowMessage(true);
           })
           .catch((error) => {
-            setMessage({
-              type: "danger",
-              text: error.message,
-            });
-          })
-          .finally(() => {
+            handleError(error, setMessage);
             setShowMessage(true);
           });
       });
@@ -123,14 +120,10 @@ const UploadMove = () => {
               text: "Successfully scheduled the selected uploads for copy.",
             });
             getUploadList();
+            setShowMessage(true);
           })
           .catch((error) => {
-            setMessage({
-              type: "danger",
-              text: error.message,
-            });
-          })
-          .finally(() => {
+            handleError(error, setMessage);
             setShowMessage(true);
           });
       });
@@ -142,10 +135,7 @@ const UploadMove = () => {
         setFolderList(res);
       })
       .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
+        handleError(error, setMessage);
         setShowMessage(true);
       });
     getUploadList();

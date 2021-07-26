@@ -24,6 +24,9 @@ import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 // Required functions for calling APIs
 import { getAllFolders, createFolder } from "services/folders";
 
+// Helper function for error handling
+import { handleError } from "shared/helper";
+
 const CreateFolder = () => {
   const initialState = {
     parentFolder: 1,
@@ -74,10 +77,7 @@ const CreateFolder = () => {
         });
       })
       .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
+        handleError(error, setMessage);
       })
       .finally(() => {
         setLoading(false);
@@ -91,10 +91,7 @@ const CreateFolder = () => {
         setFolderList(res);
       })
       .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
+        handleError(error, setMessage);
         setShowMessage(true);
       });
   }, []);

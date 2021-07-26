@@ -24,6 +24,9 @@ import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 // Required functions for calling APIs
 import { getAllUsersName, deleteUser } from "services/users";
 
+// Helper function for error handling
+import { handleError } from "shared/helper";
+
 const DeleteUser = () => {
   const initialDeleteUserData = {
     id: 0,
@@ -80,10 +83,7 @@ const DeleteUser = () => {
           });
         })
         .catch((error) => {
-          setMessage({
-            type: "danger",
-            text: error.message,
-          });
+          handleError(error, setMessage);
         })
         .finally(() => {
           setLoading(false);
@@ -104,10 +104,7 @@ const DeleteUser = () => {
         setUsersList(res);
       })
       .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
+        handleError(error, setMessage);
         setShowMessage(true);
       });
   }, []);

@@ -22,11 +22,10 @@ import { getLocalStorage } from "shared/storageHelper";
 // Fetching all the Uploads
 const getBrowseData = (browseData) => {
   return getBrowseDataApi(browseData).then((res) => {
-    const data = {
+    return {
       res,
       pages: getLocalStorage("pages"),
     };
-    return data;
   });
 };
 

@@ -26,6 +26,9 @@ import { getAllFolders } from "services/folders";
 import { getUploadsFolderId } from "services/organizeUploads";
 import { getUploadById } from "services/upload";
 
+// Helper function for error handling
+import { handleError } from "shared/helper";
+
 const UploadEdit = () => {
   const initialState = {
     folderId: 1,
@@ -66,19 +69,18 @@ const UploadEdit = () => {
       [e.target.name]: e.target.value,
     });
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
   };
+
   useEffect(() => {
     getAllFolders()
       .then((res) => {
         setFolderList(res);
       })
       .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
+        handleError(error, setMessage);
         setShowMessage(true);
       });
     getUploadsFolderId(editUploadFolderData.folderId)
@@ -86,10 +88,7 @@ const UploadEdit = () => {
         setUploadFolderList(res);
       })
       .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
+        handleError(error, setMessage);
         setShowMessage(true);
       });
     if (editUploadFolderData.uploadId) {
@@ -102,10 +101,7 @@ const UploadEdit = () => {
           })
         )
         .catch((error) => {
-          setMessage({
-            type: "danger",
-            text: error.message,
-          });
+          handleError(error, setMessage);
           setShowMessage(true);
         });
     }

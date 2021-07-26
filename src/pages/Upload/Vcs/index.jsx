@@ -32,6 +32,9 @@ import {
   scheduleAnalysis,
 } from "services/upload";
 
+// Helper function for error handling
+import { handleError } from "shared/helper";
+
 const UploadFromVcs = () => {
   const initialState = {
     folderId: 1,
@@ -133,19 +136,13 @@ const UploadFromVcs = () => {
                 setScanFileData(initialScanFileData);
               })
               .catch((error) => {
-                setMessage({
-                  type: "danger",
-                  text: error.message,
-                });
+                handleError(error, setMessage);
               }),
           200000
         )
       )
       .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
+        handleError(error, setMessage);
       })
       .finally(() => {
         setLoading(false);
@@ -214,10 +211,7 @@ const UploadFromVcs = () => {
         setFolderList(res);
       })
       .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
+        handleError(error, setMessage);
         setShowMessage(true);
       });
   }, []);
