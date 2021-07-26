@@ -137,11 +137,11 @@ const AddCandidateLicense = () => {
                 Full name
               </InputContainer>
               <div className="my-2">
-                <label htmlFor="upload" className="font-demi font-15">
+                <label htmlFor="upload" className="font-demi w-100">
                   Reference Text
                   <textarea
                     name="text"
-                    className="form-control"
+                    className="form-control font-regular"
                     value={createCandidateLicense.text}
                     id="organize-add-license-text"
                     rows="3"
