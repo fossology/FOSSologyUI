@@ -18,6 +18,9 @@
 
 import React, { useState, useEffect } from "react";
 
+// Title
+import Title from "components/Title";
+
 // Widgets
 import { Alert, Button, InputContainer } from "components/Widgets";
 
@@ -110,6 +113,7 @@ const MoveFolder = () => {
 
   return (
     <>
+      <Title title="Move or Copy Folder" />
       {showMessage && (
         <Alert
           type={message.type}

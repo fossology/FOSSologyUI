@@ -18,16 +18,22 @@
 
 import React from "react";
 
+// Title
+import Title from "components/Title";
+
 const SelectLicense = () => {
   return (
-    <div className="main-container my-3">
-      <div className="row">
-        <div className="col-lg-8 col-md-12 col-sm-12 col-12">
-          <h1 className="font-size-main-heading">Select License</h1>
-          <br />
+    <>
+      <Title title="Select License" />
+      <div className="main-container my-3">
+        <div className="row">
+          <div className="col-lg-8 col-md-12 col-sm-12 col-12">
+            <h1 className="font-size-main-heading">Select License</h1>
+            <br />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

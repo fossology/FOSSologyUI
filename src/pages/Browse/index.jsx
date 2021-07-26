@@ -19,6 +19,9 @@
 import React, { useState, useEffect } from "react";
 import arrayToTree from "array-to-tree";
 
+// Title
+import Title from "components/Title";
+
 // Widgets
 import { InputContainer, Alert } from "components/Widgets";
 
@@ -176,6 +179,7 @@ const Browse = () => {
 
   return (
     <>
+      <Title title="Browse" />
       {showMessage && (
         <Alert
           type={message.type}

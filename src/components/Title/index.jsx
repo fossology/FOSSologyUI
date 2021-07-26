@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -17,24 +17,21 @@
 */
 
 import React from "react";
+import PropTypes from "prop-types";
 
-// Title
-import Title from "components/Title";
+// For the title of all the pages
+import { Helmet } from "react-helmet";
 
-const UploadFromUrl = () => {
+const Title = ({ title }) => {
   return (
-    <>
-      <Title title="Upload from URL" />
-      <div className="main-container my-3">
-        <div className="row">
-          <div className="col-lg-8 col-md-12 col-sm-12 col-12">
-            <h1 className="font-size-main-heading">Upload from URL</h1>
-            <br />
-          </div>
-        </div>
-      </div>
-    </>
+    <Helmet>
+      <title>{title} | FOSSology</title>
+    </Helmet>
   );
 };
 
-export default UploadFromUrl;
+Title.propTypes = {
+  title: PropTypes.string.isRequired,
+};
+
+export default Title;

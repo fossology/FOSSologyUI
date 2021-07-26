@@ -28,6 +28,9 @@ import CommonFields from "components/Upload/CommonFields";
 import { getAllFolders } from "services/folders";
 import { defaultAgentsList } from "shared/storageHelper";
 
+// Title
+import Title from "components/Title";
+
 const UploadFromServer = () => {
   const initialState = {
     folderId: 1,
@@ -142,6 +145,7 @@ const UploadFromServer = () => {
   }, []);
   return (
     <>
+      <Title title="Upload from Server" />
       {showMessage && (
         <Alert
           type={message.type}

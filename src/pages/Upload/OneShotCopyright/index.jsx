@@ -18,6 +18,9 @@
 
 import React from "react";
 
+// Title
+import Title from "components/Title";
+
 // Widgets
 import { Button, InputContainer } from "components/Widgets";
 
@@ -27,47 +30,50 @@ const OneShotCopyright = () => {
   };
   const handleChange = () => {};
   return (
-    <div className="main-container my-3">
-      <div className="row">
-        <div className="col-lg-8 col-md-12 col-sm-12 col-12">
-          <h1 className="font-size-main-heading">
-            One-Shot Copyright/Email/URL Analysis
-          </h1>
-          <br />
-          <div className="font-size-medium">
-            This analyzer allows you to upload a single file for
-            copyright/email/url analysis.
-            <ul>
-              <li>The analysis is done in real-time.</li>
-              <li>
-                Files that contain files are not unpacked. If you upload a
-                container like a gzip file, then only that binary file will be
-                scanned.
-              </li>
-              <li>
-                Results are not stored. As soon as you get your results, your
-                uploaded file is removed from the system.
-              </li>
-            </ul>
+    <>
+      <Title title="One-Shot Copyright/Email/URL Analysis" />
+      <div className="main-container my-3">
+        <div className="row">
+          <div className="col-lg-8 col-md-12 col-sm-12 col-12">
+            <h1 className="font-size-main-heading">
+              One-Shot Copyright/Email/URL Analysis
+            </h1>
+            <br />
+            <div className="font-size-medium">
+              This analyzer allows you to upload a single file for
+              copyright/email/url analysis.
+              <ul>
+                <li>The analysis is done in real-time.</li>
+                <li>
+                  Files that contain files are not unpacked. If you upload a
+                  container like a gzip file, then only that binary file will be
+                  scanned.
+                </li>
+                <li>
+                  Results are not stored. As soon as you get your results, your
+                  uploaded file is removed from the system.
+                </li>
+              </ul>
+            </div>
+            <InputContainer
+              type="file"
+              name="folderId"
+              id="upload-one-shot-copyright"
+              onChange={(e) => handleChange(e)}
+            >
+              Select the file to upload:
+            </InputContainer>
+            <Button
+              type="submit"
+              onClick={(e) => handleSubmit(e)}
+              className="mt-4"
+            >
+              Analyze
+            </Button>
           </div>
-          <InputContainer
-            type="file"
-            name="folderId"
-            id="upload-one-shot-copyright"
-            onChange={(e) => handleChange(e)}
-          >
-            Select the file to upload:
-          </InputContainer>
-          <Button
-            type="submit"
-            onClick={(e) => handleSubmit(e)}
-            className="mt-4"
-          >
-            Analyze
-          </Button>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

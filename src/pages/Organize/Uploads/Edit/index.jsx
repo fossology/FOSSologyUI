@@ -18,6 +18,9 @@
 
 import React, { useState, useEffect } from "react";
 
+// Title
+import Title from "components/Title";
+
 // Widgets
 import { Alert, Button, InputContainer } from "components/Widgets";
 
@@ -109,6 +112,7 @@ const UploadEdit = () => {
 
   return (
     <>
+      <Title title="Edit Uploads" />
       {showMessage && (
         <Alert
           type={message.type}
