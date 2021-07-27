@@ -75,7 +75,14 @@ export const scheduleAnalysisApi = (folderId, uploadId, scanData) => {
   const { bucket, copyrightEmailAuthor, ecc, keyword, mime, monk, nomos, ojo } =
     scanData?.analysis;
   const { nomosMonk, bulkReused, newScanner, ojoDecider } = scanData?.decider;
-  const { reuseUpload, reuseGroup, reuseMain, reuseEnhanced } = scanData?.reuse;
+  const {
+    reuseUpload,
+    reuseGroup,
+    reuseMain,
+    reuseEnhanced,
+    reuseReport,
+    reuseCopyright,
+  } = scanData?.reuse;
   return sendRequest({
     url,
     method: "POST",
@@ -107,6 +114,8 @@ export const scheduleAnalysisApi = (folderId, uploadId, scanData) => {
         reuse_group: reuseGroup,
         reuse_main: reuseMain,
         reuse_enhanced: reuseEnhanced,
+        reuse_report: reuseReport,
+        reuse_copyright: reuseCopyright,
       },
     },
   });

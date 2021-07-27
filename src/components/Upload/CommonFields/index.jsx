@@ -77,6 +77,8 @@ CommonFields.propTypes = {
     reuseGroup: PropTypes.string.isRequired,
     reuseMain: PropTypes.bool.isRequired,
     reuseEnhanced: PropTypes.bool.isRequired,
+    reuseReport: PropTypes.bool.isRequired,
+    reuseCopyright: PropTypes.bool.isRequired,
   }).isRequired,
   handleChange: PropTypes.func.isRequired,
   handleScanChange: PropTypes.func.isRequired,

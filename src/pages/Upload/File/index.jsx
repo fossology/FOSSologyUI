@@ -56,6 +56,8 @@ const UploadFile = () => {
       reuseGroup: "",
       reuseMain: false,
       reuseEnhanced: false,
+      reuseReport: false,
+      reuseCopyright: false,
     },
   };
   const initialFolderList = [
