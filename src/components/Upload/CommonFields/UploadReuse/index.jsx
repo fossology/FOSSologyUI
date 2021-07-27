@@ -34,7 +34,7 @@ function UploadReuse({ reuse, handleChange }) {
         checked={reuse.reuseEnhanced}
         name="reuseEnhanced"
         id="upload-file-reuse-enhanced"
-        onChange={(e) => handleChange(e)}
+        onChange={handleChange}
       >
         Enhanced reuse (slower)
         <Tooltip title="will copy a clearing decision if the two files differ by one line determined by a diff tool" />
@@ -44,10 +44,30 @@ function UploadReuse({ reuse, handleChange }) {
         checked={reuse.reuseMain}
         name="reuseMain"
         id="upload-file-reuse-main"
-        onChange={(e) => handleChange(e)}
+        onChange={handleChange}
       >
         Reuse main license/s
         <Tooltip title="will copy a main license decision if any" />
+      </InputContainer>
+      <InputContainer
+        type="checkbox"
+        checked={reuse.reuseReport}
+        name="reuseReport"
+        id="upload-file-reuse-report"
+        onChange={handleChange}
+      >
+        Reuse report configuration settings
+        <Tooltip title="use to copy all the information from conf page(if any)" />
+      </InputContainer>
+      <InputContainer
+        type="checkbox"
+        checked={reuse.reuseCopyright}
+        name="reuseCopyright"
+        id="upload-file-reuse-copyright"
+        onChange={handleChange}
+      >
+        Reuse edited and deactivated copyrights
+        <Tooltip title="use to copy edited and deactivated copyrights from the reused package" />
       </InputContainer>
     </div>
   );
@@ -59,6 +79,8 @@ UploadReuse.propTypes = {
     reuseGroup: PropTypes.string.isRequired,
     reuseMain: PropTypes.bool.isRequired,
     reuseEnhanced: PropTypes.bool.isRequired,
+    reuseReport: PropTypes.bool.isRequired,
+    reuseCopyright: PropTypes.bool.isRequired,
   }).isRequired,
   handleChange: PropTypes.func,
 };
