@@ -62,6 +62,7 @@ export const getNameInitials = (name) => {
 
 // Common handle error component
 export const handleError = (error, setMessage) => {
+  window.scrollTo({ top: 0 });
   setMessage({
     type: "danger",
     text: error.message,
