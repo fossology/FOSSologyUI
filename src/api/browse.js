@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -16,28 +16,25 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import sendRequest from "./sendRequest";
-import { endpoints } from "../constants/endpoints";
-import { getToken } from "../shared/helper";
 import PropTypes from "prop-types";
+import endpoints from "constants/endpoints";
 
-export const browseFiles = async ({
-  folderId,
-  page,
-  limit,
-  groupName,
-  recursive,
-}) => {
+// Getting Authorization Token
+import { getToken } from "shared/authHelper";
+
+// Function for calling the fetch function for the APIs
+import sendRequest from "./sendRequest";
+
+// Fetching all the Uploads with the give parameters of page, limit
+const getBrowseDataApi = ({ folderId, page, limit, recursive }) => {
   const url = endpoints.browse.get();
-  const token = await getToken();
   return sendRequest({
     url,
     method: "GET",
     headers: {
-      Authorization: token,
+      Authorization: getToken(),
       page,
       limit,
-      groupName,
     },
     queryParams: {
       folderId,
@@ -46,10 +43,11 @@ export const browseFiles = async ({
   });
 };
 
-browseFiles.propTypes = {
-  groupName: PropTypes.string,
+getBrowseDataApi.propTypes = {
   page: PropTypes.number,
   limit: PropTypes.number,
   folderId: PropTypes.number,
   recursive: PropTypes.bool,
 };
+
+export default getBrowseDataApi;

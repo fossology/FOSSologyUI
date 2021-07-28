@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -17,20 +17,21 @@
 */
 
 import {
-  createUpload,
-  scheduleAnalysis,
-  getUploadById,
-  createUploadVcs,
-} from "../api/upload";
+  createUploadApi,
+  scheduleAnalysisApi,
+  getUploadByIdApi,
+  createUploadVcsApi,
+} from "api/upload";
 
-export function createUploadFile({
+// Create Uploads from File
+export const createUploadFile = ({
   folderId,
   uploadDescription,
   accessLevel,
   ignoreScm,
   fileInput,
-}) {
-  return createUpload(
+}) => {
+  return createUploadApi(
     folderId,
     uploadDescription,
     accessLevel,
@@ -39,22 +40,25 @@ export function createUploadFile({
   ).then((res) => {
     return res;
   });
-}
+};
 
-export function createUploadVCS(header, body) {
-  return createUploadVcs(header, body).then((res) => {
+// Create Uploads from Version Control System
+export const createUploadVcs = (header, body) => {
+  return createUploadVcsApi(header, body).then((res) => {
     return res;
   });
-}
+};
 
-export function scheduleJobs(folderId, uploadId, scanData) {
-  return scheduleAnalysis(folderId, uploadId, scanData).then((res) => {
+// Scheduling the analysis for the uploads
+export const scheduleAnalysis = (folderId, uploadId, scanData) => {
+  return scheduleAnalysisApi(folderId, uploadId, scanData).then((res) => {
     return res;
   });
-}
+};
 
-export function getId(uploadId, retries) {
-  return getUploadById(uploadId, retries).then((res) => {
+// Getting a Upload by id
+export const getUploadById = (uploadId, retries) => {
+  return getUploadByIdApi(uploadId, retries).then((res) => {
     return res;
   });
-}
+};

@@ -5,11 +5,7 @@
     "es2021": true,
     "jest": true
   },
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:prettier/recommended"
-  ],
+  "extends": ["airbnb", "plugin:prettier/recommended"],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -20,8 +16,14 @@
   "plugins": ["react"],
   "settings": {
     "react": {
-      "version": "latest"
-    }
+      "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "paths": ["src"]
+      }
+    },
+    "import/parser": "babel-eslint"
   },
   "rules": {
     "react/no-unescaped-entities": ["error", { "forbid": [">", "}"] }],
@@ -30,6 +32,9 @@
       {
         "endOfLine": "auto"
       }
-    ]
+    ],
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+    "react/require-default-props": 0,
+    "jsx-a11y/control-has-associated-label": 0
   }
 }

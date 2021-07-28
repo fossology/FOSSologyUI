@@ -16,11 +16,13 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+// Api Url set in the env file
 const apiUrl = `${
   process.env.REACT_APP_HTTPS === "true" ? "https" : "http"
 }://${process.env.REACT_APP_SERVER_URL}`;
 
-export const endpoints = {
+// Endpoints for all the REST APIs
+const endpoints = {
   jobs: {
     details: (jobId) => `${apiUrl}/jobs/${jobId}`,
   },
@@ -57,8 +59,8 @@ export const endpoints = {
     uploads: {
       get: (folder) => `${apiUrl}/uploads?folderId=${folder}`,
       delete: (deleteId) => `${apiUrl}/uploads/${deleteId}`,
-      move: (moveId) => `${apiUrl}/uploads/${moveId}?recursive=false`,
-      copy: (copyId) => `${apiUrl}/uploads/${copyId}?recursive=false`,
+      move: (moveId) => `${apiUrl}/uploads/${moveId}`,
+      copy: (copyId) => `${apiUrl}/uploads/${copyId}`,
     },
   },
   admin: {
@@ -68,6 +70,9 @@ export const endpoints = {
     },
   },
   license: {
-    get: (kind) => `${apiUrl}/license?kind=${kind}`,
+    get: () => `${apiUrl}/license`,
+    createCandidateLicense: () => `${apiUrl}/license`,
   },
 };
+
+export default endpoints;

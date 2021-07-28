@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -17,11 +17,18 @@
 */
 
 import React, { useState, useEffect } from "react";
-import { Spinner } from "react-bootstrap";
-import InputContainer from "../../../../components/Widgets/Input";
-import Alert from "../../../../components/Widgets/Alert";
-import Button from "../../../../components/Widgets/Button";
-import { getAllUsersName, deleteUser } from "../../../../services/users";
+
+// Title
+import Title from "components/Title";
+
+// Widgets
+import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
+
+// Required functions for calling APIs
+import { getAllUsersName, deleteUser } from "services/users";
+
+// Helper function for error handling
+import { handleError } from "shared/helper";
 
 const DeleteUser = () => {
   const initialDeleteUserData = {
@@ -40,9 +47,12 @@ const DeleteUser = () => {
   };
   const [deleteUserData, setDeleteUserData] = useState(initialDeleteUserData);
   const [usersList, setUsersList] = useState(initialUsersList);
+
+  // State Variables for handling Error Boundaries
   const [loading, setLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState(initialMessage);
+
   const { id, confirm } = deleteUserData;
 
   const handleChange = (e) => {
@@ -76,10 +86,7 @@ const DeleteUser = () => {
           });
         })
         .catch((error) => {
-          setMessage({
-            type: "danger",
-            text: error.message,
-          });
+          handleError(error, setMessage);
         })
         .finally(() => {
           setLoading(false);
@@ -100,15 +107,13 @@ const DeleteUser = () => {
         setUsersList(res);
       })
       .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
+        handleError(error, setMessage);
         setShowMessage(true);
       });
   }, []);
   return (
     <>
+      <Title title="Delete A User" />
       {showMessage && (
         <Alert
           type={message.type}

@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -16,13 +16,17 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import sendRequest from "./sendRequest";
-import { endpoints } from "../constants/endpoints";
-import { getToken } from "../shared/helper";
 import PropTypes from "prop-types";
+import endpoints from "constants/endpoints";
 
-export const searchFiles = async ({
-  groupName,
+// Getting Authorization Token
+import { getToken } from "shared/authHelper";
+
+// Function for calling the fetch function for the APIs
+import sendRequest from "./sendRequest";
+
+// Fetching all the uploads on the basis of search criteria
+const searchApi = ({
   searchType,
   uploadId,
   filename,
@@ -33,13 +37,12 @@ export const searchFiles = async ({
   copyright,
 }) => {
   const url = endpoints.search.search();
-  const token = await getToken();
   return sendRequest({
     url,
     method: "GET",
     headers: {
-      Authorization: token,
-      groupName,
+      Authorization: getToken(),
+
       searchType,
       uploadId,
       filename,
@@ -52,8 +55,7 @@ export const searchFiles = async ({
   });
 };
 
-searchFiles.propTypes = {
-  groupName: PropTypes.string,
+searchApi.propTypes = {
   searchType: PropTypes.string,
   uploadId: PropTypes.number,
   filename: PropTypes.string,
@@ -63,3 +65,5 @@ searchFiles.propTypes = {
   license: PropTypes.string,
   copyright: PropTypes.string,
 };
+
+export default searchApi;

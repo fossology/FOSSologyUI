@@ -17,24 +17,29 @@
 */
 
 import { stringify } from "query-string";
-import { logout } from "../shared/authHelper";
-import { routes } from "../constants/routes";
-import { setLocalStorage } from "../shared/storageHelper";
+import { logout } from "shared/authHelper";
+
+// Helper function for setting the item in Localstorage
+import { getLocalStorage, setLocalStorage } from "shared/storageHelper";
 
 const sendRequest = ({
   url,
   method,
-  credentials = "include",
+  credentials = false,
   body,
+  groupName,
   headers = {},
   queryParams,
   isMultipart = false,
   noHeaders = false,
+  addGroupName = true,
   retries = 0,
 }) => {
   let mergedHeaders;
   if (isMultipart) {
-    mergedHeaders = new Headers({ ...headers });
+    mergedHeaders = new Headers({
+      ...headers,
+    });
   } else {
     mergedHeaders = new Headers({
       "content-type": "application/json",
@@ -42,52 +47,71 @@ const sendRequest = ({
       ...headers,
     });
   }
+  if (addGroupName) {
+    mergedHeaders.append(
+      "groupName",
+      groupName || getLocalStorage("currentGroup") || "fossy"
+    );
+  }
   if (noHeaders) {
     mergedHeaders = {};
   }
   const options = {
-    method: method,
+    method,
     headers: mergedHeaders,
-    body: body ? (isMultipart ? body : JSON.stringify(body)) : null,
+    body,
   };
+  let URL = url;
+  if (body) {
+    if (isMultipart) {
+      options.body = body;
+    } else {
+      options.body = JSON.stringify(body);
+    }
+  } else {
+    options.body = null;
+  }
+
   if (credentials) {
     options.credentials = credentials;
   }
   if (queryParams) {
-    url = `${url}?${stringify(queryParams)}`;
+    URL = `${url}?${stringify(queryParams)}`;
   }
-  return fetch(url, options).then((res) => {
+  return fetch(URL, options).then((res) => {
     if (res.ok) {
-      for (var pair of res.headers.entries()) {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const pair of res.headers.entries()) {
         if (pair[0] === "x-total-pages") {
           setLocalStorage("pages", pair[1]);
         }
       }
       return res.json();
     }
+    // Checking the retries for hitting the request several times
     if (retries > 0) {
-      setTimeout(() => {
-        retries--;
+      return setTimeout(() => {
+        const retriesLeft = retries - 1;
         sendRequest({
           url,
           method,
           headers,
-          retries,
+          retries: retriesLeft,
         });
       }, 10000);
-    } else {
-      return res.json().then(function (json) {
-        if (json.code === 403) {
-          return logout(() => (location.href = routes.home));
-        }
-        return Promise.reject({
-          status: res.status,
-          ok: false,
-          message: json.message,
-          body: json,
-        });
-      });
     }
+    return res.json().then((json) => {
+      const error = {
+        status: res.status,
+        ok: false,
+        message: json.message,
+        body: json,
+      };
+      if (json.code === 403) {
+        return logout();
+      }
+      return Promise.reject(error);
+    });
   });
 };
 

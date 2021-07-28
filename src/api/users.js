@@ -16,41 +16,49 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import sendRequest from "./sendRequest";
-import { endpoints } from "../constants/endpoints";
-import { getToken } from "../shared/authHelper";
+import endpoints from "constants/endpoints";
 
-export const getUserSelfApi = async () => {
+// Getting Authorization Token
+import { getToken } from "shared/authHelper";
+
+// Function for calling the fetch function for the APIs
+import sendRequest from "./sendRequest";
+
+// Fetching the self information
+export const getUserSelfApi = () => {
   const url = endpoints.users.self();
   return sendRequest({
     url,
     method: "GET",
     headers: {
-      Authorization: await getToken(),
+      Authorization: getToken(),
     },
+    addGroupName: false,
   });
 };
 
-export const getAllUsersApi = async () => {
+// Fetching all the users and returning their complete info
+export const getAllUsersApi = () => {
   const url = endpoints.users.getAll();
   return sendRequest({
     url,
     method: "GET",
     credentials: "include",
     headers: {
-      Authorization: await getToken(),
+      Authorization: getToken(),
     },
   });
 };
 
-export const deleteUserApi = async (id) => {
+// Deleting the user info
+export const deleteUserApi = (id) => {
   const url = endpoints.users.delete(id);
   return sendRequest({
     url,
     method: "DELETE",
     credentials: "include",
     headers: {
-      Authorization: await getToken(),
+      Authorization: getToken(),
     },
   });
 };

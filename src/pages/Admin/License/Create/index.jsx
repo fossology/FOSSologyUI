@@ -17,8 +17,12 @@
 */
 
 import React from "react";
-import InputContainer from "../../../../components/Widgets/Input";
-import Button from "../../../../components/Widgets/Button";
+
+// Title
+import Title from "components/Title";
+
+// Widgets
+import { InputContainer, Button } from "components/Widgets";
 
 const AddLicense = () => {
   const options = [
@@ -36,163 +40,166 @@ const AddLicense = () => {
     e.preventDefault();
   };
   return (
-    <div className="main-container my-3">
-      <div className="row">
-        <div className="col-lg-8 col-md-12 col-sm-12 col-12">
-          <h1 className="font-size-main-heading">Add License</h1>
-          <br />
-          <form>
-            <InputContainer
-              options={options}
-              name=""
-              type="select"
-              property="value"
-              id="admin-add-license-status"
-              onChange={handleChange}
-            >
-              Active
-            </InputContainer>
-            <InputContainer
-              options={options}
-              name=""
-              type="select"
-              property="value"
-              id="admin-add-license-checked"
-              onChange={handleChange}
-            >
-              Checked
-            </InputContainer>
-            <InputContainer
-              options={options}
-              name=""
-              type="select"
-              property="value"
-              id="admin-add-license-spdx-compatible"
-              onChange={handleChange}
-            >
-              SPDX Compatible
-            </InputContainer>
-            <InputContainer
-              value={""}
-              name=""
-              type="text"
-              id="admin-add-license-short-name"
-              placeholder="Must be unique"
-              onChange={handleChange}
-            >
-              Short name
-            </InputContainer>
-            <InputContainer
-              value={""}
-              name=""
-              type="text"
-              id="admin-add-license-full-name"
-              onChange={handleChange}
-            >
-              Full name
-            </InputContainer>
-            <div className="my-2">
-              <label htmlFor="upload" className="font-demi font-15">
-                License Text
-              </label>
-              <textarea
-                name="uploadDescription"
-                className="form-control"
-                value={""}
-                id="admin-add-license-text"
-                rows="3"
-                onChange={(e) => handleChange(e)}
-              ></textarea>
-            </div>
-            <InputContainer
-              options={options}
-              name=""
-              type="select"
-              property="value"
-              id="admin-add-license-text-update"
-              onChange={handleChange}
-            >
-              Text Updatable
-            </InputContainer>
-            <InputContainer
-              value={""}
-              name=""
-              type="text"
-              id="admin-add-license-detector-type"
-              onChange={handleChange}
-            >
-              Detector Type
-            </InputContainer>
-            <InputContainer
-              value={""}
-              name=""
-              type="text"
-              id="admin-add-license-url"
-              onChange={handleChange}
-            >
-              URL
-            </InputContainer>
-            <div className="my-2">
-              <label htmlFor="upload" className="font-demi font-15">
-                Public Notes
-              </label>
-              <textarea
-                name="uploadDescription"
-                className="form-control"
-                value={""}
-                id="admin-add-license-public-notes"
-                rows="3"
-                onChange={(e) => handleChange(e)}
-              ></textarea>
-            </div>
-            <InputContainer
-              value={""}
-              name=""
-              type="text"
-              id="admin-add-license-conclusion"
-              onChange={handleChange}
-            >
-              Conclusion
-            </InputContainer>
-            <InputContainer
-              value={""}
-              name=""
-              type="text"
-              id="admin-add-license-report"
-              onChange={handleChange}
-            >
-              Reported License
-            </InputContainer>
-            <InputContainer
-              value={""}
-              name=""
-              type="text"
-              id="admin-add-license-risk-level"
-              onChange={handleChange}
-            >
-              Risk level
-            </InputContainer>
-            <InputContainer
-              value={""}
-              name=""
-              type="text"
-              id="admin-add-license-obligations"
-              placeholder="selected obligations associated with this license"
-              onChange={handleChange}
-            >
-              Associated Obligations
-            </InputContainer>
-            <Button
-              type="submit"
-              onClick={(e) => handleSubmit(e)}
-              className="mt-4"
-            >
-              Add License
-            </Button>
-          </form>
+    <>
+      <Title title="License Administration" />
+      <div className="main-container my-3">
+        <div className="row">
+          <div className="col-lg-8 col-md-12 col-sm-12 col-12">
+            <h1 className="font-size-main-heading">Add License</h1>
+            <br />
+            <form>
+              <InputContainer
+                options={options}
+                name=""
+                type="select"
+                property="value"
+                id="admin-add-license-status"
+                onChange={handleChange}
+              >
+                Active
+              </InputContainer>
+              <InputContainer
+                options={options}
+                name=""
+                type="select"
+                property="value"
+                id="admin-add-license-checked"
+                onChange={handleChange}
+              >
+                Checked
+              </InputContainer>
+              <InputContainer
+                options={options}
+                name=""
+                type="select"
+                property="value"
+                id="admin-add-license-spdx-compatible"
+                onChange={handleChange}
+              >
+                SPDX Compatible
+              </InputContainer>
+              <InputContainer
+                value=""
+                name=""
+                type="text"
+                id="admin-add-license-short-name"
+                placeholder="Must be unique"
+                onChange={handleChange}
+              >
+                Short name
+              </InputContainer>
+              <InputContainer
+                value=""
+                name=""
+                type="text"
+                id="admin-add-license-full-name"
+                onChange={handleChange}
+              >
+                Full name
+              </InputContainer>
+              <div className="my-2">
+                <label htmlFor="upload" className="font-demi font-15">
+                  License Text
+                  <textarea
+                    name="uploadDescription"
+                    className="form-control"
+                    value=""
+                    id="admin-add-license-text"
+                    rows="3"
+                    onChange={(e) => handleChange(e)}
+                  />
+                </label>
+              </div>
+              <InputContainer
+                options={options}
+                name=""
+                type="select"
+                property="value"
+                id="admin-add-license-text-update"
+                onChange={handleChange}
+              >
+                Text Updatable
+              </InputContainer>
+              <InputContainer
+                value=""
+                name=""
+                type="text"
+                id="admin-add-license-detector-type"
+                onChange={handleChange}
+              >
+                Detector Type
+              </InputContainer>
+              <InputContainer
+                value=""
+                name=""
+                type="text"
+                id="admin-add-license-url"
+                onChange={handleChange}
+              >
+                URL
+              </InputContainer>
+              <div className="my-2">
+                <label htmlFor="upload" className="font-demi font-15">
+                  Public Notes
+                  <textarea
+                    name="uploadDescription"
+                    className="form-control"
+                    value=""
+                    id="admin-add-license-public-notes"
+                    rows="3"
+                    onChange={(e) => handleChange(e)}
+                  />
+                </label>
+              </div>
+              <InputContainer
+                value=""
+                name=""
+                type="text"
+                id="admin-add-license-conclusion"
+                onChange={handleChange}
+              >
+                Conclusion
+              </InputContainer>
+              <InputContainer
+                value=""
+                name=""
+                type="text"
+                id="admin-add-license-report"
+                onChange={handleChange}
+              >
+                Reported License
+              </InputContainer>
+              <InputContainer
+                value=""
+                name=""
+                type="text"
+                id="admin-add-license-risk-level"
+                onChange={handleChange}
+              >
+                Risk level
+              </InputContainer>
+              <InputContainer
+                value=""
+                name=""
+                type="text"
+                id="admin-add-license-obligations"
+                placeholder="selected obligations associated with this license"
+                onChange={handleChange}
+              >
+                Associated Obligations
+              </InputContainer>
+              <Button
+                type="submit"
+                onClick={(e) => handleSubmit(e)}
+                className="mt-4"
+              >
+                Add License
+              </Button>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

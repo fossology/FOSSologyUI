@@ -16,8 +16,15 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-export const externalLinks = {
+// External links
+const externalLinks = {
   fossologyWiki: "https://github.com/fossology/fossology/wiki",
   jobSchedulerWiki: "https://github.com/fossology/fossology/wiki/Job-Scheduler",
   fossologyWebsite: "https://www.fossology.org/",
+  latestReleaseGithub:
+    "https://github.com/fossology/fossology/releases/tag/3.10.0",
+  latestReleaseDownload:
+    "https://api.github.com/repos/fossology/fossology/zipball/3.10.0",
 };
+
+export default externalLinks;

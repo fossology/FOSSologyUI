@@ -16,7 +16,8 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-export const routes = {
+// Routes for all the pages
+const routes = {
   home: "/",
   login: "/login",
   search: "/search",
@@ -45,7 +46,10 @@ export const routes = {
       move: "/organize/folders/move",
       unlinkContent: "/organize/folders/unlinkContent",
     },
-    licenses: "/organize/licenses",
+    licenses: {
+      create: "/organize/license/create",
+      candidate: "/organize/license/candidate",
+    },
     uploads: {
       delete: "/organize/uploads/delete",
       edit: "/organize/uploads/edit",
@@ -70,6 +74,9 @@ export const routes = {
     license: {
       create: "/admin/license/create",
       selectLicense: "/admin/selectLicense",
+      licenseCSV: "/licenseCSV/fossology-license-export.csv",
     },
   },
 };
+
+export default routes;

@@ -20,8 +20,10 @@
  * This file contains all styling specific to the theme (mainly base colours)
  */
 
+// Light Theme
 export const lightTheme = {
   primaryColor: "#DC3545",
+  secondaryColor: "#A93232",
   body: "#FFFFFF",
   text: "#212121",
   primaryText: "#212121",
@@ -29,8 +31,10 @@ export const lightTheme = {
   hoverBackgroundColor: "#A93232",
 };
 
+// Dark Theme
 export const darkTheme = {
   primaryColor: "#525252",
+  secondaryColor: "#212121",
   body: "#212121",
   text: "#212121",
   primaryText: "#FFF",

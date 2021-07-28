@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -23,48 +23,59 @@ import {
   deleteFolderApi,
   editFolderApi,
   moveCopyFolderApi,
-} from "../api/folders";
+} from "api/folders";
 
-export function getAllFolders() {
+// Fetching all the folders
+export const getAllFolders = () => {
   return getAllFoldersApi().then((res) => {
     return res;
   });
-}
+};
 
-export function getSingleFolder(id) {
+// Fetching a single folder by its id
+export const getSingleFolder = (id) => {
   return getSingleFolderApi(id).then((res) => {
     return res;
   });
-}
+};
 
-export function deleteFolder({ id }) {
+// Deleting a folder by its id
+export const deleteFolder = ({ id }) => {
   return deleteFolderApi(id).then((res) => {
     return res;
   });
-}
+};
 
-export function createFolder({ parentFolder, folderName, folderDescription }) {
+// Creating a folder
+export const createFolder = ({
+  parentFolder,
+  folderName,
+  folderDescription,
+}) => {
   return createFolderApi(parentFolder, folderName, folderDescription).then(
     (res) => {
       return res;
     }
   );
-}
+};
 
-export function editFolder({ name, description, id }) {
+// Editing a folder properties
+export const editFolder = ({ name, description, id }) => {
   return editFolderApi(name, description, id).then((res) => {
     return res;
   });
-}
+};
 
-export function moveFolder({ parent, id }) {
+// Moving a folder into another folder
+export const moveFolder = ({ parent, id }) => {
   return moveCopyFolderApi(parent, id, "move").then((res) => {
     return res;
   });
-}
+};
 
-export function copyFolder({ parent, id }) {
+// Copying a folder into another folder
+export const copyFolder = ({ parent, id }) => {
   return moveCopyFolderApi(parent, id, "copy").then((res) => {
     return res;
   });
-}
+};

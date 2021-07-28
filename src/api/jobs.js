@@ -1,5 +1,6 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
+
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -15,13 +16,18 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import { endpoints } from "../constants/endpoints";
+import endpoints from "constants/endpoints";
+
+// Function for calling the fetch function for the APIs
 import sendRequest from "./sendRequest";
 
-export const getJobApi = ({ jobId }) => {
+// Fetching the jobs
+const getJobApi = ({ jobId }) => {
   const url = endpoints.jobs.details(jobId);
   return sendRequest({
     url,
     method: "GET",
   });
 };
+
+export default getJobApi;

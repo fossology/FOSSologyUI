@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -16,21 +16,54 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import sendRequest from "./sendRequest";
-import { endpoints } from "../constants/endpoints";
-import { getToken } from "../shared/helper";
+import endpoints from "constants/endpoints";
 
-export const getAllLicenseApi = async ({ page, limit, groupName, kind }) => {
-  const url = endpoints.license.get(kind);
-  const token = await getToken();
+// Getting Authorization Token
+import { getToken } from "shared/authHelper";
+
+// Function for calling the fetch function for the APIs
+import sendRequest from "./sendRequest";
+
+// Fetching the licenses with their kind i.e (candidate, main, all)
+export const getAllLicenseApi = ({ page, limit, kind }) => {
+  const url = endpoints.license.get();
   return sendRequest({
     url,
     method: "GET",
     headers: {
-      Authorization: token,
+      Authorization: getToken(),
       page,
       limit,
-      groupName,
+    },
+    queryParams: {
+      kind,
+    },
+  });
+};
+
+export const createCandidateLicenseApi = ({
+  shortName,
+  fullName,
+  text,
+  risk,
+  licenseUrl,
+  mergeRequest,
+}) => {
+  const url = endpoints.license.createCandidateLicense();
+  return sendRequest({
+    url,
+    method: "POST",
+    headers: {
+      Authorization: getToken(),
+    },
+    body: {
+      shortName,
+      fullName,
+      text,
+      risk,
+      url: licenseUrl,
+      isCandidate: true,
+      mergeRequest,
     },
   });
 };

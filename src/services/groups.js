@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -16,16 +16,24 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import { getAllGroupsApi, createGroupApi } from "../api/groups";
+import { getAllGroupsApi, createGroupApi } from "api/groups";
+import { setLocalStorage, getLocalStorage } from "shared/storageHelper";
 
-export function getAllGroups() {
+// Fetching all the groups
+export const getAllGroups = () => {
+  return getLocalStorage("groups");
+};
+
+export const fetchAllGroups = () => {
   return getAllGroupsApi().then((res) => {
+    setLocalStorage("groups", res);
     return res;
   });
-}
+};
 
-export function createGroup(name) {
+// Creating a group
+export const createGroup = (name) => {
   return createGroupApi(name).then((res) => {
     return res;
   });
-}
+};

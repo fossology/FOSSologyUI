@@ -1,6 +1,6 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
- 
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
+
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -16,6 +16,10 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+// Routes
+import routes from "constants/routes";
+
+// Helper Functions
 import {
   getCookie,
   getLocalStorage,
@@ -23,49 +27,52 @@ import {
   removeLocalStorage,
 } from "./storageHelper";
 
-// access user info from localstorage
+// Access user info from localstorage
 export const isAuth = () => {
   if (typeof window !== "undefined") {
     const cookieChecked = getCookie("token");
     if (cookieChecked) {
-      if (localStorage.getItem("user")) {
+      if (localStorage.getItem("user") && localStorage.getItem("groups")) {
         return true;
-      } else {
-        return false;
       }
+      return false;
     }
-  } else {
-    return false;
   }
+  return false;
 };
 
-export const logout = (next) => {
+// Logging out the user
+export const logout = () => {
   removeCookie("token");
   removeLocalStorage("user");
-  next();
+  removeLocalStorage("groups");
+  removeLocalStorage("currentGroup");
+  window.location.href = routes.home;
 };
 
-export const updateUser = (response, next) => {
+// Updating the user info
+export const updateUser = (userData) => {
   if (typeof window !== "undefined") {
-    let auth = JSON.parse(localStorage.getItem("user"));
-    auth = response.data;
-    localStorage.setItem("user", JSON.stringify(auth));
+    localStorage.setItem("user", JSON.stringify(userData));
   }
-  next();
 };
 
+// Getting the Bearer Token for Authorization
 export const getToken = () => {
   return getCookie("token");
 };
 
+// Getting the user info
 export const getUser = () => {
   return getLocalStorage("user");
 };
 
+// Getting the user name
 export const getUserName = () => {
   return getLocalStorage("user").name;
 };
 
+// Checking the role of a user
 export const isAdmin = () => {
-  return getLocalStorage("user")?.accessLevel === "admin" ? true : false;
+  return getLocalStorage("user")?.accessLevel === "admin";
 };

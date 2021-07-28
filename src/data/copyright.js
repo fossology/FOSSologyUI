@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -16,7 +16,9 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-export const copyrights = [
+// Copyrights array
+// It can be generated from the command `yarn gencopy`
+const copyrights = [
   "© Skype – Last revised: August 2009",
   "© 2007 Hugh Jackman",
   "copyrighted work of Comtrol Corporation and or its suppliers.",
@@ -557,3 +559,5 @@ export const copyrights = [
   "(C) 2007-2011, 2013 my favorite company Google",
   "(C) 1988, 1989 by Adobe Systems Incorporated. All rights reserved.",
 ];
+
+export default copyrights;

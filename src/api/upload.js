@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -16,12 +16,17 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import sendRequest from "./sendRequest";
-import { endpoints } from "../constants/endpoints";
-import { getToken } from "../shared/helper";
 import PropTypes from "prop-types";
+import endpoints from "constants/endpoints";
 
-export const createUpload = async (
+// Getting Authorization Token
+import { getToken } from "shared/authHelper";
+
+// Function for calling the fetch function for the APIs
+import sendRequest from "./sendRequest";
+
+// Create Uploads from File
+export const createUploadApi = (
   folderId,
   uploadDescription,
   accessLevel,
@@ -29,8 +34,7 @@ export const createUpload = async (
   fileInput
 ) => {
   const url = endpoints.upload.uploadCreate();
-  const token = await getToken();
-  var formdata = new FormData();
+  const formdata = new FormData();
   if (fileInput) {
     formdata.append("fileInput", fileInput, fileInput?.name);
   }
@@ -39,34 +43,35 @@ export const createUpload = async (
     method: "POST",
     isMultipart: true,
     headers: {
-      Authorization: token,
+      Authorization: getToken(),
       folderId,
       uploadDescription,
       accessLevel,
       ignoreScm,
       uploadType: "",
-      groupName: "",
     },
     body: formdata,
   });
 };
 
-export const createUploadVcs = async (header, body) => {
+// Create Uploads from Version Control System
+export const createUploadVcsApi = (header, body) => {
   const url = endpoints.upload.uploadCreate();
-  const token = await getToken();
-  header.Authorization = token;
   return sendRequest({
     url,
     method: "POST",
     credentials: false,
-    headers: header,
-    body: body,
+    headers: {
+      ...header,
+      Authorization: getToken(),
+    },
+    body,
   });
 };
 
-export const scheduleAnalysis = async (folderId, uploadId, scanData) => {
+// Scheduling the analysis for the uploads
+export const scheduleAnalysisApi = (folderId, uploadId, scanData) => {
   const url = endpoints.upload.scheduleAnalysis();
-  const token = await getToken();
   const { bucket, copyrightEmailAuthor, ecc, keyword, mime, monk, nomos, ojo } =
     scanData?.analysis;
   const { nomosMonk, bulkReused, newScanner, ojoDecider } = scanData?.decider;
@@ -75,10 +80,9 @@ export const scheduleAnalysis = async (folderId, uploadId, scanData) => {
     url,
     method: "POST",
     headers: {
-      Authorization: token,
+      Authorization: getToken(),
       folderId,
       uploadId,
-      groupName: "",
     },
     body: {
       analysis: {
@@ -108,25 +112,23 @@ export const scheduleAnalysis = async (folderId, uploadId, scanData) => {
   });
 };
 
-export const getUploadById = async (uploadId, retries) => {
+// Getting a Upload by id
+export const getUploadByIdApi = (uploadId, retries) => {
   const url = endpoints.upload.getId(uploadId);
-  const token = await getToken();
   return sendRequest({
     url,
     method: "GET",
     retries,
     headers: {
-      Authorization: token,
-      groupName: "",
+      Authorization: getToken(),
     },
   });
 };
 
-createUpload.propTypes = {
+createUploadApi.propTypes = {
   folderId: PropTypes.number,
   uploadDescription: PropTypes.string,
   accessLevel: PropTypes.string,
   ignoreScm: PropTypes.bool,
   fileInput: PropTypes.string,
-  groupName: PropTypes.string,
 };

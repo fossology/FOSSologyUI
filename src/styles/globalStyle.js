@@ -1,4 +1,4 @@
-/***************************************************************
+/*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
@@ -14,11 +14,11 @@
  You should have received a copy of the GNU General Public License along
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-***************************************************************/
+*/
 
 import { createGlobalStyle } from "styled-components";
 
-export const GlobalStyles = createGlobalStyle`
+const GlobalStyles = createGlobalStyle`
   body {
     background: ${({ theme }) => theme.body};
     color: ${({ theme }) => theme.primaryText};
@@ -43,8 +43,12 @@ export const GlobalStyles = createGlobalStyle`
   }
   .navbar-light .navbar-nav .nav-link{
     color: ${({ theme }) => theme.secondaryText};
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
     &:hover{
+      background: ${({ theme }) => theme.secondaryColor};
       color: ${({ theme }) => theme.secondaryText};
+      font-weight: 900;
     }
     &:focus{
       color: ${({ theme }) => theme.secondaryText};
@@ -89,4 +93,13 @@ export const GlobalStyles = createGlobalStyle`
     background: transparent;
     color: ${({ theme }) => theme.primaryText};
   }
+  .active-nav-item{
+    border-bottom: 0.15rem ${({ theme }) => theme.secondaryText} solid;
+  }
+  .dropdown-item:hover, .dropdown-item:focus{
+    color: ${({ theme }) => theme.secondaryText};
+    background: ${({ theme }) => theme.primaryColor};
+  }
 }`;
+
+export default GlobalStyles;
