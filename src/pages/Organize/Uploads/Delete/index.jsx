@@ -83,7 +83,7 @@ const UploadDelete = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    if (deleteUploadFolderData.uploadId.length > 0) {
+    if (deleteUploadFolderData?.uploadId?.length > 0) {
       deleteUploadFolderData?.uploadId?.forEach((id) => {
         return deleteUploadsbyId(parseInt(id, 10))
           .then(() => {
@@ -105,6 +105,13 @@ const UploadDelete = () => {
             setLoading(false);
             setShowMessage(true);
           });
+      });
+    } else {
+      setLoading(false);
+      setShowMessage(true);
+      setMessage({
+        type: "danger",
+        text: "Select the uploads to delete",
       });
     }
   };
