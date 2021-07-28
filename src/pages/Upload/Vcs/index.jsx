@@ -34,6 +34,7 @@ import {
   getUploadById,
   scheduleAnalysis,
 } from "services/upload";
+import { defaultAgentsList } from "shared/storageHelper";
 
 // Helper function for error handling
 import { handleError } from "shared/helper";
@@ -47,17 +48,7 @@ const UploadFromVcs = () => {
     uploadType: "vcs",
   };
   const initialScanFileData = {
-    analysis: {
-      bucket: true,
-      copyrightEmailAuthor: false,
-      ecc: false,
-      keyword: false,
-      mime: false,
-      monk: false,
-      nomos: false,
-      ojo: false,
-      package: false,
-    },
+    analysis: defaultAgentsList(),
     decider: {
       nomosMonk: false,
       bulkReused: false,
