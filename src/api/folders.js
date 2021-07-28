@@ -25,7 +25,7 @@ import { getToken } from "shared/authHelper";
 import sendRequest from "./sendRequest";
 
 // Fetching all the folders
-export const getAllFoldersApi = () => {
+export const getAllFoldersApi = (groupName) => {
   const url = endpoints.folders.getAll();
   return sendRequest({
     url,
@@ -33,6 +33,7 @@ export const getAllFoldersApi = () => {
     headers: {
       Authorization: getToken(),
     },
+    groupName,
   });
 };
 

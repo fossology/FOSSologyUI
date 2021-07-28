@@ -24,8 +24,8 @@ import {
 } from "api/organizeUploads";
 
 // Getting uploads with folder id
-export const getUploadsFolderId = (folderId) => {
-  return getUploadsByFolderIdApi(folderId).then((res) => {
+export const getUploadsFolderId = (folderId, groupName) => {
+  return getUploadsByFolderIdApi(folderId, groupName).then((res) => {
     return res;
   });
 };

@@ -16,19 +16,110 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 // Widgets
 import { InputContainer, Tooltip } from "components/Widgets";
 
-function UploadReuse({ reuse, handleChange }) {
+// Required services for calling APIs
+import { getAllFolders } from "services/folders";
+import { getUploadsFolderId } from "services/organizeUploads";
+import { getAllGroups } from "services/groups";
+
+const UploadReuse = ({ reuse, handleChange }) => {
+  const initialGroupList = [{ id: 3, name: "fossy" }];
+  const initialFolderList = [
+    {
+      id: 1,
+      name: "Software Repository",
+      description: "Top Folder",
+      parent: null,
+    },
+  ];
+  const initialUploadList = [
+    {
+      folderId: 1,
+      uploadId: null,
+      uploadName: "",
+      uploadDescription: "",
+    },
+  ];
+  const [reuseData, setReuseData] = useState({
+    groupList: initialGroupList,
+    folderList: initialFolderList,
+    uploadList: initialUploadList,
+    reuseFolder: 1,
+  });
+
+  useEffect(() => {
+    setReuseData((prevData) => ({ ...prevData, groupList: getAllGroups() }));
+  }, []);
+
+  useEffect(() => {
+    getUploadsFolderId(reuseData.reuseFolder, reuse.reuseGroup)
+      .then((res) => {
+        setReuseData((prevData) => ({ ...prevData, uploadList: res }));
+      })
+      .catch(() => {});
+  }, [reuse.reuseGroup]);
+
+  useEffect(() => {
+    getAllFolders(reuse.reuseGroup)
+      .then((res) => {
+        setReuseData((prevData) => ({ ...prevData, folderList: res }));
+      })
+      .catch(() => {});
+  }, [reuse.reuseGroup, reuseData.reuseFolder]);
+
+  const handleReuseDataChange = (e) => {
+    setReuseData((prevData) => ({
+      ...prevData,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
   return (
     <div id="upload-reuse" className="mt-4">
       <p className="font-demi">
         (Optional) Reuse
         <Tooltip title="copy clearing decisions if there is the same file hash between two files" />
       </p>
+      <InputContainer
+        type="select"
+        name="reuseGroup"
+        id="upload-file-reuse-group"
+        onChange={handleChange}
+        options={reuseData.groupList}
+        value={reuse.reuseGroup}
+        property="name"
+        valueProperty="name"
+      >
+        Select the reuse group:
+      </InputContainer>
+      <InputContainer
+        type="select"
+        name="reuseFolder"
+        id="upload-file-reuse-folder"
+        onChange={handleReuseDataChange}
+        options={reuseData.folderList}
+        value={reuseData.reuseFolder}
+        property="name"
+      >
+        Select the reuse folder:
+      </InputContainer>
+      <InputContainer
+        type="select"
+        name="reuseUpload"
+        id="upload-file-reuse-upload"
+        onChange={handleChange}
+        options={reuseData.uploadList}
+        value={parseInt(reuse.reuseUpload, 10)}
+        property="uploadname"
+        valueProperty="id"
+      >
+        Select the reuse upload:
+      </InputContainer>
       <InputContainer
         type="checkbox"
         checked={reuse.reuseEnhanced}
@@ -71,7 +162,7 @@ function UploadReuse({ reuse, handleChange }) {
       </InputContainer>
     </div>
   );
-}
+};
 
 UploadReuse.propTypes = {
   reuse: PropTypes.shape({
