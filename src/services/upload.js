@@ -21,6 +21,7 @@ import {
   scheduleAnalysisApi,
   getUploadByIdApi,
   createUploadVcsApi,
+  createUploadUrlApi,
 } from "api/upload";
 
 // Create Uploads from File
@@ -45,6 +46,13 @@ export const createUploadFile = ({
 // Create Uploads from Version Control System
 export const createUploadVcs = (header, body) => {
   return createUploadVcsApi(header, body).then((res) => {
+    return res;
+  });
+};
+
+// Create Uploads from URL
+export const createUploadUrl = (header, body) => {
+  return createUploadUrlApi(header, body).then((res) => {
     return res;
   });
 };
