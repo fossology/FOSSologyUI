@@ -33,6 +33,7 @@ const InputContainer = ({
   options = null,
   multiple = false,
   property,
+  valueProperty,
 }) => {
   if (type === "radio" || type === "checkbox") {
     return (
@@ -75,7 +76,10 @@ const InputContainer = ({
         >
           {options.length > 0 ? (
             options.map((option, index) => (
-              <option key={option.id || index} value={option.id}>
+              <option
+                key={option.id || index}
+                value={valueProperty ? option[valueProperty] : option.id}
+              >
                 {property ? option[property] : option}
               </option>
             ))
@@ -130,6 +134,7 @@ InputContainer.propTypes = {
   ),
   multiple: PropTypes.bool,
   property: PropTypes.string,
+  valueProperty: PropTypes.string,
 };
 
 export default InputContainer;

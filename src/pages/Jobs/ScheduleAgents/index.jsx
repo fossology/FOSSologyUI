@@ -50,7 +50,7 @@ const ScheduleAgents = () => {
     },
     reuse: {
       reuseUpload: 0,
-      reuseGroup: "",
+      reuseGroup: "fossy",
       reuseMain: false,
       reuseEnhanced: false,
       reuseReport: false,
