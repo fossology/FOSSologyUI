@@ -69,6 +69,20 @@ export const createUploadVcsApi = (header, body) => {
   });
 };
 
+// Create Uploads from URL
+export const createUploadUrlApi = (header, body) => {
+  const url = endpoints.upload.uploadCreate();
+  return sendRequest({
+    url,
+    method: "POST",
+    headers: {
+      ...header,
+      Authorization: getToken(),
+    },
+    body,
+  });
+};
+
 // Scheduling the analysis for the uploads
 export const scheduleAnalysisApi = (folderId, uploadId, scanData) => {
   const url = endpoints.upload.scheduleAnalysis();
