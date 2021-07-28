@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -20,7 +20,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 // For the title of all the pages
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 const Title = ({ title }) => {
   return (
