@@ -89,6 +89,7 @@ const UploadFile = () => {
     setLoading(true);
     createUploadFile(uploadFileData)
       .then((res) => {
+        window.scrollTo({ top: 0 });
         setMessage({
           type: "success",
           text: "Successfully uploaded the files",
@@ -100,6 +101,7 @@ const UploadFile = () => {
           () =>
             scheduleAnalysis(uploadFileData.folderId, uploadId, scanFileData)
               .then(() => {
+                window.scrollTo({ top: 0 });
                 setMessage({
                   type: "success",
                   text: "Analysis for the file is scheduled.",
