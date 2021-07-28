@@ -109,6 +109,7 @@ const UploadFromVcs = () => {
     setLoading(true);
     createUploadVcs(uploadVcsData, vcsData)
       .then((res) => {
+        window.scrollTo({ top: 0 });
         setMessage({
           type: "success",
           text: `The Upload has been queued its upload Id is #${res.message}`,
@@ -122,6 +123,7 @@ const UploadFromVcs = () => {
           () =>
             scheduleAnalysis(uploadVcsData.folderId, uploadId, scanFileData)
               .then(() => {
+                window.scrollTo({ top: 0 });
                 setMessage({
                   type: "success",
                   text: "Analysis for the file is scheduled.",

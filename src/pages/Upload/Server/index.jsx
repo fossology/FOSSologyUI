@@ -136,6 +136,7 @@ const UploadFromServer = () => {
         setFolderList(res);
       })
       .catch((error) => {
+        window.scrollTo({ top: 0 });
         setMessage({
           type: "danger",
           text: error.message,
