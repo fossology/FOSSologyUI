@@ -34,6 +34,7 @@ const InputContainer = ({
   multiple = false,
   property,
   valueProperty,
+  noDataMessage = "No Data Found",
 }) => {
   if (type === "radio" || type === "checkbox") {
     return (
@@ -85,7 +86,7 @@ const InputContainer = ({
             ))
           ) : (
             <option className="font-demi" disabled>
-              No Data Found
+              {noDataMessage}
             </option>
           )}
         </select>
@@ -135,6 +136,7 @@ InputContainer.propTypes = {
   multiple: PropTypes.bool,
   property: PropTypes.string,
   valueProperty: PropTypes.string,
+  noDataMessage: PropTypes.string,
 };
 
 export default InputContainer;

@@ -57,17 +57,17 @@ const UploadReuse = ({ reuse, handleChange }) => {
   }, []);
 
   useEffect(() => {
-    getUploadsFolderId(reuseData.reuseFolder, reuse.reuseGroup)
+    getAllFolders(reuse.reuseGroup)
       .then((res) => {
-        setReuseData((prevData) => ({ ...prevData, uploadList: res }));
+        setReuseData((prevData) => ({ ...prevData, folderList: res }));
       })
       .catch(() => {});
   }, [reuse.reuseGroup]);
 
   useEffect(() => {
-    getAllFolders(reuse.reuseGroup)
+    getUploadsFolderId(reuseData.reuseFolder, reuse.reuseGroup)
       .then((res) => {
-        setReuseData((prevData) => ({ ...prevData, folderList: res }));
+        setReuseData((prevData) => ({ ...prevData, uploadList: res }));
       })
       .catch(() => {});
   }, [reuse.reuseGroup, reuseData.reuseFolder]);
@@ -94,6 +94,7 @@ const UploadReuse = ({ reuse, handleChange }) => {
         value={reuse.reuseGroup}
         property="name"
         valueProperty="name"
+        noDataMessage="No Group Found"
       >
         Select the reuse group:
       </InputContainer>
@@ -105,6 +106,7 @@ const UploadReuse = ({ reuse, handleChange }) => {
         options={reuseData.folderList}
         value={reuseData.reuseFolder}
         property="name"
+        noDataMessage="No Folder Found"
       >
         Select the reuse folder:
       </InputContainer>
@@ -117,6 +119,7 @@ const UploadReuse = ({ reuse, handleChange }) => {
         value={parseInt(reuse.reuseUpload, 10)}
         property="uploadname"
         valueProperty="id"
+        noDataMessage="No Uploads Found"
       >
         Select the reuse upload:
       </InputContainer>
