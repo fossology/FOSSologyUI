@@ -57,7 +57,7 @@ const endpoints = {
   },
   organize: {
     uploads: {
-      get: (folder) => `${apiUrl}/uploads?folderId=${folder}`,
+      get: () => `${apiUrl}/uploads`,
       delete: (deleteId) => `${apiUrl}/uploads/${deleteId}`,
       move: (moveId) => `${apiUrl}/uploads/${moveId}`,
       copy: (copyId) => `${apiUrl}/uploads/${copyId}`,

@@ -25,8 +25,8 @@ import { getToken } from "shared/authHelper";
 import sendRequest from "./sendRequest";
 
 // Getting uploads with folder id
-export const getUploadsByFolderIdApi = (id, groupName) => {
-  const url = endpoints.organize.uploads.get(id);
+export const getUploadsByFolderIdApi = (id, groupName, recursive) => {
+  const url = endpoints.organize.uploads.get();
   return sendRequest({
     url,
     method: "GET",
@@ -34,6 +34,10 @@ export const getUploadsByFolderIdApi = (id, groupName) => {
       Authorization: getToken(),
     },
     groupName,
+    queryParams: {
+      recursive,
+      folderId: id,
+    },
   });
 };
 
