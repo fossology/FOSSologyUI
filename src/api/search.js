@@ -35,6 +35,8 @@ const searchApi = ({
   filesizemax,
   license,
   copyright,
+  page,
+  limit,
 }) => {
   const url = endpoints.search.search();
   return sendRequest({
@@ -42,7 +44,6 @@ const searchApi = ({
     method: "GET",
     headers: {
       Authorization: getToken(),
-
       searchType,
       uploadId,
       filename,
@@ -51,6 +52,8 @@ const searchApi = ({
       filesizemax,
       license,
       copyright,
+      page,
+      limit,
     },
   });
 };
