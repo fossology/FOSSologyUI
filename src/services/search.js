@@ -17,6 +17,7 @@
 */
 
 import searchApi from "api/search";
+import { getLocalStorage } from "shared/storageHelper";
 
 // Fetching all the uploads on the basis of search criteria
 const search = (searchData) => {
@@ -32,7 +33,7 @@ const search = (searchData) => {
         fileName: data.filename,
       });
     });
-    return modifiedSearchData;
+    return { search: modifiedSearchData, pages: getLocalStorage("pages") };
   });
 };
 
