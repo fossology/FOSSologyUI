@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -21,7 +21,7 @@ import PropTypes from "prop-types";
 import Tree, { renderers } from "react-virtualized-tree";
 import "./index.css";
 
-const TreeContainer = ({ data }) => {
+const TreeContainer = ({ data, handleClick }) => {
   const { Expandable } = renderers;
   const [state, setState] = useState(data);
 
@@ -37,7 +37,13 @@ const TreeContainer = ({ data }) => {
             <div style={style}>
               {/* eslint-disable-next-line react/jsx-props-no-spreading */}
               <Expandable node={node} {...rest}>
-                {node.name}
+                <button
+                  className="folder-tree-list"
+                  type="button"
+                  onClick={(e) => handleClick(e, node.id)}
+                >
+                  {node.name}
+                </button>
               </Expandable>
             </div>
           )}
@@ -55,6 +61,7 @@ const treeDataFormat = {
 treeDataFormat.children = PropTypes.arrayOf(PropTypes.shape(treeDataFormat));
 TreeContainer.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape(treeDataFormat)),
+  handleClick: PropTypes.func.isRequired,
 };
 
 export default TreeContainer;
