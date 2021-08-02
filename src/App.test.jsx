@@ -18,15 +18,9 @@
 
 import React from "react";
 import { render } from "@testing-library/react";
-import { HelmetProvider } from "react-helmet-async";
 import App from "./App";
 
-HelmetProvider.canUseDOM = false;
-test("matches snapshot", () => {
-  const { asFragment } = render(
-    <HelmetProvider>
-      <App />
-    </HelmetProvider>
-  );
+test("renders learn react link", () => {
+  const { asFragment } = render(<App />);
   expect(asFragment()).toMatchSnapshot();
 });
