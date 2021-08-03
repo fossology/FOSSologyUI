@@ -43,7 +43,7 @@ Run the following commands inside the project directory.
 ```sh
 docker build \
 -t fossologyui:react1.0 \
---build-arg REACT_APP_SERVER_URL="localhost/repo/api/v1" \
+--build-arg REACT_APP_SERVER_URL="localhost/repo/api/v2" \
 --build-arg REACT_APP_HTTPS="false" .
 ```
 
