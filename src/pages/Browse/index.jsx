@@ -37,7 +37,7 @@ const Browse = () => {
     folderId: 1,
     page: 1,
     limit: 10,
-    recursive: true,
+    recursive: false,
   };
 
   const statusOptions = [
@@ -177,6 +177,11 @@ const Browse = () => {
     }
   };
 
+  const handleClick = (e, id) => {
+    e.preventDefault();
+    setBrowseData({ ...browseData, folderId: id });
+  };
+
   return (
     <>
       <Title title="Browse" />
@@ -191,7 +196,9 @@ const Browse = () => {
         <div className="row">
           <div className="col-md-3 col-lg-2">
             <h2 className="font-size-sub-heading">Folder Navigation</h2>
-            {folderList && <TreeContainer data={folderList} />}
+            {folderList && (
+              <TreeContainer data={folderList} handleClick={handleClick} />
+            )}
           </div>
           <div className="col-md-9 col-lg-10">
             <table className="table table-striped text-primary-color font-size-medium table-responsive-sm table-bordered">
