@@ -50,9 +50,11 @@ const ScheduleAgents = () => {
     },
     reuse: {
       reuseUpload: 0,
-      reuseGroup: "",
+      reuseGroup: "fossy",
       reuseMain: false,
       reuseEnhanced: false,
+      reuseReport: false,
+      reuseCopyright: false,
     },
   };
   const initialFolderList = [
@@ -155,7 +157,10 @@ const ScheduleAgents = () => {
         ...scanFileData,
         reuse: {
           ...scanFileData.reuse,
-          [e.target.name]: e.target.checked,
+          [e.target.name]:
+            e.target.type === "checkbox"
+              ? e.target.checked
+              : parseInt(e.target.value, 10) || e.target.value,
         },
       });
     }
