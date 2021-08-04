@@ -38,7 +38,7 @@ const TreeContainer = ({ data, handleClick }) => {
               {/* eslint-disable-next-line react/jsx-props-no-spreading */}
               <Expandable node={node} {...rest}>
                 <button
-                  className="folder-tree-list"
+                  className="folder-tree-list text-primary-color"
                   type="button"
                   onClick={(e) => handleClick(e, node.id)}
                 >
