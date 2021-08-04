@@ -30,7 +30,7 @@ function OptionalAnalysis({ analysis, handleChange }) {
         type="checkbox"
         checked={analysis.bucket}
         name="bucket"
-        id="upload-file-bucket"
+        id="upload-analysis-bucket"
         onChange={(e) => handleChange(e)}
       >
         Bucket Analysis
@@ -39,7 +39,7 @@ function OptionalAnalysis({ analysis, handleChange }) {
         type="checkbox"
         checked={analysis.copyrightEmailAuthor}
         name="copyrightEmailAuthor"
-        id="upload-file-copyright-email-author"
+        id="upload-analysis-copyright-email-author"
         onChange={(e) => handleChange(e)}
       >
         Copyright/Email/URL/Author Analysis
@@ -48,7 +48,7 @@ function OptionalAnalysis({ analysis, handleChange }) {
         type="checkbox"
         checked={analysis.ecc}
         name="ecc"
-        id="upload-file-ecc"
+        id="upload-analysis-ecc"
         onChange={(e) => handleChange(e)}
       >
         ECC Analysis, scanning for text fragments potentially relevant for
@@ -58,7 +58,7 @@ function OptionalAnalysis({ analysis, handleChange }) {
         type="checkbox"
         checked={analysis.keyword}
         name="keyword"
-        id="upload-file-keyword"
+        id="upload-analysis-keyword"
         onChange={(e) => handleChange(e)}
       >
         Keyword Analysis
@@ -67,7 +67,7 @@ function OptionalAnalysis({ analysis, handleChange }) {
         type="checkbox"
         checked={analysis.mime}
         name="mime"
-        id="upload-file-mime"
+        id="upload-analysis-mime"
         onChange={(e) => handleChange(e)}
       >
         MIME-type Analysis (Determine mimetype of every file. Not needed for
@@ -77,7 +77,7 @@ function OptionalAnalysis({ analysis, handleChange }) {
         type="checkbox"
         checked={analysis.monk}
         name="monk"
-        id="upload-file-monk"
+        id="upload-analysis-monk"
         onChange={(e) => handleChange(e)}
       >
         Monk License Analysis, scanning for licenses performing a text
@@ -87,7 +87,7 @@ function OptionalAnalysis({ analysis, handleChange }) {
         type="checkbox"
         checked={analysis.nomos}
         name="nomos"
-        id="upload-file-nomos"
+        id="upload-analysis-nomos"
         onChange={(e) => handleChange(e)}
       >
         Nomos License Analysis, scanning for licenses using regular expressions
@@ -96,7 +96,7 @@ function OptionalAnalysis({ analysis, handleChange }) {
         type="checkbox"
         checked={analysis.ojo}
         name="ojo"
-        id="upload-file-ojo"
+        id="upload-analysis-ojo"
         onChange={(e) => handleChange(e)}
       >
         Ojo License Analysis, scanning for licenses using
@@ -106,7 +106,7 @@ function OptionalAnalysis({ analysis, handleChange }) {
         type="checkbox"
         checked={analysis.package}
         name="package"
-        id="upload-file-package"
+        id="upload-analysis-package"
         onChange={(e) => handleChange(e)}
       >
         Package Analysis (Parse package headers)
