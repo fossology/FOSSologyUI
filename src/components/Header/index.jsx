@@ -56,7 +56,7 @@ import { getNameInitials } from "shared/helper";
 
 const Header = () => {
   const [currentGroup, setCurrentGroup] = useState(
-    getLocalStorage("currentGroup") || "fossy"
+    getLocalStorage("currentGroup") || getLocalStorage("user")?.default_group
   );
   const { setTheme } = useContext(GlobalContext);
   const history = useHistory();
