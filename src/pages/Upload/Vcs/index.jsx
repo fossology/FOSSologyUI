@@ -43,7 +43,7 @@ const UploadFromVcs = () => {
   const initialState = {
     folderId: 1,
     uploadDescription: "",
-    public: "protected",
+    accessLevel: "protected",
     ignoreScm: false,
     uploadType: "vcs",
   };
@@ -332,7 +332,7 @@ const UploadFromVcs = () => {
                 </label>
               </div>
               <CommonFields
-                accessLevel={uploadVcsData.public}
+                accessLevel={uploadVcsData.accessLevel}
                 ignoreScm={uploadVcsData.ignoreScm}
                 analysis={scanFileData.analysis}
                 decider={scanFileData.decider}
