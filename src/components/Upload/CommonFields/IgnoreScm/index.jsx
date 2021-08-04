@@ -29,7 +29,7 @@ function IgnoreScm({ ignoreScm, handleChange }) {
         type="checkbox"
         checked={ignoreScm}
         name="ignoreScm"
-        id="upload-report-license-concluded"
+        id="upload-ignore-scm"
         onChange={(e) => handleChange(e)}
       >
         Ignore SCM files (Git, SVN, TFS) and files with particular
