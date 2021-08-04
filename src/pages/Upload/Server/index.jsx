@@ -35,7 +35,7 @@ const UploadFromServer = () => {
   const initialState = {
     folderId: 1,
     uploadDescription: "",
-    public: "protected",
+    accessLevel: "protected",
     ignoreScm: false,
     uploadType: "server",
     groupName: "",
