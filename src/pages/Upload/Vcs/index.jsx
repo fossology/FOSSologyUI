@@ -34,7 +34,7 @@ import {
   getUploadById,
   scheduleAnalysis,
 } from "services/upload";
-import { defaultAgentsList } from "shared/storageHelper";
+import { defaultAgentsList, getLocalStorage } from "shared/storageHelper";
 
 // Helper function for error handling
 import { handleError } from "shared/helper";
@@ -57,7 +57,7 @@ const UploadFromVcs = () => {
     },
     reuse: {
       reuseUpload: 0,
-      reuseGroup: "fossy",
+      reuseGroup: getLocalStorage("user")?.default_group,
       reuseMain: false,
       reuseEnhanced: false,
       reuseReport: false,

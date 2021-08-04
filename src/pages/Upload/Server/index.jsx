@@ -26,7 +26,7 @@ import CommonFields from "components/Upload/CommonFields";
 
 // Required functions for calling APIs
 import { getAllFolders } from "services/folders";
-import { defaultAgentsList } from "shared/storageHelper";
+import { defaultAgentsList, getLocalStorage } from "shared/storageHelper";
 
 // Title
 import Title from "components/Title";
@@ -50,7 +50,7 @@ const UploadFromServer = () => {
     },
     reuse: {
       reuseUpload: 0,
-      reuseGroup: "fossy",
+      reuseGroup: getLocalStorage("user")?.default_group,
       reuseMain: false,
       reuseEnhanced: false,
       reuseReport: false,

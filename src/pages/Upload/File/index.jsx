@@ -30,7 +30,7 @@ import CommonFields from "components/Upload/CommonFields";
 // Required functions for calling APIs
 import { createUploadFile, scheduleAnalysis } from "services/upload";
 import { getAllFolders } from "services/folders";
-import { defaultAgentsList } from "shared/storageHelper";
+import { defaultAgentsList, getLocalStorage } from "shared/storageHelper";
 
 // Helper function for error handling
 import { handleError } from "shared/helper";
@@ -53,7 +53,7 @@ const UploadFile = () => {
     },
     reuse: {
       reuseUpload: 0,
-      reuseGroup: "fossy",
+      reuseGroup: getLocalStorage("user")?.default_group,
       reuseMain: false,
       reuseEnhanced: false,
       reuseReport: false,
