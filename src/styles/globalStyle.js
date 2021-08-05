@@ -57,6 +57,24 @@ const GlobalStyles = createGlobalStyle`
       color: ${({ theme }) => theme.secondaryText};
     }
   }
+  .bg-browse-uploads-header{
+    background: ${({ theme }) => theme.tertiaryColor};
+  }
+  .browse-uploads-nav-item{
+    color: ${({ theme }) => theme.text};
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    padding: 0.6rem;
+    &:hover{
+      color: ${({ theme }) => theme.text};
+      font-weight: 900;
+      text-decoration: none;
+    }
+  }
+  .active-browse-nav-item{
+    border-bottom: 0.15rem ${({ theme }) => theme.primaryText} solid;
+    font-weight: 900;
+  }
   .dropdown-item{
     color: ${({ theme }) => theme.text};
     &:hover:{

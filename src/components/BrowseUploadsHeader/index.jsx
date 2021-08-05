@@ -21,7 +21,7 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
 // React Bootstrap Imports
-import { Navbar, Nav } from "react-bootstrap";
+import { Navbar } from "react-bootstrap";
 
 // Routes for all the pages
 import routes from "constants/routes";
@@ -33,66 +33,66 @@ const Header = () => {
   const location = useLocation();
   return (
     <>
-      <Navbar expand="lg" className="py-0 pl-0 mt-3 bg-primary-color">
+      <Navbar expand="lg" className="py-0 pl-0 mt-3 bg-browse-uploads-header">
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ml-auto">
+          <div className="ml-auto py-2">
             {/* Checking whether the user is authenticated */}
             {isAuth() && (
               <>
-                <Nav.Link
-                  as={Link}
+                <Link
                   to={routes.browseUploads.softwareHeritage}
                   className={
-                    location.pathname ===
-                      routes.browseUploads.softwareHeritage && "active-nav-item"
+                    location.pathname === routes.browseUploads.softwareHeritage
+                      ? "active-browse-nav-item browse-uploads-nav-item"
+                      : "browse-uploads-nav-item"
                   }
                 >
                   Software Heritage
-                </Nav.Link>
-                <Nav.Link
-                  as={Link}
+                </Link>
+                <Link
                   to={routes.browseUploads.licenseBrowser}
                   className={
-                    location.pathname === routes.browseUploads.licenseBrowser &&
-                    "active-nav-item"
+                    location.pathname === routes.browseUploads.licenseBrowser
+                      ? "active-browse-nav-item browse-uploads-nav-item"
+                      : "browse-uploads-nav-item"
                   }
                 >
                   License Browser
-                </Nav.Link>
-                <Nav.Link
-                  as={Link}
+                </Link>
+                <Link
                   to={routes.browseUploads.fileBrowser}
                   className={
-                    location.pathname === routes.browseUploads.fileBrowser &&
-                    "active-nav-item"
+                    location.pathname === routes.browseUploads.fileBrowser
+                      ? "active-browse-nav-item browse-uploads-nav-item"
+                      : "browse-uploads-nav-item"
                   }
                 >
                   File Browser
-                </Nav.Link>
-                <Nav.Link
-                  as={Link}
+                </Link>
+                <Link
                   to={routes.browseUploads.copyright}
                   className={
-                    location.pathname === routes.browseUploads.copyright &&
-                    "active-nav-item"
+                    location.pathname === routes.browseUploads.copyright
+                      ? "active-browse-nav-item browse-uploads-nav-item"
+                      : "browse-uploads-nav-item"
                   }
                 >
                   Copyright Browser
-                </Nav.Link>
-                <Nav.Link
-                  as={Link}
+                </Link>
+                <Link
                   to={routes.browseUploads.ecc}
                   className={
-                    location.pathname === routes.browseUploads.ecc &&
-                    "active-nav-item"
+                    location.pathname === routes.browseUploads.ecc
+                      ? "active-browse-nav-item browse-uploads-nav-item"
+                      : "browse-uploads-nav-item"
                   }
                 >
                   ECC
-                </Nav.Link>
+                </Link>
               </>
             )}
-          </Nav>
+          </div>
         </Navbar.Collapse>
       </Navbar>
     </>
