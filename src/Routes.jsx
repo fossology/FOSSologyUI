@@ -30,6 +30,13 @@ import Home from "pages/Home";
 import Search from "pages/Search";
 import Browse from "pages/Browse";
 
+// Browse Upload pages imports
+import SoftwareHeritage from "pages/BrowseUploads/SoftwareHeritage";
+import LicenseBrowse from "pages/BrowseUploads/LicenseBrowser";
+import FileBrowser from "pages/BrowseUploads/FileBrowser";
+import CopyrightBrowser from "pages/BrowseUploads/Copyright";
+import Ecc from "pages/BrowseUploads/Ecc";
+
 // Help Pages
 import About from "pages/Help/About";
 import Overview from "pages/Help/Overview";
@@ -88,6 +95,29 @@ const Routes = () => {
 
         {/* Browse Page */}
         <PrivateLayout exact path={routes.browse} component={Browse} />
+
+        {/* Browse Uploads Pages */}
+        <PrivateLayout
+          exact
+          path={routes.browseUploads.softwareHeritage}
+          component={SoftwareHeritage}
+        />
+        <PrivateLayout
+          exact
+          path={routes.browseUploads.licenseBrowser}
+          component={LicenseBrowse}
+        />
+        <PrivateLayout
+          exact
+          path={routes.browseUploads.fileBrowser}
+          component={FileBrowser}
+        />
+        <PrivateLayout
+          exact
+          path={routes.browseUploads.copyright}
+          component={CopyrightBrowser}
+        />
+        <PrivateLayout exact path={routes.browseUploads.ecc} component={Ecc} />
 
         {/* Help Pages */}
         <PublicLayout exact path={routes.help.about} component={About} />
