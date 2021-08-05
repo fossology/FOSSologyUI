@@ -21,12 +21,17 @@ import React from "react";
 // Title
 import Title from "components/Title";
 
+// Header
+import BrowseUploadsHeader from "components/BrowseUploadsHeader";
+
 const FileBrowser = () => {
   return (
     <>
       <Title title="File Browser" />
-
-      <div className="main-container my-3">File Browser</div>
+      <div className="main-container my-3">
+        <h1 className="font-size-main-heading">File Browser</h1>
+      </div>
+      <BrowseUploadsHeader />
     </>
   );
 };

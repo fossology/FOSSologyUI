@@ -21,12 +21,17 @@ import React from "react";
 // Title
 import Title from "components/Title";
 
+// Header
+import BrowseUploadsHeader from "components/BrowseUploadsHeader";
+
 const Ecc = () => {
   return (
     <>
       <Title title="ECC" />
-
-      <div className="main-container my-3">ECC</div>
+      <div className="main-container my-3">
+        <h1 className="font-size-main-heading">ECC</h1>
+      </div>
+      <BrowseUploadsHeader />
     </>
   );
 };

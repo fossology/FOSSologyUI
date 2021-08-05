@@ -21,12 +21,17 @@ import React from "react";
 // Title
 import Title from "components/Title";
 
+// Header
+import BrowseUploadsHeader from "components/BrowseUploadsHeader";
+
 const LicenseBrowser = () => {
   return (
     <>
       <Title title="License Browser" />
-
-      <div className="main-container my-3">License Browser</div>
+      <div className="main-container my-3">
+        <h1 className="font-size-main-heading">License Browser</h1>
+      </div>
+      <BrowseUploadsHeader />
     </>
   );
 };
