@@ -21,12 +21,17 @@ import React from "react";
 // Title
 import Title from "components/Title";
 
+// Header
+import BrowseUploadsHeader from "components/BrowseUploadsHeader";
+
 const CopyrightBrowser = () => {
   return (
     <>
       <Title title="Copyright Browser" />
-
-      <div className="main-container my-3">Copyright Browser</div>
+      <div className="main-container my-3">
+        <h1 className="font-size-main-heading">Copyright Browser</h1>
+      </div>
+      <BrowseUploadsHeader />
     </>
   );
 };
