@@ -73,6 +73,10 @@ const endpoints = {
     get: () => `${apiUrl}/license`,
     createCandidateLicense: () => `${apiUrl}/license`,
   },
+  info: {
+    info: () => `${apiUrl}/info`,
+    health: () => `${apiUrl}/health`,
+  },
 };
 
 export default endpoints;
