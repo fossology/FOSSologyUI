@@ -42,6 +42,9 @@ export const getDate = (day) => {
 
 // Returns the initials of given name
 export const getNameInitials = (name) => {
+  if (!name) {
+    return name;
+  }
   // Convert name into array of words
   const nameList = name.split(" ");
   // For single word name return first 2 characters
