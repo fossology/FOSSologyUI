@@ -21,12 +21,17 @@ import React from "react";
 // Title
 import Title from "components/Title";
 
+// Header
+import BrowseUploadsHeader from "components/BrowseUploadsHeader";
+
 const SoftwareHeritage = () => {
   return (
     <>
       <Title title="Software Heritage" />
-
-      <div className="main-container my-3">Software Heritage Details</div>
+      <div className="main-container my-3">
+        <h1 className="font-size-main-heading">Software Heritage Details</h1>
+      </div>
+      <BrowseUploadsHeader />
     </>
   );
 };
