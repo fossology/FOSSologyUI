@@ -161,14 +161,14 @@ const UploadMove = () => {
   return (
     <>
       <Title title="Move or Copy Upload" />
-      {showMessage && (
-        <Alert
-          type={message.type}
-          setShow={setShowMessage}
-          message={message.text}
-        />
-      )}
       <div className="main-container my-3">
+        {showMessage && (
+          <Alert
+            type={message.type}
+            setShow={setShowMessage}
+            message={message.text}
+          />
+        )}
         <h1 className="font-size-main-heading">Move or Copy Upload</h1>
         <br />
         <div className="row">
