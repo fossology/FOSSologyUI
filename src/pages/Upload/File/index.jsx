@@ -232,11 +232,11 @@ const UploadFile = () => {
                 Select file to upload:
               </InputContainer>
               <div className="my-2">
-                <label htmlFor="upload" className="font-demi">
+                <label htmlFor="upload" className="font-demi w-100">
                   (Optional) Enter a description of this file:
                   <textarea
                     name="uploadDescription"
-                    className="form-control"
+                    className="form-control font-regular"
                     value={uploadFileData.uploadDescription}
                     id="upload-file-description"
                     rows="3"
