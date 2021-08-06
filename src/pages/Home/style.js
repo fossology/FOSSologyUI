@@ -19,7 +19,8 @@
 import styled from "styled-components";
 
 const LoginForm = styled.div`
-  border: 1px black dashed;
+  border: 1px dashed;
+  border-color: ${({ theme }) => theme.primaryText};
   min-width: 35vw;
   padding: 1rem;
   @media (max-width: 768px) {
