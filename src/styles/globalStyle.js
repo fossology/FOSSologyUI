@@ -100,6 +100,9 @@ const GlobalStyles = createGlobalStyle`
     color: ${({ theme }) => theme.secondaryText};
     background: ${({ theme }) => theme.primaryColor};
   }
+  .dropdown-item.active {
+    background-color: ${({ theme }) => theme.secondaryColor};
+  }
 }`;
 
 export default GlobalStyles;
