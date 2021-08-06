@@ -18,11 +18,14 @@
 
 import endpoints from "constants/endpoints";
 
+// Getting Authorization Token
+import { getToken } from "shared/authHelper";
+
 // Function for calling the fetch function for the APIs
 import sendRequest from "./sendRequest";
 
 // Fetching the jobs
-const getJobApi = ({ jobId }) => {
+export const getJobApi = ({ jobId }) => {
   const url = endpoints.jobs.details(jobId);
   return sendRequest({
     url,
@@ -30,4 +33,54 @@ const getJobApi = ({ jobId }) => {
   });
 };
 
-export default getJobApi;
+// Scheduling the analysis for the uploads
+export const scheduleAnalysisApi = (folderId, uploadId, scanData) => {
+  const url = endpoints.jobs.scheduleAnalysis();
+  const { bucket, copyrightEmailAuthor, ecc, keyword, mime, monk, nomos, ojo } =
+    scanData?.analysis;
+  const { nomosMonk, bulkReused, newScanner, ojoDecider } = scanData?.decider;
+  const {
+    reuseUpload,
+    reuseGroup,
+    reuseMain,
+    reuseEnhanced,
+    reuseReport,
+    reuseCopyright,
+  } = scanData?.reuse;
+  return sendRequest({
+    url,
+    method: "POST",
+    headers: {
+      Authorization: getToken(),
+      folderId,
+      uploadId,
+    },
+    body: {
+      analysis: {
+        bucket,
+        copyright_email_author: copyrightEmailAuthor,
+        ecc,
+        keyword,
+        mime,
+        monk,
+        nomos,
+        ojo,
+        package: scanData.analysis.package,
+      },
+      decider: {
+        nomos_monk: nomosMonk,
+        bulk_reused: bulkReused,
+        new_scanner: newScanner,
+        ojo_decider: ojoDecider,
+      },
+      reuse: {
+        reuse_upload: reuseUpload,
+        reuse_group: reuseGroup,
+        reuse_main: reuseMain,
+        reuse_enhanced: reuseEnhanced,
+        reuse_report: reuseReport,
+        reuse_copyright: reuseCopyright,
+      },
+    },
+  });
+};

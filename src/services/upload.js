@@ -18,7 +18,6 @@
 
 import {
   createUploadApi,
-  scheduleAnalysisApi,
   getUploadByIdApi,
   createUploadVcsApi,
   createUploadUrlApi,
@@ -53,13 +52,6 @@ export const createUploadVcs = (header, body) => {
 // Create Uploads from URL
 export const createUploadUrl = (header, body) => {
   return createUploadUrlApi(header, body).then((res) => {
-    return res;
-  });
-};
-
-// Scheduling the analysis for the uploads
-export const scheduleAnalysis = (folderId, uploadId, scanData) => {
-  return scheduleAnalysisApi(folderId, uploadId, scanData).then((res) => {
     return res;
   });
 };

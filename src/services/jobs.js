@@ -16,10 +16,10 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import getJobApi from "api/jobs";
+import { getJobApi, scheduleAnalysisApi } from "api/jobs";
 
 // Fetching the jobs
-const getJob = (jobId) => {
+export const getJob = (jobId) => {
   return getJobApi(jobId).then((res) => {
     return res.entity.map((jsonObject) => {
       const tag = {};
@@ -29,4 +29,9 @@ const getJob = (jobId) => {
   });
 };
 
-export default getJob;
+// Scheduling the analysis for the uploads
+export const scheduleAnalysis = (folderId, uploadId, scanData) => {
+  return scheduleAnalysisApi(folderId, uploadId, scanData).then((res) => {
+    return res;
+  });
+};

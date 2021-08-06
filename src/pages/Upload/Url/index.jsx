@@ -29,11 +29,8 @@ import CommonFields from "components/Upload/CommonFields";
 
 // Required functions for calling APIs
 import { getAllFolders } from "services/folders";
-import {
-  createUploadUrl,
-  scheduleAnalysis,
-  getUploadById,
-} from "services/upload";
+import { createUploadUrl, getUploadById } from "services/upload";
+import { scheduleAnalysis } from "services/jobs";
 
 // Default Agents list
 import { defaultAgentsList } from "shared/storageHelper";
