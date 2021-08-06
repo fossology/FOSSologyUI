@@ -128,14 +128,14 @@ const UploadDelete = () => {
   return (
     <>
       <Title title="Delete Uploads" />
-      {showMessage && (
-        <Alert
-          type={message.type}
-          setShow={setShowMessage}
-          message={message.text}
-        />
-      )}
       <div className="main-container my-3">
+        {showMessage && (
+          <Alert
+            type={message.type}
+            setShow={setShowMessage}
+            message={message.text}
+          />
+        )}
         <h1 className="font-size-main-heading mb-4">Delete Uploaded File</h1>
         <div className="row">
           <div className="col-lg-8 col-md-12 col-sm-12 col-12">

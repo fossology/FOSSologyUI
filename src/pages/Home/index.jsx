@@ -95,17 +95,17 @@ const Home = ({ location }) => {
   return (
     <>
       <Title title="Getting Started with FOSSology" />
-      {showError && (
-        <>
-          <Alert
-            type="danger"
-            setShow={setShowError}
-            message={errorMessage}
-            heading="An error occured"
-          />
-        </>
-      )}
       <div className="main-container my-3">
+        {showError && (
+          <>
+            <Alert
+              type="danger"
+              setShow={setShowError}
+              message={errorMessage}
+              heading="An error occured"
+            />
+          </>
+        )}
         <div className="row m-0">
           <div className="col-md-6">
             <b className="font-size-medium">FOSSology</b> is a framework for

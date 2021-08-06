@@ -113,14 +113,14 @@ const UploadEdit = () => {
   return (
     <>
       <Title title="Edit Uploads" />
-      {showMessage && (
-        <Alert
-          type={message.type}
-          setShow={setShowMessage}
-          message={message.text}
-        />
-      )}
       <div className="main-container my-3">
+        {showMessage && (
+          <Alert
+            type={message.type}
+            setShow={setShowMessage}
+            message={message.text}
+          />
+        )}
         <h1 className="font-size-main-heading mb-4">
           Edit Uploaded File Properties
         </h1>
