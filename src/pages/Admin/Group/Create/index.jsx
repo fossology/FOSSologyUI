@@ -68,14 +68,14 @@ const GroupCreate = () => {
   return (
     <>
       <Title title="Add Group" />
-      {showMessage && (
-        <Alert
-          type={message.type}
-          setShow={setShowMessage}
-          message={message.text}
-        />
-      )}
       <div className="main-container my-3">
+        {showMessage && (
+          <Alert
+            type={message.type}
+            setShow={setShowMessage}
+            message={message.text}
+          />
+        )}
         <h1 className="font-size-main-heading">Add Group</h1>
         <br />
         <div className="row">

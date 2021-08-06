@@ -113,14 +113,14 @@ const EditFolder = () => {
   return (
     <>
       <Title title="Edit Folder Properties" />
-      {showMessage && (
-        <Alert
-          type={message.type}
-          setShow={setShowMessage}
-          message={message.text}
-        />
-      )}
       <div className="main-container my-3">
+        {showMessage && (
+          <Alert
+            type={message.type}
+            setShow={setShowMessage}
+            message={message.text}
+          />
+        )}
         <h1 className="font-size-main-heading">Edit Folder Properties</h1>
         <br />
         <div className="row">
