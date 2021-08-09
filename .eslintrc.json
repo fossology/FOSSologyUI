@@ -34,6 +34,7 @@
       }
     ],
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+    "prefer-destructuring": ["error", { "object": true, "array": false }],
     "react/require-default-props": 0,
     "jsx-a11y/control-has-associated-label": 0
   }

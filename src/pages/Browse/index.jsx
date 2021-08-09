@@ -31,6 +31,11 @@ import TreeContainer from "components/TreeContainer";
 // Required functions for calling APIs
 import getBrowseData from "services/browse";
 import { getAllFolders } from "services/folders";
+import { scheduleReport, downloadReport } from "services/jobs";
+import {
+  getFileNameFromContentDispostionHeader,
+  handleError,
+} from "shared/helper";
 
 const Browse = () => {
   const initialState = {
@@ -86,6 +91,39 @@ const Browse = () => {
       name: "unassigned",
     },
   ];
+  const actionsOptions = [
+    {
+      id: 0,
+      name: "-- select action --",
+      reportFormat: "0",
+      disabled: true,
+    },
+    {
+      id: 1,
+      name: "Export DEP5",
+      reportFormat: "dep5",
+    },
+    {
+      id: 2,
+      name: "Export ReadMe_OSS",
+      reportFormat: "readmeoss",
+    },
+    {
+      id: 3,
+      name: "Export SPDX RDF",
+      reportFormat: "spdx2",
+    },
+    {
+      id: 4,
+      name: "Export SPDX tag:value",
+      reportFormat: "spdx2tv",
+    },
+    {
+      id: 5,
+      name: "Export Unified Report",
+      reportFormat: "unifiedreport",
+    },
+  ];
   const initialMessage = {
     type: "success",
     text: "",
@@ -127,11 +165,8 @@ const Browse = () => {
         setPagesOptions(arr);
         setShowMessage(false);
       })
-      .catch(() => {
-        setMessage({
-          type: "danger",
-          text: "Error occured in fetching",
-        });
+      .catch((error) => {
+        handleError(error, setMessage);
         setShowMessage(true);
       });
   }, [browseData]);
@@ -156,11 +191,8 @@ const Browse = () => {
           })
         );
       })
-      .catch(() => {
-        setMessage({
-          type: "danger",
-          text: "Error occured in fetching folder list",
-        });
+      .catch((error) => {
+        handleError(error, setMessage);
         setShowMessage(true);
       });
   }, []);
@@ -175,6 +207,51 @@ const Browse = () => {
     } else {
       setBrowseData({ ...browseData, [e.target.name]: e.target.value });
     }
+  };
+
+  const handleActionChange = (e, uploadId) => {
+    scheduleReport(uploadId, e.target.value)
+      .then((res) => {
+        return res?.message;
+      })
+      .then((url) => {
+        setTimeout(() => {
+          downloadReport(url)
+            .then((response) => {
+              return response;
+            })
+            .then((response) => {
+              const filename = getFileNameFromContentDispostionHeader(
+                response.headers.get("content-disposition")
+              );
+              response
+                .blob()
+                .then((blob) => {
+                  const aTag = document.createElement("a");
+                  aTag.href = window.URL.createObjectURL(blob);
+                  aTag.download = filename;
+                  document.body.appendChild(aTag); // Required for this to work in FireFox
+                  aTag.click();
+                  setTimeout(() => {
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(aTag);
+                  }, 150);
+                })
+                .catch((error) => {
+                  handleError(error, setMessage);
+                  setShowMessage(true);
+                });
+            })
+            .catch((error) => {
+              handleError(error, setMessage);
+              setShowMessage(true);
+            });
+        }, 1200);
+      })
+      .catch((error) => {
+        handleError(error, setMessage);
+        setShowMessage(true);
+      });
   };
 
   const handleClick = (e, id) => {
@@ -263,10 +340,19 @@ const Browse = () => {
               </thead>
               <tbody>
                 {browseDataList?.map((data) => (
-                  <tr key={data.id} className="text-center">
+                  <tr key={data?.id} className="text-center">
                     <td>
                       <div className="font-demi">{data?.uploadname}</div>
                       <div className="font-size-small">{data?.description}</div>
+                      <InputContainer
+                        name="action"
+                        type="select"
+                        onChange={(e) => handleActionChange(e, data?.id)}
+                        options={actionsOptions}
+                        property="name"
+                        defaultValue="0"
+                        valueProperty="reportFormat"
+                      />
                     </td>
                     <td>
                       <InputContainer

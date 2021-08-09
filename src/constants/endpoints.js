@@ -26,6 +26,8 @@ const endpoints = {
   jobs: {
     details: (jobId) => `${apiUrl}/jobs/${jobId}`,
     scheduleAnalysis: () => `${apiUrl}/jobs`,
+    scheduleReport: () => `${apiUrl}/report`,
+    downloadReport: (reportId) => `${apiUrl}/report/${reportId}`,
   },
   auth: {
     tokens: () => `${apiUrl}/tokens`,

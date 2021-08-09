@@ -84,3 +84,30 @@ export const scheduleAnalysisApi = (folderId, uploadId, scanData) => {
     },
   });
 };
+
+export const scheduleReportApi = (uploadId, reportFormat) => {
+  const url = endpoints.jobs.scheduleReport();
+  return sendRequest({
+    url,
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+      uploadId,
+      reportFormat,
+    },
+  });
+};
+
+export const downloadReportApi = (reportId) => {
+  const url = endpoints.jobs.downloadReport(reportId);
+  return sendRequest({
+    url,
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+    isFile: true,
+  });
+};
+
+export default getJobApi;
