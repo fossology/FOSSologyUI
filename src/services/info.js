@@ -27,9 +27,9 @@ export const getInfo = () => {
 export const getFossologyVersion = () => {
   return getInfoApi().then((res) => {
     return {
-      ...res.fossology,
-      buildDate: new Date(res.fossology.buildDate).toLocaleString(),
-      commitDate: new Date(res.fossology.commitDate).toLocaleString(),
+      ...res?.fossology,
+      buildDate: new Date(res?.fossology?.buildDate).toLocaleString(),
+      commitDate: new Date(res?.fossology?.commitDate).toLocaleString(),
     };
   });
 };

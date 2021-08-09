@@ -80,199 +80,217 @@ import SelectLicense from "pages/Admin/License/SelectLicense";
 // Default Page
 import ErrorPage from "pages/ErrorPage";
 
+// Footer
+import Footer from "components/Footer";
+
 // Routes imports
 import routes from "constants/routes";
 
 const Routes = () => {
   return (
-    <BrowserRouter basename={process.env.PUBLIC_URL}>
-      <Switch>
-        {/* Home Page */}
-        <PublicLayout exact path={routes.home} component={Home} />
+    <>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
+        <Switch>
+          {/* Home Page */}
+          <PublicLayout exact path={routes.home} component={Home} />
 
-        {/* Search Page */}
-        <PrivateLayout exact path={routes.search} component={Search} />
+          {/* Search Page */}
+          <PrivateLayout exact path={routes.search} component={Search} />
 
-        {/* Browse Page */}
-        <PrivateLayout exact path={routes.browse} component={Browse} />
+          {/* Browse Page */}
+          <PrivateLayout exact path={routes.browse} component={Browse} />
 
-        {/* Browse Uploads Pages */}
-        <PrivateLayout
-          exact
-          path={routes.browseUploads.softwareHeritage}
-          component={SoftwareHeritage}
-        />
-        <PrivateLayout
-          exact
-          path={routes.browseUploads.licenseBrowser}
-          component={LicenseBrowse}
-        />
-        <PrivateLayout
-          exact
-          path={routes.browseUploads.fileBrowser}
-          component={FileBrowser}
-        />
-        <PrivateLayout
-          exact
-          path={routes.browseUploads.copyright}
-          component={CopyrightBrowser}
-        />
-        <PrivateLayout exact path={routes.browseUploads.ecc} component={Ecc} />
+          {/* Browse Uploads Pages */}
+          <PrivateLayout
+            exact
+            path={routes.browseUploads.softwareHeritage}
+            component={SoftwareHeritage}
+          />
+          <PrivateLayout
+            exact
+            path={routes.browseUploads.licenseBrowser}
+            component={LicenseBrowse}
+          />
+          <PrivateLayout
+            exact
+            path={routes.browseUploads.fileBrowser}
+            component={FileBrowser}
+          />
+          <PrivateLayout
+            exact
+            path={routes.browseUploads.copyright}
+            component={CopyrightBrowser}
+          />
+          <PrivateLayout
+            exact
+            path={routes.browseUploads.ecc}
+            component={Ecc}
+          />
 
-        {/* Help Pages */}
-        <PublicLayout exact path={routes.help.about} component={About} />
-        <PublicLayout exact path={routes.help.overview} component={Overview} />
-        <PublicLayout
-          exact
-          path={routes.help.licenseBrowser}
-          component={LicenseBrowser}
-        />
-        <PublicLayout
-          exact
-          path={routes.help.thirdPartyLicenses}
-          component={ThirdPartyLicenses}
-        />
+          {/* Help Pages */}
+          <PublicLayout exact path={routes.help.about} component={About} />
+          <PublicLayout
+            exact
+            path={routes.help.overview}
+            component={Overview}
+          />
+          <PublicLayout
+            exact
+            path={routes.help.licenseBrowser}
+            component={LicenseBrowser}
+          />
+          <PublicLayout
+            exact
+            path={routes.help.thirdPartyLicenses}
+            component={ThirdPartyLicenses}
+          />
 
-        {/* Upload Pages */}
-        <PrivateLayout exact path={routes.upload.file} component={UploadFile} />
-        <PrivateLayout
-          exact
-          path={routes.upload.server}
-          component={UploadFromServer}
-        />
-        <PrivateLayout
-          exact
-          path={routes.upload.url}
-          component={UploadFromUrl}
-        />
-        <PrivateLayout
-          exact
-          path={routes.upload.vcs}
-          component={UploadFromVcs}
-        />
-        <PrivateLayout
-          exact
-          path={routes.upload.report}
-          component={ImportReport}
-        />
-        <PublicLayout
-          exact
-          path={routes.upload.instructions}
-          component={Instructions}
-        />
-        <PublicLayout
-          exact
-          path={routes.upload.oneShotAnalysis}
-          component={OneShotAnalysis}
-        />
-        <PublicLayout
-          exact
-          path={routes.upload.oneShotCopyright}
-          component={OneShotCopyright}
-        />
-        <PublicLayout
-          exact
-          path={routes.upload.oneShotMonk}
-          component={OneShotMonk}
-        />
+          {/* Upload Pages */}
+          <PrivateLayout
+            exact
+            path={routes.upload.file}
+            component={UploadFile}
+          />
+          <PrivateLayout
+            exact
+            path={routes.upload.server}
+            component={UploadFromServer}
+          />
+          <PrivateLayout
+            exact
+            path={routes.upload.url}
+            component={UploadFromUrl}
+          />
+          <PrivateLayout
+            exact
+            path={routes.upload.vcs}
+            component={UploadFromVcs}
+          />
+          <PrivateLayout
+            exact
+            path={routes.upload.report}
+            component={ImportReport}
+          />
+          <PublicLayout
+            exact
+            path={routes.upload.instructions}
+            component={Instructions}
+          />
+          <PublicLayout
+            exact
+            path={routes.upload.oneShotAnalysis}
+            component={OneShotAnalysis}
+          />
+          <PublicLayout
+            exact
+            path={routes.upload.oneShotCopyright}
+            component={OneShotCopyright}
+          />
+          <PublicLayout
+            exact
+            path={routes.upload.oneShotMonk}
+            component={OneShotMonk}
+          />
 
-        {/* Jobs Page */}
-        <PrivateLayout
-          exact
-          path={routes.jobs.allRecentJobs}
-          component={AllJobs}
-        />
-        <PrivateLayout
-          exact
-          path={routes.jobs.myRecentJobs}
-          component={MyRecentJobs}
-        />
-        <PrivateLayout
-          exact
-          path={routes.jobs.scheduleAgents}
-          component={ScheduleAgents}
-        />
+          {/* Jobs Page */}
+          <PrivateLayout
+            exact
+            path={routes.jobs.allRecentJobs}
+            component={AllJobs}
+          />
+          <PrivateLayout
+            exact
+            path={routes.jobs.myRecentJobs}
+            component={MyRecentJobs}
+          />
+          <PrivateLayout
+            exact
+            path={routes.jobs.scheduleAgents}
+            component={ScheduleAgents}
+          />
 
-        {/* Organize pages */}
-        <PrivateLayout
-          exact
-          path={routes.organize.folders.delete}
-          component={DeleteFolder}
-        />
-        <PrivateLayout
-          exact
-          path={routes.organize.folders.create}
-          component={CreateFolder}
-        />
-        <PrivateLayout
-          exact
-          path={routes.organize.folders.edit}
-          component={EditFolder}
-        />
-        <PrivateLayout
-          exact
-          path={routes.organize.folders.move}
-          component={MoveFolder}
-        />
-        <PrivateLayout
-          exact
-          path={routes.organize.folders.unlinkContent}
-          component={UnlinkFolder}
-        />
-        <PrivateLayout
-          exact
-          path={routes.organize.licenses.candidate}
-          component={AdviceLicenses}
-        />
-        <PrivateLayout
-          exact
-          path={routes.organize.licenses.create}
-          component={AddCandidateLicense}
-        />
-        <PrivateLayout
-          exact
-          path={routes.organize.uploads.edit}
-          component={UploadEdit}
-        />
-        <PrivateLayout
-          exact
-          path={routes.organize.uploads.move}
-          component={UploadMove}
-        />
-        <PrivateLayout
-          exact
-          path={routes.organize.uploads.delete}
-          component={UploadDelete}
-        />
+          {/* Organize pages */}
+          <PrivateLayout
+            exact
+            path={routes.organize.folders.delete}
+            component={DeleteFolder}
+          />
+          <PrivateLayout
+            exact
+            path={routes.organize.folders.create}
+            component={CreateFolder}
+          />
+          <PrivateLayout
+            exact
+            path={routes.organize.folders.edit}
+            component={EditFolder}
+          />
+          <PrivateLayout
+            exact
+            path={routes.organize.folders.move}
+            component={MoveFolder}
+          />
+          <PrivateLayout
+            exact
+            path={routes.organize.folders.unlinkContent}
+            component={UnlinkFolder}
+          />
+          <PrivateLayout
+            exact
+            path={routes.organize.licenses.candidate}
+            component={AdviceLicenses}
+          />
+          <PrivateLayout
+            exact
+            path={routes.organize.licenses.create}
+            component={AddCandidateLicense}
+          />
+          <PrivateLayout
+            exact
+            path={routes.organize.uploads.edit}
+            component={UploadEdit}
+          />
+          <PrivateLayout
+            exact
+            path={routes.organize.uploads.move}
+            component={UploadMove}
+          />
+          <PrivateLayout
+            exact
+            path={routes.organize.uploads.delete}
+            component={UploadDelete}
+          />
 
-        {/* Admin Page */}
-        <AdminLayout
-          exact
-          path={routes.admin.group.create}
-          component={GroupCreate}
-        />
-        <AdminLayout
-          exact
-          path={routes.admin.license.create}
-          component={AddLicense}
-        />
-        <AdminLayout
-          exact
-          path={routes.admin.license.selectLicense}
-          component={SelectLicense}
-        />
-        <AdminLayout
-          exact
-          path={routes.admin.users.delete}
-          component={DeleteUser}
-        />
+          {/* Admin Page */}
+          <AdminLayout
+            exact
+            path={routes.admin.group.create}
+            component={GroupCreate}
+          />
+          <AdminLayout
+            exact
+            path={routes.admin.license.create}
+            component={AddLicense}
+          />
+          <AdminLayout
+            exact
+            path={routes.admin.license.selectLicense}
+            component={SelectLicense}
+          />
+          <AdminLayout
+            exact
+            path={routes.admin.users.delete}
+            component={DeleteUser}
+          />
 
-        {/* Default Page */}
-        <Route path="*">
-          <PublicLayout component={ErrorPage} />
-        </Route>
-      </Switch>
-    </BrowserRouter>
+          {/* Default Page */}
+          <Route path="*">
+            <PublicLayout component={ErrorPage} />
+          </Route>
+        </Switch>
+      </BrowserRouter>
+      <Footer />
+    </>
   );
 };
 
