@@ -25,6 +25,7 @@ const apiUrl = `${
 const endpoints = {
   jobs: {
     details: (jobId) => `${apiUrl}/jobs/${jobId}`,
+    scheduleAnalysis: () => `${apiUrl}/jobs`,
   },
   auth: {
     tokens: () => `${apiUrl}/tokens`,
@@ -49,7 +50,6 @@ const endpoints = {
   },
   upload: {
     uploadCreate: () => `${apiUrl}/uploads`,
-    scheduleAnalysis: () => `${apiUrl}/jobs`,
     getId: (uploadId) => `${apiUrl}/uploads/${uploadId}`,
   },
   browse: {

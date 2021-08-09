@@ -29,7 +29,7 @@ import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 
 // Required functions for calling APIs
 import { getAllFolders } from "services/folders";
-import { scheduleAnalysis } from "services/upload";
+import { scheduleAnalysis } from "services/jobs";
 import getBrowseData from "services/browse";
 
 // Loading the default agents list
