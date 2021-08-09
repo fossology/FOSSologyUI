@@ -21,9 +21,8 @@ import React from "react";
 import { withRouter, Route, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 
-// Header, Footer
+// Header
 import Header from "components/Header";
-import Footer from "components/Footer";
 
 // Helper Functions
 import routes from "constants/routes";
@@ -40,7 +39,6 @@ const AdminLayout = ({ component: Component, ...rest }) => (
             <Header />
             <Component {...props} />
           </div>
-          <Footer />
         </>
       ) : (
         <Redirect
