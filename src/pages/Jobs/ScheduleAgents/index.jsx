@@ -33,7 +33,7 @@ import { scheduleAnalysis } from "services/upload";
 import getBrowseData from "services/browse";
 
 // Loading the default agents list
-import { defaultAgentsList } from "shared/storageHelper";
+import { defaultAgentsList, getLocalStorage } from "shared/storageHelper";
 
 const ScheduleAgents = () => {
   const initialScheduleAnalysisData = {
@@ -50,7 +50,7 @@ const ScheduleAgents = () => {
     },
     reuse: {
       reuseUpload: 0,
-      reuseGroup: "fossy",
+      reuseGroup: getLocalStorage("user")?.default_group,
       reuseMain: false,
       reuseEnhanced: false,
       reuseReport: false,
