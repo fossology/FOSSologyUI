@@ -71,3 +71,27 @@ export const handleError = (error, setMessage) => {
     text: error.message,
   });
 };
+
+// Extract report id from url
+export const getReportIdFromUrl = (url) => {
+  const matches = url.match(/report\/([0-9]+)/);
+  if (matches != null) {
+    return matches[1];
+  }
+  return null;
+};
+
+export const getFileNameFromContentDispostionHeader = (header) => {
+  const contentDispostion = header.split(";");
+  let fileName = "download.txt";
+  // eslint-disable-next-line no-restricted-syntax
+  for (const headerElement of contentDispostion) {
+    const matches = headerElement.trim().match(/filename="(.*)"/);
+    if (matches != null) {
+      fileName = matches[1];
+      break;
+    }
+  }
+
+  return fileName;
+};
