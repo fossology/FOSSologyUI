@@ -77,6 +77,13 @@ const routes = {
       licenseCSV: "/licenseCSV/fossology-license-export.csv",
     },
   },
+  browseUploads: {
+    softwareHeritage: "/browse/softwareHeritage",
+    licenseBrowser: "/browse/licenseBrowser",
+    fileBrowser: "/browse/fileBrowser",
+    copyright: "/browse/copyright",
+    ecc: "/browse/ecc",
+  },
 };
 
 export default routes;

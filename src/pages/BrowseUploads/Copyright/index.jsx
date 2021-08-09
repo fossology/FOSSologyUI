@@ -16,31 +16,24 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-/*
- * This file contains all styling specific to the theme (mainly base colours)
- */
+import React from "react";
 
-// Light Theme
-export const lightTheme = {
-  primaryColor: "#DC3545",
-  secondaryColor: "#A93232",
-  tertiaryColor: "#E5E5E5",
-  body: "#FFFFFF",
-  text: "#212121",
-  primaryText: "#212121",
-  secondaryText: "#FFFFFF",
-  hoverBackgroundColor: "#A93232",
+// Title
+import Title from "components/Title";
+
+// Header
+import BrowseUploadsHeader from "components/BrowseUploadsHeader";
+
+const CopyrightBrowser = () => {
+  return (
+    <>
+      <Title title="Copyright Browser" />
+      <div className="main-container my-3">
+        <h1 className="font-size-main-heading">Copyright Browser</h1>
+      </div>
+      <BrowseUploadsHeader />
+    </>
+  );
 };
 
-// Dark Theme
-export const darkTheme = {
-  primaryColor: "#525252",
-  secondaryColor: "#212121",
-  tertiaryColor: "#E5E5E5",
-  body: "#212121",
-  text: "#212121",
-  primaryText: "#FFFFFF",
-  secondaryText: "#FFFFFF",
-  toggleBorder: "#6B8096",
-  hoverBackgroundColor: "#212121",
-};
+export default CopyrightBrowser;
