@@ -342,7 +342,11 @@ const Header = () => {
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 {getAllGroups().map((group) => (
-                  <Dropdown.Item key={group.id} onClick={handleGroupChange}>
+                  <Dropdown.Item
+                    key={group.id}
+                    onClick={handleGroupChange}
+                    className={group.name === currentGroup && "active"}
+                  >
                     {group.name}
                   </Dropdown.Item>
                 ))}

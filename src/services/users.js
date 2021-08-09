@@ -23,6 +23,7 @@ import { setLocalStorage } from "shared/storageHelper";
 export const getUserSelf = () => {
   return getUserSelfApi().then((res) => {
     setLocalStorage("user", res);
+    setLocalStorage("currentGroup", res.default_group);
     return res;
   });
 };
