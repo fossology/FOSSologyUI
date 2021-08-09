@@ -185,14 +185,14 @@ const Browse = () => {
   return (
     <>
       <Title title="Browse" />
-      {showMessage && (
-        <Alert
-          type={message.type}
-          setShow={setShowMessage}
-          message={message.text}
-        />
-      )}
       <div className="main-container my-3">
+        {showMessage && (
+          <Alert
+            type={message.type}
+            setShow={setShowMessage}
+            message={message.text}
+          />
+        )}
         <div className="row">
           <div className="col-md-3 col-lg-2">
             <h2 className="font-size-sub-heading">Folder Navigation</h2>

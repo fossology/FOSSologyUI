@@ -114,14 +114,14 @@ const DeleteUser = () => {
   return (
     <>
       <Title title="Delete A User" />
-      {showMessage && (
-        <Alert
-          type={message.type}
-          setShow={setShowMessage}
-          message={message.text}
-        />
-      )}
       <div className="main-container my-3">
+        {showMessage && (
+          <Alert
+            type={message.type}
+            setShow={setShowMessage}
+            message={message.text}
+          />
+        )}
         <h1 className="font-size-main-heading">Delete A User</h1>
         <br />
         <div className="row">

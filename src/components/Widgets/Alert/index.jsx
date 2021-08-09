@@ -23,7 +23,7 @@ const Alert = ({ message, type, setShow }) => {
   return (
     <div className="main-container d-flex justify-content-end mt-3">
       <div
-        className={`alert bg-${type} alert-dismissible fade show font-medium text-white`}
+        className={`alert bg-${type} alert-dismissible fade show font-medium text-white alert-fix-position`}
         role="alert"
       >
         <div className="d-flex">

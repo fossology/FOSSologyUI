@@ -152,14 +152,14 @@ const UploadFromServer = () => {
   return (
     <>
       <Title title="Upload from Server" />
-      {showMessage && (
-        <Alert
-          type={message.type}
-          message={message.text}
-          setShow={setShowMessage}
-        />
-      )}
       <div className="main-container my-3">
+        {showMessage && (
+          <Alert
+            type={message.type}
+            message={message.text}
+            setShow={setShowMessage}
+          />
+        )}
         <div className="row">
           <div className="col-lg-8 col-md-12 col-sm-12 col-12">
             <h1 className="font-size-main-heading">Upload from Server</h1>
