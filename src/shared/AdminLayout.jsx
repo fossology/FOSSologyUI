@@ -29,7 +29,6 @@ import Footer from "components/Footer";
 import routes from "constants/routes";
 import { isAdmin, isAuth } from "./authHelper";
 
-/* eslint-disable react/jsx-props-no-spreading */
 const AdminLayout = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
