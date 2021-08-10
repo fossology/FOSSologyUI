@@ -35,6 +35,7 @@
     ],
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
     "react/require-default-props": 0,
-    "jsx-a11y/control-has-associated-label": 0
+    "jsx-a11y/control-has-associated-label": 0,
+    "react/jsx-props-no-spreading": 0
   }
 }
