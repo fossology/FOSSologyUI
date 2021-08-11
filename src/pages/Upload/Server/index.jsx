@@ -216,7 +216,7 @@ const UploadFromServer = () => {
                   (Optional) Enter a description of this file:
                   <textarea
                     name="description"
-                    className="form-control font-regular"
+                    className="form-control font-regular mt-2"
                     value=""
                     id="upload-server-description"
                     rows="3"

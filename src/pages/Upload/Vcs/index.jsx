@@ -322,7 +322,7 @@ const UploadFromVcs = () => {
                   (Optional) Enter a description of this file:
                   <textarea
                     name="uploadDescription"
-                    className="form-control font-regular"
+                    className="form-control font-regular mt-2"
                     value={uploadVcsData.uploadDescription}
                     id="upload-file-description"
                     rows="3"

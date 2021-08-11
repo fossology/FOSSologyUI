@@ -105,7 +105,7 @@ const AddLicense = () => {
                   License Text
                   <textarea
                     name="uploadDescription"
-                    className="form-control font-regular"
+                    className="form-control font-regular mt-2"
                     value=""
                     id="admin-add-license-text"
                     rows="3"
@@ -149,7 +149,7 @@ const AddLicense = () => {
                   Public Notes
                   <textarea
                     name="uploadDescription"
-                    className="form-control font-regular"
+                    className="form-control font-regular mt-2"
                     value=""
                     id="admin-add-license-public-notes"
                     rows="3"

@@ -145,7 +145,7 @@ const AddCandidateLicense = () => {
                   Reference Text
                   <textarea
                     name="text"
-                    className="form-control font-regular"
+                    className="form-control font-regular mt-2"
                     value={createCandidateLicense.text}
                     id="organize-add-license-text"
                     rows="3"
