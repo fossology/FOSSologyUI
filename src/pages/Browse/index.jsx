@@ -204,10 +204,7 @@ const Browse = () => {
             <table className="table table-striped text-primary-color font-size-medium table-responsive-sm table-bordered">
               <thead>
                 <tr>
-                  <th
-                    colSpan="6"
-                    className="font-size-main-heading text-center"
-                  >
+                  <th colSpan="6" className="font-size-sub-heading text-center">
                     Uploads in Software Repository
                   </th>
                 </tr>
@@ -252,7 +249,7 @@ const Browse = () => {
                     />
                   </th>
                 </tr>
-                <tr className="font-bold text-center font-size-sub-heading">
+                <tr className="font-bold text-center">
                   <th>Upload Name and Description</th>
                   <th>Status</th>
                   <th>Comment</th>
