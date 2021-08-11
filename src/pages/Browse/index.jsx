@@ -283,6 +283,7 @@ const Browse = () => {
                 </tr>
               </thead>
               <tbody>
+<<<<<<< HEAD
                 {browseDataList
                   ?.filter((post) => {
                     if (query === "") {
@@ -302,6 +303,19 @@ const Browse = () => {
                         <div className="font-demi">{data?.uploadname}</div>
                         <div className="font-size-small">
                           {data?.description}
+=======
+                {browseDataList?.map((data) => (
+                  <tr key={data?.id} className="text-center">
+                    <td>
+                      <Link
+                        to={`${routes.browseUploads.licenseBrowser}/${data.id}`}
+                      >
+                        <div className="text-primary-color">
+                          <div className="font-demi">{data?.uploadname}</div>
+                          <div className="font-size-small">
+                            {data?.description}
+                          </div>
+>>>>>>> fix(route): fixed the route of license browser
                         </div>
                         <InputContainer
                           name="action"

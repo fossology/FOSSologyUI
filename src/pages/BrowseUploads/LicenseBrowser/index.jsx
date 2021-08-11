@@ -17,8 +17,7 @@
 */
 
 import React, { useState, useEffect } from "react";
-import queryString from "query-string";
-import PropTypes from "prop-types";
+import { useParams } from "react-router-dom";
 
 // Title
 import Title from "components/Title";
@@ -35,7 +34,7 @@ import { getUploadSummary } from "services/upload";
 // Helper function for error handling
 import { handleError } from "shared/helper";
 
-const LicenseBrowser = ({ location }) => {
+const LicenseBrowser = () => {
   // Setting the upload Id
   const [uploadId, setuploadId] = useState();
 
@@ -47,14 +46,14 @@ const LicenseBrowser = ({ location }) => {
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState();
 
+  // Getting a upload Id
+  const { uploadID } = useParams();
   useEffect(() => {
     setMessage({
       type: "success",
       text: "Loading...",
     });
     setShowMessage(true);
-    const queryParams = queryString.parse(location.search);
-    const { uploadID } = queryParams;
     if (uploadID) {
       setuploadId(uploadID);
     }
@@ -164,12 +163,6 @@ const LicenseBrowser = ({ location }) => {
       </div>
     </>
   );
-};
-
-LicenseBrowser.propTypes = {
-  location: PropTypes.shape({
-    search: PropTypes.string,
-  }),
 };
 
 export default LicenseBrowser;
