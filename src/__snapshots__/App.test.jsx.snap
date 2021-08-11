@@ -320,7 +320,7 @@ exports[`renders learn react link 1`] = `
     </div>
   </div>
   <footer
-    class="primary-color-wrapper text-right font-size-small py-3"
+    class="primary-color-wrapper text-center font-size-small py-3"
     id="footer"
   >
     Version: [3.9.0.160], Branch: [feat/new-ui], Commit: [#0d47ba] 2021/03/19 12:55 IST built @ 2021/03/19 12:56 IST
