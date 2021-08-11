@@ -29,7 +29,7 @@ import { Alert } from "components/Widgets";
 import BrowseUploadsHeader from "components/BrowseUploadsHeader";
 
 // Required functions for calling APIs
-import { getUploadSummary } from "services/upload";
+import { getUploadSummary, getUploadLicense } from "services/upload";
 
 // Helper function for error handling
 import { handleError } from "shared/helper";
@@ -41,8 +41,10 @@ const LicenseBrowser = () => {
   // Setting the browse data to the table
   const [summaryData, setSummaryData] = useState();
 
+  // Setting the browse data to the table
+  const [filesData, setFilesData] = useState();
+
   // State Variables for handling Error Boundaries
-  // const [loading, setLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState();
 
@@ -67,15 +69,15 @@ const LicenseBrowser = () => {
           handleError(error, setMessage);
           setShowMessage(true);
         });
-      // getUploadLicense(uploadId)
-      //   .then((res) => {
-      //     console.log(res);
-      //     setShowMessage(false);
-      //   })
-      //   .catch((error) => {
-      //     handleError(error, setMessage);
-      //     setShowMessage(true);
-      //   });
+      getUploadLicense(uploadId, ["ojo", "nomos", "monk"])
+        .then((res) => {
+          setFilesData(res);
+          setShowMessage(false);
+        })
+        .catch((error) => {
+          handleError(error, setMessage);
+          setShowMessage(true);
+        });
     } else {
       setMessage({
         type: "danger",
@@ -100,10 +102,10 @@ const LicenseBrowser = () => {
       <BrowseUploadsHeader />
       <div className="main-container my-4">
         <div className="row">
-          <div className="col-12 col-lg-8 col-xl-9">
-            <table className="table table-striped text-primary-color font-size-medium table-responsive-sm table-bordered">
+          <div className="col-12 col-lg-12 col-xl-9">
+            <table className="table table-striped text-primary-color font-size-medium table-responsive table-bordered">
               <thead>
-                <tr className="font-bold text-center font-size-sub-heading">
+                <tr className="font-bold font-size-sub-heading">
                   <th>Files</th>
                   <th>Scanner Results</th>
                   <th>Edited Results</th>
@@ -113,22 +115,34 @@ const LicenseBrowser = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr className="text-center">
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                </tr>
+                {filesData &&
+                  filesData.length > 0 &&
+                  filesData.map((data, index) => (
+                    <>
+                      {index < 10 ? (
+                        <tr key={data.id}>
+                          <td>{data.filePath}</td>
+                          <td>{data.findings.scanner}</td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td>-</td>
+                        </tr>
+                      ) : (
+                        ""
+                      )}
+                    </>
+                  ))}
               </tbody>
             </table>
           </div>
-          <div className="col-12 col-lg-4 col-xl-3">
+          <div className="col-12 col-lg-12 col-xl-3">
             {summaryData && (
               <>
-                <h4 className="font-bold font-size-sub-heading">Summary</h4>
-                <table className="table table-bordered mt-3">
+                <h4 className="font-bold font-size-sub-heading text-primary-color">
+                  Summary
+                </h4>
+                <table className="table table-bordered text-primary-color mt-3">
                   <tbody>
                     <tr>
                       <td>Main License</td>

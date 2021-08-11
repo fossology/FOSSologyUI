@@ -108,13 +108,16 @@ export const getUploadSummaryApi = (uploadId) => {
 };
 
 // Getting a Upload License
-export const getUploadLicenseApi = (uploadId) => {
+export const getUploadLicenseApi = (uploadId, agent) => {
   const url = endpoints.upload.getLicense(uploadId);
   return sendRequest({
     url,
     method: "GET",
     headers: {
       Authorization: getToken(),
+    },
+    queryParams: {
+      agent,
     },
   });
 };
