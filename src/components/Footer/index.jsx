@@ -21,7 +21,7 @@ import React from "react";
 const Footer = () => {
   return (
     <footer
-      className="primary-color-wrapper text-right font-size-small py-3"
+      className="primary-color-wrapper text-center font-size-small py-3"
       id="footer"
     >
       Version: [3.9.0.160], Branch: [feat/new-ui], Commit: [#0d47ba] 2021/03/19
