@@ -236,7 +236,7 @@ const UploadFile = () => {
                   (Optional) Enter a description of this file:
                   <textarea
                     name="uploadDescription"
-                    className="form-control font-regular"
+                    className="form-control font-regular mt-2"
                     value={uploadFileData.uploadDescription}
                     id="upload-file-description"
                     rows="3"
