@@ -69,8 +69,12 @@ const Header = () => {
     setCurrentGroup(e.target.innerText);
   };
   return (
-    <div>
-      <Navbar expand="lg" className="bg-primary-color py-0 pl-0 text-white">
+    <>
+      <Navbar
+        expand="lg"
+        className="bg-primary-color py-0 pl-0 text-white"
+        sticky="top"
+      >
         <Navbar.Brand as={Link} to={routes.home} className="py-0">
           <Image
             src={logo}
@@ -390,7 +394,7 @@ const Header = () => {
           </Dropdown>
         </Navbar.Collapse>
       </Navbar>
-    </div>
+    </>
   );
 };
 
