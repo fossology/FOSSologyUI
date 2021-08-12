@@ -18,9 +18,6 @@
 
 import endpoints from "constants/endpoints";
 
-// Getting Authorization Token
-import { getToken } from "shared/authHelper";
-
 // Function for calling the fetch function for the APIs
 import sendRequest from "./sendRequest";
 
@@ -29,9 +26,6 @@ export const getInfoApi = () => {
   return sendRequest({
     url,
     method: "GET",
-    headers: {
-      Authorization: getToken(),
-    },
   });
 };
 
@@ -40,8 +34,5 @@ export const getHealthApi = () => {
   return sendRequest({
     url,
     method: "GET",
-    headers: {
-      Authorization: getToken(),
-    },
   });
 };
