@@ -17,7 +17,6 @@
 */
 
 import React from "react";
-import BTable from "react-bootstrap/Table";
 import { useTable, usePagination, useRowSelect, useSortBy } from "react-table";
 import CloseIcon from "assets/images/close.png";
 import IndeterminateCheckbox from "./IndeterminateCheckbox";
@@ -77,7 +76,10 @@ const Table = ({ columns, data }) => {
   // Render the UI for your table
   return (
     <>
-      <BTable striped bordered hover size="sm" {...getTableProps()}>
+      <table
+        className="table table-striped text-primary-color font-size-medium table-responsive-sm table-bordered"
+        {...getTableProps()}
+      >
         <thead>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
@@ -87,7 +89,7 @@ const Table = ({ columns, data }) => {
                   <span>
                     {/* eslint-disable no-nested-ternary */}
                     {column.isSorted
-                      ? column.isSorted.Desc
+                      ? column.isSortedDesc
                         ? " 🔽"
                         : " 🔼"
                       : ""}
@@ -133,7 +135,7 @@ const Table = ({ columns, data }) => {
             );
           })}
         </tbody>
-      </BTable>
+      </table>
       <div className="paginationTable">
         <button
           type="button"
