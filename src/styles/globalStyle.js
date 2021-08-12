@@ -24,7 +24,6 @@ const GlobalStyles = createGlobalStyle`
     color: ${({ theme }) => theme.primaryText};
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
     font-family: Mulish-regular;
   }
   .bg-primary-color{
