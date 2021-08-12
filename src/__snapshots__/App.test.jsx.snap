@@ -321,7 +321,7 @@ exports[`renders learn react link 1`] = `
     class="primary-color-wrapper text-center font-size-small py-3"
     id="footer"
   >
-    Version: [], Branch: [], Commit: [#]  built @ 
+    Version: [], Branch: [], Commit: [#undefined]  built @ 
   </footer>
 </DocumentFragment>
 `;
