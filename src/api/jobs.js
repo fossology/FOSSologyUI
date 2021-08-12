@@ -107,6 +107,7 @@ export const downloadReportApi = (reportId) => {
       Authorization: getToken(),
     },
     isFile: true,
+    addGroupName: false,
   });
 };
 
