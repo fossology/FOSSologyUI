@@ -133,6 +133,7 @@ const Browse = () => {
           text: "Error occured in fetching",
         });
         setShowMessage(true);
+        setTimeout(() => setShowMessage(false), 2000);
       });
   }, [browseData]);
 
@@ -162,6 +163,7 @@ const Browse = () => {
           text: "Error occured in fetching folder list",
         });
         setShowMessage(true);
+        setTimeout(() => setShowMessage(false), 2000);
       });
   }, []);
 

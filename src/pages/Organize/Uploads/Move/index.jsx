@@ -89,6 +89,7 @@ const UploadMove = () => {
       .catch((error) => {
         handleError(error, setMessage);
         setShowMessage(true);
+        setTimeout(() => setShowMessage(false), 2000);
       });
   };
 
@@ -104,10 +105,12 @@ const UploadMove = () => {
             });
             getUploadList();
             setShowMessage(true);
+            setTimeout(() => setShowMessage(false), 2000);
           })
           .catch((error) => {
             handleError(error, setMessage);
             setShowMessage(true);
+            setTimeout(() => setShowMessage(false), 2000);
           });
       });
     } else {
@@ -117,6 +120,7 @@ const UploadMove = () => {
         type: "danger",
         text: "Select the uploads to move",
       });
+      setTimeout(() => setShowMessage(false), 2000);
     }
   };
 
@@ -132,10 +136,12 @@ const UploadMove = () => {
             });
             getUploadList();
             setShowMessage(true);
+            setTimeout(() => setShowMessage(false), 2000);
           })
           .catch((error) => {
             handleError(error, setMessage);
             setShowMessage(true);
+            setTimeout(() => setShowMessage(false), 2000);
           });
       });
     } else {
@@ -145,6 +151,7 @@ const UploadMove = () => {
         type: "danger",
         text: "Select the uploads to copy",
       });
+      setTimeout(() => setShowMessage(false), 2000);
     }
   };
   useEffect(() => {
@@ -155,6 +162,7 @@ const UploadMove = () => {
       .catch((error) => {
         handleError(error, setMessage);
         setShowMessage(true);
+        setTimeout(() => setShowMessage(false), 2000);
       });
     getUploadList();
   }, [folderId]);

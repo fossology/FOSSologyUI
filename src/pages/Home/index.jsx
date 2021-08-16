@@ -79,6 +79,7 @@ const Home = ({ location }) => {
         setLoading(false);
         setErrorMessage(err.message);
         setShowError(true);
+        setTimeout(() => setShowError(false), 2000);
       });
   };
 
@@ -88,6 +89,7 @@ const Home = ({ location }) => {
     if (message) {
       setErrorMessage(message);
       setShowError(true);
+      setTimeout(() => setShowError(false), 2000);
     }
     window.history.replaceState(null, null, window.location.pathname);
   }, [location.search]);

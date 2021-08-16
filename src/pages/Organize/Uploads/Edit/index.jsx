@@ -85,6 +85,7 @@ const UploadEdit = () => {
       .catch((error) => {
         handleError(error, setMessage);
         setShowMessage(true);
+        setTimeout(() => setShowMessage(false), 2000);
       });
     getUploadsFolderId(editUploadFolderData.folderId)
       .then((res) => {
@@ -93,6 +94,7 @@ const UploadEdit = () => {
       .catch((error) => {
         handleError(error, setMessage);
         setShowMessage(true);
+        setTimeout(() => setShowMessage(false), 2000);
       });
     if (editUploadFolderData.uploadId) {
       getUploadById(editUploadFolderData.uploadId)
@@ -106,6 +108,7 @@ const UploadEdit = () => {
         .catch((error) => {
           handleError(error, setMessage);
           setShowMessage(true);
+          setTimeout(() => setShowMessage(false), 2000);
         });
     }
   }, [editUploadFolderData.folderId, editUploadFolderData.uploadId]);

@@ -80,6 +80,7 @@ const MoveFolder = () => {
       })
       .finally(() => {
         setShowMessage(true);
+        setTimeout(() => setShowMessage(false), 2000);
       });
   };
 
@@ -97,6 +98,7 @@ const MoveFolder = () => {
       })
       .finally(() => {
         setShowMessage(true);
+        setTimeout(() => setShowMessage(false), 2000);
       });
   };
 
@@ -108,6 +110,7 @@ const MoveFolder = () => {
       .catch((error) => {
         handleError(error, setMessage);
         setShowMessage(true);
+        setTimeout(() => setShowMessage(false), 2000);
       });
   }, []);
 

@@ -85,6 +85,7 @@ const CreateFolder = () => {
       .finally(() => {
         setLoading(false);
         setShowMessage(true);
+        setTimeout(() => setShowMessage(false), 2000);
       });
   };
 
@@ -96,6 +97,7 @@ const CreateFolder = () => {
       .catch((error) => {
         handleError(error, setMessage);
         setShowMessage(true);
+        setTimeout(() => setShowMessage(false), 2000);
       });
   }, []);
 

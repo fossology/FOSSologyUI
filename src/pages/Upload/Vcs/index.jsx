@@ -144,6 +144,7 @@ const UploadFromVcs = () => {
       .finally(() => {
         setLoading(false);
         setShowMessage(true);
+        setTimeout(() => setShowMessage(false), 2000);
       });
   };
   const handleChange = (e) => {
@@ -213,6 +214,7 @@ const UploadFromVcs = () => {
       .catch((error) => {
         handleError(error, setMessage);
         setShowMessage(true);
+        setTimeout(() => setShowMessage(false), 2000);
       });
   }, []);
   return (

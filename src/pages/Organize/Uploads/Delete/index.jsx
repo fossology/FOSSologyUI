@@ -104,6 +104,7 @@ const UploadDelete = () => {
           .finally(() => {
             setLoading(false);
             setShowMessage(true);
+            setTimeout(() => setShowMessage(false), 2000);
           });
       });
     } else {
@@ -113,6 +114,7 @@ const UploadDelete = () => {
         type: "danger",
         text: "Select the uploads to delete",
       });
+      setTimeout(() => setShowMessage(false), 2000);
     }
   };
 

@@ -91,6 +91,7 @@ const DeleteUser = () => {
         .finally(() => {
           setLoading(false);
           setShowMessage(true);
+          setTimeout(() => setShowMessage(false), 2000);
         });
     } else {
       setMessage({
@@ -98,6 +99,7 @@ const DeleteUser = () => {
         text: "Deletion not confirmed",
       });
       setShowMessage(true);
+      setTimeout(() => setShowMessage(false), 2000);
     }
   };
 
@@ -109,6 +111,7 @@ const DeleteUser = () => {
       .catch((error) => {
         handleError(error, setMessage);
         setShowMessage(true);
+        setTimeout(() => setShowMessage(false), 2000);
       });
   }, []);
   return (

@@ -97,6 +97,7 @@ const Search = () => {
           text: error.message,
         });
         setShowMessage(true);
+        setTimeout(() => setShowMessage(false), 2000);
       })
       .finally(() => {
         setLoading(false);
