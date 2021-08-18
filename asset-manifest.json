@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/FOSSologyUI/static/css/main.1c5d2bb6.chunk.css",
-    "main.js": "/FOSSologyUI/static/js/main.1605b9c3.chunk.js",
-    "main.js.map": "/FOSSologyUI/static/js/main.1605b9c3.chunk.js.map",
-    "runtime-main.js": "/FOSSologyUI/static/js/runtime-main.faaa909a.js",
-    "runtime-main.js.map": "/FOSSologyUI/static/js/runtime-main.faaa909a.js.map",
-    "static/css/2.959d2915.chunk.css": "/FOSSologyUI/static/css/2.959d2915.chunk.css",
-    "static/js/2.357a5843.chunk.js": "/FOSSologyUI/static/js/2.357a5843.chunk.js",
-    "static/js/2.357a5843.chunk.js.map": "/FOSSologyUI/static/js/2.357a5843.chunk.js.map",
-    "static/js/3.2171d846.chunk.js": "/FOSSologyUI/static/js/3.2171d846.chunk.js",
-    "static/js/3.2171d846.chunk.js.map": "/FOSSologyUI/static/js/3.2171d846.chunk.js.map",
+    "main.css": "/FOSSologyUI/static/css/main.84ef018c.chunk.css",
+    "main.js": "/FOSSologyUI/static/js/main.52bcc1ea.chunk.js",
+    "main.js.map": "/FOSSologyUI/static/js/main.52bcc1ea.chunk.js.map",
+    "runtime-main.js": "/FOSSologyUI/static/js/runtime-main.c55859fa.js",
+    "runtime-main.js.map": "/FOSSologyUI/static/js/runtime-main.c55859fa.js.map",
+    "static/css/2.7c0a7574.chunk.css": "/FOSSologyUI/static/css/2.7c0a7574.chunk.css",
+    "static/js/2.ba6e777a.chunk.js": "/FOSSologyUI/static/js/2.ba6e777a.chunk.js",
+    "static/js/2.ba6e777a.chunk.js.map": "/FOSSologyUI/static/js/2.ba6e777a.chunk.js.map",
+    "static/js/3.2dbdb2d6.chunk.js": "/FOSSologyUI/static/js/3.2dbdb2d6.chunk.js",
+    "static/js/3.2dbdb2d6.chunk.js.map": "/FOSSologyUI/static/js/3.2dbdb2d6.chunk.js.map",
     "index.html": "/FOSSologyUI/index.html",
-    "static/css/2.959d2915.chunk.css.map": "/FOSSologyUI/static/css/2.959d2915.chunk.css.map",
-    "static/css/main.1c5d2bb6.chunk.css.map": "/FOSSologyUI/static/css/main.1c5d2bb6.chunk.css.map",
-    "static/js/2.357a5843.chunk.js.LICENSE.txt": "/FOSSologyUI/static/js/2.357a5843.chunk.js.LICENSE.txt",
+    "static/css/2.7c0a7574.chunk.css.map": "/FOSSologyUI/static/css/2.7c0a7574.chunk.css.map",
+    "static/css/main.84ef018c.chunk.css.map": "/FOSSologyUI/static/css/main.84ef018c.chunk.css.map",
+    "static/js/2.ba6e777a.chunk.js.LICENSE.txt": "/FOSSologyUI/static/js/2.ba6e777a.chunk.js.LICENSE.txt",
     "static/media/global.css": "/FOSSologyUI/static/media/Mulish-Regular.2f1b7468.ttf",
     "static/media/fossologyFlow.68031473.svg": "/FOSSologyUI/static/media/fossologyFlow.68031473.svg",
     "static/media/logo.45480c8a.svg": "/FOSSologyUI/static/media/logo.45480c8a.svg",
@@ -23,10 +23,10 @@
     "static/media/upload.486460ce.svg": "/FOSSologyUI/static/media/upload.486460ce.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.faaa909a.js",
-    "static/css/2.959d2915.chunk.css",
-    "static/js/2.357a5843.chunk.js",
-    "static/css/main.1c5d2bb6.chunk.css",
-    "static/js/main.1605b9c3.chunk.js"
+    "static/js/runtime-main.c55859fa.js",
+    "static/css/2.7c0a7574.chunk.css",
+    "static/js/2.ba6e777a.chunk.js",
+    "static/css/main.84ef018c.chunk.css",
+    "static/js/main.52bcc1ea.chunk.js"
   ]
 }
