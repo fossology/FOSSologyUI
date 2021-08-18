@@ -48,6 +48,11 @@ const sendRequest = ({
       ...headers,
     });
   }
+  if (isFile) {
+    mergedHeaders = new Headers({
+      ...headers,
+    });
+  }
   if (addGroupName) {
     mergedHeaders.append(
       "groupName",
@@ -58,11 +63,6 @@ const sendRequest = ({
   }
   if (noHeaders) {
     mergedHeaders = {};
-  }
-  if (isFile) {
-    mergedHeaders = {
-      ...headers,
-    };
   }
   const options = {
     method,
