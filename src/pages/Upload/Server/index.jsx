@@ -26,7 +26,7 @@ import CommonFields from "components/Upload/CommonFields";
 
 // Required functions for calling APIs
 import { getAllFolders } from "services/folders";
-import { defaultAgentsList } from "shared/storageHelper";
+import { defaultAgentsList, getLocalStorage } from "shared/storageHelper";
 
 // Title
 import Title from "components/Title";
@@ -35,7 +35,7 @@ const UploadFromServer = () => {
   const initialState = {
     folderId: 1,
     uploadDescription: "",
-    public: "protected",
+    accessLevel: "protected",
     ignoreScm: false,
     uploadType: "server",
     groupName: "",
@@ -50,9 +50,11 @@ const UploadFromServer = () => {
     },
     reuse: {
       reuseUpload: 0,
-      reuseGroup: "",
+      reuseGroup: getLocalStorage("user")?.default_group,
       reuseMain: false,
       reuseEnhanced: false,
+      reuseReport: false,
+      reuseCopyright: false,
     },
   };
   const initialFolderList = [
@@ -125,7 +127,10 @@ const UploadFromServer = () => {
         ...scanFileData,
         reuse: {
           ...scanFileData.reuse,
-          [e.target.name]: e.target.checked,
+          [e.target.name]:
+            e.target.type === "checkbox"
+              ? e.target.checked
+              : parseInt(e.target.value, 10) || e.target.value,
         },
       });
     }
@@ -136,6 +141,7 @@ const UploadFromServer = () => {
         setFolderList(res);
       })
       .catch((error) => {
+        window.scrollTo({ top: 0 });
         setMessage({
           type: "danger",
           text: error.message,
@@ -146,14 +152,14 @@ const UploadFromServer = () => {
   return (
     <>
       <Title title="Upload from Server" />
-      {showMessage && (
-        <Alert
-          type={message.type}
-          message={message.text}
-          setShow={setShowMessage}
-        />
-      )}
       <div className="main-container my-3">
+        {showMessage && (
+          <Alert
+            type={message.type}
+            message={message.text}
+            setShow={setShowMessage}
+          />
+        )}
         <div className="row">
           <div className="col-lg-8 col-md-12 col-sm-12 col-12">
             <h1 className="font-size-main-heading">Upload from Server</h1>

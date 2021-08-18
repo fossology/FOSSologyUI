@@ -26,8 +26,8 @@ import {
 } from "api/folders";
 
 // Fetching all the folders
-export const getAllFolders = () => {
-  return getAllFoldersApi().then((res) => {
+export const getAllFolders = (groupName) => {
+  return getAllFoldersApi(groupName).then((res) => {
     return res;
   });
 };

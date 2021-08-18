@@ -56,7 +56,7 @@ import { getNameInitials } from "shared/helper";
 
 const Header = () => {
   const [currentGroup, setCurrentGroup] = useState(
-    getLocalStorage("currentGroup") || "fossy"
+    getLocalStorage("currentGroup") || getLocalStorage("user")?.default_group
   );
   const { setTheme } = useContext(GlobalContext);
   const history = useHistory();
@@ -69,8 +69,12 @@ const Header = () => {
     setCurrentGroup(e.target.innerText);
   };
   return (
-    <div>
-      <Navbar expand="lg" className="bg-primary-color py-0 pl-0 text-white">
+    <>
+      <Navbar
+        expand="lg"
+        className="bg-primary-color py-0 pl-0 text-white"
+        sticky="top"
+      >
         <Navbar.Brand as={Link} to={routes.home} className="py-0">
           <Image
             src={logo}
@@ -342,7 +346,11 @@ const Header = () => {
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 {getAllGroups().map((group) => (
-                  <Dropdown.Item key={group.id} onClick={handleGroupChange}>
+                  <Dropdown.Item
+                    key={group.id}
+                    onClick={handleGroupChange}
+                    className={group.name === currentGroup && "active"}
+                  >
                     {group.name}
                   </Dropdown.Item>
                 ))}
@@ -360,7 +368,9 @@ const Header = () => {
                   User: <b>{getUserName()}</b>
                 </Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item onClick={logout}>Log out</Dropdown.Item>
+                <Dropdown.Item onClick={() => logout(null)}>
+                  Log out
+                </Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item onClick={() => setTheme("light")}>
                   Light Theme
@@ -384,7 +394,7 @@ const Header = () => {
           </Dropdown>
         </Navbar.Collapse>
       </Navbar>
-    </div>
+    </>
   );
 };
 

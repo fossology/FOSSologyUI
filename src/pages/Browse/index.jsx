@@ -31,13 +31,18 @@ import TreeContainer from "components/TreeContainer";
 // Required functions for calling APIs
 import getBrowseData from "services/browse";
 import { getAllFolders } from "services/folders";
+import { scheduleReport, downloadReport } from "services/jobs";
+import {
+  getFileNameFromContentDispostionHeader,
+  handleError,
+} from "shared/helper";
 
 const Browse = () => {
   const initialState = {
     folderId: 1,
     page: 1,
     limit: 10,
-    recursive: true,
+    recursive: false,
   };
 
   const statusOptions = [
@@ -86,6 +91,39 @@ const Browse = () => {
       name: "unassigned",
     },
   ];
+  const actionsOptions = [
+    {
+      id: 0,
+      name: "-- select action --",
+      reportFormat: "0",
+      disabled: true,
+    },
+    {
+      id: 1,
+      name: "Export DEP5",
+      reportFormat: "dep5",
+    },
+    {
+      id: 2,
+      name: "Export ReadMe_OSS",
+      reportFormat: "readmeoss",
+    },
+    {
+      id: 3,
+      name: "Export SPDX RDF",
+      reportFormat: "spdx2",
+    },
+    {
+      id: 4,
+      name: "Export SPDX tag:value",
+      reportFormat: "spdx2tv",
+    },
+    {
+      id: 5,
+      name: "Export Unified Report",
+      reportFormat: "unifiedreport",
+    },
+  ];
   const initialMessage = {
     type: "success",
     text: "",
@@ -127,11 +165,8 @@ const Browse = () => {
         setPagesOptions(arr);
         setShowMessage(false);
       })
-      .catch(() => {
-        setMessage({
-          type: "danger",
-          text: "Error occured in fetching",
-        });
+      .catch((error) => {
+        handleError(error, setMessage);
         setShowMessage(true);
       });
   }, [browseData]);
@@ -156,11 +191,8 @@ const Browse = () => {
           })
         );
       })
-      .catch(() => {
-        setMessage({
-          type: "danger",
-          text: "Error occured in fetching folder list",
-        });
+      .catch((error) => {
+        handleError(error, setMessage);
         setShowMessage(true);
       });
   }, []);
@@ -177,30 +209,79 @@ const Browse = () => {
     }
   };
 
+  const handleActionChange = (e, uploadId) => {
+    scheduleReport(uploadId, e.target.value)
+      .then((res) => {
+        return res?.message;
+      })
+      .then((url) => {
+        setTimeout(() => {
+          downloadReport(url)
+            .then((response) => {
+              return response;
+            })
+            .then((response) => {
+              const filename = getFileNameFromContentDispostionHeader(
+                response.headers.get("content-disposition")
+              );
+              response
+                .blob()
+                .then((blob) => {
+                  const aTag = document.createElement("a");
+                  aTag.href = window.URL.createObjectURL(blob);
+                  aTag.download = filename;
+                  document.body.appendChild(aTag); // Required for this to work in FireFox
+                  aTag.click();
+                  setTimeout(() => {
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(aTag);
+                  }, 150);
+                })
+                .catch((error) => {
+                  handleError(error, setMessage);
+                  setShowMessage(true);
+                });
+            })
+            .catch((error) => {
+              handleError(error, setMessage);
+              setShowMessage(true);
+            });
+        }, 1200);
+      })
+      .catch((error) => {
+        handleError(error, setMessage);
+        setShowMessage(true);
+      });
+  };
+
+  const handleClick = (e, id) => {
+    e.preventDefault();
+    setBrowseData({ ...browseData, folderId: id });
+  };
+
   return (
     <>
       <Title title="Browse" />
-      {showMessage && (
-        <Alert
-          type={message.type}
-          setShow={setShowMessage}
-          message={message.text}
-        />
-      )}
       <div className="main-container my-3">
+        {showMessage && (
+          <Alert
+            type={message.type}
+            setShow={setShowMessage}
+            message={message.text}
+          />
+        )}
         <div className="row">
           <div className="col-md-3 col-lg-2">
             <h2 className="font-size-sub-heading">Folder Navigation</h2>
-            {folderList && <TreeContainer data={folderList} />}
+            {folderList && (
+              <TreeContainer data={folderList} handleClick={handleClick} />
+            )}
           </div>
           <div className="col-md-9 col-lg-10">
             <table className="table table-striped text-primary-color font-size-medium table-responsive-sm table-bordered">
               <thead>
                 <tr>
-                  <th
-                    colSpan="6"
-                    className="font-size-main-heading text-center"
-                  >
+                  <th colSpan="6" className="font-size-sub-heading text-center">
                     Uploads in Software Repository
                   </th>
                 </tr>
@@ -245,7 +326,7 @@ const Browse = () => {
                     />
                   </th>
                 </tr>
-                <tr className="font-bold text-center font-size-sub-heading">
+                <tr className="font-bold text-center">
                   <th>Upload Name and Description</th>
                   <th>Status</th>
                   <th>Comment</th>
@@ -256,10 +337,19 @@ const Browse = () => {
               </thead>
               <tbody>
                 {browseDataList?.map((data) => (
-                  <tr key={data.id} className="text-center">
+                  <tr key={data?.id} className="text-center">
                     <td>
                       <div className="font-demi">{data?.uploadname}</div>
                       <div className="font-size-small">{data?.description}</div>
+                      <InputContainer
+                        name="action"
+                        type="select"
+                        onChange={(e) => handleActionChange(e, data?.id)}
+                        options={actionsOptions}
+                        property="name"
+                        defaultValue="0"
+                        valueProperty="reportFormat"
+                      />
                     </td>
                     <td>
                       <InputContainer

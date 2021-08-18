@@ -21,11 +21,9 @@ import React from "react";
 import { withRouter, Route } from "react-router-dom";
 import PropTypes from "prop-types";
 
-// Header, Footer
+// Header
 import Header from "components/Header";
-import Footer from "components/Footer";
 
-/* eslint-disable react/jsx-props-no-spreading */
 const PublicLayout = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
@@ -35,7 +33,6 @@ const PublicLayout = ({ component: Component, ...rest }) => (
           <Header />
           <Component {...props} />
         </div>
-        <Footer />
       </>
     )}
   />

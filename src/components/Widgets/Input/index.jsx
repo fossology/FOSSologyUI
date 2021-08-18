@@ -29,10 +29,13 @@ const InputContainer = ({
   children,
   checked = false,
   placeholder = null,
-  disabled = null,
+  disabled = false,
   options = null,
   multiple = false,
   property,
+  valueProperty,
+  noDataMessage = "No Data Found",
+  defaultValue = null,
 }) => {
   if (type === "radio" || type === "checkbox") {
     return (
@@ -72,16 +75,21 @@ const InputContainer = ({
           multiple={multiple && multiple}
           size={multiple ? "15" : ""}
           id={id}
+          defaultValue={defaultValue}
         >
           {options.length > 0 ? (
             options.map((option, index) => (
-              <option key={option.id || index} value={option.id}>
+              <option
+                key={option.id || index}
+                value={valueProperty ? option[valueProperty] : option.id}
+                disabled={option.disabled}
+              >
                 {property ? option[property] : option}
               </option>
             ))
           ) : (
             <option className="font-demi" disabled>
-              No Data Found
+              {noDataMessage}
             </option>
           )}
         </select>
@@ -126,10 +134,14 @@ InputContainer.propTypes = {
       name: PropTypes.string,
       description: PropTypes.string,
       parent: PropTypes.number,
+      disabled: PropTypes.bool,
     })
   ),
   multiple: PropTypes.bool,
   property: PropTypes.string,
+  valueProperty: PropTypes.string,
+  noDataMessage: PropTypes.string,
+  defaultValue: PropTypes.string,
 };
 
 export default InputContainer;

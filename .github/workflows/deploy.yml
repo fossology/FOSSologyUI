@@ -38,7 +38,7 @@ jobs:
       - name: Build pages
         env:
           PUBLIC_URL: /FOSSologyUI
-          REACT_APP_SERVER_URL: localhost/repo/api/v1
+          REACT_APP_SERVER_URL: localhost/repo/api/v2
           REACT_APP_HTTPS: false
         run:
           yarn build

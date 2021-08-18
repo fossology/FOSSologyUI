@@ -24,7 +24,6 @@ const GlobalStyles = createGlobalStyle`
     color: ${({ theme }) => theme.primaryText};
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
     font-family: Mulish-regular;
   }
   .bg-primary-color{
@@ -56,6 +55,24 @@ const GlobalStyles = createGlobalStyle`
     &:active{
       color: ${({ theme }) => theme.secondaryText};
     }
+  }
+  .bg-browse-uploads-header{
+    background: ${({ theme }) => theme.tertiaryColor};
+  }
+  .browse-uploads-nav-item{
+    color: ${({ theme }) => theme.text};
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    padding: 0.6rem;
+    &:hover{
+      color: ${({ theme }) => theme.text};
+      font-weight: 900;
+      text-decoration: none;
+    }
+  }
+  .active-browse-nav-item{
+    border-bottom: 0.15rem ${({ theme }) => theme.primaryText} solid;
+    font-weight: 900;
   }
   .dropdown-item{
     color: ${({ theme }) => theme.text};
@@ -99,6 +116,9 @@ const GlobalStyles = createGlobalStyle`
   .dropdown-item:hover, .dropdown-item:focus{
     color: ${({ theme }) => theme.secondaryText};
     background: ${({ theme }) => theme.primaryColor};
+  }
+  .dropdown-item.active {
+    background-color: ${({ theme }) => theme.secondaryColor};
   }
 }`;
 

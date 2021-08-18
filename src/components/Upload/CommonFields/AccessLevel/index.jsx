@@ -29,7 +29,7 @@ function AccessLevel({ accessLevel, handleChange }) {
         type="radio"
         value="private"
         name="accessLevel"
-        id="upload-report-license-candidate"
+        id="upload-access-level-private"
         checked={accessLevel === "private"}
         onChange={(e) => handleChange(e)}
       >
@@ -40,7 +40,7 @@ function AccessLevel({ accessLevel, handleChange }) {
         type="radio"
         value="protected"
         name="accessLevel"
-        id="upload-report-new-license"
+        id="upload-access-level-protected"
         checked={accessLevel === "protected"}
         onChange={(e) => handleChange(e)}
       >
@@ -51,7 +51,7 @@ function AccessLevel({ accessLevel, handleChange }) {
         type="radio"
         value="public"
         name="accessLevel"
-        id="upload-report-new-license"
+        id="upload-access-level-public"
         checked={accessLevel === "public"}
         onChange={(e) => handleChange(e)}
       >

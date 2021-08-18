@@ -34,6 +34,7 @@ const sendRequest = ({
   noHeaders = false,
   addGroupName = true,
   retries = 0,
+  isFile = false,
 }) => {
   let mergedHeaders;
   if (isMultipart) {
@@ -47,10 +48,17 @@ const sendRequest = ({
       ...headers,
     });
   }
+  if (isFile) {
+    mergedHeaders = new Headers({
+      ...headers,
+    });
+  }
   if (addGroupName) {
     mergedHeaders.append(
       "groupName",
-      groupName || getLocalStorage("currentGroup") || "fossy"
+      groupName ||
+        getLocalStorage("currentGroup") ||
+        getLocalStorage("user")?.default_group
     );
   }
   if (noHeaders) {
@@ -86,6 +94,9 @@ const sendRequest = ({
           setLocalStorage("pages", pair[1]);
         }
       }
+      if (isFile) {
+        return res;
+      }
       return res.json();
     }
     // Checking the retries for hitting the request several times
@@ -108,7 +119,10 @@ const sendRequest = ({
         body: json,
       };
       if (json.code === 403) {
-        return logout();
+        if (json.message) {
+          return logout({ message: json.message });
+        }
+        return logout({ message: "Requested resource is forbidden" });
       }
       return Promise.reject(error);
     });

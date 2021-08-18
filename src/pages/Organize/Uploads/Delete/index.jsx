@@ -83,7 +83,7 @@ const UploadDelete = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    if (deleteUploadFolderData.uploadId.length > 0) {
+    if (deleteUploadFolderData?.uploadId?.length > 0) {
       deleteUploadFolderData?.uploadId?.forEach((id) => {
         return deleteUploadsbyId(parseInt(id, 10))
           .then(() => {
@@ -106,6 +106,13 @@ const UploadDelete = () => {
             setShowMessage(true);
           });
       });
+    } else {
+      setLoading(false);
+      setShowMessage(true);
+      setMessage({
+        type: "danger",
+        text: "Select the uploads to delete",
+      });
     }
   };
 
@@ -121,14 +128,14 @@ const UploadDelete = () => {
   return (
     <>
       <Title title="Delete Uploads" />
-      {showMessage && (
-        <Alert
-          type={message.type}
-          setShow={setShowMessage}
-          message={message.text}
-        />
-      )}
       <div className="main-container my-3">
+        {showMessage && (
+          <Alert
+            type={message.type}
+            setShow={setShowMessage}
+            message={message.text}
+          />
+        )}
         <h1 className="font-size-main-heading mb-4">Delete Uploaded File</h1>
         <div className="row">
           <div className="col-lg-8 col-md-12 col-sm-12 col-12">

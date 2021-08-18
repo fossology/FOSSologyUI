@@ -29,11 +29,11 @@ import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 
 // Required functions for calling APIs
 import { getAllFolders } from "services/folders";
-import { scheduleAnalysis } from "services/upload";
+import { scheduleAnalysis } from "services/jobs";
 import getBrowseData from "services/browse";
 
 // Loading the default agents list
-import { defaultAgentsList } from "shared/storageHelper";
+import { defaultAgentsList, getLocalStorage } from "shared/storageHelper";
 
 const ScheduleAgents = () => {
   const initialScheduleAnalysisData = {
@@ -50,9 +50,11 @@ const ScheduleAgents = () => {
     },
     reuse: {
       reuseUpload: 0,
-      reuseGroup: "",
+      reuseGroup: getLocalStorage("user")?.default_group,
       reuseMain: false,
       reuseEnhanced: false,
+      reuseReport: false,
+      reuseCopyright: false,
     },
   };
   const initialFolderList = [
@@ -155,7 +157,10 @@ const ScheduleAgents = () => {
         ...scanFileData,
         reuse: {
           ...scanFileData.reuse,
-          [e.target.name]: e.target.checked,
+          [e.target.name]:
+            e.target.type === "checkbox"
+              ? e.target.checked
+              : parseInt(e.target.value, 10) || e.target.value,
         },
       });
     }
@@ -179,14 +184,14 @@ const ScheduleAgents = () => {
   return (
     <>
       <Title title="Schedule an Analysis" />
-      {showMessage && (
-        <Alert
-          type={message.type}
-          setShow={setShowMessage}
-          message={message.text}
-        />
-      )}
       <div className="main-container my-3">
+        {showMessage && (
+          <Alert
+            type={message.type}
+            setShow={setShowMessage}
+            message={message.text}
+          />
+        )}
         <div className="row">
           <div className="col-lg-8 col-md-12 col-sm-12 col-12">
             <h1 className="font-size-main-heading">Schedule an Analysis</h1>

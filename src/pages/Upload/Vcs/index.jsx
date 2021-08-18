@@ -29,11 +29,11 @@ import CommonFields from "components/Upload/CommonFields";
 
 // Required functions for calling APIs
 import { getAllFolders } from "services/folders";
-import {
-  createUploadVcs,
-  getUploadById,
-  scheduleAnalysis,
-} from "services/upload";
+import { createUploadVcs, getUploadById } from "services/upload";
+import { scheduleAnalysis } from "services/jobs";
+
+// Default Agents list
+import { defaultAgentsList, getLocalStorage } from "shared/storageHelper";
 
 // Helper function for error handling
 import { handleError } from "shared/helper";
@@ -42,22 +42,12 @@ const UploadFromVcs = () => {
   const initialState = {
     folderId: 1,
     uploadDescription: "",
-    public: "protected",
+    accessLevel: "protected",
     ignoreScm: false,
     uploadType: "vcs",
   };
   const initialScanFileData = {
-    analysis: {
-      bucket: true,
-      copyrightEmailAuthor: false,
-      ecc: false,
-      keyword: false,
-      mime: false,
-      monk: false,
-      nomos: false,
-      ojo: false,
-      package: false,
-    },
+    analysis: defaultAgentsList(),
     decider: {
       nomosMonk: false,
       bulkReused: false,
@@ -66,9 +56,11 @@ const UploadFromVcs = () => {
     },
     reuse: {
       reuseUpload: 0,
-      reuseGroup: "",
+      reuseGroup: getLocalStorage("user")?.default_group,
       reuseMain: false,
       reuseEnhanced: false,
+      reuseReport: false,
+      reuseCopyright: false,
     },
   };
   const initialFolderList = [
@@ -118,6 +110,7 @@ const UploadFromVcs = () => {
     setLoading(true);
     createUploadVcs(uploadVcsData, vcsData)
       .then((res) => {
+        window.scrollTo({ top: 0 });
         setMessage({
           type: "success",
           text: `The Upload has been queued its upload Id is #${res.message}`,
@@ -131,6 +124,7 @@ const UploadFromVcs = () => {
           () =>
             scheduleAnalysis(uploadVcsData.folderId, uploadId, scanFileData)
               .then(() => {
+                window.scrollTo({ top: 0 });
                 setMessage({
                   type: "success",
                   text: "Analysis for the file is scheduled.",
@@ -197,7 +191,10 @@ const UploadFromVcs = () => {
         ...scanFileData,
         reuse: {
           ...scanFileData.reuse,
-          [e.target.name]: e.target.checked,
+          [e.target.name]:
+            e.target.type === "checkbox"
+              ? e.target.checked
+              : parseInt(e.target.value, 10) || e.target.value,
         },
       });
     }
@@ -221,14 +218,14 @@ const UploadFromVcs = () => {
   return (
     <>
       <Title title="Upload from Version Control System" />
-      {showMessage && (
-        <Alert
-          type={message.type}
-          message={message.text}
-          setShow={setShowMessage}
-        />
-      )}
       <div className="main-container my-3">
+        {showMessage && (
+          <Alert
+            type={message.type}
+            message={message.text}
+            setShow={setShowMessage}
+          />
+        )}
         <div className="row">
           <div className="col-lg-8 col-md-12 col-sm-12 col-12">
             <h3 className="font-size-main-heading">
@@ -334,7 +331,7 @@ const UploadFromVcs = () => {
                 </label>
               </div>
               <CommonFields
-                accessLevel={uploadVcsData.public}
+                accessLevel={uploadVcsData.accessLevel}
                 ignoreScm={uploadVcsData.ignoreScm}
                 analysis={scanFileData.analysis}
                 decider={scanFileData.decider}

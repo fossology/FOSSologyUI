@@ -21,15 +21,13 @@ import React from "react";
 import { withRouter, Route, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 
-// Header, Footer
+// Header
 import Header from "components/Header";
-import Footer from "components/Footer";
 
 // Helper Functions
 import routes from "constants/routes";
 import { isAdmin, isAuth } from "./authHelper";
 
-/* eslint-disable react/jsx-props-no-spreading */
 const AdminLayout = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
@@ -40,7 +38,6 @@ const AdminLayout = ({ component: Component, ...rest }) => (
             <Header />
             <Component {...props} />
           </div>
-          <Footer />
         </>
       ) : (
         <Redirect

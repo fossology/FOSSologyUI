@@ -114,3 +114,11 @@ h6 {
     padding: 2rem;
   }
 }
+
+/* Snackbar */
+.alert-fix-position {
+  position: fixed;
+  top: 5rem;
+  right: 2rem;
+  z-index: 1;
+}

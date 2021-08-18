@@ -22,7 +22,7 @@ import React, { useState, useEffect } from "react";
 import Title from "components/Title";
 
 // Widgets
-import { Alert, Button, InputContainer } from "components/Widgets";
+import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 
 // Required functions for calling APIs
 import {
@@ -65,6 +65,7 @@ const UploadMove = () => {
   const [uploadList, setUploadList] = useState([]);
 
   // State Variables for handling Error Boundaries
+  const [loading, setLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState(initialMessage);
 
@@ -109,6 +110,13 @@ const UploadMove = () => {
             setShowMessage(true);
           });
       });
+    } else {
+      setLoading(false);
+      setShowMessage(true);
+      setMessage({
+        type: "danger",
+        text: "Select the uploads to move",
+      });
     }
   };
 
@@ -130,6 +138,13 @@ const UploadMove = () => {
             setShowMessage(true);
           });
       });
+    } else {
+      setLoading(false);
+      setShowMessage(true);
+      setMessage({
+        type: "danger",
+        text: "Select the uploads to copy",
+      });
     }
   };
   useEffect(() => {
@@ -146,14 +161,14 @@ const UploadMove = () => {
   return (
     <>
       <Title title="Move or Copy Upload" />
-      {showMessage && (
-        <Alert
-          type={message.type}
-          setShow={setShowMessage}
-          message={message.text}
-        />
-      )}
       <div className="main-container my-3">
+        {showMessage && (
+          <Alert
+            type={message.type}
+            setShow={setShowMessage}
+            message={message.text}
+          />
+        )}
         <h1 className="font-size-main-heading">Move or Copy Upload</h1>
         <br />
         <div className="row">
@@ -194,11 +209,31 @@ const UploadMove = () => {
                 Select the folder where the content shall be placed:
               </InputContainer>
               <Button type="submit" onClick={handleMove} className="mt-4">
-                Move
+                {loading ? (
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                ) : (
+                  "Move"
+                )}
               </Button>
               &emsp;
               <Button type="submit" onClick={handleCopy} className="mt-4">
-                Copy
+                {loading ? (
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                ) : (
+                  "Copy"
+                )}
               </Button>
             </form>
           </div>

@@ -37,17 +37,39 @@ const Search = () => {
     filesizemax: "",
     license: "",
     copyright: "",
+    page: 1,
+    limit: 10,
   };
   const initialMessage = {
     type: "danger",
     text: "",
   };
-
+  const entriesOptions = [
+    {
+      id: 10,
+      entry: "10",
+    },
+    {
+      id: 25,
+      entry: "25",
+    },
+    {
+      id: 50,
+      entry: "50",
+    },
+    {
+      id: 100,
+      entry: "100",
+    },
+  ];
   // Data for searching specific uploads
   const [searchData, setSearchData] = useState(initialState);
 
   // Required uploads on the basis of search criteria
   const [searchResult, setSearchResult] = useState("");
+
+  // Setting the count of pages
+  const [pagesOptions, setPagesOptions] = useState();
 
   // State Variables for handling Error Boundaries
   const [loading, setLoading] = useState(false);
@@ -59,7 +81,15 @@ const Search = () => {
     setLoading(true);
     search(searchData)
       .then((result) => {
-        setSearchResult(result);
+        setSearchResult(result.search);
+        const arr = [];
+        for (let i = 0; i < result.pages; i++) {
+          arr.push({
+            id: i + 1,
+            value: i + 1,
+          });
+        }
+        setPagesOptions(arr);
       })
       .catch((error) => {
         setMessage({
@@ -74,29 +104,58 @@ const Search = () => {
   };
 
   const handleChange = (e) => {
-    setSearchData({ ...searchData, [e.target.name]: e.target.value });
+    if (e.target.name === "limit") {
+      setSearchData({
+        ...searchData,
+        [e.target.name]: e.target.value,
+        page: 1,
+      });
+    } else {
+      setSearchData({ ...searchData, [e.target.name]: e.target.value });
+    }
   };
 
   return (
     <>
       <Title title="Search" />
-      {showMessage && (
-        <Alert
-          type={message.type}
-          setShow={setShowMessage}
-          message={message.text}
-        />
-      )}
       <div className="main-container my-3">
+        {showMessage && (
+          <Alert
+            type={message.type}
+            setShow={setShowMessage}
+            message={message.text}
+          />
+        )}
         <h1 className="font-size-main-heading">Search</h1>
         <br />
         <div className="row">
           <div className="col-lg-8 col-md-12 col-sm-12 col-12">
             <form>
+              {pagesOptions && (
+                <InputContainer
+                  name="page"
+                  type="select"
+                  onChange={(e) => handleChange(e)}
+                  options={pagesOptions}
+                  property="value"
+                >
+                  Pages
+                </InputContainer>
+              )}
+              <InputContainer
+                name="limit"
+                type="select"
+                onChange={(e) => handleChange(e)}
+                options={entriesOptions}
+                property="entry"
+              >
+                Show entries:
+              </InputContainer>
               <InputContainer
                 value="directory"
                 name="searchType"
                 type="radio"
+                className="mt-4"
                 id="search-upload-type-directory"
                 onChange={handleChange}
                 checked={searchData.searchType === "directory"}

@@ -16,16 +16,36 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { getFossologyVersion } from "services/info";
+import { getSessionStorage, setSessionStorage } from "shared/storageHelper";
 
 const Footer = () => {
+  const [version, setVersion] = useState(
+    getSessionStorage("fossologyVersion") || null
+  );
+  const fetchVersion = () => {
+    return getFossologyVersion()
+      .then((res) => {
+        setSessionStorage("fossologyVersion", res);
+        setVersion(res);
+        return res;
+      })
+      .catch(() => null);
+  };
+  useEffect(() => {
+    if (!version) {
+      fetchVersion();
+    }
+  }, []);
   return (
     <footer
-      className="primary-color-wrapper text-right font-size-small py-3"
+      className="primary-color-wrapper text-center font-size-small py-3"
       id="footer"
     >
-      Version: [3.9.0.160], Branch: [feat/new-ui], Commit: [#0d47ba] 2021/03/19
-      12:55 IST built @ 2021/03/19 12:56 IST
+      Version: [{version?.version}], Branch: [{version?.branchName}], Commit: [
+      {`#${version?.commitHash}`}] {version?.commitDate} built @{" "}
+      {version?.buildDate}
     </footer>
   );
 };

@@ -42,6 +42,9 @@ export const getDate = (day) => {
 
 // Returns the initials of given name
 export const getNameInitials = (name) => {
+  if (!name) {
+    return name;
+  }
   // Convert name into array of words
   const nameList = name.split(" ");
   // For single word name return first 2 characters
@@ -62,8 +65,33 @@ export const getNameInitials = (name) => {
 
 // Common handle error component
 export const handleError = (error, setMessage) => {
+  window.scrollTo({ top: 0 });
   setMessage({
     type: "danger",
     text: error.message,
   });
+};
+
+// Extract report id from url
+export const getReportIdFromUrl = (url) => {
+  const matches = url.match(/report\/([0-9]+)/);
+  if (matches != null) {
+    return matches[1];
+  }
+  return null;
+};
+
+export const getFileNameFromContentDispostionHeader = (header) => {
+  const contentDispostion = header.split(";");
+  let fileName = "download.txt";
+  // eslint-disable-next-line no-restricted-syntax
+  for (const headerElement of contentDispostion) {
+    const matches = headerElement.trim().match(/filename="(.*)"/);
+    if (matches != null) {
+      fileName = matches[1];
+      break;
+    }
+  }
+
+  return fileName;
 };

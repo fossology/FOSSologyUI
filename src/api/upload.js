@@ -69,46 +69,17 @@ export const createUploadVcsApi = (header, body) => {
   });
 };
 
-// Scheduling the analysis for the uploads
-export const scheduleAnalysisApi = (folderId, uploadId, scanData) => {
-  const url = endpoints.upload.scheduleAnalysis();
-  const { bucket, copyrightEmailAuthor, ecc, keyword, mime, monk, nomos, ojo } =
-    scanData?.analysis;
-  const { nomosMonk, bulkReused, newScanner, ojoDecider } = scanData?.decider;
-  const { reuseUpload, reuseGroup, reuseMain, reuseEnhanced } = scanData?.reuse;
+// Create Uploads from URL
+export const createUploadUrlApi = (header, body) => {
+  const url = endpoints.upload.uploadCreate();
   return sendRequest({
     url,
     method: "POST",
     headers: {
+      ...header,
       Authorization: getToken(),
-      folderId,
-      uploadId,
     },
-    body: {
-      analysis: {
-        bucket,
-        copyright_email_author: copyrightEmailAuthor,
-        ecc,
-        keyword,
-        mime,
-        monk,
-        nomos,
-        ojo,
-        package: scanData.analysis.package,
-      },
-      decider: {
-        nomos_monk: nomosMonk,
-        bulk_reused: bulkReused,
-        new_scanner: newScanner,
-        ojo_decider: ojoDecider,
-      },
-      reuse: {
-        reuse_upload: reuseUpload,
-        reuse_group: reuseGroup,
-        reuse_main: reuseMain,
-        reuse_enhanced: reuseEnhanced,
-      },
-    },
+    body,
   });
 };
 

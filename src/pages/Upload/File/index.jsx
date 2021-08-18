@@ -28,9 +28,10 @@ import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 import CommonFields from "components/Upload/CommonFields";
 
 // Required functions for calling APIs
-import { createUploadFile, scheduleAnalysis } from "services/upload";
+import { createUploadFile } from "services/upload";
+import { scheduleAnalysis } from "services/jobs";
 import { getAllFolders } from "services/folders";
-import { defaultAgentsList } from "shared/storageHelper";
+import { defaultAgentsList, getLocalStorage } from "shared/storageHelper";
 
 // Helper function for error handling
 import { handleError } from "shared/helper";
@@ -53,9 +54,11 @@ const UploadFile = () => {
     },
     reuse: {
       reuseUpload: 0,
-      reuseGroup: "",
+      reuseGroup: getLocalStorage("user")?.default_group,
       reuseMain: false,
       reuseEnhanced: false,
+      reuseReport: false,
+      reuseCopyright: false,
     },
   };
   const initialFolderList = [
@@ -89,6 +92,7 @@ const UploadFile = () => {
     setLoading(true);
     createUploadFile(uploadFileData)
       .then((res) => {
+        window.scrollTo({ top: 0 });
         setMessage({
           type: "success",
           text: "Successfully uploaded the files",
@@ -100,6 +104,7 @@ const UploadFile = () => {
           () =>
             scheduleAnalysis(uploadFileData.folderId, uploadId, scanFileData)
               .then(() => {
+                window.scrollTo({ top: 0 });
                 setMessage({
                   type: "success",
                   text: "Analysis for the file is scheduled.",
@@ -166,7 +171,10 @@ const UploadFile = () => {
         ...scanFileData,
         reuse: {
           ...scanFileData.reuse,
-          [e.target.name]: e.target.checked,
+          [e.target.name]:
+            e.target.type === "checkbox"
+              ? e.target.checked
+              : parseInt(e.target.value, 10) || e.target.value,
         },
       });
     }
@@ -179,14 +187,14 @@ const UploadFile = () => {
   return (
     <>
       <Title title="Upload a New File" />
-      {showMessage && (
-        <Alert
-          type={message.type}
-          setShow={setShowMessage}
-          message={message.text}
-        />
-      )}
       <div className="main-container my-3">
+        {showMessage && (
+          <Alert
+            type={message.type}
+            setShow={setShowMessage}
+            message={message.text}
+          />
+        )}
         <div className="row">
           <div className="col-lg-8 col-md-12 col-sm-12 col-12">
             <h1 className="font-size-main-heading">Upload a New file</h1>

@@ -25,6 +25,9 @@ const apiUrl = `${
 const endpoints = {
   jobs: {
     details: (jobId) => `${apiUrl}/jobs/${jobId}`,
+    scheduleAnalysis: () => `${apiUrl}/jobs`,
+    scheduleReport: () => `${apiUrl}/report`,
+    downloadReport: (reportId) => `${apiUrl}/report/${reportId}`,
   },
   auth: {
     tokens: () => `${apiUrl}/tokens`,
@@ -49,7 +52,6 @@ const endpoints = {
   },
   upload: {
     uploadCreate: () => `${apiUrl}/uploads`,
-    scheduleAnalysis: () => `${apiUrl}/jobs`,
     getId: (uploadId) => `${apiUrl}/uploads/${uploadId}`,
   },
   browse: {
@@ -57,7 +59,7 @@ const endpoints = {
   },
   organize: {
     uploads: {
-      get: (folder) => `${apiUrl}/uploads?folderId=${folder}`,
+      get: () => `${apiUrl}/uploads`,
       delete: (deleteId) => `${apiUrl}/uploads/${deleteId}`,
       move: (moveId) => `${apiUrl}/uploads/${moveId}`,
       copy: (copyId) => `${apiUrl}/uploads/${copyId}`,
@@ -72,6 +74,10 @@ const endpoints = {
   license: {
     get: () => `${apiUrl}/license`,
     createCandidateLicense: () => `${apiUrl}/license`,
+  },
+  info: {
+    info: () => `${apiUrl}/info`,
+    health: () => `${apiUrl}/health`,
   },
 };
 

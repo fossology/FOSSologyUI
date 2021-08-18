@@ -33,7 +33,7 @@ function LicenseDecider({ decider, handleChange }) {
         type="checkbox"
         checked={decider.nomosMonk}
         name="nomosMonk"
-        id="upload-file-nomos-monk"
+        id="upload-decider-nomos-monk"
         onChange={(e) => handleChange(e)}
       >
         ... scanners matches if all Nomos findings are within the Monk findings
@@ -42,7 +42,7 @@ function LicenseDecider({ decider, handleChange }) {
         type="checkbox"
         checked={decider.ojoDecider}
         name="ojoDecider"
-        id="upload-file-ojo-decider"
+        id="upload-decider-ojo-decider"
         onChange={(e) => handleChange(e)}
       >
         .. scanners matches if Ojo findings are no contradiction with other
@@ -52,7 +52,7 @@ function LicenseDecider({ decider, handleChange }) {
         type="checkbox"
         checked={decider.bulkReused}
         name="bulkReused"
-        id="upload-file-bulk-reused"
+        id="upload-decider-bulk-reused"
         onChange={(e) => handleChange(e)}
       >
         ... bulk phrases from reused packages
@@ -61,7 +61,7 @@ function LicenseDecider({ decider, handleChange }) {
         type="checkbox"
         checked={decider.newScanner}
         name="newScanner"
-        id="upload-file-new-scanner"
+        id="upload-decider-new-scanner"
         onChange={(e) => handleChange(e)}
       >
         ... new scanner results, i.e., decisions were marked as work in progress
