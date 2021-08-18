@@ -89,3 +89,18 @@ export const defaultAgentsList = () => {
     package: false,
   };
 };
+
+// Get from session storage
+export const getSessionStorage = (key) => {
+  if (typeof window !== "undefined") {
+    return JSON.parse(sessionStorage.getItem(key));
+  }
+  return null;
+};
+
+// Set in session storage
+export const setSessionStorage = (key, value) => {
+  if (typeof window !== "undefined") {
+    sessionStorage.setItem(key, JSON.stringify(value));
+  }
+};
