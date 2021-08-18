@@ -35,7 +35,6 @@ const TreeContainer = ({ data, handleClick }) => {
         <Tree nodes={state} onChange={handleChange}>
           {({ style, node, ...rest }) => (
             <div style={style}>
-              {/* eslint-disable-next-line react/jsx-props-no-spreading */}
               <Expandable node={node} {...rest}>
                 <button
                   className="folder-tree-list text-primary-color"

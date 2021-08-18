@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -15,31 +15,24 @@
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-
-// React Imports
 import React from "react";
-import { withRouter, Route } from "react-router-dom";
-import PropTypes from "prop-types";
 
-// Header
-import Header from "components/Header";
+const IndeterminateCheckbox = React.forwardRef(
+  // eslint-disable-next-line react/prop-types
+  ({ indeterminate, ...rest }, ref) => {
+    const defaultRef = React.useRef();
+    const resolvedRef = ref || defaultRef;
 
-const PublicLayout = ({ component: Component, ...rest }) => (
-  <Route
-    {...rest}
-    render={(props) => (
+    React.useEffect(() => {
+      resolvedRef.current.indeterminate = indeterminate;
+    }, [resolvedRef, indeterminate]);
+
+    return (
       <>
-        <div className="wrapper">
-          <Header />
-          <Component {...props} />
-        </div>
+        <input type="checkbox" ref={resolvedRef} {...rest} />
       </>
-    )}
-  />
+    );
+  }
 );
 
-PublicLayout.propTypes = {
-  component: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
-};
-
-export default withRouter(PublicLayout);
+export default IndeterminateCheckbox;
