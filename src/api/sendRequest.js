@@ -34,6 +34,7 @@ const sendRequest = ({
   noHeaders = false,
   addGroupName = true,
   retries = 0,
+  isFile = false,
 }) => {
   let mergedHeaders;
   if (isMultipart) {
@@ -44,6 +45,11 @@ const sendRequest = ({
     mergedHeaders = new Headers({
       "content-type": "application/json",
       accept: "application/json",
+      ...headers,
+    });
+  }
+  if (isFile) {
+    mergedHeaders = new Headers({
       ...headers,
     });
   }
@@ -87,6 +93,9 @@ const sendRequest = ({
         if (pair[0] === "x-total-pages") {
           setLocalStorage("pages", pair[1]);
         }
+      }
+      if (isFile) {
+        return res;
       }
       return res.json();
     }
