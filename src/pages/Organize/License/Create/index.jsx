@@ -17,6 +17,7 @@
 */
 
 import React, { useState } from "react";
+import messages from "constants/messages";
 
 // Title
 import Title from "components/Title";
@@ -91,7 +92,7 @@ const AddCandidateLicense = () => {
       .then(() => {
         setMessage({
           type: "success",
-          text: "Successfully created the license",
+          text: messages.createdLicense,
         });
       })
       .catch((error) => {

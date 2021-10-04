@@ -17,6 +17,7 @@
 */
 
 import React, { useState, useEffect } from "react";
+import messages from "constants/messages";
 
 // Title
 import Title from "components/Title";
@@ -76,7 +77,7 @@ const CreateFolder = () => {
       .then(() => {
         setMessage({
           type: "success",
-          text: "Successfully created the folder",
+          text: messages.createdFolder,
         });
       })
       .catch((error) => {
