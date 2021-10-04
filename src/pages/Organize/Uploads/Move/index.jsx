@@ -17,6 +17,7 @@
 */
 
 import React, { useState, useEffect } from "react";
+import messages from "constants/messages";
 
 // Title
 import Title from "components/Title";
@@ -100,7 +101,7 @@ const UploadMove = () => {
           .then(() => {
             setMessage({
               type: "success",
-              text: "Successfully scheduled the selected uploads movement.",
+              text: messages.scheduleUploadMovement,
             });
             getUploadList();
             setShowMessage(true);
@@ -115,7 +116,7 @@ const UploadMove = () => {
       setShowMessage(true);
       setMessage({
         type: "danger",
-        text: "Select the uploads to move",
+        text: messages.selectUploadsToMove,
       });
     }
   };
@@ -128,7 +129,7 @@ const UploadMove = () => {
           .then(() => {
             setMessage({
               type: "success",
-              text: "Successfully scheduled the selected uploads for copy.",
+              text: messages.scheduledUploadCopy,
             });
             getUploadList();
             setShowMessage(true);
@@ -143,7 +144,7 @@ const UploadMove = () => {
       setShowMessage(true);
       setMessage({
         type: "danger",
-        text: "Select the uploads to copy",
+        text: messages.selectUploadsToCopy,
       });
     }
   };

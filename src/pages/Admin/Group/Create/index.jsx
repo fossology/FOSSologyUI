@@ -17,6 +17,7 @@
 */
 
 import React, { useState } from "react";
+import messages from "constants/messages";
 
 // Title
 import Title from "components/Title";
@@ -51,7 +52,7 @@ const GroupCreate = () => {
       .then(() => {
         setMessage({
           type: "success",
-          text: "Successfully created the group",
+          text: messages.groupCreate,
         });
       })
       .catch((error) => {

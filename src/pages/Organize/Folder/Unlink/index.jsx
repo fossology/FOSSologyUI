@@ -17,6 +17,7 @@
 */
 
 import React, { useState, useEffect } from "react";
+import messages from "constants/messages";
 
 // Title
 import Title from "components/Title";
@@ -75,7 +76,7 @@ const UnlinkFolder = () => {
       .then(() => {
         setMessage({
           type: "success",
-          text: "Successfully unlinked the folder",
+          text: messages.unlinkedFolder,
         });
       })
       .then(() => {

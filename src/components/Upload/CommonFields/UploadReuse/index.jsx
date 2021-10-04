@@ -27,6 +27,8 @@ import { getAllFolders } from "services/folders";
 import { getUploadsFolderId } from "services/organizeUploads";
 import { getAllGroups } from "services/groups";
 
+import messages from "constants/messages";
+
 const UploadReuse = ({ reuse, handleChange }) => {
   const initialGroupList = [{ id: 3, name: "fossy" }];
   const initialFolderList = [
@@ -94,7 +96,7 @@ const UploadReuse = ({ reuse, handleChange }) => {
         value={reuse.reuseGroup}
         property="name"
         valueProperty="name"
-        noDataMessage="No Group Found"
+        noDataMessage={messages.noGroup}
       >
         Select the reuse group:
       </InputContainer>
@@ -106,7 +108,7 @@ const UploadReuse = ({ reuse, handleChange }) => {
         options={reuseData.folderList}
         value={reuseData.reuseFolder}
         property="name"
-        noDataMessage="No Folder Found"
+        noDataMessage={messages.noFolder}
       >
         Select the reuse folder:
       </InputContainer>
@@ -119,7 +121,7 @@ const UploadReuse = ({ reuse, handleChange }) => {
         value={parseInt(reuse.reuseUpload, 10)}
         property="uploadname"
         valueProperty="id"
-        noDataMessage="No Uploads Found"
+        noDataMessage={messages.noUploads}
       >
         Select the reuse upload:
       </InputContainer>
