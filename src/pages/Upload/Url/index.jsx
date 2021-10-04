@@ -17,6 +17,7 @@
 */
 
 import React, { useState, useEffect } from "react";
+import messages from "constants/messages";
 
 // Title
 import Title from "components/Title";
@@ -98,7 +99,7 @@ const UploadFromUrl = () => {
       .then((res) => {
         setMessage({
           type: "success",
-          text: `The Upload has been queued its upload Id is #${res.message}`,
+          text: `${messages.queuedUpload} #${res.message}`,
         });
         uploadId = res.message;
       })
@@ -111,7 +112,7 @@ const UploadFromUrl = () => {
               .then(() => {
                 setMessage({
                   type: "success",
-                  text: "Analysis for the file is scheduled.",
+                  text: messages.scheduledAnalysis,
                 });
                 setUploadUrlData(initialState);
                 setScanFileData(initialScanFileData);

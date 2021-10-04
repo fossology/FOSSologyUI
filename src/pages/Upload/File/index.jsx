@@ -17,6 +17,7 @@
 */
 
 import React, { useState, useEffect } from "react";
+import messages from "constants/messages";
 
 // Title
 import Title from "components/Title";
@@ -95,7 +96,7 @@ const UploadFile = () => {
         window.scrollTo({ top: 0 });
         setMessage({
           type: "success",
-          text: "Successfully uploaded the files",
+          text: messages.uploadSuccess,
         });
         uploadId = res.message;
       })
@@ -107,7 +108,7 @@ const UploadFile = () => {
                 window.scrollTo({ top: 0 });
                 setMessage({
                   type: "success",
-                  text: "Analysis for the file is scheduled.",
+                  text: messages.scheduledAnalysis,
                 });
                 setUploadFileData(initialState);
                 setScanFileData(initialScanFileData);

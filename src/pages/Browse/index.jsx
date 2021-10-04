@@ -18,6 +18,7 @@
 
 import React, { useState, useEffect } from "react";
 import arrayToTree from "array-to-tree";
+import messages from "constants/messages";
 
 // Title
 import Title from "components/Title";
@@ -149,7 +150,7 @@ const Browse = () => {
   useEffect(() => {
     setMessage({
       type: "success",
-      text: "Loading...",
+      text: messages.loading,
     });
     setShowMessage(true);
     getBrowseData(browseData)
