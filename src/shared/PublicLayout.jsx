@@ -39,7 +39,7 @@ const PublicLayout = ({ component: Component, ...rest }) => (
 );
 
 PublicLayout.propTypes = {
-  component: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
+  component: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
 };
 
 export default withRouter(PublicLayout);

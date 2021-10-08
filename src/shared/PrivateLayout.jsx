@@ -52,7 +52,7 @@ const PrivateLayout = ({ component: Component, ...rest }) => (
 );
 
 PrivateLayout.propTypes = {
-  component: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
+  component: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
   location: PropTypes.shape({
     pathname: PropTypes.string.isRequired,
   }).isRequired,
