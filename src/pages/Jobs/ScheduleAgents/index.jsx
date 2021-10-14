@@ -17,6 +17,7 @@
 */
 
 import React, { useState, useEffect } from "react";
+import messages from "constants/messages";
 
 // Title
 import Title from "components/Title";
@@ -108,7 +109,7 @@ const ScheduleAgents = () => {
       .then(() => {
         setMessage({
           type: "success",
-          text: "Your jobs have been added to job queue",
+          text: messages.jobsAdded,
         });
         setScheduleAnalysisData(initialScheduleAnalysisData);
         setScanFileData(initialScanFileData);

@@ -21,14 +21,15 @@ import styles from "styled-components";
 import { Link } from "react-router-dom";
 import { ExclamationTriangleFill } from "react-bootstrap-icons";
 import routes from "constants/routes";
+import messages from "constants/messages";
 
 const ErrorPage = () => {
   return (
     <ErrorContainer>
       <div className="text-center mx-auto">
         <ExclamationTriangleFill color="#FF0000" size={120} />
-        <Heading1>Error: Page Not Found!</Heading1>
-        <Heading2>We could not find the page you were searching for</Heading2>
+        <Heading1>{messages.noPageShort}</Heading1>
+        <Heading2>{messages.noPageLong}</Heading2>
         <Heading2>
           Go back to <Link to={routes.home}>Home</Link>
         </Heading2>

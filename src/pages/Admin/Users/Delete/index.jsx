@@ -17,6 +17,7 @@
 */
 
 import React, { useState, useEffect } from "react";
+import messages from "constants/messages";
 
 // Title
 import Title from "components/Title";
@@ -77,7 +78,7 @@ const DeleteUser = () => {
         .then(() => {
           setMessage({
             type: "success",
-            text: "Successfully deleted the user",
+            text: messages.deletedUser,
           });
         })
         .then(() => {
@@ -95,7 +96,7 @@ const DeleteUser = () => {
     } else {
       setMessage({
         type: "danger",
-        text: "Deletion not confirmed",
+        text: messages.confirmDeletion,
       });
       setShowMessage(true);
     }

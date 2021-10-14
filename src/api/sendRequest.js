@@ -18,6 +18,7 @@
 
 import { stringify } from "query-string";
 import { logout } from "shared/authHelper";
+import messages from "constants/messages";
 
 // Helper function for setting the item in Localstorage
 import { getLocalStorage, setLocalStorage } from "shared/storageHelper";
@@ -122,7 +123,7 @@ const sendRequest = ({
         if (json.message) {
           return logout({ message: json.message });
         }
-        return logout({ message: "Requested resource is forbidden" });
+        return logout({ message: messages.forbiddenResource });
       }
       return Promise.reject(error);
     });

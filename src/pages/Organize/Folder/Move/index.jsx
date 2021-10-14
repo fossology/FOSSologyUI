@@ -17,6 +17,7 @@
 */
 
 import React, { useState, useEffect } from "react";
+import messages from "constants/messages";
 
 // Title
 import Title from "components/Title";
@@ -72,7 +73,7 @@ const MoveFolder = () => {
       .then(() => {
         setMessage({
           type: "success",
-          text: "Successfully moved the folder",
+          text: messages.movedFolder,
         });
       })
       .catch((error) => {
@@ -89,7 +90,7 @@ const MoveFolder = () => {
       .then(() => {
         setMessage({
           type: "success",
-          text: "Successfully copied the folder",
+          text: messages.copiedFolder,
         });
       })
       .catch((error) => {

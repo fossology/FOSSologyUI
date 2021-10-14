@@ -17,6 +17,7 @@
 */
 
 import React, { useState, useEffect } from "react";
+import messages from "constants/messages";
 
 // Title
 import Title from "components/Title";
@@ -113,7 +114,7 @@ const UploadFromVcs = () => {
         window.scrollTo({ top: 0 });
         setMessage({
           type: "success",
-          text: `The Upload has been queued its upload Id is #${res.message}`,
+          text: `${messages.queuedUpload} #${res.message}`,
         });
         uploadId = res.message;
       })
@@ -127,7 +128,7 @@ const UploadFromVcs = () => {
                 window.scrollTo({ top: 0 });
                 setMessage({
                   type: "success",
-                  text: "Analysis for the file is scheduled.",
+                  text: messages.scheduledAnalysis,
                 });
                 setUploadVcsData(initialState);
                 setScanFileData(initialScanFileData);

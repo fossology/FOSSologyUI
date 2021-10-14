@@ -17,6 +17,7 @@
 */
 
 import React, { useState, useEffect } from "react";
+import messages from "constants/messages";
 
 // Title
 import Title from "components/Title";
@@ -89,7 +90,7 @@ const UploadDelete = () => {
           .then(() => {
             setMessage({
               type: "success",
-              text: "Successfully scheduled selected uploads for deletion.",
+              text: messages.scheduleUploadDeletion,
             });
             getUploadsFolderId(deleteUploadFolderData.folderId).then((res) => {
               setUploadFolderList(res);
@@ -111,7 +112,7 @@ const UploadDelete = () => {
       setShowMessage(true);
       setMessage({
         type: "danger",
-        text: "Select the uploads to delete",
+        text: messages.selectUploadsToDelete,
       });
     }
   };

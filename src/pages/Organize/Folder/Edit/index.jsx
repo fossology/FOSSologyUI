@@ -17,6 +17,7 @@
 */
 
 import React, { useState, useEffect } from "react";
+import messages from "constants/messages";
 
 // Title
 import Title from "components/Title";
@@ -76,7 +77,7 @@ const EditFolder = () => {
       .then(() => {
         setMessage({
           type: "success",
-          text: "Successfully updated the folder properties",
+          text: messages.updatedFolderProps,
         });
       })
       .catch((error) => {
