@@ -16,11 +16,15 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from "react";
+import React, { Suspense } from "react";
 import { render } from "@testing-library/react";
 import App from "./App";
 
 test("renders learn react link", () => {
-  const { asFragment } = render(<App />);
+  const { asFragment } = render(
+    <Suspense fallback={<div>Loading... </div>}>
+      <App />
+    </Suspense>
+  );
   expect(asFragment()).toMatchSnapshot();
 });
