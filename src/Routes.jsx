@@ -18,6 +18,7 @@
 
 // React imports
 import React from "react";
+import routes from "constants/routes";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 // Guards imports
@@ -100,9 +101,6 @@ const ErrorPage = React.lazy(() => import("pages/ErrorPage"));
 
 // Footer
 const Footer = React.lazy(() => import("components/Footer"));
-
-// Routes imports
-const routes = React.lazy(() => import("constants/routes"));
 
 const Routes = () => {
   return (
