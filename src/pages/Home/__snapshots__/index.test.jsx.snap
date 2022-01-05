@@ -1,0 +1,228 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches Home snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="main-container my-3"
+  >
+    <div
+      class="row m-0"
+    >
+      <div
+        class="col-md-6"
+      >
+        <b
+          class="font-size-medium"
+        >
+          FOSSology
+        </b>
+         is a framework for software analysis tools. With it, you can:
+        <ul
+          class="my-3 list-unstyled"
+        >
+          <li>
+            Upload files into the fossology repository.
+          </li>
+          <li>
+            Unpack files (zip, tar, bz2, iso's, and many others) into its component files.
+          </li>
+          <li>
+            Browse upload file trees.
+          </li>
+          <li>
+            View file contents and meta data.
+          </li>
+          <li>
+            Scan for software licenses.
+          </li>
+          <li>
+            Scan for copyrights and other author information.
+          </li>
+          <li>
+            View side-by-side license and bucket differences between file trees.
+          </li>
+          <li>
+            Tag and attach notes to files.
+          </li>
+          <li>
+            Report files based on your own custom classification scheme.
+          </li>
+        </ul>
+        <div
+          class="my-3"
+        >
+          <b
+            class="font-size-medium"
+          >
+            Where to begin...
+          </b>
+          <ul
+            class="my-3"
+          >
+            <li>
+              The menu at the top contains all the primary capabilities of FOSSology.
+            </li>
+            <li>
+              Depending on your account's access rights, you may be able to upload files, schedule analysis tasks, or even add new users.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div
+        class="col-md-6"
+      >
+        <div
+          class="sc-gtsrHT fkeejL"
+        >
+          <form
+            class=""
+          >
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-4"
+                for="loginUsername"
+              >
+                Username
+              </label>
+              <div
+                class="col-sm-8"
+              >
+                <input
+                  class="form-control"
+                  id="loginUsername"
+                  placeholder="Enter Username"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-4"
+                for="loginPassword"
+              >
+                Password
+              </label>
+              <div
+                class="col-sm-8"
+              >
+                <input
+                  class="form-control"
+                  id="loginPassword"
+                  placeholder="Enter Password"
+                  type="password"
+                  value=""
+                />
+              </div>
+            </div>
+            <button
+              class="sc-bdnxRM jucBJg bg-primary-color text-secondary-color font-demi text-center hover-primary-color d-block mx-auto"
+              type="submit"
+            >
+              Login
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div
+      class="row mt-3"
+    >
+      <div
+        class="col-lg-4 col-md-12 col-sm-12 col-12"
+      >
+        <div
+          class="box"
+        >
+          <div
+            class="d-flex"
+          >
+            <img
+              alt="Upload and Scan files"
+              src="upload.svg"
+            />
+            <div
+              class="pl-3"
+            >
+              <h4
+                class="font-size-sub-heading"
+              >
+                Upload and Scan files
+              </h4>
+              <p
+                class="mt-2"
+              >
+                Upload and scan files into the fossology server and get information.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col-lg-4 col-md-12 col-sm-12 col-12"
+      >
+        <div
+          class="box"
+        >
+          <div
+            class="d-flex"
+          >
+            <img
+              alt="Review Documents"
+              src="scan.svg"
+            />
+            <div
+              class="pl-3"
+            >
+              <h4
+                class="font-size-sub-heading"
+              >
+                Review Documents
+              </h4>
+              <p
+                class="mt-2"
+              >
+                Review licenses, copyrights, export control and other information.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col-lg-4 col-md-12 col-sm-12 col-12"
+      >
+        <div
+          class="box"
+        >
+          <div
+            class="d-flex"
+          >
+            <img
+              alt="Generate Reports"
+              src="report.svg"
+            />
+            <div
+              class="pl-3"
+            >
+              <h4
+                class="font-size-sub-heading"
+              >
+                Generate Reports
+              </h4>
+              <p
+                class="mt-2"
+              >
+                Generate report files based on your own custom classification scheme.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
