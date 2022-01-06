@@ -83,14 +83,14 @@ const Home = ({ location }) => {
   };
 
   useEffect(() => {
-    const queryParams = queryString.parse(location.search);
+    const queryParams = queryString.parse(location?.search);
     const { message } = queryParams;
     if (message) {
       setErrorMessage(message);
       setShowError(true);
     }
     window.history.replaceState(null, null, window.location.pathname);
-  }, [location.search]);
+  }, [location?.search]);
 
   return (
     <>

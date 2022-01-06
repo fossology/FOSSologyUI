@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2022 Aman Dwivedi (aman.dwivedi5@gmail.com)
  
  SPDX-License-Identifier: GPL-2.0
 
@@ -16,11 +16,10 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from "react";
-import { render } from "@testing-library/react";
-import App from "./App";
+import renderComponent from "testingUtils/renderComponent";
+import Home from "pages/Home";
 
-test("renders learn react link", () => {
-  const { asFragment } = render(<App />);
+test("matches Home snapshot", () => {
+  const { asFragment } = renderComponent(Home);
   expect(asFragment()).toMatchSnapshot();
 });
