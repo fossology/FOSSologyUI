@@ -319,11 +319,11 @@ const UploadFromVcs = () => {
                 name will be used.
               </div>
               <div className="my-2">
-                <label htmlFor="upload" className="font-demi">
+                <label htmlFor="upload" className="font-demi w-100">
                   (Optional) Enter a description of this file:
                   <textarea
                     name="uploadDescription"
-                    className="form-control"
+                    className="form-control font-regular mt-2"
                     value={uploadVcsData.uploadDescription}
                     id="upload-file-description"
                     rows="3"
