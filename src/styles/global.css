@@ -122,3 +122,8 @@ h6 {
   right: 2rem;
   z-index: 1;
 }
+
+/* Font for License textarea */
+.license-textarea {
+  font-family: monospace;
+}
