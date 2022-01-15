@@ -85,6 +85,7 @@ const EditFolder = () => {
       .finally(() => {
         setLoading(false);
         setShowMessage(true);
+        setTimeout(() => setShowMessage(false), 2000);
       });
   };
 
@@ -96,6 +97,7 @@ const EditFolder = () => {
       .catch((error) => {
         handleError(error, setMessage);
         setShowMessage(true);
+        setTimeout(() => setShowMessage(false), 2000);
       });
   }, []);
 
@@ -107,6 +109,7 @@ const EditFolder = () => {
       .catch((error) => {
         handleError(error, setMessage);
         setShowMessage(true);
+        setTimeout(() => setShowMessage(false), 2000);
       });
   }, [id]);
 

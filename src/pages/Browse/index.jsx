@@ -168,6 +168,7 @@ const Browse = () => {
       .catch((error) => {
         handleError(error, setMessage);
         setShowMessage(true);
+        setTimeout(() => setShowMessage(false), 2000);
       });
   }, [browseData]);
 
@@ -194,6 +195,7 @@ const Browse = () => {
       .catch((error) => {
         handleError(error, setMessage);
         setShowMessage(true);
+        setTimeout(() => setShowMessage(false), 2000);
       });
   }, []);
 

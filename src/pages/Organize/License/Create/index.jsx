@@ -103,6 +103,7 @@ const AddCandidateLicense = () => {
       .finally(() => {
         setLoading(false);
         setShowMessage(true);
+        setTimeout(() => setShowMessage(false), 2000);
       });
   };
   return (

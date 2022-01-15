@@ -124,6 +124,7 @@ const UploadFile = () => {
       .finally(() => {
         setLoading(false);
         setShowMessage(true);
+        setTimeout(() => setShowMessage(false), 2000);
       });
   };
   const handleChange = (e) => {
