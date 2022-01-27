@@ -1,6 +1,6 @@
-# FOSSology Dockerfile
+# FOSSology docker-compose file
 
-#  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
+#  Copyright (C) 2022 Vineet Vatsal (vineetvatsal09@gmail.com)
 
 #  SPDX-License-Identifier: GPL-2.0
 
@@ -16,24 +16,19 @@
 #  with this program; if not, write to the Free Software Foundation, Inc.,
 #  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-# Description: Docker container image recipe
+# Description: docker-compose file for production environment
 
-FROM node:14.15.4-slim
 
-LABEL maintainer="Fossology <fossology@fossology.org>"
+version: "3.9"
 
-ARG REACT_APP_SERVER_URL
-ENV REACT_APP_SERVER_URL=$REACT_APP_SERVER_URL
-
-ARG REACT_APP_HTTPS
-ENV REACT_APP_HTTPS=$REACT_APP_HTTPS
-
-WORKDIR /fossologyui
-
-COPY . .
-
-RUN yarn
-
-EXPOSE 3000
-
-CMD [ "yarn", "start" ]
+services:
+  fossologyui_server:
+    build:
+      context: Dockerfile
+      args:
+        - REACT_APP_SERVER_URL=localhost/repo/api/v2
+        - REACT_APP_HTTPS=false
+    image: fossologyui:react1.0
+    ports:
+      - "3000:3000"
+    command: yarn start
