@@ -18,73 +18,89 @@
 
 // React imports
 import React from "react";
+import routes from "constants/routes";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 // Guards imports
-import PublicLayout from "shared/PublicLayout";
-import PrivateLayout from "shared/PrivateLayout";
-import AdminLayout from "shared/AdminLayout";
+const PublicLayout = React.lazy(() => import("shared/PublicLayout"));
+const PrivateLayout = React.lazy(() => import("shared/PrivateLayout"));
+const AdminLayout = React.lazy(() => import("shared/AdminLayout"));
 
 // Pages imports
-import Home from "pages/Home";
-import Search from "pages/Search";
-import Browse from "pages/Browse";
+const Home = React.lazy(() => import("pages/Home"));
+const Search = React.lazy(() => import("pages/Search"));
+const Browse = React.lazy(() => import("pages/Browse"));
 
 // Browse Upload pages imports
-import SoftwareHeritage from "pages/BrowseUploads/SoftwareHeritage";
-import LicenseBrowse from "pages/BrowseUploads/LicenseBrowser";
-import FileBrowser from "pages/BrowseUploads/FileBrowser";
-import CopyrightBrowser from "pages/BrowseUploads/Copyright";
-import Ecc from "pages/BrowseUploads/Ecc";
+const SoftwareHeritage = React.lazy(() =>
+  import("pages/BrowseUploads/SoftwareHeritage")
+);
+const LicenseBrowse = React.lazy(() =>
+  import("pages/BrowseUploads/LicenseBrowser")
+);
+const FileBrowser = React.lazy(() => import("pages/BrowseUploads/FileBrowser"));
+const CopyrightBrowser = React.lazy(() =>
+  import("pages/BrowseUploads/Copyright")
+);
+const Ecc = React.lazy(() => import("pages/BrowseUploads/Ecc"));
 
 // Help Pages
-import About from "pages/Help/About";
-import Overview from "pages/Help/Overview";
-import LicenseBrowser from "pages/Help/LicenseBrowser";
-import ThirdPartyLicenses from "pages/Help/ThirdPartyLicenses";
+const About = React.lazy(() => import("pages/Help/About"));
+const Overview = React.lazy(() => import("pages/Help/Overview"));
+const LicenseBrowser = React.lazy(() => import("pages/Help/LicenseBrowser"));
+const ThirdPartyLicenses = React.lazy(() =>
+  import("pages/Help/ThirdPartyLicenses")
+);
 
 // Upload Pages
-import UploadFile from "pages/Upload/File";
-import UploadFromServer from "pages/Upload/Server";
-import UploadFromVcs from "pages/Upload/Vcs";
-import UploadFromUrl from "pages/Upload/Url";
-import ImportReport from "pages/Upload/ImportReport";
-import Instructions from "pages/Upload/Instructions";
-import OneShotAnalysis from "pages/Upload/OneShotAnalysis";
-import OneShotCopyright from "pages/Upload/OneShotCopyright";
-import OneShotMonk from "pages/Upload/OneShotMonk";
+const UploadFile = React.lazy(() => import("pages/Upload/File"));
+const UploadFromServer = React.lazy(() => import("pages/Upload/Server"));
+const UploadFromVcs = React.lazy(() => import("pages/Upload/Vcs"));
+const UploadFromUrl = React.lazy(() => import("pages/Upload/Url"));
+const ImportReport = React.lazy(() => import("pages/Upload/ImportReport"));
+const Instructions = React.lazy(() => import("pages/Upload/Instructions"));
+const OneShotAnalysis = React.lazy(() =>
+  import("pages/Upload/OneShotAnalysis")
+);
+const OneShotCopyright = React.lazy(() =>
+  import("pages/Upload/OneShotCopyright")
+);
+const OneShotMonk = React.lazy(() => import("pages/Upload/OneShotMonk"));
 
 // Jobs Pages
-import AllJobs from "pages/Jobs/AllJobs";
-import MyRecentJobs from "pages/Jobs/MyRecentJobs";
-import ScheduleAgents from "pages/Jobs/ScheduleAgents";
+const AllJobs = React.lazy(() => import("pages/Jobs/AllJobs"));
+const MyRecentJobs = React.lazy(() => import("pages/Jobs/MyRecentJobs"));
+const ScheduleAgents = React.lazy(() => import("pages/Jobs/ScheduleAgents"));
 
 // Organize Pages
-import DeleteFolder from "pages/Organize/Folder/Delete";
-import CreateFolder from "pages/Organize/Folder/Create";
-import EditFolder from "pages/Organize/Folder/Edit";
-import MoveFolder from "pages/Organize/Folder/Move";
-import UnlinkFolder from "pages/Organize/Folder/Unlink";
-import AdviceLicenses from "pages/Organize/License/CandidateLicense";
-import AddCandidateLicense from "pages/Organize/License/Create";
-import UploadEdit from "pages/Organize/Uploads/Edit";
-import UploadMove from "pages/Organize/Uploads/Move";
-import UploadDelete from "pages/Organize/Uploads/Delete";
+const DeleteFolder = React.lazy(() => import("pages/Organize/Folder/Delete"));
+const CreateFolder = React.lazy(() => import("pages/Organize/Folder/Create"));
+const EditFolder = React.lazy(() => import("pages/Organize/Folder/Edit"));
+const MoveFolder = React.lazy(() => import("pages/Organize/Folder/Move"));
+const UnlinkFolder = React.lazy(() => import("pages/Organize/Folder/Unlink"));
+const AdviceLicenses = React.lazy(() =>
+  import("pages/Organize/License/CandidateLicense")
+);
+const AddCandidateLicense = React.lazy(() =>
+  import("pages/Organize/License/Create")
+);
+const UploadEdit = React.lazy(() => import("pages/Organize/Uploads/Edit"));
+const UploadMove = React.lazy(() => import("pages/Organize/Uploads/Move"));
+const UploadDelete = React.lazy(() => import("pages/Organize/Uploads/Delete"));
 
 // Admin Pages
-import GroupCreate from "pages/Admin/Group/Create";
-import DeleteUser from "pages/Admin/Users/Delete";
-import AddLicense from "pages/Admin/License/Create";
-import SelectLicense from "pages/Admin/License/SelectLicense";
+const GroupCreate = React.lazy(() => import("pages/Admin/Group/Create"));
+const DeleteUser = React.lazy(() => import("pages/Admin/Users/Delete"));
+const AddLicense = React.lazy(() => import("pages/Admin/License/Create"));
+const SelectLicense = React.lazy(() =>
+  import("pages/Admin/License/SelectLicense")
+);
 
 // Default Page
-import ErrorPage from "pages/ErrorPage";
+const ErrorPage = React.lazy(() => import("pages/ErrorPage"));
 
 // Footer
-import Footer from "components/Footer";
-
-// Routes imports
-import routes from "constants/routes";
+const Footer = React.lazy(() => import("components/Footer"));
 
 const Routes = () => {
   return (

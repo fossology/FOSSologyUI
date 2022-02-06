@@ -211,12 +211,12 @@ const UploadFromServer = () => {
               <div className="my-3">
                 <label
                   htmlFor="upload-server-description"
-                  className="font-demi"
+                  className="font-demi w-100"
                 >
                   (Optional) Enter a description of this file:
                   <textarea
                     name="description"
-                    className="form-control"
+                    className="form-control font-regular mt-2"
                     value=""
                     id="upload-server-description"
                     rows="3"
