@@ -17,7 +17,7 @@
 */
 
 // React Imports
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useHistory, Link, useLocation } from "react-router-dom";
 
 // React Bootstrap Imports
@@ -46,19 +46,18 @@ import routes from "constants/routes";
 // External Link for documention
 import externalLinks from "constants/externalLinks";
 
-// Global Context for theme
-import { GlobalContext } from "context";
-
 // Helper Functions
 import { logout, isAuth, getUserName, isAdmin } from "shared/authHelper";
 import { getLocalStorage, setLocalStorage } from "shared/storageHelper";
 import { getNameInitials } from "shared/helper";
 
+// Dark Theme Toggle Button
+import DarkThemeToggle from "../DarkThemeToggle/DarkThemeToggle";
+
 const Header = () => {
   const [currentGroup, setCurrentGroup] = useState(
     getLocalStorage("currentGroup") || getLocalStorage("user")?.default_group
   );
-  const { setTheme } = useContext(GlobalContext);
   const history = useHistory();
   const location = useLocation();
   const handleLogin = () => {
@@ -306,7 +305,11 @@ const Header = () => {
               </>
             )}
           </Nav>
-
+          <Dropdown drop="left">
+            <Dropdown.Toggle variant="link" bsPrefix="p-0">
+              <DarkThemeToggle />
+            </Dropdown.Toggle>
+          </Dropdown>
           {/* Help Pages */}
           <Dropdown drop="left">
             <Dropdown.Toggle variant="link" bsPrefix="p-0">
@@ -357,7 +360,6 @@ const Header = () => {
               </Dropdown.Menu>
             </Dropdown>
           )}
-
           <Dropdown drop="left">
             <Dropdown.Toggle variant="link" bsPrefix="p-0">
               <PersonCircle color="#fff" size={40} className="m-2" />
@@ -372,23 +374,11 @@ const Header = () => {
                   Log out
                 </Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item onClick={() => setTheme("light")}>
-                  Light Theme
-                </Dropdown.Item>
-                <Dropdown.Item onClick={() => setTheme("dark")}>
-                  Dark Theme
-                </Dropdown.Item>
               </Dropdown.Menu>
             ) : (
               <Dropdown.Menu>
                 <Dropdown.Item onClick={handleLogin}>Log in</Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item onClick={() => setTheme("light")}>
-                  Light Theme
-                </Dropdown.Item>
-                <Dropdown.Item onClick={() => setTheme("dark")}>
-                  Dark Theme
-                </Dropdown.Item>
               </Dropdown.Menu>
             )}
           </Dropdown>
