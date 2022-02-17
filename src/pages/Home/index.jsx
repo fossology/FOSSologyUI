@@ -171,25 +171,26 @@ const Home = ({ location }) => {
                         onChange={handleChange("password")}
                         value={password}
                       />
+
+                      <Button
+                        type="submit"
+                        onClick={handleSubmit}
+                        className="d-block mt-4"
+                      >
+                        {loading ? (
+                          <Spinner
+                            as="span"
+                            animation="border"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          "Login"
+                        )}
+                      </Button>
                     </Col>
                   </Form.Group>
-                  <Button
-                    type="submit"
-                    onClick={handleSubmit}
-                    className="d-block mx-auto"
-                  >
-                    {loading ? (
-                      <Spinner
-                        as="span"
-                        animation="border"
-                        size="sm"
-                        role="status"
-                        aria-hidden="true"
-                      />
-                    ) : (
-                      "Login"
-                    )}
-                  </Button>
                 </Form>
               </LoginForm>
             )}
