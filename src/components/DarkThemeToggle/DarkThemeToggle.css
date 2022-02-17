@@ -1,47 +1,46 @@
 .toggle-button--container {
-    width: 55px;
-    height: 55px;
-    position: relative;
-  }
-  
-  .toggle-button--checkbox {
-    opacity: 0;
-    position: absolute;
-  }
-  
-  .toggle-button--label {
-    width: 40px;
-    height: 40px;
-    background-color: #fff;
-    display: flex;
-    border-radius: 50%;
-    align-items: center;
-    justify-content: center;
-    padding: 5px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    cursor: pointer;
-    transition: all 2s ease-out;
-  }
-  .toggle-button--sun {
-    opacity: 0;
-    transition: all 0.5s ease-out;
-    color: #dc3545;
-  }
-  
-  .toggle-button--moon {
-    opacity: 0;
-    transition: all 0.5s ease-out;
-    color: #525252;
-  }
-  
-  .toggle-button--label.light .toggle-button--sun {
-    opacity: 1;
-  }
-  
-  .toggle-button--label.dark .toggle-button--moon {
-    opacity: 1;
-  }
-  
+  width: 55px;
+  height: 55px;
+  position: relative;
+}
+
+.toggle-button--checkbox {
+  opacity: 0;
+  position: absolute;
+}
+
+.toggle-button--label {
+  width: 40px;
+  height: 40px;
+  background-color: #fff;
+  display: flex;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  transition: all 2s ease-out;
+}
+.toggle-button--sun {
+  opacity: 0;
+  transition: all 0.5s ease-out;
+  color: #dc3545;
+}
+
+.toggle-button--moon {
+  opacity: 0;
+  transition: all 0.5s ease-out;
+  color: #525252;
+}
+
+.toggle-button--label.light .toggle-button--sun {
+  opacity: 1;
+}
+
+.toggle-button--label.dark .toggle-button--moon {
+  opacity: 1;
+}
