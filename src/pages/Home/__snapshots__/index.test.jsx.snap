@@ -117,14 +117,14 @@ exports[`matches Home snapshot 1`] = `
                   type="password"
                   value=""
                 />
+                <button
+                  class="sc-bdnxRM jucBJg bg-primary-color text-secondary-color font-demi text-center hover-primary-color d-block mt-4"
+                  type="submit"
+                >
+                  Login
+                </button>
               </div>
             </div>
-            <button
-              class="sc-bdnxRM jucBJg bg-primary-color text-secondary-color font-demi text-center hover-primary-color d-block mx-auto"
-              type="submit"
-            >
-              Login
-            </button>
           </form>
         </div>
       </div>
