@@ -173,23 +173,30 @@ const Home = ({ location }) => {
                       />
                     </Col>
                   </Form.Group>
-                  <Button
-                    type="submit"
-                    onClick={handleSubmit}
-                    className="d-block mx-auto"
-                  >
-                    {loading ? (
-                      <Spinner
-                        as="span"
-                        animation="border"
-                        size="sm"
-                        role="status"
-                        aria-hidden="true"
-                      />
-                    ) : (
-                      "Login"
-                    )}
-                  </Button>
+                  <Form.Group as={Row} controlId="LoginButton">
+                    <Form.Label column sm="4">
+                      &nbsp;
+                    </Form.Label>
+                    <Col sm="8">
+                      <Button
+                        type="submit"
+                        onClick={handleSubmit}
+                        className="d-block"
+                      >
+                        {loading ? (
+                          <Spinner
+                            as="span"
+                            animation="border"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          "Login"
+                        )}
+                      </Button>
+                    </Col>
+                  </Form.Group>
                 </Form>
               </LoginForm>
             )}
