@@ -36,15 +36,21 @@ import "styles/global.css";
 import GlobalStyles from "styles/globalStyle";
 
 function App() {
-  const { theme } = useContext(GlobalContext);
+  const { state } = useContext(GlobalContext);
+  return (
+    <ThemeProvider theme={state.theme === "light" ? lightTheme : darkTheme}>
+      <GlobalStyles />
+      <Routes />
+    </ThemeProvider>
+  );
+}
+
+function AppWrapper() {
   return (
     <GlobalProvider>
-      <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
-        <GlobalStyles />
-        <Routes />
-      </ThemeProvider>
+      <App />
     </GlobalProvider>
   );
 }
 
-export default App;
+export default AppWrapper;
