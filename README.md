@@ -28,9 +28,7 @@ The UI Migration project is an effort focused on generating the new component-ba
 
 ## Requirements
 
-NodeJS and NPM or yarn\
-[https://nodejs.org/en/download/](https://nodejs.org/en/download/)
-[https://yarnpkg.com/getting-started/install](https://yarnpkg.com/getting-started/install)
+- [NodeJS](https://nodejs.org/en/download/) and NPM or [yarn](https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable)
 
 ## Installation
 
@@ -51,37 +49,42 @@ docker build \
 docker run -p 3000:3000 fossologyui:react1.0
 ```
 
-The docker image can then be used using http://IP_OF_DOCKER_HOST:3000/ user fossy password fossy.
+The docker image can then be used using `http://IP_OF_DOCKER_HOST:3000/` user `fossy` password `fossy`.
 
-<hr />
+### Project Setup
 
-In the project directory, you can run:
+- Create a `.env` in root directory of project and copy the contents from `.env.sample`
 
-create a `.env` in root directory of project and copy the contents from `.env.sample`
+- Installs the packages:
 
-#### `yarn`
+```sh
+ yarn
+```
 
-#### `yarn start`
+- Runs the app in the development mode at [http://localhost:3000](http://localhost:3000)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```sh
+yarn start
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Deployment
 
-#### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
+Launches the test runner in the interactive watch mode.
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-#### `yarn build`
+```sh
+yarn test
+```
 
-Builds the app for production to the `build` folder.\
+Builds the app for production to the `build` folder.
+
+```sh
+yarn build
+```
+
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
+The build is minified and the filenames include the hashes. Your app is ready to be deployed!
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 ## Support
