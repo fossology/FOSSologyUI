@@ -24,7 +24,8 @@ version: "3.9"
 services:
   fossologyui_server:
     build:
-      context: Dockerfile.dev
+      context: .
+      dockerfile: Dockerfile.dev
       args:
         - REACT_APP_SERVER_URL=localhost/repo/api/v2
         - REACT_APP_HTTPS=false
