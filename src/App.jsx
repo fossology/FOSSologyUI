@@ -35,13 +35,18 @@ import "react-virtualized-tree/lib/main.css";
 import "styles/global.css";
 import GlobalStyles from "styles/globalStyle";
 
+// useAlert hook provider
+import AlertProvider from "components/Widgets/AlertProvider";
+
 function App() {
   const { theme } = useContext(GlobalContext);
   return (
     <GlobalProvider>
       <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
-        <GlobalStyles />
-        <Routes />
+        <AlertProvider>
+          <GlobalStyles />
+          <Routes />
+        </AlertProvider>
       </ThemeProvider>
     </GlobalProvider>
   );
