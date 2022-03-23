@@ -1,8 +1,7 @@
 # Welcome to FOSSology UI 👋
 
 <p style="text-align:center;" align="center">
-  <img align="center" src="https://github.com/fossology/FOSSologyUI/blob/main/public/logo
-  -fossology.png" width="30%" />
+  <img align="center" src="https://github.com/fossology/FOSSologyUI/blob/main/public/logo192.png" width="30%" />
 </p>
 
 
