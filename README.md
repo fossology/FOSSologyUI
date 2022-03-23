@@ -1,4 +1,9 @@
-# FOSSology UI
+# Welcome to FOSSology UI 👋
+
+<p style="text-align:center;" align="center">
+  <img align="center" src="https://github.com/fossology/FOSSologyUI/blob/main/public/logo192.png" width="45%" />
+</p>
+
 
 [![GPL-2.0](https://img.shields.io/github/license/fossology/fossology)](LICENSE)
 [![Slack Channel](https://img.shields.io/badge/slack-fossology-blue.svg?longCache=true&logo=slack)](https://join.slack.com/t/fossology/shared_invite/enQtNzI0OTEzMTk0MjYzLTYyZWQxNDc0N2JiZGU2YmI3YmI1NjE4NDVjOGYxMTVjNGY3Y2MzZmM1OGZmMWI5NTRjMzJlNjExZGU2N2I5NGY)
