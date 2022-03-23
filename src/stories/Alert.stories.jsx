@@ -23,11 +23,11 @@ import { GlobalProvider } from "context";
 import GlobalStyles from "styles/globalStyle";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "styles/global.css";
-import { Button } from "components/Widgets";
+import { Alert } from "components/Widgets";
 
 export default {
-  title: "Components/Widgets/Button",
-  component: Button,
+  title: "Components/Widgets/Alert",
+  component: Alert,
 };
 
 const Template = (args) => {
@@ -35,7 +35,7 @@ const Template = (args) => {
     <GlobalProvider>
       <ThemeProvider {...args}>
         <GlobalStyles />
-        <Button {...args}>Click Me</Button>
+        <Alert {...args}>Alert</Alert>
       </ThemeProvider>
     </GlobalProvider>
   );
@@ -43,12 +43,16 @@ const Template = (args) => {
 
 export const Light = Template.bind({});
 Light.args = {
-  type: "button",
   theme: lightTheme,
+  message: "An alert message",
+  type: "danger",
+  setShow: true,
 };
 
 export const Dark = Template.bind({});
 Dark.args = {
-  type: "button",
   theme: darkTheme,
+  message: "An alert message",
+  type: "danger",
+  setShow: true,
 };

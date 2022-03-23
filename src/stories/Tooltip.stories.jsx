@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Jacob Moore (c.jacob.moore92@gmail.com)
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -23,11 +23,11 @@ import { GlobalProvider } from "context";
 import GlobalStyles from "styles/globalStyle";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "styles/global.css";
-import { Button } from "components/Widgets";
+import { Tooltip } from "components/Widgets";
 
 export default {
-  title: "Components/Widgets/Button",
-  component: Button,
+  title: "Components/Widgets/Tooltip",
+  component: Tooltip,
 };
 
 const Template = (args) => {
@@ -35,7 +35,7 @@ const Template = (args) => {
     <GlobalProvider>
       <ThemeProvider {...args}>
         <GlobalStyles />
-        <Button {...args}>Click Me</Button>
+        <Tooltip {...args}>Tooltip</Tooltip>
       </ThemeProvider>
     </GlobalProvider>
   );
@@ -43,12 +43,12 @@ const Template = (args) => {
 
 export const Light = Template.bind({});
 Light.args = {
-  type: "button",
   theme: lightTheme,
+  message: "Tooltip title",
 };
 
 export const Dark = Template.bind({});
 Dark.args = {
-  type: "button",
   theme: darkTheme,
+  title: "Tooltip title",
 };
