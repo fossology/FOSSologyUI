@@ -28,7 +28,7 @@ const messages = {
   groupCreate: "Successfully created the group",
   deletedUser: "Successfully deleted the user",
   confirmDeletion: "Deletion not confirmed",
-  loading: <Loader />,
+  loading: `${<Loader />}`,
   jobsAdded: "Your jobs have been added to job queue",
   createdFolder: "Successfully created the folder",
   deletedFolder: "Successfully deleted the folder",
