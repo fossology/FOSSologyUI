@@ -1,0 +1,67 @@
+# FOSSology docker-compose file
+
+#  Copyright (C) 2022 Vineet Vatsal (vineetvatsal09@gmail.com)
+
+#  SPDX-License-Identifier: GPL-2.0
+
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of the GNU General Public License
+#  version 2 as published by the Free Software Foundation.
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+
+#  You should have received a copy of the GNU General Public License along
+#  with this program; if not, write to the Free Software Foundation, Inc.,
+#  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+# Description: docker-compose file for development environment.
+
+
+version: "3.9"
+
+services:
+  fossologyui_server:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      args:
+        - REACT_APP_SERVER_URL=localhost/repo/api/v2
+        - REACT_APP_HTTPS=false
+    image: fossologyui:react1.0
+    environment:
+      - REACT_APP_SERVER_URL=localhost/repo/api/v2
+      - REACT_APP_HTTPS=false
+    command: ../node_modules/.bin/react-scripts start
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/fossologyui/app:delegated
+      # bind-mounting these three files in will let you add packages during development without rebuilding
+      # for example, to add bower to your app while developing, just install it inside the container
+      # and then nodemon will restart. Your changes will last until you "docker-compose down" and will
+      # be saved on host for next build
+      # NOTE: this won't work on Docker Toolbox (virtualbox) which doesn't bind-mount single files
+      # docker-compose exec node npm install --save bower
+      - ./package.json:/usr/src/fossologyui/package.json
+      - ./package-lock.json:/usr/src/fossologyui/package-lock.json
+      - ./yarn.lock:/usr/src/fossologyui/yarn.lock
+      # this is a workaround to prevent host node_modules from accidently getting mounted in container
+      # in case you want to use node/npm both outside container for test/lint etc. and also inside container
+      # this will overwrite the default node_modules dir in container so it won't conflict with our
+      # /usr/src/fossologyui/node_modules location.
+      - notused:/usr/src/fossologyui/node_modules
+
+  fossology_server:
+    image: fossology/fossology:latest
+    ports:
+      - "8081:80"
+    volumes:
+      - repository:/srv/fossology/repository/
+      - database:/var/lib/postgresql/data
+    
+volumes:
+  notused:
+  repository:
+  database:

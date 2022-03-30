@@ -1,6 +1,6 @@
 # FOSSology Dockerfile
 
-#  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
+#  Copyright (C) 2022 Vineet Vatsal (vineetvatsal09@gmail.com)
 
 #  SPDX-License-Identifier: GPL-2.0
 
@@ -18,7 +18,10 @@
 
 # Description: Docker container image recipe
 
+
 FROM node:14.15.4-slim
+
+EXPOSE 3000
 
 LABEL maintainer="Fossology <fossology@fossology.org>"
 
@@ -28,12 +31,14 @@ ENV REACT_APP_SERVER_URL=$REACT_APP_SERVER_URL
 ARG REACT_APP_HTTPS
 ENV REACT_APP_HTTPS=$REACT_APP_HTTPS
 
-WORKDIR /fossologyui
+RUN mkdir -p /usr/src/fossologyui
+WORKDIR /usr/src/fossologyui
 
+COPY package.json ./
+COPY yarn.lock ./
+RUN yarn install
+ENV PATH /usr/src/fossologyui/node_modules/.bin:$PATH
+
+RUN mkdir -p /usr/src/fossologyui/app
+WORKDIR /usr/src/fossologyui/app
 COPY . .
-
-RUN yarn
-
-EXPOSE 3000
-
-CMD [ "yarn", "start" ]
