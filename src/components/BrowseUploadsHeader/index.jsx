@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
+ Copyright (C) 2022 Raunak Kumar (raunakk728@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -18,7 +19,6 @@
 
 // React Imports
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
 
 // React Bootstrap Imports
 import { Navbar } from "react-bootstrap";
@@ -29,8 +29,10 @@ import routes from "constants/routes";
 // Helper Functions
 import { isAuth } from "shared/authHelper";
 
+// Custom Component
+import BrowseUploadsLink from "./BrowseUploadsLink";
+
 const Header = () => {
-  const location = useLocation();
   return (
     <>
       <Navbar expand="lg" className="py-0 pl-0 mt-3 bg-browse-uploads-header">
@@ -40,56 +42,23 @@ const Header = () => {
             {/* Checking whether the user is authenticated */}
             {isAuth() && (
               <>
-                <Link
-                  to={routes.browseUploads.softwareHeritage}
-                  className={
-                    location.pathname === routes.browseUploads.softwareHeritage
-                      ? "active-browse-nav-item browse-uploads-nav-item"
-                      : "browse-uploads-nav-item"
-                  }
-                >
-                  Software Heritage
-                </Link>
-                <Link
-                  to={routes.browseUploads.licenseBrowser}
-                  className={
-                    location.pathname === routes.browseUploads.licenseBrowser
-                      ? "active-browse-nav-item browse-uploads-nav-item"
-                      : "browse-uploads-nav-item"
-                  }
-                >
-                  License Browser
-                </Link>
-                <Link
-                  to={routes.browseUploads.fileBrowser}
-                  className={
-                    location.pathname === routes.browseUploads.fileBrowser
-                      ? "active-browse-nav-item browse-uploads-nav-item"
-                      : "browse-uploads-nav-item"
-                  }
-                >
-                  File Browser
-                </Link>
-                <Link
-                  to={routes.browseUploads.copyright}
-                  className={
-                    location.pathname === routes.browseUploads.copyright
-                      ? "active-browse-nav-item browse-uploads-nav-item"
-                      : "browse-uploads-nav-item"
-                  }
-                >
-                  Copyright Browser
-                </Link>
-                <Link
-                  to={routes.browseUploads.ecc}
-                  className={
-                    location.pathname === routes.browseUploads.ecc
-                      ? "active-browse-nav-item browse-uploads-nav-item"
-                      : "browse-uploads-nav-item"
-                  }
-                >
-                  ECC
-                </Link>
+                <BrowseUploadsLink
+                  path={routes.browseUploads.softwareHeritage}
+                  name="Software Heritage"
+                />
+                <BrowseUploadsLink
+                  path={routes.browseUploads.licenseBrowser}
+                  name="License Browser"
+                />
+                <BrowseUploadsLink
+                  path={routes.browseUploads.fileBrowser}
+                  name="File Browser"
+                />
+                <BrowseUploadsLink
+                  path={routes.browseUploads.copyright}
+                  name="Copyright Browser"
+                />
+                <BrowseUploadsLink path={routes.browseUploads.ecc} name="ECC" />
               </>
             )}
           </div>
