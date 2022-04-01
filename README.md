@@ -39,22 +39,84 @@ The UI Migration project is an effort focused on generating the new component-ba
 
 ### Docker
 
-FOSSology comes with a Dockerfile allowing the containerized execution.
+#### Development
 
-Run the following commands inside the project directory.
+FOSSology comes with a Dockerfile allowing for containerized execution.
 
-```sh
+This method only requires that you have the `Docker engine` and `docker-compose` installed on your machine.
+
+- Added benefits to this method other than the ones that docker already provides is you are not confined to developing in the docker container. You can also develop using your local modules as defined above.
+
+```zsh
+docker-compose -f docker-compose.dev.yml pull fossology_server && docker-compose -f docker-compose.dev.yml up     #Starts the react-dev-server on localhost:3000
+```
+
+On Windows you might have to forego the `&&` and run both commands individually.
+
+Running the `docker-compose pull ...` command each time you run the docker container isn't required but recommended so as to get the latest fossology image.
+
+This will start the react-dev-server on localhost on `port:3000`.
+
+The docker image can then be used using http://IP_OF_DOCKER_HOST:3000/ user fossy password fossy. (IP_OF_DOCKER_HOST is generally localhost)
+
+You can even run it detached in the background using the -d option.
+
+```zsh
+docker-compose -f docker-compose.dev.yml up -d
+docker-compose logs  #To view server logs
+```
+
+npm packages can be installed using `docker-compose exec`
+
+```zsh
+docker-compose -f docker-compose.dev.yml exec -w /usr/src/fossologyui fossologyui_server yarn add --save <package name> #Install npm package for react-dev-server
+```
+
+Once done developing, you can clean up running containers and networks using:
+
+```zsh
+docker-compose -f docker-compose.dev.yml down
+```
+
+#### Production
+
+For production level deployment you can use:
+
+```zsh
 docker build \
 -t fossologyui:react1.0 \
 --build-arg REACT_APP_SERVER_URL="localhost/repo/api/v2" \
 --build-arg REACT_APP_HTTPS="false" .
 ```
 
-```sh
+for building the image and then host the image using:
+
+```zsh
 docker run -p 3000:3000 fossologyui:react1.0
 ```
 
-The docker image can then be used using `http://IP_OF_DOCKER_HOST:3000/` user `fossy` password `fossy`.
+The docker image would then be hosted on http://IP_OF_DOCKER_HOST:3000/ user fossy password fossy. (IP_OF_DOCKER_HOST is generally localhost)
+
+Alternatively, you can also deploy it using docker-compose:
+
+```zsh
+docker-compose up
+```
+
+You can even run it detached in the background using the -d option.
+
+```zsh
+docker-compose up -d
+docker-compose logs  #To view server logs
+```
+
+Deployed image can be pulled down using:
+
+```zsh
+docker-compose down
+```
+
+This will clean up running containers and networks.
 
 ### Project Setup
 
