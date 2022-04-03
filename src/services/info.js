@@ -25,11 +25,26 @@ export const getInfo = () => {
 };
 
 export const getFossologyVersion = () => {
+  const locale = window.navigator.userLanguage || window.navigator.language;
   return getInfoApi().then((res) => {
     return {
       ...res?.fossology,
-      buildDate: new Date(res?.fossology?.buildDate).toLocaleString(),
-      commitDate: new Date(res?.fossology?.commitDate).toLocaleString(),
+      buildDate: new Date(res?.fossology?.buildDate).toLocaleString(locale, {
+        day: "numeric",
+        month: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        hour12: true,
+      }),
+      commitDate: new Date(res?.fossology?.commitDate).toLocaleString(locale, {
+        day: "numeric",
+        month: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        hour12: true,
+      }),
     };
   });
 };
