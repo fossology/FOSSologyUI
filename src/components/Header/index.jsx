@@ -18,7 +18,7 @@
 
 // React Imports
 import React, { useState } from "react";
-import { useHistory, Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 // React Bootstrap Imports
 import {
@@ -58,11 +58,7 @@ const Header = () => {
   const [currentGroup, setCurrentGroup] = useState(
     getLocalStorage("currentGroup") || getLocalStorage("user")?.default_group
   );
-  const history = useHistory();
   const location = useLocation();
-  const handleLogin = () => {
-    history.push(routes.home);
-  };
   const handleGroupChange = (e) => {
     setLocalStorage("currentGroup", e.target.innerText);
     setCurrentGroup(e.target.innerText);
@@ -373,13 +369,9 @@ const Header = () => {
                 <Dropdown.Item onClick={() => logout(null)}>
                   Log out
                 </Dropdown.Item>
-                <Dropdown.Divider />
               </Dropdown.Menu>
             ) : (
-              <Dropdown.Menu>
-                <Dropdown.Item onClick={handleLogin}>Log in</Dropdown.Item>
-                <Dropdown.Divider />
-              </Dropdown.Menu>
+              <div />
             )}
           </Dropdown>
         </Navbar.Collapse>
