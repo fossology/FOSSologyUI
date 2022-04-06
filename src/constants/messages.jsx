@@ -16,6 +16,9 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+import React from "react";
+import Loader from "./Loader";
+
 const messages = {
   forbiddenResource: "Requested resource is forbidden",
   noGroup: "No Group Found",
@@ -26,7 +29,7 @@ const messages = {
   groupCreate: "Successfully created the group",
   deletedUser: "Successfully deleted the user",
   confirmDeletion: "Deletion not confirmed",
-  loading: "Loading...",
+  loading: <Loader />,
   jobsAdded: "Your jobs have been added to job queue",
   createdFolder: "Successfully created the folder",
   deletedFolder: "Successfully deleted the folder",

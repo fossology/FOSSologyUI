@@ -18,7 +18,7 @@
 
 import React, { useState, useEffect } from "react";
 import arrayToTree from "array-to-tree";
-import messages from "constants/messages";
+import messages from "constants/messages.jsx";
 
 // Title
 import Title from "components/Title";

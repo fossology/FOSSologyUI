@@ -21,7 +21,7 @@ import styles from "styled-components";
 import { Link } from "react-router-dom";
 import { ExclamationTriangleFill } from "react-bootstrap-icons";
 import routes from "constants/routes";
-import messages from "constants/messages";
+import messages from "constants/messages.jsx";
 
 const ErrorPage = () => {
   return (

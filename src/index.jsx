@@ -16,6 +16,7 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+import Loader from "constants/Loader";
 import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
@@ -23,7 +24,7 @@ import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Suspense fallback={<div>Loading... </div>}>
+    <Suspense fallback={<Loader />}>
       <App />
     </Suspense>
   </React.StrictMode>,
