@@ -373,12 +373,10 @@ const Header = () => {
                 <Dropdown.Item onClick={() => logout(null)}>
                   Log out
                 </Dropdown.Item>
-                <Dropdown.Divider />
               </Dropdown.Menu>
             ) : (
               <Dropdown.Menu>
                 <Dropdown.Item onClick={handleLogin}>Log in</Dropdown.Item>
-                <Dropdown.Divider />
               </Dropdown.Menu>
             )}
           </Dropdown>
