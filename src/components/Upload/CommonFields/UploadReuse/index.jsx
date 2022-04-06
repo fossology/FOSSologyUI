@@ -27,7 +27,7 @@ import { getAllFolders } from "services/folders";
 import { getUploadsFolderId } from "services/organizeUploads";
 import { getAllGroups } from "services/groups";
 
-import messages from "constants/messages";
+import messages from "constants/messages.jsx";
 
 const UploadReuse = ({ reuse, handleChange }) => {
   const initialGroupList = [{ id: 3, name: "fossy" }];

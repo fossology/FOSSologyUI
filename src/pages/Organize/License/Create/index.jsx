@@ -17,7 +17,7 @@
 */
 
 import React, { useState } from "react";
-import messages from "constants/messages";
+import messages from "constants/messages.jsx";
 
 // Title
 import Title from "components/Title";
