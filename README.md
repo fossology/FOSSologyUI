@@ -129,6 +129,49 @@ This will clean up running containers and networks.
 yarn start
 ```
 
+To be able to login you will have to setup [fossology](https://github.com/fossology/fossology) which houses the api required for the frontend. There are multiple ways to achieve this:
+
+#### Using Docker
+
+**Note - FossologyUI is made to be used with `v2` api. Currently this method can only be used as a temporary setup using a workaround which is discouraged. A [PR](https://github.com/fossology/fossology/pull/2209) has been pushed to fix this issue.**
+
+The dev version of the docker-compose file comes bundled with a pre-built fossolgy image which runs in its own container. But the api available with that image is `v1`. If you are going this route, you can forego the earlier step of `yarn start` and follow the given steps:
+
+- Change environment variable named `REACT_APP_SERVER_URL=localhost/repo/api/v2` to `REACT_APP_SERVER_URL=localhost/repo/api/v1` in `docker-compose.dev.yml`.
+- Currently, fossology v1 api does not expose the `default_group` key, so, as a temporary workaround to log-in you can change the line `setLocalStorage("currentGroup", res.default_group);` to `setLocalStorage("currentGroup", res.name);` in `src/services/user,js`.
+- Follow the steps described in [Docker](#docker) development section.
+- Go to [http://localhost:8081/repo](http://localhost:8081/repo). Login using `User: fossy` and `Password: fossy`.
+- Go to Admin > Customize. Look for `Allowed Origins for REST API` and change field to `http://localhost:3000`.
+
+Your FossolgyUI frontend should now be up and running at [http://localhost:3000](http://localhost:3000) and backend at [http://localhost:8081/repo](http://localhost:8081/repo) with the api present at [http://localhost:8081/repo/api/v1](http://localhost:8081/repo/api/v1).
+
+You will now be able to log into `FossologUI` using `User: fossy` and `Password: fossy`.
+
+#### Using Yarn
+
+Clone [FOSSology-REST-API](https://github.com/Shruti3004/FOSSology-REST-API) and set it up using either:
+
+- `Docker` - Using the command: `cd FOSSology-REST-API && docker-compose up`
+- `Source Install` - Follow the steps present [here](https://github.com/fossology/fossology/wiki/Install-from-Source), but make sure you apply the given steps to [FOSSology-REST-API](https://github.com/Shruti3004/FOSSology-REST-API) cloned repo and **NOT** [fossology](https://github.com/fossology/fossology) repo.
+
+Once you have finished the above steps, depending on which set up route you followed. The backend should be up and running at:
+
+- `Docker` - [http://localhost:8081/repo](http://localhost:8081/repo)
+- `Source Install` - [http://localhost/repo](http://localhost/repo)
+
+Now, you will need to follow the following steps:
+
+- Go to either [http://localhost:8081/repo](http://localhost:8081/repo) or [http://localhost/repo](http://localhost/repo) depending on your setup. Login using `User: fossy` and `Password: fossy`.
+- Go to Admin > Customize. Look for `Allowed Origins for REST API` and change field to `http://localhost:3000`.
+
+Your FossolgyUI frontend should now be up and running at [http://localhost:3000](http://localhost:3000) with the api present at `${your-fossology-url}/api/v2`.
+
+You also might need to change the environment variable `REACT_APP_SERVER_URL=localhost/repo/api/v2` to `REACT_APP_SERVER_URL=localhost:8081/repo/api/v2` in your `.env` file, if you followed the `Docker` setup route for [FOSSology-REST-API](https://github.com/Shruti3004/FOSSology-REST-API).
+
+You will now be able log into `FossologUI` using `User: fossy` and `Password: fossy`.
+
+You can even setup the v1 api using the setup steps defined for [FOSSology-REST-API](https://github.com/Shruti3004/FOSSology-REST-API) repo, but applying them to [fossology](https://github.com/fossology/fossology) repo. This will then require you to change the `.env` file to `v1` api and use the workaround specified in [Using Docker](#using-docker) section.
+
 ### Deployment
 
 Launches the test runner in the interactive watch mode.
