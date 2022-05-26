@@ -38,96 +38,20 @@ import {
   handleError,
 } from "shared/helper";
 
+import {
+  statusOptions,
+  entriesOptions,
+  assignOptions,
+  actionsOptions,
+  initialMessage,
+} from "../../constants/constants";
+
 const Browse = () => {
   const initialState = {
     folderId: 1,
     page: 1,
     limit: 10,
     recursive: false,
-  };
-
-  const statusOptions = [
-    {
-      id: 0,
-      name: "open",
-    },
-    {
-      id: 1,
-      name: "in progress",
-    },
-    {
-      id: 2,
-      name: "closed",
-    },
-    {
-      id: 3,
-      name: "rejected",
-    },
-  ];
-  const entriesOptions = [
-    {
-      id: 10,
-      entry: "10",
-    },
-    {
-      id: 25,
-      entry: "25",
-    },
-    {
-      id: 50,
-      entry: "50",
-    },
-    {
-      id: 100,
-      entry: "100",
-    },
-  ];
-  const assignOptions = [
-    {
-      id: 0,
-      name: "me",
-    },
-    {
-      id: 1,
-      name: "unassigned",
-    },
-  ];
-  const actionsOptions = [
-    {
-      id: 0,
-      name: "-- select action --",
-      reportFormat: "0",
-      disabled: true,
-    },
-    {
-      id: 1,
-      name: "Export DEP5",
-      reportFormat: "dep5",
-    },
-    {
-      id: 2,
-      name: "Export ReadMe_OSS",
-      reportFormat: "readmeoss",
-    },
-    {
-      id: 3,
-      name: "Export SPDX RDF",
-      reportFormat: "spdx2",
-    },
-    {
-      id: 4,
-      name: "Export SPDX tag:value",
-      reportFormat: "spdx2tv",
-    },
-    {
-      id: 5,
-      name: "Export Unified Report",
-      reportFormat: "unifiedreport",
-    },
-  ];
-  const initialMessage = {
-    type: "success",
-    text: "",
   };
 
   // Data required for getting the browse data list
