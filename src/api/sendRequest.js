@@ -26,7 +26,6 @@ import { getLocalStorage, setLocalStorage } from "shared/storageHelper";
 const sendRequest = ({
   url,
   method,
-  credentials = false,
   body,
   groupName,
   headers = {},
@@ -79,10 +78,6 @@ const sendRequest = ({
     }
   } else {
     options.body = null;
-  }
-
-  if (credentials) {
-    options.credentials = credentials;
   }
   if (queryParams) {
     URL = `${url}?${stringify(queryParams)}`;

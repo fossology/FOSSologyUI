@@ -43,7 +43,6 @@ export const getAllUsersApi = () => {
   return sendRequest({
     url,
     method: "GET",
-    credentials: "include",
     headers: {
       Authorization: getToken(),
     },
@@ -56,7 +55,6 @@ export const deleteUserApi = (id) => {
   return sendRequest({
     url,
     method: "DELETE",
-    credentials: "include",
     headers: {
       Authorization: getToken(),
     },
