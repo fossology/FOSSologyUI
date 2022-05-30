@@ -72,7 +72,7 @@ exports[`matches Home snapshot 1`] = `
         class="col-md-6"
       >
         <div
-          class="sc-gtsrHT fkeejL"
+          class="sc-gsnTZi JIbCV"
         >
           <form
             class=""
@@ -118,7 +118,7 @@ exports[`matches Home snapshot 1`] = `
                   value=""
                 />
                 <button
-                  class="sc-bdnxRM jucBJg bg-primary-color text-secondary-color font-demi text-center hover-primary-color d-block mt-4"
+                  class="sc-bczRLJ epcpyN bg-primary-color text-secondary-color font-demi text-center hover-primary-color d-block mt-4"
                   type="submit"
                 >
                   Login
