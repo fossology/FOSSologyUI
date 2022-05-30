@@ -36,15 +36,13 @@ export const GlobalProvider = ({ children }) => {
 
   // Actions
   const setTheme = (theme) => {
-    setState(theme);
+    setState({ theme });
     setLocalStorage("theme", theme);
-    window.location.reload();
   };
 
   return (
     <GlobalContext.Provider
       value={{
-        ...state,
         state,
         setTheme,
       }}
