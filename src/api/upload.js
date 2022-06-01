@@ -46,7 +46,7 @@ export const createUploadApi = (
       Authorization: getToken(),
       folderId,
       uploadDescription,
-      accessLevel,
+      public: accessLevel,
       ignoreScm,
       uploadType: "",
     },
