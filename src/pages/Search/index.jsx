@@ -27,41 +27,14 @@ import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 // Required functions for calling APIs
 import search from "services/search";
 
+// Required constants
+import {
+  initialState,
+  initialMessageSearch,
+  entriesOptionsSearch,
+} from "../../constants/constants";
+
 const Search = () => {
-  const initialState = {
-    searchType: "allfiles",
-    uploadId: "",
-    filename: "",
-    tag: "",
-    filesizemin: "",
-    filesizemax: "",
-    license: "",
-    copyright: "",
-    page: 1,
-    limit: 10,
-  };
-  const initialMessage = {
-    type: "danger",
-    text: "",
-  };
-  const entriesOptions = [
-    {
-      id: 10,
-      entry: "10",
-    },
-    {
-      id: 25,
-      entry: "25",
-    },
-    {
-      id: 50,
-      entry: "50",
-    },
-    {
-      id: 100,
-      entry: "100",
-    },
-  ];
   // Data for searching specific uploads
   const [searchData, setSearchData] = useState(initialState);
 
@@ -74,7 +47,7 @@ const Search = () => {
   // State Variables for handling Error Boundaries
   const [loading, setLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
-  const [message, setMessage] = useState(initialMessage);
+  const [message, setMessage] = useState(initialMessageSearch);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -146,7 +119,7 @@ const Search = () => {
                 name="limit"
                 type="select"
                 onChange={(e) => handleChange(e)}
-                options={entriesOptions}
+                options={entriesOptionsSearch}
                 property="entry"
               >
                 Show entries:

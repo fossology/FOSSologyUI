@@ -99,3 +99,38 @@ export const initialMessage = {
   type: "success",
   text: "",
 };
+
+export const initialState = {
+  searchType: "allfiles",
+  uploadId: "",
+  filename: "",
+  tag: "",
+  filesizemin: "",
+  filesizemax: "",
+  license: "",
+  copyright: "",
+  page: 1,
+  limit: 10,
+};
+export const initialMessageSearch = {
+  type: "danger",
+  text: "",
+};
+export const entriesOptionsSearch = [
+  {
+    id: 10,
+    entry: "10",
+  },
+  {
+    id: 25,
+    entry: "25",
+  },
+  {
+    id: 50,
+    entry: "50",
+  },
+  {
+    id: 100,
+    entry: "100",
+  },
+];
