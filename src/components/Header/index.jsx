@@ -54,6 +54,9 @@ import { getNameInitials } from "shared/helper";
 // Dark Theme Toggle Button
 import DarkThemeToggle from "../DarkThemeToggle/DarkThemeToggle";
 
+// custom css
+import "./index.css";
+
 const Header = () => {
   const [currentGroup, setCurrentGroup] = useState(
     getLocalStorage("currentGroup") || getLocalStorage("user")?.default_group
@@ -305,81 +308,83 @@ const Header = () => {
               </>
             )}
           </Nav>
-          <Dropdown drop="left">
-            <Dropdown.Toggle variant="link" bsPrefix="p-0">
-              <DarkThemeToggle />
-            </Dropdown.Toggle>
-          </Dropdown>
-          {/* Help Pages */}
-          <Dropdown drop="left">
-            <Dropdown.Toggle variant="link" bsPrefix="p-0">
-              <QuestionCircleFill color="#fff" size={40} className="m-2" />
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item as={Link} to={routes.help.about}>
-                About
-              </Dropdown.Item>
-              <Dropdown.Item as={Link} to={routes.help.overview}>
-                Getting Started
-              </Dropdown.Item>
-              <Dropdown.Item as={Link} to={routes.help.licenseBrowser}>
-                License Browser
-              </Dropdown.Item>
-              <Dropdown.Item
-                href={externalLinks.fossologyWiki}
-                target="_blank"
-                rel="noreferrer"
-              >
-                Documentation
-              </Dropdown.Item>
-              <Dropdown.Item as={Link} to={routes.help.thirdPartyLicenses}>
-                Third Party Licenses
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-
-          {/* User Info */}
-          {getAllGroups() && (
+          <div className="navIcons">
             <Dropdown drop="left">
               <Dropdown.Toggle variant="link" bsPrefix="p-0">
-                <TextIcon
-                  className="m-2"
-                  text={getNameInitials(currentGroup)}
-                />
+                <DarkThemeToggle />
+              </Dropdown.Toggle>
+            </Dropdown>
+            {/* Help Pages */}
+            <Dropdown drop="left">
+              <Dropdown.Toggle variant="link" bsPrefix="p-0">
+                <QuestionCircleFill color="#fff" size={40} className="m-2" />
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                {getAllGroups().map((group) => (
-                  <Dropdown.Item
-                    key={group.id}
-                    onClick={handleGroupChange}
-                    className={group.name === currentGroup && "active"}
-                  >
-                    {group.name}
-                  </Dropdown.Item>
-                ))}
+                <Dropdown.Item as={Link} to={routes.help.about}>
+                  About
+                </Dropdown.Item>
+                <Dropdown.Item as={Link} to={routes.help.overview}>
+                  Getting Started
+                </Dropdown.Item>
+                <Dropdown.Item as={Link} to={routes.help.licenseBrowser}>
+                  License Browser
+                </Dropdown.Item>
+                <Dropdown.Item
+                  href={externalLinks.fossologyWiki}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Documentation
+                </Dropdown.Item>
+                <Dropdown.Item as={Link} to={routes.help.thirdPartyLicenses}>
+                  Third Party Licenses
+                </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
-          )}
-          <Dropdown drop="left">
-            <Dropdown.Toggle variant="link" bsPrefix="p-0">
-              <PersonCircle color="#fff" size={40} className="m-2" />
-            </Dropdown.Toggle>
-            {isAuth() ? (
-              <Dropdown.Menu>
-                <Dropdown.Item>
-                  User: <b>{getUserName()}</b>
-                </Dropdown.Item>
-                <Dropdown.Divider />
-                <Dropdown.Item onClick={() => logout(null)}>
-                  Log out
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            ) : (
-              <Dropdown.Menu>
-                <Dropdown.Item onClick={handleLogin}>Log in</Dropdown.Item>
-              </Dropdown.Menu>
+
+            {/* User Info */}
+            {getAllGroups() && (
+              <Dropdown drop="left">
+                <Dropdown.Toggle variant="link" bsPrefix="p-0">
+                  <TextIcon
+                    className="m-2"
+                    text={getNameInitials(currentGroup)}
+                  />
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  {getAllGroups().map((group) => (
+                    <Dropdown.Item
+                      key={group.id}
+                      onClick={handleGroupChange}
+                      className={group.name === currentGroup && "active"}
+                    >
+                      {group.name}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
             )}
-          </Dropdown>
+            <Dropdown drop="left">
+              <Dropdown.Toggle variant="link" bsPrefix="p-0">
+                <PersonCircle color="#fff" size={40} className="m-2" />
+              </Dropdown.Toggle>
+              {isAuth() ? (
+                <Dropdown.Menu>
+                  <Dropdown.Item>
+                    User: <b>{getUserName()}</b>
+                  </Dropdown.Item>
+                  <Dropdown.Divider />
+                  <Dropdown.Item onClick={() => logout(null)}>
+                    Log out
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              ) : (
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={handleLogin}>Log in</Dropdown.Item>
+                </Dropdown.Menu>
+              )}
+            </Dropdown>
+          </div>
         </Navbar.Collapse>
       </Navbar>
     </>

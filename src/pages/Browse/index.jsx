@@ -65,6 +65,7 @@ const Browse = () => {
 
   // Setting the list for all the folders names
   const [folderList, setFolderList] = useState();
+  const [folderCount, setFolderCount] = useState(0);
 
   // State Variables for handling Error Boundaries
   // const [loading, setLoading] = useState(false);
@@ -109,6 +110,8 @@ const Browse = () => {
             },
           };
         });
+        // setting the folders and subfolders count before converting the array to tree
+        setFolderCount(folders.length);
         setFolderList(
           arrayToTree(folders, {
             parentProperty: "parent",
@@ -199,7 +202,11 @@ const Browse = () => {
           <div className="col-md-3 col-lg-2">
             <h2 className="font-size-sub-heading">Folder Navigation</h2>
             {folderList && (
-              <TreeContainer data={folderList} handleClick={handleClick} />
+              <TreeContainer
+                folderCount={folderCount}
+                data={folderList}
+                handleClick={handleClick}
+              />
             )}
           </div>
           <div className="col-md-9 col-lg-10">

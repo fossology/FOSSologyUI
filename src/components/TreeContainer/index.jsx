@@ -21,7 +21,7 @@ import PropTypes from "prop-types";
 import Tree, { renderers } from "react-virtualized-tree";
 import "./index.css";
 
-const TreeContainer = ({ data, handleClick }) => {
+const TreeContainer = ({ data, handleClick, folderCount }) => {
   const { Expandable } = renderers;
   const [state, setState] = useState(data);
 
@@ -31,7 +31,12 @@ const TreeContainer = ({ data, handleClick }) => {
 
   return (
     <div>
-      <div className="tree-list">
+      <div
+        className="tree-list"
+        style={{
+          height: state ? `${folderCount * 40}px` : "0",
+        }}
+      >
         <Tree nodes={state} onChange={handleChange}>
           {({ style, node, ...rest }) => (
             <div style={style}>
@@ -61,6 +66,7 @@ treeDataFormat.children = PropTypes.arrayOf(PropTypes.shape(treeDataFormat));
 TreeContainer.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape(treeDataFormat)),
   handleClick: PropTypes.func.isRequired,
+  folderCount: PropTypes.number,
 };
 
 export default TreeContainer;
