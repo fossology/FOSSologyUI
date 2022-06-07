@@ -146,28 +146,6 @@ describe("sendRequest", () => {
     );
   });
 
-  test("sendRequest handles credentials", async () => {
-    defaultArgs.credentials = "user:password";
-    fetch.mockResponse(JSON.stringify({}));
-
-    await sendRequest(defaultArgs);
-
-    expect(fetch).toHaveBeenCalledWith(
-      defaultArgs.url,
-      expect.objectContaining({
-        body: defaultArgs.body,
-        credentials: defaultArgs.credentials,
-        headers: new Headers({
-          "content-type": "application/json",
-          accept: "application/json",
-          groupName: "myGroupName",
-          ...defaultArgs.headers,
-        }),
-        method: defaultArgs.method,
-      })
-    );
-  });
-
   test("sendRequest handles queryParams", async () => {
     defaultArgs.queryParams = {
       option1: "abc",

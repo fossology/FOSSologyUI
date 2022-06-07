@@ -113,7 +113,6 @@ describe("upload", () => {
       expect.objectContaining({
         url,
         method: "POST",
-        credentials: false,
         headers: {
           ...header,
           Authorization: getToken(),

@@ -60,7 +60,6 @@ export const createUploadVcsApi = (header, body) => {
   return sendRequest({
     url,
     method: "POST",
-    credentials: false,
     headers: {
       ...header,
       Authorization: getToken(),
