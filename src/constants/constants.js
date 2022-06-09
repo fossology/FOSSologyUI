@@ -16,6 +16,9 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+// constants used in Browse component
+import { defaultAgentsList, getLocalStorage } from "shared/storageHelper";
+
 export const statusOptions = [
   {
     id: 0,
@@ -34,24 +37,7 @@ export const statusOptions = [
     name: "rejected",
   },
 ];
-export const entriesOptions = [
-  {
-    id: 10,
-    entry: "10",
-  },
-  {
-    id: 25,
-    entry: "25",
-  },
-  {
-    id: 50,
-    entry: "50",
-  },
-  {
-    id: 100,
-    entry: "100",
-  },
-];
+
 export const assignOptions = [
   {
     id: 0,
@@ -112,11 +98,107 @@ export const initialState = {
   page: 1,
   limit: 10,
 };
+// constants used in the Search component
 export const initialMessageSearch = {
   type: "danger",
   text: "",
 };
-export const entriesOptionsSearch = [
+
+// constants used in Upload/file component
+export const initialStateFile = {
+  folderId: 1,
+  uploadDescription: "",
+  accessLevel: "protected",
+  ignoreScm: false,
+  fileInput: null,
+};
+export const initialScanFileDataFile = {
+  analysis: defaultAgentsList(),
+  decider: {
+    nomosMonk: false,
+    bulkReused: false,
+    newScanner: false,
+    ojoDecider: false,
+  },
+  reuse: {
+    reuseUpload: 0,
+    reuseGroup: getLocalStorage("user")?.default_group,
+    reuseMain: false,
+    reuseEnhanced: false,
+    reuseReport: false,
+    reuseCopyright: false,
+  },
+};
+export const initialFolderListFile = [
+  {
+    id: 1,
+    name: "Software Repository",
+    description: "Top Folder",
+    parent: null,
+  },
+];
+// constants for upload/ImportReport
+export const initialStateImportReport = {
+  folder: "",
+  editUpload: "",
+  reportUpload: "",
+  newLicense: "licenseCanditate",
+  licenseInfoInFile: true,
+  licenseConcluded: false,
+  licenseDecision: true,
+  existingDecisions: true,
+  importDiscussed: true,
+  copyright: false,
+};
+
+// constants for upload/UploadFromServer
+export const initialStateUploadFromServer = {
+  folderId: 1,
+  uploadDescription: "",
+  accessLevel: "protected",
+  ignoreScm: false,
+  uploadType: "server",
+  groupName: "",
+};
+
+// constants for upload/url
+export const initialStateUrl = {
+  folderId: 1,
+  uploadDescription: "",
+  accessLevel: "protected",
+  ignoreScm: false,
+  uploadType: "url",
+};
+
+export const initialUrlData = {
+  url: "",
+  name: "",
+};
+
+// constants from upload/vcs
+export const initialStateVcs = {
+  folderId: 1,
+  uploadDescription: "",
+  accessLevel: "protected",
+  ignoreScm: false,
+  uploadType: "vcs",
+};
+
+export const initialVcsData = {
+  vcsType: "git",
+  vcsUrl: "",
+  vcsBranch: "",
+  vcsName: "",
+  vcsUsername: "",
+  vcsPassword: "",
+};
+export const typeVcs = [
+  { id: "git", type: "Git" },
+  { id: "svn", type: "SVN" },
+];
+
+// common & reused
+export const entriesOptions = [
   {
     id: 10,
     entry: "10",
@@ -132,5 +214,30 @@ export const entriesOptionsSearch = [
   {
     id: 100,
     entry: "100",
+  },
+];
+export const initialScanFileData = {
+  analysis: defaultAgentsList(),
+  decider: {
+    nomosMonk: false,
+    bulkReused: false,
+    newScanner: false,
+    ojoDecider: false,
+  },
+  reuse: {
+    reuseUpload: 0,
+    reuseGroup: getLocalStorage("user")?.default_group,
+    reuseMain: false,
+    reuseEnhanced: false,
+    reuseReport: false,
+    reuseCopyright: false,
+  },
+};
+export const initialFolderList = [
+  {
+    id: 1,
+    name: "Software Repository",
+    description: "Top Folder",
+    parent: null,
   },
 ];

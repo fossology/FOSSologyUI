@@ -31,7 +31,7 @@ import search from "services/search";
 import {
   initialState,
   initialMessageSearch,
-  entriesOptionsSearch,
+  entriesOptions,
 } from "../../constants/constants";
 
 const Search = () => {
@@ -119,7 +119,7 @@ const Search = () => {
                 name="limit"
                 type="select"
                 onChange={(e) => handleChange(e)}
-                options={entriesOptionsSearch}
+                options={entriesOptions}
                 property="entry"
               >
                 Show entries:
