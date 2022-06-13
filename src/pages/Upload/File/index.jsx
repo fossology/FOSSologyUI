@@ -32,56 +32,29 @@ import CommonFields from "components/Upload/CommonFields";
 import { createUploadFile } from "services/upload";
 import { scheduleAnalysis } from "services/jobs";
 import { getAllFolders } from "services/folders";
-import { defaultAgentsList, getLocalStorage } from "shared/storageHelper";
 
 // Helper function for error handling
 import { handleError } from "shared/helper";
 
-const UploadFile = () => {
-  const initialState = {
-    folderId: 1,
-    uploadDescription: "",
-    accessLevel: "protected",
-    ignoreScm: false,
-    fileInput: null,
-  };
-  const initialScanFileData = {
-    analysis: defaultAgentsList(),
-    decider: {
-      nomosMonk: false,
-      bulkReused: false,
-      newScanner: false,
-      ojoDecider: false,
-    },
-    reuse: {
-      reuseUpload: 0,
-      reuseGroup: getLocalStorage("user")?.default_group,
-      reuseMain: false,
-      reuseEnhanced: false,
-      reuseReport: false,
-      reuseCopyright: false,
-    },
-  };
-  const initialFolderList = [
-    {
-      id: 1,
-      name: "Software Repository",
-      description: "Top Folder",
-      parent: null,
-    },
-  ];
+// constants
+import {
+  initialStateFile,
+  initialScanFileDataFile,
+  initialFolderListFile,
+} from "../../../constants/constants";
 
+const UploadFile = () => {
   // Upload Id required for scheduling Analysis
   let uploadId;
 
   // Data required for creating the upload
-  const [uploadFileData, setUploadFileData] = useState(initialState);
+  const [uploadFileData, setUploadFileData] = useState(initialStateFile);
 
   // Setting the list for all the folders names
-  const [folderList, setFolderList] = useState(initialFolderList);
+  const [folderList, setFolderList] = useState(initialFolderListFile);
 
   // Setting the data for scheduling analysis of an uploads
-  const [scanFileData, setScanFileData] = useState(initialScanFileData);
+  const [scanFileData, setScanFileData] = useState(initialScanFileDataFile);
 
   // State Variables for handling Error Boundaries
   const [loading, setLoading] = useState(false);
@@ -110,8 +83,8 @@ const UploadFile = () => {
                   type: "success",
                   text: messages.scheduledAnalysis,
                 });
-                setUploadFileData(initialState);
-                setScanFileData(initialScanFileData);
+                setUploadFileData(initialStateFile);
+                setScanFileData(initialScanFileDataFile);
               })
               .catch((error) => {
                 handleError(error, setMessage);

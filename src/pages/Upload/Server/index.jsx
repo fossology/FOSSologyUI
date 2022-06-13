@@ -26,48 +26,22 @@ import CommonFields from "components/Upload/CommonFields";
 
 // Required functions for calling APIs
 import { getAllFolders } from "services/folders";
-import { defaultAgentsList, getLocalStorage } from "shared/storageHelper";
 
 // Title
 import Title from "components/Title";
 
-const UploadFromServer = () => {
-  const initialState = {
-    folderId: 1,
-    uploadDescription: "",
-    accessLevel: "protected",
-    ignoreScm: false,
-    uploadType: "server",
-    groupName: "",
-  };
-  const initialScanFileData = {
-    analysis: defaultAgentsList(),
-    decider: {
-      nomosMonk: false,
-      bulkReused: false,
-      newScanner: false,
-      ojoDecider: false,
-    },
-    reuse: {
-      reuseUpload: 0,
-      reuseGroup: getLocalStorage("user")?.default_group,
-      reuseMain: false,
-      reuseEnhanced: false,
-      reuseReport: false,
-      reuseCopyright: false,
-    },
-  };
-  const initialFolderList = [
-    {
-      id: 1,
-      name: "Software Repository",
-      description: "Top Folder",
-      parent: null,
-    },
-  ];
+// constants
+import {
+  initialStateUploadFromServer,
+  initialScanFileData,
+  initialFolderList,
+} from "../../../constants/constants";
 
+const UploadFromServer = () => {
   // Data required for creating the upload
-  const [uploadServerData, setUploadServerData] = useState(initialState);
+  const [uploadServerData, setUploadServerData] = useState(
+    initialStateUploadFromServer
+  );
 
   // Setting the list for all the folders names
   const [folderList, setFolderList] = useState(initialFolderList);

@@ -24,22 +24,14 @@ import Title from "components/Title";
 // Widgets
 import { Button, InputContainer } from "components/Widgets";
 
-const ImportReport = () => {
-  const initialState = {
-    folder: "",
-    editUpload: "",
-    reportUpload: "",
-    newLicense: "licenseCanditate",
-    licenseInfoInFile: true,
-    licenseConcluded: false,
-    licenseDecision: true,
-    existingDecisions: true,
-    importDiscussed: true,
-    copyright: false,
-  };
+// constants
+import { initialStateImportReport } from "../../../constants/constants";
 
+const ImportReport = () => {
   // Data required for importing report
-  const [importReportData, setImportReportData] = useState(initialState);
+  const [importReportData, setImportReportData] = useState(
+    initialStateImportReport
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
