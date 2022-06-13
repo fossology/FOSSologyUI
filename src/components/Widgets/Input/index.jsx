@@ -35,7 +35,6 @@ const InputContainer = ({
   property,
   valueProperty,
   noDataMessage = "No Data Found",
-  defaultValue = null,
 }) => {
   if (type === "radio" || type === "checkbox") {
     return (
@@ -75,7 +74,6 @@ const InputContainer = ({
           multiple={multiple && multiple}
           size={multiple ? "15" : ""}
           id={id}
-          defaultValue={defaultValue}
         >
           {options.length > 0 ? (
             options.map((option, index) => (
@@ -141,7 +139,6 @@ InputContainer.propTypes = {
   property: PropTypes.string,
   valueProperty: PropTypes.string,
   noDataMessage: PropTypes.string,
-  defaultValue: PropTypes.string,
 };
 
 export default InputContainer;
