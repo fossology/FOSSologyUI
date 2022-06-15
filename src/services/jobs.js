@@ -21,8 +21,10 @@ import {
   scheduleAnalysisApi,
   scheduleReportApi,
   downloadReportApi,
+  getAllJobApi,
 } from "api/jobs";
 import { getReportIdFromUrl } from "shared/helper";
+import { getLocalStorage } from "shared/storageHelper";
 
 // Fetching the jobs
 export const getJob = (jobId) => {
@@ -32,6 +34,16 @@ export const getJob = (jobId) => {
       tag.stats = { score: jsonObject.score };
       return tag;
     });
+  });
+};
+
+// Fetching all jobs
+export const getAllJob = (jobsDatalist) => {
+  return getAllJobApi(jobsDatalist).then((res) => {
+    return {
+      res,
+      pages: getLocalStorage("pages"),
+    };
   });
 };
 
