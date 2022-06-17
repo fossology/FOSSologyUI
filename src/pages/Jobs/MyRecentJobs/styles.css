@@ -1,0 +1,4 @@
+.reactTable tr {
+  color: white;
+  mix-blend-mode: difference;
+}
