@@ -276,6 +276,7 @@ const Header = () => {
                         </NavDropdown.Item>
                       </div>
                     </DropdownButton>
+
                     <DropdownButton
                       variant=""
                       drop="right"
@@ -303,6 +304,10 @@ const Header = () => {
                         </NavDropdown.Item>
                       </div>
                     </DropdownButton>
+
+                    <NavDropdown.Item as={Link} to={routes.admin.mantainance}>
+                      Mantainance
+                    </NavDropdown.Item>
                   </NavDropdown>
                 )}
               </>

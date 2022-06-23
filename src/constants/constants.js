@@ -241,3 +241,22 @@ export const initialFolderList = [
     parent: null,
   },
 ];
+
+export const initialMantainanceFields = {
+  allNonSlow: false,
+  allOperations: false,
+  validateFolderContents: false,
+  rmvGoldFiles: false,
+  rmvOrphanedRows: false,
+  rmvLogFiles: false,
+  normalizePriority: false,
+  rmvUploads: false,
+  rmvTokens: false,
+  rmvTempTables: false,
+  analyseDb: false,
+  rmvRepoFiles: false,
+  dbReindexing: false,
+  verbose: false,
+  rmvRepoOldFiles1: false,
+  rmvRepoOldFiles2: false,
+};
