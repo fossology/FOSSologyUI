@@ -24,13 +24,15 @@ import { getToken } from "shared/authHelper";
 // Function for calling the fetch function for the APIs
 import sendRequest from "./sendRequest";
 
-export const getAllJobApi = () => {
+export const getAllJobApi = ({ page, limit }) => {
   const url = endpoints.jobs.scheduleAnalysis();
   return sendRequest({
     url,
     method: "GET",
     headers: {
       Authorization: getToken(),
+      page,
+      limit,
     },
   });
 };
