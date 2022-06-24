@@ -1,5 +1,6 @@
 /*
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com),
+ Copyright (C) 2022 Soham Banerjee (sohambanerjee4abc@hotmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -71,6 +72,8 @@ const Browse = () => {
   // const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(initialMessage);
   const [showMessage, setShowMessage] = useState(false);
+  // qurey used for searching in the current page
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     setMessage({
@@ -234,7 +237,8 @@ const Browse = () => {
                     <input
                       type="search"
                       className="form-control"
-                      placeholder="Search"
+                      placeholder="Filter upload"
+                      onChange={(event) => setQuery(event.target.value)}
                     />
                   </th>
                   <th>
@@ -268,44 +272,59 @@ const Browse = () => {
                 </tr>
               </thead>
               <tbody>
-                {browseDataList?.map((data) => (
-                  <tr key={data?.id} className="text-center">
-                    <td>
-                      <div className="font-demi">{data?.uploadname}</div>
-                      <div className="font-size-small">{data?.description}</div>
-                      <InputContainer
-                        name="action"
-                        type="select"
-                        onChange={(e) => handleActionChange(e, data?.id)}
-                        options={actionsOptions}
-                        property="name"
-                        defaultValue="0"
-                        valueProperty="reportFormat"
-                      />
-                    </td>
-                    <td>
-                      <InputContainer
-                        name="status"
-                        type="select"
-                        onChange={(e) => handleChange(e)}
-                        options={statusOptions}
-                        property="name"
-                      />
-                    </td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>
-                      <InputContainer
-                        name="status"
-                        type="select"
-                        onChange={(e) => handleChange(e)}
-                        options={assignOptions}
-                        property="name"
-                      />
-                    </td>
-                    <td>{data?.uploaddate.split(".")[0]}</td>
-                  </tr>
-                ))}
+                {browseDataList
+                  ?.filter((post) => {
+                    if (query === "") {
+                      return post;
+                    }
+                    if (
+                      post?.uploadname
+                        .toLowerCase()
+                        .includes(query.toLowerCase())
+                    )
+                      return post;
+                    return null;
+                  })
+                  ?.map((data) => (
+                    <tr key={data?.id} className="text-center">
+                      <td>
+                        <div className="font-demi">{data?.uploadname}</div>
+                        <div className="font-size-small">
+                          {data?.description}
+                        </div>
+                        <InputContainer
+                          name="action"
+                          type="select"
+                          onChange={(e) => handleActionChange(e, data?.id)}
+                          options={actionsOptions}
+                          property="name"
+                          defaultValue="0"
+                          valueProperty="reportFormat"
+                        />
+                      </td>
+                      <td>
+                        <InputContainer
+                          name="status"
+                          type="select"
+                          onChange={(e) => handleChange(e)}
+                          options={statusOptions}
+                          property="name"
+                        />
+                      </td>
+                      <td>-</td>
+                      <td>-</td>
+                      <td>
+                        <InputContainer
+                          name="status"
+                          type="select"
+                          onChange={(e) => handleChange(e)}
+                          options={assignOptions}
+                          property="name"
+                        />
+                      </td>
+                      <td>{data?.uploaddate.split(".")[0]}</td>
+                    </tr>
+                  ))}
                 <tr>
                   <td colSpan="6">
                     Page:

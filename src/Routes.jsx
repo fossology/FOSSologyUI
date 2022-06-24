@@ -95,6 +95,7 @@ const AddLicense = React.lazy(() => import("pages/Admin/License/Create"));
 const SelectLicense = React.lazy(() =>
   import("pages/Admin/License/SelectLicense")
 );
+const ManageMantainance = React.lazy(() => import("pages/Admin/Mantainance"));
 
 // Default Page
 const ErrorPage = React.lazy(() => import("pages/ErrorPage"));
@@ -297,6 +298,12 @@ const Routes = () => {
             exact
             path={routes.admin.users.delete}
             component={DeleteUser}
+          />
+
+          <AdminLayout
+            exact
+            path={routes.admin.mantainance}
+            component={ManageMantainance}
           />
 
           {/* Default Page */}
