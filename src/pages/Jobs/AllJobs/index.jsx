@@ -28,6 +28,7 @@ import { initialMessage, entriesOptions } from "constants/constants";
 import messages from "constants/messages";
 import { InputContainer, Alert } from "components/Widgets";
 import { getAllJob } from "services/jobs";
+import Pagination from "@material-ui/lab/Pagination";
 
 const AllJobs = () => {
   const initialState = {
@@ -44,6 +45,7 @@ const AllJobs = () => {
   const [message, setMessage] = useState(initialMessage);
   const [showMessage, setShowMessage] = useState(false);
   const [pagesOptions, setPagesOptions] = useState();
+  const [pages, setPages] = useState();
 
   function Dateformatter(date) {
     const options = {
@@ -71,6 +73,7 @@ const AllJobs = () => {
           res.res[i].queueDate = Dateformatter(res.res[i].queueDate);
           arr[i] = res.res[i];
         }
+        setPages(res.pages);
         // Creating pagination
         const arrPages = [];
         for (let i = 0; i < res.pages; i++) {
@@ -97,9 +100,20 @@ const AllJobs = () => {
         page: 1,
       });
     } else {
-      setJobsData({ ...jobsData, [e.target.name]: e.target.value });
+      setJobsData({
+        ...jobsData,
+        [e.target.name]: e.target.value,
+        page: 1,
+      });
     }
   };
+  const handlePageChange = (e, value) => {
+    if (value >= 1) {
+      setPages(value);
+      setJobsData({ ...jobsData, [`page`]: value });
+    }
+  };
+
   return (
     <>
       <Title title="Show Jobs" />
@@ -174,18 +188,36 @@ const AllJobs = () => {
                     </tr>
                   ))}
                 <tr className="text-left">
-                  <td colSpan="6">
-                    Page:
-                    {pagesOptions && (
-                      <InputContainer
-                        name="page"
-                        type="select"
-                        onChange={(e) => handleChange(e)}
-                        options={pagesOptions}
-                        property="value"
-                        className="mt-n4"
-                      />
-                    )}
+                  <td />
+                  <td />
+                  <td>
+                    <div>
+                      Page:
+                      {pagesOptions && (
+                        <div className="row">
+                          <Pagination
+                            name="page"
+                            className="col-md-6 pagination-div "
+                            property="value"
+                            count={pages}
+                            page={jobsData.page}
+                            onChange={handlePageChange}
+                          />
+
+                          <div className="row">
+                            Go to Page: &nbsp;
+                            <input
+                              type="number"
+                              maxLength="4"
+                              size="3"
+                              onChange={(event) =>
+                                handlePageChange(event, event.target.value)
+                              }
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </td>
                 </tr>
               </tbody>
