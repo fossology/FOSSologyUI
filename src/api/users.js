@@ -60,3 +60,15 @@ export const deleteUserApi = (id) => {
     },
   });
 };
+
+// Getting user by id
+export const getUserByIdAapi = (id) => {
+  const url = endpoints.users.getSingle(id);
+  return sendRequest({
+    url,
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+};
