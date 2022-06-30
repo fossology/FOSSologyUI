@@ -260,3 +260,83 @@ export const initialMantainanceFields = {
   rmvRepoOldFiles1: false,
   rmvRepoOldFiles2: false,
 };
+export const accessLevels = [
+  {
+    id: 0,
+    name: "None (very basic, no database access)",
+    disabled: false,
+    value: "none",
+  },
+  {
+    id: 1,
+    name: "Read-only (read, but no writes or downloads)",
+    disabled: false,
+    value: "read_only",
+  },
+  {
+    id: 2,
+    name: "Read-Write (read, download, or edit information)",
+    disabled: false,
+    value: "read_write",
+  },
+  {
+    id: 3,
+    name: "Clearing Administrator (read, download, edit information and edit decisions)",
+    disabled: false,
+    value: "clearing_admin",
+  },
+  {
+    id: 4,
+    name: "Full Administrator (all access including adding and deleting users)",
+    disabled: false,
+    value: "admin",
+  },
+];
+
+export const initialAddUserData = {
+  name: "",
+  user_pass: "",
+  description: "",
+  accessLevel: "",
+  rootFolderId: 0,
+  emailNotification: true,
+  email: "",
+  defaultVisibility: "public",
+  defaultBucketpool: 2,
+  agents: {
+    mime: false,
+    monk: false,
+    ojo: false,
+    bucket: false,
+    copyright_email_author: false,
+    ecc: false,
+    keyword: false,
+    nomos: false,
+    package: false,
+    reso: false,
+    heritage: false,
+  },
+};
+
+export const bucketPool = [
+  {
+    id: 0,
+    name: "GPL Demo bucket pool, v1",
+    disabled: false,
+  },
+];
+
+export const agents = {
+  bucket: "Bucket Analysis",
+  copyright_email_author: "Copyright/Email/URL/Author Analysis",
+  ecc: "ECC Analysis, scanning for text fragments potentially relevant for export control",
+  keyword: "Keyword Analysis",
+  mime: "MIME-type Analysis (Determine mimetype of every file. Not needed for licenses or buckets)",
+  monk: "Monk License Analysis, scanning for licenses performing a text comparison",
+  nomos:
+    "Nomos License Analysis, scanning for licenses using regular expressions",
+  ojo: "Ojo License Analysis, scanning for licenses using SPDX-License-Identifier",
+  package: "Package Analysis (Parse package headers)",
+  reso: "REUSE.Software Analysis (forces *Ojo License Analysis*)",
+  heritage: "Software Heritage Analysis",
+};

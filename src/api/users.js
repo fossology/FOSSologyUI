@@ -49,6 +49,19 @@ export const getAllUsersApi = () => {
   });
 };
 
+// Api call to create a new user
+export const addUserApi = (userData) => {
+  const url = endpoints.users.add();
+  return sendRequest({
+    url,
+    method: "POST",
+    headers: {
+      Authorization: getToken(),
+    },
+    body: userData,
+  });
+};
+
 // Deleting the user info
 export const deleteUserApi = (id) => {
   const url = endpoints.users.delete(id);
