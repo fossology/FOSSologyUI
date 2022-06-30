@@ -260,3 +260,85 @@ export const initialMantainanceFields = {
   rmvRepoOldFiles1: false,
   rmvRepoOldFiles2: false,
 };
+export const accessLevels = [
+  {
+    id: 0,
+    name: "None (very basic, no database access)",
+    disabled: false,
+    value: 0,
+  },
+  {
+    id: 1,
+    name: "Read-only (read, but no writes or downloads)",
+    disabled: false,
+    value: 1,
+  },
+  {
+    id: 2,
+    name: "Read-Write (read, download, or edit information)",
+    disabled: false,
+    value: 3,
+  },
+  {
+    id: 3,
+    name: "Clearing Administrator (read, download, edit information and edit decisions)",
+    disabled: false,
+    value: 5,
+  },
+  {
+    id: 4,
+    name: "Full Administrator (all access including adding and deleting users)",
+    disabled: false,
+    value: 10,
+  },
+];
+
+export const initialAddUserData = {
+  username: "",
+  description: "",
+  email: "",
+  permission: 1,
+  folder: 1,
+  pass1: "",
+  pass2: "",
+  enote: "y",
+  accessLevel: "public",
+  Check_agent_copyright: false,
+  Check_agent_ecc: false,
+  Check_agent_keyword: false,
+  Check_agent_mimetype: false,
+  Check_agent_monk: false,
+  Check_agent_nomos: false,
+  Check_agent_ojo: false,
+  Check_agent_pkgagent: false,
+  Check_agent_reso: false,
+  Check_agent_shagent: false,
+  default_bucketpool_fk: 2,
+};
+
+export const bucketPool = [
+  {
+    id: 0,
+    name: "GPL Demo bucket pool, v1",
+    disabled: false,
+  },
+];
+
+export const agents = {
+  Check_agent_bucket: "Bucket Analysis",
+  Check_agent_copyright: "Copyright/Email/URL/Author Analysis",
+  Check_agent_ecc:
+    "ECC Analysis, scanning for text fragments potentially relevant for export control",
+  Check_agent_keyword: "Keyword Analysis",
+  Check_agent_mimetype:
+    "MIME-type Analysis (Determine mimetype of every file. Not needed for licenses or buckets)",
+  Check_agent_monk:
+    "Monk License Analysis, scanning for licenses performing a text comparison",
+  Check_agent_nomos:
+    "Nomos License Analysis, scanning for licenses using regular expressions",
+  Check_agent_ojo:
+    "Ojo License Analysis, scanning for licenses using SPDX-License-Identifier",
+  Check_agent_pkgagent: "Package Analysis (Parse package headers)",
+  Check_agent_reso: "REUSE.Software Analysis (forces *Ojo License Analysis*)",
+  Check_agent_shagent: "Software Heritage Analysis",
+};
