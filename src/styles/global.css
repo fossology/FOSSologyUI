@@ -127,3 +127,8 @@ h6 {
 .license-textarea {
   font-family: monospace;
 }
+
+/* Width for pagination UI */
+.pagination-div {
+  min-width: 70%;
+}
