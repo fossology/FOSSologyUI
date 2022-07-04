@@ -68,7 +68,7 @@ const Overview = () => {
           </div>
           <div className="col-md-6 p-md-0">
             <h2 className="text-primary-color font-size-sub-heading">
-              FOSSology's Graphical User Interface
+              FOSSology Graphical User Interface
             </h2>
             <p>
               FOSSology is a framework for software analysis tools. The current
