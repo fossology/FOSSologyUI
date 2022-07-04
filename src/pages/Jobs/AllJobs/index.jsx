@@ -188,10 +188,8 @@ const AllJobs = () => {
                     </tr>
                   ))}
                 <tr className="text-left">
-                  <td />
-                  <td />
-                  <td>
-                    <div>
+                  <td colSpan="6">
+                    <div className="right-pagination">
                       Page:
                       {pagesOptions && (
                         <div className="row">
@@ -210,6 +208,7 @@ const AllJobs = () => {
                               type="number"
                               maxLength="4"
                               size="3"
+                              className="pagination-textarea"
                               onChange={(event) =>
                                 handlePageChange(event, event.target.value)
                               }

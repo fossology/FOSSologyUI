@@ -38,6 +38,7 @@ import {
   getFileNameFromContentDispostionHeader,
   handleError,
 } from "shared/helper";
+import Pagination from "@material-ui/lab/Pagination";
 
 import {
   statusOptions,
@@ -74,6 +75,7 @@ const Browse = () => {
   const [showMessage, setShowMessage] = useState(false);
   // qurey used for searching in the current page
   const [query, setQuery] = useState("");
+  const [pages, setPages] = useState();
 
   useEffect(() => {
     setMessage({
@@ -85,6 +87,7 @@ const Browse = () => {
       .then((res) => {
         setBrowseDataList(res.res);
         const arr = [];
+        setPages(res.pages);
         for (let i = 0; i < res.pages; i++) {
           arr.push({
             id: i + 1,
@@ -126,7 +129,7 @@ const Browse = () => {
         handleError(error, setMessage);
         setShowMessage(true);
       });
-  }, []);
+  }, [browseData]);
 
   const handleChange = (e) => {
     if (e.target.name === "limit") {
@@ -187,9 +190,15 @@ const Browse = () => {
 
   const handleClick = (e, id) => {
     e.preventDefault();
-    setBrowseData({ ...browseData, folderId: id });
+    setPages(1);
+    setBrowseData({ ...browseData, folderId: id, page: 1 });
   };
-
+  const handlePageChange = (e, value) => {
+    if (value >= 1) {
+      setPages(value);
+      setBrowseData({ ...browseData, [`page`]: value });
+    }
+  };
   return (
     <>
       <Title title="Browse" />
@@ -325,19 +334,34 @@ const Browse = () => {
                       <td>{data?.uploaddate.split(".")[0]}</td>
                     </tr>
                   ))}
-                <tr>
+                <tr className="text-left">
                   <td colSpan="6">
-                    Page:
-                    {pagesOptions && (
-                      <InputContainer
-                        name="page"
-                        type="select"
-                        onChange={(e) => handleChange(e)}
-                        options={pagesOptions}
-                        property="value"
-                        className="mt-n4"
-                      />
-                    )}
+                    <div className="right-pagination">
+                      Page:
+                      {pagesOptions && (
+                        <div className="row">
+                          <Pagination
+                            name="page"
+                            className="col-md-6 pagination-div "
+                            property="value"
+                            count={pages}
+                            page={browseData.page}
+                            onChange={handlePageChange}
+                          />
+                          <div className="row ">
+                            Go to: &nbsp;
+                            <input
+                              type="number"
+                              className="pagination-textarea"
+                              size="3"
+                              onChange={(event) =>
+                                handlePageChange(event, event.target.value)
+                              }
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </td>
                 </tr>
               </tbody>
