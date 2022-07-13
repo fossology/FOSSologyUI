@@ -37,6 +37,19 @@ export const getAllGroupsApi = () => {
   });
 };
 
+// Fetching all deletable groups
+export const getAllDeletableGroupsApi = () => {
+  const url = endpoints.admin.groups.getAllDeletable();
+  return sendRequest({
+    url,
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+    addGroupName: false,
+  });
+};
+
 // Creating a group
 export const createGroupApi = (name) => {
   const url = endpoints.admin.groups.create();
@@ -46,6 +59,19 @@ export const createGroupApi = (name) => {
     headers: {
       Authorization: getToken(),
       name,
+    },
+    addGroupName: false,
+  });
+};
+
+// Delete a group
+export const deleteGroupApi = (id) => {
+  const url = endpoints.admin.groups.delete(id);
+  return sendRequest({
+    url,
+    method: "DELETE",
+    headers: {
+      Authorization: getToken(),
     },
     addGroupName: false,
   });
