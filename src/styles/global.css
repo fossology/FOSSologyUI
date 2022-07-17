@@ -130,5 +130,14 @@ h6 {
 
 /* Width for pagination UI */
 .pagination-div {
-  min-width: 70%;
+  min-width: 71.5%;
+}
+.right-pagination {
+  width: 100%;
+  padding-left: 65%;
+}
+
+/* eight for textarea in pagination module */
+.pagination-textarea {
+  height: 30px;
 }
