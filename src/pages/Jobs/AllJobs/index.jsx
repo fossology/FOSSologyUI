@@ -27,7 +27,7 @@ import { handleError } from "shared/helper";
 import { initialMessage, entriesOptions } from "constants/constants";
 import messages from "constants/messages";
 import { InputContainer, Alert } from "components/Widgets";
-import { getAllJob } from "services/jobs";
+import { getAllAdminJob } from "services/jobs";
 import Pagination from "@material-ui/lab/Pagination";
 
 const AllJobs = () => {
@@ -64,7 +64,7 @@ const AllJobs = () => {
       text: messages.loading,
     });
     setShowMessage(true);
-    getAllJob(jobsData)
+    getAllAdminJob(jobsData)
       .then((res) => {
         // Formatting the date from time stamp to readable date
         setShowMessage(false);

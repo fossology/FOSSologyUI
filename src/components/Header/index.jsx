@@ -155,9 +155,12 @@ const Header = () => {
                   <NavDropdown.Item as={Link} to={routes.jobs.myRecentJobs}>
                     My Recent Jobs
                   </NavDropdown.Item>
-                  <NavDropdown.Item as={Link} to={routes.jobs.allRecentJobs}>
-                    All Recent Jobs
-                  </NavDropdown.Item>
+                  {isAdmin() ? (
+                    <NavDropdown.Item as={Link} to={routes.jobs.allRecentJobs}>
+                      All Recent Jobs
+                    </NavDropdown.Item>
+                  ) : null}
+
                   <NavDropdown.Item as={Link} to={routes.jobs.scheduleAgents}>
                     Schedule Agents
                   </NavDropdown.Item>
