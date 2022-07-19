@@ -95,6 +95,33 @@ export const getUploadByIdApi = (uploadId, retries) => {
   });
 };
 
+// Getting a Upload Summary
+export const getUploadSummaryApi = (uploadId) => {
+  const url = endpoints.upload.getSummary(uploadId);
+  return sendRequest({
+    url,
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+};
+
+// Getting a Upload License
+export const getUploadLicenseApi = (uploadId, agent) => {
+  const url = endpoints.upload.getLicense(uploadId);
+  return sendRequest({
+    url,
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+    queryParams: {
+      agent,
+    },
+  });
+};
+
 createUploadApi.propTypes = {
   folderId: PropTypes.number,
   uploadDescription: PropTypes.string,

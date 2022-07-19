@@ -18,6 +18,8 @@
 */
 
 import React, { useState, useEffect } from "react";
+import routes from "constants/routes";
+import { Link } from "react-router-dom";
 import arrayToTree from "array-to-tree";
 import messages from "constants/messages";
 
@@ -297,10 +299,16 @@ const Browse = () => {
                   ?.map((data) => (
                     <tr key={data?.id} className="text-center">
                       <td>
-                        <div className="font-demi">{data?.uploadname}</div>
-                        <div className="font-size-small">
-                          {data?.description}
-                        </div>
+                        <Link
+                          to={`${routes.browseUploads.licenseBrowser}/uploadID=${data.id}`}
+                        >
+                          <div className="text-primary-color">
+                            <div className="font-demi">{data?.uploadname}</div>
+                            <div className="font-size-small">
+                              {data?.description}
+                            </div>
+                          </div>
+                        </Link>
                         <InputContainer
                           name="action"
                           type="select"
@@ -334,7 +342,7 @@ const Browse = () => {
                       <td>{data?.uploaddate.split(".")[0]}</td>
                     </tr>
                   ))}
-                <tr className="text-left">
+                <tr>
                   <td colSpan="6">
                     <div className="right-pagination">
                       Page:

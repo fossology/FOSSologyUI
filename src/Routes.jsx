@@ -125,7 +125,7 @@ const Routes = () => {
           />
           <PrivateLayout
             exact
-            path={routes.browseUploads.licenseBrowser}
+            path={`${routes.browseUploads.licenseBrowser}/uploadID=:uploadID`}
             component={LicenseBrowse}
           />
           <PrivateLayout
