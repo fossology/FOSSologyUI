@@ -51,7 +51,7 @@ const Header = () => {
                   Software Heritage
                 </Link>
                 <Link
-                  to={`${routes.browseUploads.licenseBrowser}/:uploadID`}
+                  to={`${routes.browseUploads.licenseBrowser}/uploadID=:uploadID`}
                   className={
                     location.pathname.includes(
                       routes.browseUploads.licenseBrowser

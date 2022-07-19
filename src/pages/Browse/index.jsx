@@ -283,7 +283,6 @@ const Browse = () => {
                 </tr>
               </thead>
               <tbody>
-<<<<<<< HEAD
                 {browseDataList
                   ?.filter((post) => {
                     if (query === "") {
@@ -300,23 +299,16 @@ const Browse = () => {
                   ?.map((data) => (
                     <tr key={data?.id} className="text-center">
                       <td>
-                        <div className="font-demi">{data?.uploadname}</div>
-                        <div className="font-size-small">
-                          {data?.description}
-=======
-                {browseDataList?.map((data) => (
-                  <tr key={data?.id} className="text-center">
-                    <td>
-                      <Link
-                        to={`${routes.browseUploads.licenseBrowser}/${data.id}`}
-                      >
-                        <div className="text-primary-color">
-                          <div className="font-demi">{data?.uploadname}</div>
-                          <div className="font-size-small">
-                            {data?.description}
+                        <Link
+                          to={`${routes.browseUploads.licenseBrowser}/uploadID=${data.id}`}
+                        >
+                          <div className="text-primary-color">
+                            <div className="font-demi">{data?.uploadname}</div>
+                            <div className="font-size-small">
+                              {data?.description}
+                            </div>
                           </div>
->>>>>>> fix(route): fixed the route of license browser
-                        </div>
+                        </Link>
                         <InputContainer
                           name="action"
                           type="select"
@@ -350,7 +342,7 @@ const Browse = () => {
                       <td>{data?.uploaddate.split(".")[0]}</td>
                     </tr>
                   ))}
-                <tr className="text-left">
+                <tr>
                   <td colSpan="6">
                     <div className="right-pagination">
                       Page:
