@@ -47,12 +47,10 @@ const LicenseBrowser = () => {
           is found in the file listing.
         </p>
         <p>
-          On the right side, you see a list of all files or directories in the
-          current directory. You also the licenses found by any scanner and what
-          scanners found it. Also old results may be included if they differ
-          from current revision of the scanner. Results from an older version
-          are marked. You can search for any string in the file names or license
-          names.
+        On the right side, you see a list of all the files or directories in the current directory. 
+        You can also see the licenses found by any scanner and what scanners found it. 
+        Also, old results may be included if they differ from the current revision of the scanner. 
+        Results from an older version are marked. You can search for any string in the file names or license names.
         </p>
       </div>
     </>
