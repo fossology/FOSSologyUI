@@ -20,12 +20,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from "styled-components";
 
-const Button = ({ type, onClick, className, children }) => {
+const Button = ({ type, onClick, className, children, disabled = false }) => {
   return (
     <ButtonContainer
       type={type}
       onClick={onClick}
       className={`bg-primary-color text-secondary-color font-demi text-center hover-primary-color ${className}`}
+      disabled={disabled}
     >
       {children}
     </ButtonContainer>
@@ -37,6 +38,7 @@ Button.propTypes = {
   onClick: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
   className: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 const ButtonContainer = styles.button`
