@@ -69,7 +69,7 @@ const LicenseBrowser = () => {
           handleError(error, setMessage);
           setShowMessage(true);
         });
-      getUploadLicense(uploadId, ["ojo", "nomos", "monk"])
+      getUploadLicense(uploadId, ["ojo,nomos,monk"])
         .then((res) => {
           setFilesData(res);
           setShowMessage(false);
@@ -117,22 +117,45 @@ const LicenseBrowser = () => {
               <tbody>
                 {filesData &&
                   filesData.length > 0 &&
-                  filesData.map((data, index) => (
-                    <>
-                      {index < 10 ? (
+                  filesData.map((data) => {
+                    const filteredScanner = [...new Set(data.findings.scanner)];
+                    const filteredConclusion = [
+                      ...new Set(data.findings.conclusion),
+                    ];
+
+                    return (
+                      <>
                         <tr key={data.id}>
                           <td>{data.filePath}</td>
-                          <td>{data.findings.scanner}</td>
-                          <td>-</td>
+                          <td>
+                            {filteredScanner !== null
+                              ? filteredScanner.map((dataScanner, index) => {
+                                  return `${dataScanner}${
+                                    index + 1 === filteredScanner.length
+                                      ? ""
+                                      : ", "
+                                  }`;
+                                })
+                              : null}
+                          </td>
+                          <td>
+                            {filteredConclusion !== null
+                              ? filteredConclusion.map((dataScanner, index) => {
+                                  return `${dataScanner}${
+                                    index + 1 === filteredConclusion.length
+                                      ? ""
+                                      : ", "
+                                  }`;
+                                })
+                              : null}
+                          </td>
                           <td>-</td>
                           <td>-</td>
                           <td>-</td>
                         </tr>
-                      ) : (
-                        ""
-                      )}
-                    </>
-                  ))}
+                      </>
+                    );
+                  })}
               </tbody>
             </table>
           </div>
