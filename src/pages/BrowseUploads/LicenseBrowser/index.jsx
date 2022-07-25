@@ -69,7 +69,7 @@ const LicenseBrowser = () => {
           handleError(error, setMessage);
           setShowMessage(true);
         });
-      getUploadLicense(uploadId, ["ojo", "nomos", "monk"])
+      getUploadLicense(uploadId, ["ojo,nomos,monk"])
         .then((res) => {
           setFilesData(res);
           setShowMessage(false);
@@ -117,20 +117,20 @@ const LicenseBrowser = () => {
               <tbody>
                 {filesData &&
                   filesData.length > 0 &&
-                  filesData.map((data, index) => (
+                  filesData.map((data) => (
                     <>
-                      {index < 10 ? (
-                        <tr key={data.id}>
-                          <td>{data.filePath}</td>
-                          <td>{data.findings.scanner}</td>
-                          <td>-</td>
-                          <td>-</td>
-                          <td>-</td>
-                          <td>-</td>
-                        </tr>
-                      ) : (
-                        ""
-                      )}
+                      <tr key={data.id}>
+                        <td>{data.filePath}</td>
+                        <td>{data.findings.scanner}</td>
+                        <td>
+                          {data.findings.conclusion !== undefined
+                            ? data.findings.conclusion
+                            : "-"}
+                        </td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                      </tr>
                     </>
                   ))}
               </tbody>
