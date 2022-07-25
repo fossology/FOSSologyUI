@@ -70,6 +70,7 @@ const routes = {
     },
     users: {
       delete: "/admin/users/delete",
+      edit: "/admin/users/edit",
     },
     license: {
       create: "/admin/license/create",
