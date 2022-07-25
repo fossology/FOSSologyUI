@@ -69,6 +69,7 @@ const routes = {
       delete: "/admin/group/delete",
     },
     users: {
+      add: "/admin/users/add",
       delete: "/admin/users/delete",
     },
     license: {
