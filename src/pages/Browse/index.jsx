@@ -18,6 +18,8 @@
 */
 
 import React, { useState, useEffect } from "react";
+import routes from "constants/routes";
+import { Link } from "react-router-dom";
 import arrayToTree from "array-to-tree";
 import messages from "constants/messages";
 
@@ -38,6 +40,7 @@ import {
   getFileNameFromContentDispostionHeader,
   handleError,
 } from "shared/helper";
+import Pagination from "@material-ui/lab/Pagination";
 
 import {
   statusOptions,
@@ -74,6 +77,7 @@ const Browse = () => {
   const [showMessage, setShowMessage] = useState(false);
   // qurey used for searching in the current page
   const [query, setQuery] = useState("");
+  const [pages, setPages] = useState();
 
   useEffect(() => {
     setMessage({
@@ -85,6 +89,7 @@ const Browse = () => {
       .then((res) => {
         setBrowseDataList(res.res);
         const arr = [];
+        setPages(res.pages);
         for (let i = 0; i < res.pages; i++) {
           arr.push({
             id: i + 1,
@@ -126,7 +131,7 @@ const Browse = () => {
         handleError(error, setMessage);
         setShowMessage(true);
       });
-  }, []);
+  }, [browseData]);
 
   const handleChange = (e) => {
     if (e.target.name === "limit") {
@@ -187,9 +192,15 @@ const Browse = () => {
 
   const handleClick = (e, id) => {
     e.preventDefault();
-    setBrowseData({ ...browseData, folderId: id });
+    setPages(1);
+    setBrowseData({ ...browseData, folderId: id, page: 1 });
   };
-
+  const handlePageChange = (e, value) => {
+    if (value >= 1) {
+      setPages(value);
+      setBrowseData({ ...browseData, [`page`]: value });
+    }
+  };
   return (
     <>
       <Title title="Browse" />
@@ -288,10 +299,16 @@ const Browse = () => {
                   ?.map((data) => (
                     <tr key={data?.id} className="text-center">
                       <td>
-                        <div className="font-demi">{data?.uploadname}</div>
-                        <div className="font-size-small">
-                          {data?.description}
-                        </div>
+                        <Link
+                          to={`${routes.browseUploads.licenseBrowser}/uploadID=${data.id}`}
+                        >
+                          <div className="text-primary-color">
+                            <div className="font-demi">{data?.uploadname}</div>
+                            <div className="font-size-small">
+                              {data?.description}
+                            </div>
+                          </div>
+                        </Link>
                         <InputContainer
                           name="action"
                           type="select"
@@ -327,17 +344,32 @@ const Browse = () => {
                   ))}
                 <tr>
                   <td colSpan="6">
-                    Page:
-                    {pagesOptions && (
-                      <InputContainer
-                        name="page"
-                        type="select"
-                        onChange={(e) => handleChange(e)}
-                        options={pagesOptions}
-                        property="value"
-                        className="mt-n4"
-                      />
-                    )}
+                    <div className="right-pagination">
+                      Page:
+                      {pagesOptions && (
+                        <div className="row">
+                          <Pagination
+                            name="page"
+                            className="col-md-6 pagination-div "
+                            property="value"
+                            count={pages}
+                            page={browseData.page}
+                            onChange={handlePageChange}
+                          />
+                          <div className="row ">
+                            Go to: &nbsp;
+                            <input
+                              type="number"
+                              className="pagination-textarea"
+                              size="3"
+                              onChange={(event) =>
+                                handlePageChange(event, event.target.value)
+                              }
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </td>
                 </tr>
               </tbody>
