@@ -79,6 +79,7 @@ const routes = {
       licenseCSV: "/licenseCSV/fossology-license-export.csv",
     },
     mantainance: "/admin/mantainance",
+    uploadPermissions: "/admin/upload-permissions",
   },
   browseUploads: {
     softwareHeritage: "/browse/softwareHeritage",

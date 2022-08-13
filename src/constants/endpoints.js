@@ -60,6 +60,10 @@ const endpoints = {
     getId: (uploadId) => `${apiUrl}/uploads/${uploadId}`,
     getSummary: (uploadId) => `${apiUrl}/uploads/${uploadId}/summary`,
     getLicense: (uploadId) => `${apiUrl}/uploads/${uploadId}/licenses`,
+    getGroupsWithPermissions: (uploadId) =>
+      `${apiUrl}/uploads/${uploadId}/perm-groups`,
+    uploadPermissions: (uploadId) =>
+      `${apiUrl}/uploads/${uploadId}/permissions`,
   },
   browse: {
     get: () => `${apiUrl}/uploads`,

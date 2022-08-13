@@ -20,6 +20,8 @@ import {
   createUploadUrlApi,
   getUploadSummaryApi,
   getUploadLicenseApi,
+  getGroupsWithPermissionsApi,
+  changeUploadPermissionsApi,
 } from "api/upload";
 
 // Create Uploads from File
@@ -58,6 +60,20 @@ export const createUploadUrl = (header, body) => {
 // Getting a Upload by id
 export const getUploadById = (uploadId, retries) => {
   return getUploadByIdApi(uploadId, retries).then((res) => {
+    return res;
+  });
+};
+
+// Getting all groups with permissions based on upload ID
+export const getGroupsWithPermissions = (uploadId) => {
+  return getGroupsWithPermissionsApi(uploadId).then((res) => {
+    return res;
+  });
+};
+
+// change permissions for a upload for different groups
+export const changeUploadPermissions = (payload) => {
+  return changeUploadPermissionsApi(payload).then((res) => {
     return res;
   });
 };

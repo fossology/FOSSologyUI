@@ -107,6 +107,31 @@ export const getUploadSummaryApi = (uploadId) => {
   });
 };
 
+// Getting all groups with permissions based on upload ID
+export const getGroupsWithPermissionsApi = (uploadId) => {
+  const url = endpoints.upload.getGroupsWithPermissions(uploadId);
+  return sendRequest({
+    url,
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+};
+
+// change permissions for a upload for different groups
+export const changeUploadPermissionsApi = (payload) => {
+  const url = endpoints.upload.uploadPermissions(payload.uploadId);
+  return sendRequest({
+    url,
+    method: "PUT",
+    body: payload,
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+};
+
 // Getting a Upload License
 export const getUploadLicenseApi = (uploadId, agent) => {
   const url = endpoints.upload.getLicense(uploadId);

@@ -59,11 +59,13 @@ const InputContainer = ({
     return (
       <div className="my-1 py-0">
         {children && (
-          <label htmlFor={id} className="font-demi">
-            {children}
-          </label>
+          <>
+            <label htmlFor={id} className="font-demi">
+              {children}
+            </label>
+            &emsp;
+          </>
         )}
-        &emsp;
         <select
           name={name}
           className={
