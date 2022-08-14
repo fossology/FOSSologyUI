@@ -42,6 +42,9 @@ const endpoints = {
     getSingle: (userId) => `${apiUrl}/users/${userId}`,
     delete: (userId) => `${apiUrl}/users/${userId}`,
     add: () => `${apiUrl}/users`,
+    edit: (userId) => `${apiUrl}/users/${userId}`,
+    createToken: () => `${apiUrl}/users/tokens`,
+    getTokens: (type) => `${apiUrl}/users/tokens/${type}`,
   },
   folders: {
     getAll: () => `${apiUrl}/folders`,

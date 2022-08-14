@@ -57,7 +57,7 @@ const InputContainer = ({
   }
   if (type === "select") {
     return (
-      <div className="my-0 py-0">
+      <div className="my-1 py-0">
         {children && (
           <label htmlFor={id} className="font-demi">
             {children}

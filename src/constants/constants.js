@@ -260,6 +260,7 @@ export const initialMantainanceFields = {
   rmvRepoOldFiles1: false,
   rmvRepoOldFiles2: false,
 };
+
 export const accessLevels = [
   {
     id: 0,
@@ -293,9 +294,24 @@ export const accessLevels = [
   },
 ];
 
+export const userStatus = [
+  {
+    id: 0,
+    name: "Active",
+    disabled: false,
+    value: "active",
+  },
+  {
+    id: 1,
+    name: "Inactive",
+    disabled: false,
+    value: "inactive",
+  },
+];
+
 export const initialAddUserData = {
   name: "",
-  user_pass: "",
+  user_pass: null,
   description: "",
   accessLevel: "",
   rootFolderId: 0,

@@ -278,6 +278,14 @@ const Header = () => {
                       <div className="bg-secondaryColor text-white font-12">
                         <NavDropdown.Item
                           as={Link}
+                          to={routes.admin.users.edit}
+                        >
+                          Edit User Account
+                        </NavDropdown.Item>
+                      </div>
+                      <div className="bg-secondaryColor text-white font-12">
+                        <NavDropdown.Item
+                          as={Link}
                           to={routes.admin.users.delete}
                         >
                           Delete User

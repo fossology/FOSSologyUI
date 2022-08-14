@@ -24,7 +24,7 @@ import { InputContainer, Tooltip } from "components/Widgets";
 
 function AccessLevel({ accessLevel, handleChange }) {
   return (
-    <div id="upload-access-level" className="mt-1">
+    <div id="upload-access-level">
       <InputContainer
         type="radio"
         value="private"
