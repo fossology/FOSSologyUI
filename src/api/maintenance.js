@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2022 Samuel Dushimimana (dushsam100@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -24,46 +24,16 @@ import { getToken } from "shared/authHelper";
 // Function for calling the fetch function for the APIs
 import sendRequest from "./sendRequest";
 
-// Fetching the licenses with their kind i.e (candidate, main, all)
-export const getAllLicenseApi = ({ page, limit, kind }) => {
-  const url = endpoints.admin.license.get();
-  return sendRequest({
-    url,
-    method: "GET",
-    headers: {
-      Authorization: getToken(),
-      page,
-      limit,
-    },
-    queryParams: {
-      kind,
-    },
-  });
-};
-
-export const createCandidateLicenseApi = ({
-  shortName,
-  fullName,
-  text,
-  risk,
-  licenseUrl,
-  mergeRequest,
-}) => {
-  const url = endpoints.admin.license.createCandidateLicense();
+// Creating a maintenance
+export const createMaintenanceApi = (data) => {
+  const url = endpoints.admin.maintenance.create();
   return sendRequest({
     url,
     method: "POST",
     headers: {
       Authorization: getToken(),
     },
-    body: {
-      shortName,
-      fullName,
-      text,
-      risk,
-      url: licenseUrl,
-      isCandidate: true,
-      mergeRequest,
-    },
+    body: data,
   });
 };
+export default createMaintenanceApi;

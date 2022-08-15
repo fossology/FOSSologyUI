@@ -1,6 +1,7 @@
 /*
- Copyright (C) 2021 Edgar Sherman (edgarshermangh14@gmail.com)
+ Copyright (C) 2022 Samuel Dushimimana (dushsam100@gmail.com)
  SPDX-License-Identifier: GPL-2.0
+
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
  version 2 as published by the Free Software Foundation.
@@ -15,33 +16,26 @@
 
 import sendRequest from "api/sendRequest";
 import endpoints from "constants/endpoints";
-import { getHealthApi, getInfoApi } from "api/info";
+import { getToken } from "shared/authHelper";
+import { createMaintenanceApi } from "api/maintenance";
 
 jest.mock("api/sendRequest");
 
-describe("info", () => {
-  test("getInfoApi", () => {
-    const url = endpoints.admin.info.info();
-    sendRequest.mockImplementation(() => true);
+describe("maintenance", () => {
+  test("createMaintenanceApi", () => {
+    const data = { options: ["O", "L"] };
+    const url = endpoints.admin.maintenance.create();
 
-    expect(getInfoApi()).toBe(sendRequest({}));
+    sendRequest.mockImplementation(() => true);
+    expect(createMaintenanceApi(data)).toBe(sendRequest({}));
     expect(sendRequest).toHaveBeenCalledWith(
       expect.objectContaining({
         url,
-        method: "GET",
-      })
-    );
-  });
-
-  test("getHealthApi", () => {
-    const url = endpoints.admin.info.health();
-    sendRequest.mockImplementation(() => true);
-
-    expect(getHealthApi()).toBe(sendRequest({}));
-    expect(sendRequest).toHaveBeenCalledWith(
-      expect.objectContaining({
-        url,
-        method: "GET",
+        method: "POST",
+        headers: {
+          Authorization: getToken(),
+        },
+        body: data,
       })
     );
   });

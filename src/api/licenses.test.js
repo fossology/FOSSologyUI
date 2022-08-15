@@ -25,7 +25,7 @@ describe("licenses", () => {
     const page = 1;
     const limit = 2;
     const kind = "kind";
-    const url = endpoints.license.get();
+    const url = endpoints.admin.license.get();
 
     sendRequest.mockImplementation(() => true);
 
@@ -53,7 +53,7 @@ describe("licenses", () => {
     const risk = "risk";
     const licenseUrl = "licenseUrl";
     const mergeRequest = "mergeRequest";
-    const url = endpoints.license.createCandidateLicense();
+    const url = endpoints.admin.license.createCandidateLicense();
 
     expect(
       createCandidateLicenseApi({

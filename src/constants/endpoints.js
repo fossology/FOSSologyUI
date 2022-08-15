@@ -76,14 +76,17 @@ const endpoints = {
       getAllDeletable: () => `${apiUrl}/groups/deletable`,
       delete: (groupId) => `${apiUrl}/groups/${groupId}`,
     },
-  },
-  license: {
-    get: () => `${apiUrl}/license`,
-    createCandidateLicense: () => `${apiUrl}/license`,
-  },
-  info: {
-    info: () => `${apiUrl}/info`,
-    health: () => `${apiUrl}/health`,
+    maintenance: {
+      create: () => `${apiUrl}/maintenance`,
+    },
+    license: {
+      get: () => `${apiUrl}/license`,
+      createCandidateLicense: () => `${apiUrl}/license`,
+    },
+    info: {
+      info: () => `${apiUrl}/info`,
+      health: () => `${apiUrl}/health`,
+    },
   },
 };
 
