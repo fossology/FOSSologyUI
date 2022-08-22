@@ -141,3 +141,7 @@ h6 {
 .pagination-textarea {
   height: 30px;
 }
+
+body {
+  transition: all 0.25s linear;
+}
