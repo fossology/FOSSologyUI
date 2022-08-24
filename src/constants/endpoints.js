@@ -17,7 +17,7 @@
 */
 
 // Api Url set in the env file
-const apiUrl = `${
+export const apiUrl = `${
   process.env.REACT_APP_HTTPS === "true" ? "https" : "http"
 }://${process.env.REACT_APP_SERVER_URL}`;
 
@@ -25,6 +25,7 @@ const apiUrl = `${
 const endpoints = {
   jobs: {
     details: (jobId) => `${apiUrl}/jobs/${jobId}`,
+    uploadHistory: (uploadId) => `${apiUrl}/jobs/history?upload=${uploadId}`,
     scheduleAnalysis: () => `${apiUrl}/jobs`,
     allJobs: () => `${apiUrl}/jobs/all`,
     scheduleReport: () => `${apiUrl}/report`,

@@ -137,4 +137,15 @@ export const downloadReportApi = (reportId) => {
   });
 };
 
+export const getUploadHistoryApi = (uploadId) => {
+  const url = endpoints.jobs.uploadHistory(uploadId);
+  return sendRequest({
+    url,
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+};
+
 export default getJobApi;

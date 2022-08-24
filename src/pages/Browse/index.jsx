@@ -19,7 +19,7 @@
 
 import React, { useState, useEffect } from "react";
 import routes from "constants/routes";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import arrayToTree from "array-to-tree";
 import messages from "constants/messages";
 
@@ -41,7 +41,7 @@ import {
   handleError,
 } from "shared/helper";
 import Pagination from "@material-ui/lab/Pagination";
-
+import { getUploadSummary } from "services/upload";
 import {
   statusOptions,
   entriesOptions,
@@ -79,30 +79,46 @@ const Browse = () => {
   const [query, setQuery] = useState("");
   const [pages, setPages] = useState();
 
-  useEffect(() => {
+  const history = useHistory();
+
+  useEffect(async () => {
     setMessage({
       type: "success",
       text: messages.loading,
     });
     setShowMessage(true);
-    getBrowseData(browseData)
-      .then((res) => {
-        setBrowseDataList(res.res);
-        const arr = [];
-        setPages(res.pages);
-        for (let i = 0; i < res.pages; i++) {
-          arr.push({
-            id: i + 1,
-            value: i + 1,
-          });
-        }
-        setPagesOptions(arr);
-        setShowMessage(false);
-      })
-      .catch((error) => {
-        handleError(error, setMessage);
-        setShowMessage(true);
+    try {
+      const res = await getBrowseData(browseData);
+      const allUploads = res.res;
+
+      // getting the upload summary for each upload
+      const promises = allUploads.map((upload) => getUploadSummary(upload.id));
+      const allUploadSummary = await Promise.all(promises);
+      const allUploadsWithSummary = allUploads.map((upload) => {
+        const tempSumm = allUploadSummary.filter(
+          (val) => val?.id === upload?.id
+        );
+        return {
+          ...upload,
+          uploadSummary: tempSumm.length ? tempSumm[0] : null,
+        };
       });
+      setBrowseDataList(allUploadsWithSummary);
+
+      const arr = [];
+      setPages(res.pages);
+      for (let i = 0; i < res.pages; i++) {
+        arr.push({
+          id: i + 1,
+          value: i + 1,
+        });
+      }
+      setPagesOptions(arr);
+      setShowMessage(false);
+    } catch (error) {
+      handleError(error, setMessage);
+      setShowMessage(true);
+    }
   }, [browseData]);
 
   useEffect(() => {
@@ -146,6 +162,10 @@ const Browse = () => {
   };
 
   const handleActionChange = (e, uploadId) => {
+    if (e.target.value === "uploadHistory") {
+      history.push(`/showJobs/${uploadId}`);
+      return;
+    }
     scheduleReport(uploadId, e.target.value)
       .then((res) => {
         return res?.message;
@@ -296,7 +316,8 @@ const Browse = () => {
                       return post;
                     return null;
                   })
-                  ?.map((data) => (
+                  ?.reverse()
+                  .map((data) => (
                     <tr key={data?.id} className="text-center">
                       <td>
                         <Link
@@ -326,10 +347,12 @@ const Browse = () => {
                           onChange={(e) => handleChange(e)}
                           options={statusOptions}
                           property="name"
+                          value={data?.uploadSummary?.clearingStatus}
+                          valueProperty="name"
                         />
                       </td>
                       <td>-</td>
-                      <td>-</td>
+                      <td>{data?.uploadSummary?.mainLicense}</td>
                       <td>
                         <InputContainer
                           name="status"
@@ -352,7 +375,7 @@ const Browse = () => {
                             name="page"
                             className="col-md-6 pagination-div "
                             property="value"
-                            count={pages}
+                            count={parseInt(pages, 10)}
                             page={browseData.page}
                             onChange={handlePageChange}
                           />
