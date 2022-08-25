@@ -65,13 +65,13 @@ CommonFields.propTypes = {
     nomos: PropTypes.bool.isRequired,
     ojo: PropTypes.bool.isRequired,
     package: PropTypes.bool.isRequired,
-  }).isRequired,
+  }),
   decider: PropTypes.shape({
     nomosMonk: PropTypes.bool.isRequired,
     bulkReused: PropTypes.bool.isRequired,
     newScanner: PropTypes.bool.isRequired,
     ojoDecider: PropTypes.bool.isRequired,
-  }).isRequired,
+  }),
   reuse: PropTypes.shape({
     reuseUpload: PropTypes.number.isRequired,
     reuseGroup: PropTypes.string.isRequired,
@@ -79,9 +79,9 @@ CommonFields.propTypes = {
     reuseEnhanced: PropTypes.bool.isRequired,
     reuseReport: PropTypes.bool.isRequired,
     reuseCopyright: PropTypes.bool.isRequired,
-  }).isRequired,
-  handleChange: PropTypes.func.isRequired,
-  handleScanChange: PropTypes.func.isRequired,
+  }),
+  handleChange: PropTypes.func,
+  handleScanChange: PropTypes.func,
 };
 
 export default CommonFields;
