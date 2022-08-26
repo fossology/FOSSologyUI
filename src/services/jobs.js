@@ -22,6 +22,7 @@ import {
   scheduleReportApi,
   downloadReportApi,
   getAllJobApi,
+  getAllAdminJobApi,
 } from "api/jobs";
 import { getReportIdFromUrl } from "shared/helper";
 import { getLocalStorage } from "shared/storageHelper";
@@ -40,6 +41,16 @@ export const getJob = (jobId) => {
 // Fetching all jobs
 export const getAllJob = (jobsDatalist) => {
   return getAllJobApi(jobsDatalist).then((res) => {
+    return {
+      res,
+      pages: getLocalStorage("pages"),
+    };
+  });
+};
+
+// Fetching all jobs for the Admin
+export const getAllAdminJob = (jobsDatalist) => {
+  return getAllAdminJobApi(jobsDatalist).then((res) => {
     return {
       res,
       pages: getLocalStorage("pages"),

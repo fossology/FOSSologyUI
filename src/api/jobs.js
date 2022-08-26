@@ -36,6 +36,21 @@ export const getAllJobApi = ({ page, limit }) => {
     },
   });
 };
+
+// Fetch all the jobs for admin
+export const getAllAdminJobApi = ({ page, limit }) => {
+  const url = endpoints.jobs.allJobs();
+  return sendRequest({
+    url,
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+      page,
+      limit,
+    },
+  });
+};
+
 // Fetching the jobs
 export const getJobApi = ({ jobId }) => {
   const url = endpoints.jobs.details(jobId);
