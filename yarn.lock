@@ -9743,6 +9743,7 @@ __metadata:
     eslint-plugin-prettier: ^3.4.0
     eslint-plugin-react-hooks: ^1.7.0
     jest-fetch-mock: 3.0.3
+    jquery: ^3.6.0
     js-cookie: ^2.2.1
     prettier: ^2.6.2
     prop-types: ^15.8.1
@@ -12474,6 +12475,13 @@ __metadata:
   bin:
     jest: bin/jest.js
   checksum: e0d3efff0dc2a31c453a3f7d87586e5d6c0f008c9b827bb9204edde09288f922ddfb3a8917480bf68f4ac0298be28637daef98ebaaac65ea23d3cb754a6620c4
+  languageName: node
+  linkType: hard
+
+"jquery@npm:^3.6.0":
+  version: 3.6.0
+  resolution: "jquery@npm:3.6.0"
+  checksum: 8fd5fef4aa48fd374ec716dd1c1df1af407814a228e15c1260ca140de3a697c2a77c30c54ff1d238b6a3ab4ddc445ddeef9adce6c6d28e4869d85eb9d3951c0e
   languageName: node
   linkType: hard
 
