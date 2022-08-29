@@ -17,7 +17,7 @@
 */
 
 // React Imports
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 // Theme Provider
 import { ThemeProvider } from "styled-components";
@@ -28,6 +28,9 @@ import { GlobalContext, GlobalProvider } from "context";
 
 // Routes
 import Routes from "Routes";
+
+// eslint-disable-next-line import/no-extraneous-dependencies
+import "popper.js";
 
 // Global CSS (Bootstrap, Tree View of Folders, Custom Styling)
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -46,6 +49,14 @@ function App() {
 }
 
 function AppWrapper() {
+  useEffect(() => {
+    import("jquery").then(($) => {
+      // jQuery must be installed to the `window`:
+      // eslint-disable-next-line no-multi-assign
+      window.$ = window.jQuery = $;
+      return import("bootstrap");
+    });
+  }, []);
   return (
     <GlobalProvider>
       <App />

@@ -73,6 +73,8 @@ const endpoints = {
     groups: {
       create: () => `${apiUrl}/groups`,
       getAll: () => `${apiUrl}/groups`,
+      getAllDeletable: () => `${apiUrl}/groups/deletable`,
+      delete: (groupId) => `${apiUrl}/groups/${groupId}`,
     },
   },
   license: {
