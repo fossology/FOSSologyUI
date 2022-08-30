@@ -73,3 +73,40 @@ export const deleteUserApi = (id) => {
     },
   });
 };
+
+// Modifying user PUT request
+export const editUserByIdApi = (id, editedUserDetails) => {
+  const url = endpoints.users.edit(id);
+  return sendRequest({
+    url,
+    method: "PUT",
+    body: editedUserDetails,
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+};
+
+// Getting user by id
+export const getUserByIdAapi = (id) => {
+  const url = endpoints.users.getSingle(id);
+  return sendRequest({
+    url,
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+};
+
+// Getting REST API Tokens based on token type (active | expired)
+export const getTokensApi = (type) => {
+  const url = endpoints.users.getTokens(type);
+  return sendRequest({
+    url,
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+};

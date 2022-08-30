@@ -93,6 +93,7 @@ const GroupCreate = React.lazy(() => import("pages/Admin/Group/Create"));
 const DeleteGroup = React.lazy(() => import("pages/Admin/Group/Delete"));
 const DeleteUser = React.lazy(() => import("pages/Admin/Users/Delete"));
 const AddUser = React.lazy(() => import("pages/Admin/Users/Add"));
+const EditUser = React.lazy(() => import("pages/Admin/Users/Edit"));
 const AddLicense = React.lazy(() => import("pages/Admin/License/Create"));
 const SelectLicense = React.lazy(() =>
   import("pages/Admin/License/SelectLicense")
@@ -310,6 +311,11 @@ const Routes = () => {
             exact
             path={routes.admin.users.add}
             component={AddUser}
+          />
+          <AdminLayout
+            exact
+            path={routes.admin.users.edit}
+            component={EditUser}
           />
 
           <AdminLayout
