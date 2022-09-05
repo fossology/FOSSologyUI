@@ -15,7 +15,13 @@
 
 import sendRequest from "api/sendRequest";
 import endpoints from "constants/endpoints";
-import { createGroupApi, getAllGroupsApi } from "api/groups";
+import {
+  changeUserPermissionApi,
+  createGroupApi,
+  getAllGroupMembersApi,
+  getAllGroupsApi,
+  removeGroupMemberApi,
+} from "api/groups";
 import { getToken } from "shared/authHelper";
 
 jest.mock("api/sendRequest");
@@ -53,6 +59,65 @@ describe("groups", () => {
           name,
         },
         addGroupName: false,
+      })
+    );
+  });
+
+  test("removeGroupMemberApi", () => {
+    const groupId = 2;
+    const userId = 1;
+    const url = endpoints.admin.groups.removeGroupMember(groupId, userId);
+    sendRequest.mockImplementation(() => true);
+
+    expect(removeGroupMemberApi(groupId, userId)).toBe(sendRequest({}));
+    expect(sendRequest).toHaveBeenCalledWith(
+      expect.objectContaining({
+        url,
+        method: "DELETE",
+        headers: {
+          Authorization: getToken(),
+        },
+      })
+    );
+  });
+
+  test("getAllGroupMembersApi", () => {
+    const groupId = 1;
+    const url = endpoints.admin.groups.getAllGroupMembers(groupId);
+    sendRequest.mockImplementation(() => true);
+
+    expect(getAllGroupMembersApi(groupId)).toBe(sendRequest({}));
+    expect(sendRequest).toHaveBeenCalledWith(
+      expect.objectContaining({
+        url,
+        method: "GET",
+        headers: {
+          Authorization: getToken(),
+        },
+      })
+    );
+  });
+
+  test("changeUserPermissionApi", () => {
+    const groupId = 1;
+    const userId = 1;
+    const permission = 2;
+    const url = endpoints.admin.groups.changeUserPermission(groupId, userId);
+    sendRequest.mockImplementation(() => true);
+
+    expect(changeUserPermissionApi(groupId, userId, permission)).toBe(
+      sendRequest({})
+    );
+    expect(sendRequest).toHaveBeenCalledWith(
+      expect.objectContaining({
+        url,
+        method: "PUT",
+        headers: {
+          Authorization: getToken(),
+        },
+        body: {
+          perm: permission,
+        },
       })
     );
   });

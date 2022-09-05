@@ -358,3 +358,23 @@ export const agents = {
   reso: "REUSE.Software Analysis (forces *Ojo License Analysis*)",
   heritage: "Software Heritage Analysis",
 };
+
+// eslint-disable-next-line camelcase
+export const userPermissions = [
+  {
+    id: -1,
+    name: "None",
+  },
+  {
+    id: 0,
+    name: "User",
+  },
+  {
+    id: 1,
+    name: "Admin",
+  },
+  {
+    id: 2,
+    name: "Advisor",
+  },
+];
