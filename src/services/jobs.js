@@ -23,6 +23,7 @@ import {
   downloadReportApi,
   getAllJobApi,
   getAllAdminJobApi,
+  getUploadHistoryApi,
 } from "api/jobs";
 import { getReportIdFromUrl } from "shared/helper";
 import { getLocalStorage } from "shared/storageHelper";
@@ -77,6 +78,13 @@ export const downloadReport = (url) => {
     return null;
   }
   return downloadReportApi(reportId).then((res) => {
+    return res;
+  });
+};
+
+// Fetching the jobs history based on upload id
+export const getUploadHistory = (uploadId) => {
+  return getUploadHistoryApi(uploadId).then((res) => {
     return res;
   });
 };

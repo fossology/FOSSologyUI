@@ -22,19 +22,19 @@ import { defaultAgentsList, getLocalStorage } from "shared/storageHelper";
 export const statusOptions = [
   {
     id: 0,
-    name: "open",
+    name: "Open",
   },
   {
     id: 1,
-    name: "in progress",
+    name: "InProgress",
   },
   {
     id: 2,
-    name: "closed",
+    name: "Closed",
   },
   {
     id: 3,
-    name: "rejected",
+    name: "Rejected",
   },
 ];
 
@@ -79,6 +79,11 @@ export const actionsOptions = [
     id: 5,
     name: "Export Unified Report",
     reportFormat: "unifiedreport",
+  },
+  {
+    id: 6,
+    name: "History",
+    reportFormat: "uploadHistory",
   },
 ];
 export const initialMessage = {

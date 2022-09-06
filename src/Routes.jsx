@@ -71,6 +71,7 @@ const OneShotMonk = React.lazy(() => import("pages/Upload/OneShotMonk"));
 const AllJobs = React.lazy(() => import("pages/Jobs/AllJobs"));
 const MyRecentJobs = React.lazy(() => import("pages/Jobs/MyRecentJobs"));
 const ScheduleAgents = React.lazy(() => import("pages/Jobs/ScheduleAgents"));
+const ShowJobs = React.lazy(() => import("pages/Jobs/ShowJobs"));
 
 // Organize Pages
 const DeleteFolder = React.lazy(() => import("pages/Organize/Folder/Delete"));
@@ -119,6 +120,12 @@ const Routes = () => {
 
           {/* Browse Page */}
           <PrivateLayout exact path={routes.browse} component={Browse} />
+          {/* Upload job history page */}
+          <PrivateLayout
+            exact
+            path={routes.jobs.showJobs}
+            component={ShowJobs}
+          />
 
           {/* Browse Uploads Pages */}
           <PrivateLayout

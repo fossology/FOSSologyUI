@@ -37,6 +37,7 @@ const routes = {
     myRecentJobs: "/jobs/myRecentJobs",
     allRecentJobs: "/jobs/allRecentJobs",
     scheduleAgents: "/jobs/scheduleAgents",
+    showJobs: "/showJobs/:uploadId",
   },
   organize: {
     folders: {
