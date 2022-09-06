@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2022 Samuel Dushimimana (dushsam100@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -26,17 +27,55 @@ import { getToken } from "shared/authHelper";
 import sendRequest from "./sendRequest";
 
 // Create Uploads from File
-export const createUploadApi = (
-  folderId,
-  uploadDescription,
-  accessLevel,
-  ignoreScm,
-  fileInput
-) => {
+export const createUploadApi = (uploadFileData, scanData) => {
+  const { folderId, uploadDescription, accessLevel, ignoreScm, fileInput } =
+    uploadFileData;
+
+  const { bucket, copyrightEmailAuthor, ecc, keyword, mime, monk, nomos, ojo } =
+    scanData?.analysis;
+  const { nomosMonk, bulkReused, newScanner, ojoDecider } = scanData?.decider;
+  const {
+    reuseUpload,
+    reuseGroup,
+    reuseMain,
+    reuseEnhanced,
+    reuseReport,
+    reuseCopyright,
+  } = scanData?.reuse;
+
   const url = endpoints.upload.uploadCreate();
   const formdata = new FormData();
+  const scanOptions = {
+    analysis: {
+      bucket,
+      copyright_email_author: copyrightEmailAuthor,
+      ecc,
+      keyword,
+      mime,
+      monk,
+      nomos,
+      ojo,
+      package: scanData.analysis.package,
+    },
+    decider: {
+      nomos_monk: nomosMonk,
+      bulk_reused: bulkReused,
+      new_scanner: newScanner,
+      ojo_decider: ojoDecider,
+    },
+    reuse: {
+      reuse_upload: reuseUpload,
+      reuse_group: reuseGroup,
+      reuse_main: reuseMain,
+      reuse_enhanced: reuseEnhanced,
+      reuse_report: reuseReport,
+      reuse_copyright: reuseCopyright,
+    },
+  };
+
   if (fileInput) {
     formdata.append("fileInput", fileInput, fileInput?.name);
+    formdata.append("scanOptions", JSON.stringify(scanOptions));
   }
   return sendRequest({
     url,
@@ -48,15 +87,27 @@ export const createUploadApi = (
       uploadDescription,
       public: accessLevel,
       ignoreScm,
-      uploadType: "",
+      uploadType: "file",
     },
     body: formdata,
   });
 };
 
 // Create Uploads from Version Control System
-export const createUploadVcsApi = (header, body) => {
+export const createUploadVcsApi = (header, vcsData, scanData) => {
   const url = endpoints.upload.uploadCreate();
+  const { bucket, copyrightEmailAuthor, ecc, keyword, mime, monk, nomos, ojo } =
+    scanData?.analysis;
+  const { nomosMonk, bulkReused, newScanner, ojoDecider } = scanData?.decider;
+  const {
+    reuseUpload,
+    reuseGroup,
+    reuseMain,
+    reuseEnhanced,
+    reuseReport,
+    reuseCopyright,
+  } = scanData?.reuse;
+
   return sendRequest({
     url,
     method: "POST",
@@ -64,13 +115,54 @@ export const createUploadVcsApi = (header, body) => {
       ...header,
       Authorization: getToken(),
     },
-    body,
+    body: {
+      data: vcsData,
+      scanOptions: {
+        analysis: {
+          bucket,
+          copyright_email_author: copyrightEmailAuthor,
+          ecc,
+          keyword,
+          mime,
+          monk,
+          nomos,
+          ojo,
+          package: scanData.analysis.package,
+        },
+        decider: {
+          nomos_monk: nomosMonk,
+          bulk_reused: bulkReused,
+          new_scanner: newScanner,
+          ojo_decider: ojoDecider,
+        },
+        reuse: {
+          reuse_upload: reuseUpload,
+          reuse_group: reuseGroup,
+          reuse_main: reuseMain,
+          reuse_enhanced: reuseEnhanced,
+          reuse_report: reuseReport,
+          reuse_copyright: reuseCopyright,
+        },
+      },
+    },
   });
 };
 
 // Create Uploads from URL
-export const createUploadUrlApi = (header, body) => {
+export const createUploadUrlApi = (header, urlData, scanData) => {
   const url = endpoints.upload.uploadCreate();
+  const { bucket, copyrightEmailAuthor, ecc, keyword, mime, monk, nomos, ojo } =
+    scanData?.analysis;
+  const { nomosMonk, bulkReused, newScanner, ojoDecider } = scanData?.decider;
+  const {
+    reuseUpload,
+    reuseGroup,
+    reuseMain,
+    reuseEnhanced,
+    reuseReport,
+    reuseCopyright,
+  } = scanData?.reuse;
+
   return sendRequest({
     url,
     method: "POST",
@@ -78,11 +170,40 @@ export const createUploadUrlApi = (header, body) => {
       ...header,
       Authorization: getToken(),
     },
-    body,
+    body: {
+      data: urlData,
+      scanOptions: {
+        analysis: {
+          bucket,
+          copyright_email_author: copyrightEmailAuthor,
+          ecc,
+          keyword,
+          mime,
+          monk,
+          nomos,
+          ojo,
+          package: scanData.analysis.package,
+        },
+        decider: {
+          nomos_monk: nomosMonk,
+          bulk_reused: bulkReused,
+          new_scanner: newScanner,
+          ojo_decider: ojoDecider,
+        },
+        reuse: {
+          reuse_upload: reuseUpload,
+          reuse_group: reuseGroup,
+          reuse_main: reuseMain,
+          reuse_enhanced: reuseEnhanced,
+          reuse_report: reuseReport,
+          reuse_copyright: reuseCopyright,
+        },
+      },
+    },
   });
 };
 
-// Getting a Upload by id
+// Getting an Upload by id
 export const getUploadByIdApi = (uploadId, retries) => {
   const url = endpoints.upload.getId(uploadId);
   return sendRequest({
@@ -95,7 +216,7 @@ export const getUploadByIdApi = (uploadId, retries) => {
   });
 };
 
-// Getting a Upload Summary
+// Getting an Upload Summary
 export const getUploadSummaryApi = (uploadId) => {
   const url = endpoints.upload.getSummary(uploadId);
   return sendRequest({
@@ -107,7 +228,7 @@ export const getUploadSummaryApi = (uploadId) => {
   });
 };
 
-// Getting a Upload License
+// Getting an Upload License
 export const getUploadLicenseApi = (uploadId, agent) => {
   const url = endpoints.upload.getLicense(uploadId);
   return sendRequest({

@@ -30,7 +30,6 @@ import CommonFields from "components/Upload/CommonFields";
 
 // Required functions for calling APIs
 import { createUploadFile } from "services/upload";
-import { scheduleAnalysis } from "services/jobs";
 import { getAllFolders } from "services/folders";
 
 // Helper function for error handling
@@ -41,11 +40,12 @@ import {
   initialStateFile,
   initialScanFileDataFile,
   initialFolderListFile,
+  initialScanFileData,
+  initialFolderList,
 } from "../../../constants/constants";
 
 const UploadFile = () => {
-  // Upload Id required for scheduling Analysis
-  let uploadId;
+  // Upload I'd required for scheduling Analysis
 
   // Data required for creating the upload
   const [uploadFileData, setUploadFileData] = useState(initialStateFile);
@@ -61,36 +61,24 @@ const UploadFile = () => {
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState();
 
+  // Function to reset the state variables to initial state
+  const resetStateVariables = () => {
+    setScanFileData(initialScanFileData);
+    setFolderList(initialFolderList);
+    setUploadFileData(initialStateFile);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    createUploadFile(uploadFileData)
-      .then((res) => {
+    createUploadFile(uploadFileData, scanFileData)
+      .then(() => {
+        resetStateVariables();
         window.scrollTo({ top: 0 });
         setMessage({
           type: "success",
-          text: messages.uploadSuccess,
+          text: `${messages.uploadSuccess}`,
         });
-        uploadId = res.message;
-      })
-      .then(() => {
-        setTimeout(
-          () =>
-            scheduleAnalysis(uploadFileData.folderId, uploadId, scanFileData)
-              .then(() => {
-                window.scrollTo({ top: 0 });
-                setMessage({
-                  type: "success",
-                  text: messages.scheduledAnalysis,
-                });
-                setUploadFileData(initialStateFile);
-                setScanFileData(initialScanFileDataFile);
-              })
-              .catch((error) => {
-                handleError(error, setMessage);
-              }),
-          1200
-        );
       })
       .catch((error) => {
         handleError(error, setMessage);

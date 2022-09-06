@@ -1,5 +1,7 @@
 /*
  Copyright (C) 2021 Edgar Sherman (edgarshermangh14@gmail.com)
+ Copyright (C) 2022 Samuel Dushimimana (dushsam100@gmail.com)
+
  SPDX-License-Identifier: GPL-2.0
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -27,23 +29,48 @@ jest.mock("api/sendRequest");
 
 describe("upload", () => {
   test("createUploadApi without fileInput", () => {
-    const folderId = 1;
-    const uploadDescription = "uploadDescription";
-    const accessLevel = 2;
-    const ignoreScm = true;
-    const fileInput = null;
+    const uploadFileData = {
+      uploadDescription: "test",
+      folderId: 1,
+      accessLevel: 2,
+      ignoreScm: true,
+      fileInput: null,
+    };
+    const scanOptions = {
+      analysis: {
+        bucket: "bucket",
+        copyrightEmailAuthor: "copyrightEmailAuthor",
+        ecc: "ecc",
+        keyword: "keyword",
+        mime: "mime",
+        monk: "monk",
+        nomos: "nomos",
+        ojo: "ojo",
+        package: "package",
+      },
+      decider: {
+        nomosMonk: "nomosMonk",
+        bulkReused: "bulkReused",
+        newScanner: "newScanner",
+        ojoDecider: "ojoDecider",
+      },
+      reuse: {
+        reuseUpload: "reuseUpload",
+        reuseGroup: "reuseGroup",
+        reuseMain: "reuseMain",
+        reuseEnhanced: "reuseEnhanced",
+        reuseReport: "reuseReport",
+        reuseCopyright: "reuseCopyright",
+      },
+    };
+
+    const { folderId, uploadDescription, accessLevel, ignoreScm } =
+      uploadFileData;
+
     const url = endpoints.upload.uploadCreate();
     sendRequest.mockImplementation(() => true);
 
-    expect(
-      createUploadApi(
-        folderId,
-        uploadDescription,
-        accessLevel,
-        ignoreScm,
-        fileInput
-      )
-    ).toBe(sendRequest({}));
+    expect(createUploadApi(uploadFileData, scanOptions)).toBe(sendRequest({}));
     expect(sendRequest).toHaveBeenCalledWith(
       expect.objectContaining({
         url,
@@ -55,7 +82,7 @@ describe("upload", () => {
           uploadDescription,
           public: accessLevel,
           ignoreScm,
-          uploadType: "",
+          uploadType: "file",
         },
         body: new FormData(),
       })
@@ -63,27 +90,53 @@ describe("upload", () => {
   });
 
   test("createUploadApi with fileInput", () => {
-    const folderId = 1;
-    const uploadDescription = "uploadDescription";
-    const accessLevel = 2;
-    const ignoreScm = true;
-    const fileInput = new File(["My File"], "file.txt", {
-      type: "text/plain",
-    });
+    const uploadFileData = {
+      uploadDescription: "uploadDescription",
+      folderId: 1,
+      accessLevel: 2,
+      ignoreScm: true,
+      fileInput: new File(["My File"], "file.txt", {
+        type: "text/plain",
+      }),
+    };
+    const scanOptions = {
+      analysis: {
+        bucket: "bucket",
+        copyrightEmailAuthor: "copyrightEmailAuthor",
+        ecc: "ecc",
+        keyword: "keyword",
+        mime: "mime",
+        monk: "monk",
+        nomos: "nomos",
+        ojo: "ojo",
+        package: "package",
+      },
+      decider: {
+        nomosMonk: "nomosMonk",
+        bulkReused: "bulkReused",
+        newScanner: "newScanner",
+        ojoDecider: "ojoDecider",
+      },
+      reuse: {
+        reuseUpload: "reuseUpload",
+        reuseGroup: "reuseGroup",
+        reuseMain: "reuseMain",
+        reuseEnhanced: "reuseEnhanced",
+        reuseReport: "reuseReport",
+        reuseCopyright: "reuseCopyright",
+      },
+    };
+    const { folderId, uploadDescription, accessLevel, ignoreScm, fileInput } =
+      uploadFileData;
+
     const expectedBody = new FormData();
     expectedBody.append("fileInput", fileInput, fileInput?.name);
+    expectedBody.append("scanOptions", JSON.stringify(scanOptions));
+
     const url = endpoints.upload.uploadCreate();
     sendRequest.mockImplementation(() => true);
 
-    expect(
-      createUploadApi(
-        folderId,
-        uploadDescription,
-        accessLevel,
-        ignoreScm,
-        fileInput
-      )
-    ).toBe(sendRequest({}));
+    expect(createUploadApi(uploadFileData, scanOptions)).toBe(sendRequest({}));
     expect(sendRequest).toHaveBeenCalledWith(
       expect.objectContaining({
         url,
@@ -95,7 +148,7 @@ describe("upload", () => {
           uploadDescription,
           public: accessLevel,
           ignoreScm,
-          uploadType: "",
+          uploadType: "file",
         },
         body: expectedBody,
       })
@@ -104,11 +157,38 @@ describe("upload", () => {
 
   test("createUploadVcsApi", () => {
     const header = "header";
-    const body = "body";
+    const vcsData = "vcsData";
+    const scanData = {
+      analysis: {
+        bucket: "bucket",
+        copyrightEmailAuthor: "copyrightEmailAuthor",
+        ecc: "ecc",
+        keyword: "keyword",
+        mime: "mime",
+        monk: "monk",
+        nomos: "nomos",
+        ojo: "ojo",
+        package: "package",
+      },
+      decider: {
+        nomosMonk: "nomosMonk",
+        bulkReused: "bulkReused",
+        newScanner: "newScanner",
+        ojoDecider: "ojoDecider",
+      },
+      reuse: {
+        reuseUpload: "reuseUpload",
+        reuseGroup: "reuseGroup",
+        reuseMain: "reuseMain",
+        reuseEnhanced: "reuseEnhanced",
+        reuseReport: "reuseReport",
+        reuseCopyright: "reuseCopyright",
+      },
+    };
     const url = endpoints.upload.uploadCreate();
     sendRequest.mockImplementation(() => true);
 
-    expect(createUploadVcsApi(header, body)).toBe(sendRequest({}));
+    expect(createUploadVcsApi(header, vcsData, scanData)).toBe(sendRequest({}));
     expect(sendRequest).toHaveBeenCalledWith(
       expect.objectContaining({
         url,
@@ -117,18 +197,74 @@ describe("upload", () => {
           ...header,
           Authorization: getToken(),
         },
-        body,
+        body: {
+          data: vcsData,
+          scanOptions: {
+            analysis: {
+              bucket: scanData.analysis.bucket,
+              copyright_email_author: scanData.analysis.copyrightEmailAuthor,
+              ecc: scanData.analysis.ecc,
+              keyword: scanData.analysis.keyword,
+              mime: scanData.analysis.mime,
+              monk: scanData.analysis.monk,
+              nomos: scanData.analysis.nomos,
+              ojo: scanData.analysis.ojo,
+              package: scanData.analysis.package,
+            },
+            decider: {
+              nomos_monk: scanData.decider.nomosMonk,
+              bulk_reused: scanData.decider.bulkReused,
+              new_scanner: scanData.decider.newScanner,
+              ojo_decider: scanData.decider.ojoDecider,
+            },
+            reuse: {
+              reuse_upload: scanData.reuse.reuseUpload,
+              reuse_group: scanData.reuse.reuseGroup,
+              reuse_main: scanData.reuse.reuseMain,
+              reuse_enhanced: scanData.reuse.reuseEnhanced,
+              reuse_report: scanData.reuse.reuseReport,
+              reuse_copyright: scanData.reuse.reuseCopyright,
+            },
+          },
+        },
       })
     );
   });
 
   test("createUploadUrlApi", () => {
     const header = "header";
-    const body = "body";
     const url = endpoints.upload.uploadCreate();
+    const scanData = {
+      analysis: {
+        bucket: "bucket",
+        copyrightEmailAuthor: "copyrightEmailAuthor",
+        ecc: "ecc",
+        keyword: "keyword",
+        mime: "mime",
+        monk: "monk",
+        nomos: "nomos",
+        ojo: "ojo",
+        package: "package",
+      },
+      decider: {
+        nomosMonk: "nomosMonk",
+        bulkReused: "bulkReused",
+        newScanner: "newScanner",
+        ojoDecider: "ojoDecider",
+      },
+      reuse: {
+        reuseUpload: "reuseUpload",
+        reuseGroup: "reuseGroup",
+        reuseMain: "reuseMain",
+        reuseEnhanced: "reuseEnhanced",
+        reuseReport: "reuseReport",
+        reuseCopyright: "reuseCopyright",
+      },
+    };
+
     sendRequest.mockImplementation(() => true);
 
-    expect(createUploadUrlApi(header, body)).toBe(sendRequest({}));
+    expect(createUploadUrlApi(header, null, scanData)).toBe(sendRequest({}));
     expect(sendRequest).toHaveBeenCalledWith(
       expect.objectContaining({
         url,
@@ -137,7 +273,36 @@ describe("upload", () => {
           ...header,
           Authorization: getToken(),
         },
-        body,
+        body: {
+          data: null,
+          scanOptions: {
+            analysis: {
+              bucket: scanData.analysis.bucket,
+              copyright_email_author: scanData.analysis.copyrightEmailAuthor,
+              ecc: scanData.analysis.ecc,
+              keyword: scanData.analysis.keyword,
+              mime: scanData.analysis.mime,
+              monk: scanData.analysis.monk,
+              nomos: scanData.analysis.nomos,
+              ojo: scanData.analysis.ojo,
+              package: scanData.analysis.package,
+            },
+            decider: {
+              nomos_monk: scanData.decider.nomosMonk,
+              bulk_reused: scanData.decider.bulkReused,
+              new_scanner: scanData.decider.newScanner,
+              ojo_decider: scanData.decider.ojoDecider,
+            },
+            reuse: {
+              reuse_upload: scanData.reuse.reuseUpload,
+              reuse_group: scanData.reuse.reuseGroup,
+              reuse_main: scanData.reuse.reuseMain,
+              reuse_enhanced: scanData.reuse.reuseEnhanced,
+              reuse_report: scanData.reuse.reuseReport,
+              reuse_copyright: scanData.reuse.reuseCopyright,
+            },
+          },
+        },
       })
     );
   });
