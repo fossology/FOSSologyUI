@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
+ Copyright (C) 2022 Krishna Mahato (krishhtrishh9304@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -23,6 +24,7 @@ import {
   downloadReportApi,
   getAllJobApi,
   getAllAdminJobApi,
+  importReportApi,
 } from "api/jobs";
 import { getReportIdFromUrl } from "shared/helper";
 import { getLocalStorage } from "shared/storageHelper";
@@ -77,6 +79,12 @@ export const downloadReport = (url) => {
     return null;
   }
   return downloadReportApi(reportId).then((res) => {
+    return res;
+  });
+};
+
+export const importReport = (uploadId, reqBody) => {
+  return importReportApi(uploadId, reqBody).then((res) => {
     return res;
   });
 };

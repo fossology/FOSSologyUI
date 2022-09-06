@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2022 Soham Banerjee(sohambanerjee4abc@hotmail.com)
+ Copyright (C) 2022 Soham Banerjee(sohambanerjee4abc@hotmail.com), Krishna Mahato (krishhtrishh9304@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -80,6 +80,11 @@ export const actionsOptions = [
     name: "Export Unified Report",
     reportFormat: "unifiedreport",
   },
+  {
+    id: 6,
+    name: "Import Report",
+    reportFormat: "importReport",
+  },
 ];
 export const initialMessage = {
   type: "success",
@@ -139,16 +144,16 @@ export const initialFolderListFile = [
 ];
 // constants for upload/ImportReport
 export const initialStateImportReport = {
-  folder: "",
-  editUpload: "",
-  reportUpload: "",
-  newLicense: "licenseCanditate",
-  licenseInfoInFile: true,
-  licenseConcluded: false,
-  licenseDecision: true,
-  existingDecisions: true,
-  importDiscussed: true,
-  copyright: false,
+  folder: 1,
+  upload: "",
+  report: null,
+  addNewLicensesAs: "candidate",
+  addConcludedAsDecisions: true,
+  addLicenseInfoFromInfoInFile: true,
+  addLicenseInfoFromConcluded: false,
+  addConcludedAsDecisionsOverwrite: true,
+  addConcludedAsDecisionsTBD: true,
+  addCopyrights: false,
 };
 
 // constants for upload/UploadFromServer

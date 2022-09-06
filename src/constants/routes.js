@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
+ Copyright (C) 2022 Krishna Mahato <krishhtrishh9304@gmail.com>
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -27,7 +28,7 @@ const routes = {
     server: "/upload/server",
     url: "/upload/url",
     vcs: "/upload/vcs",
-    report: "/upload/report",
+    importReport: "/upload/reportImport",
     instructions: "/upload/instructions",
     oneShotAnalysis: "/upload/oneShotAnalysis",
     oneShotCopyright: "/upload/oneShotCopyright",
