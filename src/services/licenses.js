@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com) , Samuel Dushimimana (dushsam100@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -16,7 +16,11 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import { getAllLicenseApi, createCandidateLicenseApi } from "api/licenses";
+import {
+  getAllLicenseApi,
+  createCandidateLicenseApi,
+  importLicenseCsvApi,
+} from "api/licenses";
 
 // Fetching the licenses with their kind i.e (candidate, main, all)
 export const getAllLicense = (licenseData) => {
@@ -27,6 +31,12 @@ export const getAllLicense = (licenseData) => {
 
 export const createCandidateLicense = (licenseData) => {
   return createCandidateLicenseApi(licenseData).then((res) => {
+    return res;
+  });
+};
+
+export const importLicenseCsv = ({ fileInput, delimiter, enclosure }) => {
+  return importLicenseCsvApi(fileInput, delimiter, enclosure).then((res) => {
     return res;
   });
 };

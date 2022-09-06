@@ -85,6 +85,7 @@ const endpoints = {
     license: {
       get: () => `${apiUrl}/license`,
       createCandidateLicense: () => `${apiUrl}/license`,
+      importCsv: () => `${apiUrl}/license/import-csv`,
     },
     info: {
       info: () => `${apiUrl}/info`,

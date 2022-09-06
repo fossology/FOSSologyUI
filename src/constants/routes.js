@@ -77,6 +77,7 @@ const routes = {
       create: "/admin/license/create",
       selectLicense: "/admin/selectLicense",
       licenseCSV: "/licenseCSV/fossology-license-export.csv",
+      import: "/admin/license/import",
     },
     mantainance: "/admin/mantainance",
   },

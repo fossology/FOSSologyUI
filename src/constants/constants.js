@@ -104,6 +104,13 @@ export const initialMessageSearch = {
   text: "",
 };
 
+// constants used in Import License component
+export const initialImportCsvLicense = {
+  fileInput: null,
+  delimiter: ",",
+  enclosure: '"',
+};
+
 // constants used in Upload/file component
 export const initialStateFile = {
   folderId: 1,
