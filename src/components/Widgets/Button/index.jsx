@@ -34,9 +34,9 @@ const Button = ({
     <ButtonContainer
       type={type}
       onClick={onClick}
-      data-toggle={dataToggle}
-      data-dismiss={dataDismiss}
-      data-target={dataTarget}
+      dataDismiss={dataDismiss}
+      dataToggle={dataToggle}
+      dataTarget={dataTarget}
       className={`bg-primary-color text-secondary-color font-demi text-center hover-primary-color ${className}`}
       disabled={disabled}
     >

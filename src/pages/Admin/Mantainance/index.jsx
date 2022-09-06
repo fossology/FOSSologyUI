@@ -1,6 +1,5 @@
 /*
  Copyright (C) 2022 Samuel Dushimimana (dushsam100@gmail.com)
- 
  SPDX-License-Identifier: GPL-2.0
 
  This program is free software; you can redistribute it and/or
@@ -10,7 +9,6 @@
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
- 
  You should have received a copy of the GNU General Public License along
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -20,28 +18,61 @@ import React, { useState } from "react";
 
 // Title
 import Title from "components/Title";
-import { Button, InputContainer, Spinner } from "components/Widgets";
-import { initialMantainanceFields } from "constants/constants";
+import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
+import { initialMantainanceFields, initialMessage } from "constants/constants";
+import createMaintenance from "services/maintenance";
 
 const ManageMantainance = () => {
   const [loading, setLoading] = useState(false);
   const [fields, setFields] = useState(initialMantainanceFields);
+  const [showMessage, setShowMessage] = useState(false);
+  const [message, setMessage] = useState(initialMessage);
 
   const handleChange = (e) => {
     const { name } = e.target;
 
     if (Object.keys(fields).find((field) => field === name)) {
-      setFields({ ...fields, [e.target.name]: e.target.checked });
+      if (name === "logsDate" || name === "goldDate") {
+        setFields({ ...fields, [name]: e.target.value });
+      } else {
+        setFields({ ...fields, [name]: e.target.checked });
+      }
     }
   };
 
-  const handleSubmit = (e) => {
+  const getSelectedKeys = () => {
+    // eslint-disable-next-line func-names
+    return Object.keys(fields).filter(function (key) {
+      return fields[key] === true;
+    });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    setTimeout(() => {
+    const req = {
+      options: getSelectedKeys(),
+      logsDate: fields.logsDate,
+      goldDate: fields.goldDate,
+    };
+
+    try {
+      const res = await createMaintenance(req);
+      setMessage({
+        type: "success",
+        text: res.message,
+      });
+      setFields(initialMantainanceFields);
+    } catch (error) {
+      setMessage({
+        type: "danger",
+        text: error.message,
+      });
+    } finally {
       setLoading(false);
-    }, 3000);
+      setShowMessage(true);
+    }
   };
   return (
     <>
@@ -49,6 +80,13 @@ const ManageMantainance = () => {
       <div className="container">
         <div className="row">
           <div className="col-12">
+            {showMessage && (
+              <Alert
+                type={message.type}
+                setShow={setShowMessage}
+                message={message.text}
+              />
+            )}
             <h1 className="font-size-main-heading mt-4">
               FOSSology Maintenance
             </h1>
@@ -57,8 +95,8 @@ const ManageMantainance = () => {
             <form className="my-3">
               <InputContainer
                 type="checkbox"
-                checked={fields.allNonSlow}
-                name="allNonSlow"
+                checked={fields.a}
+                name="a"
                 className="my-3"
                 id="all-non-slow"
                 onChange={(e) => handleChange(e)}
@@ -68,8 +106,8 @@ const ManageMantainance = () => {
 
               <InputContainer
                 type="checkbox"
-                checked={fields.allOperations}
-                name="allOperations"
+                checked={fields.A}
+                name="A"
                 className="my-3"
                 id="all-operations"
                 onChange={(e) => handleChange(e)}
@@ -79,8 +117,8 @@ const ManageMantainance = () => {
 
               <InputContainer
                 type="checkbox"
-                checked={fields.validateFolderContents}
-                name="validateFolderContents"
+                checked={fields.F}
+                name="F"
                 className="my-3"
                 id="validate-folder-contents"
                 onChange={(e) => handleChange(e)}
@@ -90,8 +128,8 @@ const ManageMantainance = () => {
 
               <InputContainer
                 type="checkbox"
-                checked={fields.rmvGoldFiles}
-                name="rmvGoldFiles"
+                checked={fields.g}
+                name="g"
                 className="my-3"
                 id="remove-gold-files"
                 onChange={(e) => handleChange(e)}
@@ -101,8 +139,8 @@ const ManageMantainance = () => {
 
               <InputContainer
                 type="checkbox"
-                checked={fields.rmvOrphanedRows}
-                name="rmvOrphanedRows"
+                checked={fields.E}
+                name="E"
                 className="my-3"
                 id="remove-orphaned-rows"
                 onChange={(e) => handleChange(e)}
@@ -112,8 +150,8 @@ const ManageMantainance = () => {
 
               <InputContainer
                 type="checkbox"
-                checked={fields.rmvLogFiles}
-                name="rmvLogFiles"
+                checked={fields.L}
+                name="L"
                 className="my-3"
                 id="remove-log-files"
                 onChange={(e) => handleChange(e)}
@@ -123,8 +161,8 @@ const ManageMantainance = () => {
 
               <InputContainer
                 type="checkbox"
-                checked={fields.normalizePriority}
-                name="normalizePriority"
+                checked={fields.N}
+                name="N"
                 className="my-3"
                 id="normalize-priority"
                 onChange={(e) => handleChange(e)}
@@ -134,8 +172,8 @@ const ManageMantainance = () => {
 
               <InputContainer
                 type="checkbox"
-                checked={fields.rmvUploads}
-                name="rmvUploads"
+                checked={fields.R}
+                name="R"
                 className="my-3"
                 id="remove-uploads"
                 onChange={(e) => handleChange(e)}
@@ -145,8 +183,8 @@ const ManageMantainance = () => {
 
               <InputContainer
                 type="checkbox"
-                checked={fields.rmvTokens}
-                name="rmvTokens"
+                checked={fields.t}
+                name="t"
                 className="my-3"
                 id="remove-tokens"
                 onChange={(e) => handleChange(e)}
@@ -156,8 +194,8 @@ const ManageMantainance = () => {
 
               <InputContainer
                 type="checkbox"
-                checked={fields.rmvTempTables}
-                name="rmvTempTables"
+                checked={fields.T}
+                name="T"
                 className="my-3"
                 id="remove-temp-tables"
                 onChange={(e) => handleChange(e)}
@@ -167,8 +205,8 @@ const ManageMantainance = () => {
 
               <InputContainer
                 type="checkbox"
-                checked={fields.analyseDb}
-                name="analyseDb"
+                checked={fields.D}
+                name="D"
                 className="my-3"
                 id="analyse-db"
                 onChange={(e) => handleChange(e)}
@@ -178,8 +216,8 @@ const ManageMantainance = () => {
 
               <InputContainer
                 type="checkbox"
-                checked={fields.rmvRepoFiles}
-                name="rmvRepoFiles"
+                checked={fields.Z}
+                name="Z"
                 className="my-3"
                 id="remove-repo-files"
                 onChange={(e) => handleChange(e)}
@@ -189,8 +227,8 @@ const ManageMantainance = () => {
 
               <InputContainer
                 type="checkbox"
-                checked={fields.dbReindexing}
-                name="dbReindexing"
+                checked={fields.I}
+                name="I"
                 className="my-3"
                 id="database-reindexing"
                 onChange={(e) => handleChange(e)}
@@ -201,8 +239,8 @@ const ManageMantainance = () => {
 
               <InputContainer
                 type="checkbox"
-                checked={fields.verbose}
-                name="verbose"
+                checked={fields.v}
+                name="v"
                 className="my-3"
                 id="verbose"
                 onChange={(e) => handleChange(e)}
@@ -212,8 +250,8 @@ const ManageMantainance = () => {
 
               <InputContainer
                 type="checkbox"
-                checked={fields.rmvRepoOldFiles1}
-                name="rmvRepoOldFiles1"
+                checked={fields.o}
+                name="o"
                 className="mt-3"
                 id="rmv-repo-old-files-1"
                 onChange={(e) => handleChange(e)}
@@ -224,14 +262,15 @@ const ManageMantainance = () => {
               <InputContainer
                 type="date"
                 className="col-3"
-                name="rmvRepoOldFiles1Date"
-                id="remove-repo-old-files-1-date"
+                name="logsDate"
+                id="logs-date"
+                onChange={(e) => handleChange(e)}
               />
 
               <InputContainer
                 type="checkbox"
-                checked={fields.rmvRepoOldFiles2}
-                name="rmvRepoOldFiles2"
+                checked={fields.l}
+                name="l"
                 className="mt-3"
                 id="rmv-repo-old-files-2"
                 onChange={(e) => handleChange(e)}
@@ -242,11 +281,17 @@ const ManageMantainance = () => {
               <InputContainer
                 type="date"
                 className="col-3"
-                name="rmvRepoOldFiles1Date"
-                id="remove-repo-old-files-1-date"
+                name="goldDate"
+                id="gold-date"
+                onChange={(e) => handleChange(e)}
               />
 
-              <Button type="submit" onClick={handleSubmit} className="mt-4">
+              <Button
+                type="submit"
+                onClick={handleSubmit}
+                disabled={getSelectedKeys().length === 0}
+                className="mt-4"
+              >
                 {loading ? (
                   <Spinner
                     as="span"
@@ -256,7 +301,7 @@ const ManageMantainance = () => {
                     aria-hidden="true"
                   />
                 ) : (
-                  "Queue the maintanance agent"
+                  "Queue the maintenance agent"
                 )}
               </Button>
             </form>

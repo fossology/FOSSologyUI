@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2022  Samuel Dushimimana (dushsam100@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -16,23 +16,13 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import endpoints from "constants/endpoints";
+// Create Uploads from File
+import { createMaintenanceApi } from "../api/maintenance";
 
-// Function for calling the fetch function for the APIs
-import sendRequest from "./sendRequest";
-
-export const getInfoApi = () => {
-  const url = endpoints.admin.info.info();
-  return sendRequest({
-    url,
-    method: "GET",
+// Creating a group
+const createMaintenance = (data) => {
+  return createMaintenanceApi(data).then((res) => {
+    return res;
   });
 };
-
-export const getHealthApi = () => {
-  const url = endpoints.admin.info.health();
-  return sendRequest({
-    url,
-    method: "GET",
-  });
-};
+export default createMaintenance;
