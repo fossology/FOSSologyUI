@@ -98,32 +98,30 @@ const ScheduleAgents = () => {
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    scheduleAnalysis(
-      scheduleAnalysisData.folderId,
-      scheduleAnalysisData.uploadId,
-      scanFileData
-    )
-      .then(() => {
-        setMessage({
-          type: "success",
-          text: messages.jobsAdded,
-        });
-        setScheduleAnalysisData(initialScheduleAnalysisData);
-        setScanFileData(initialScanFileData);
-      })
-      .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
-      })
-      .finally(() => {
-        setLoading(false);
-        setShowMessage(true);
+    try {
+      await scheduleAnalysis(
+        scheduleAnalysisData.folderId,
+        scheduleAnalysisData.uploadId,
+        scanFileData
+      );
+      setMessage({
+        type: "success",
+        text: messages.jobsAdded,
       });
+      setScheduleAnalysisData(initialScheduleAnalysisData);
+      setScanFileData(initialScanFileData);
+    } catch (error) {
+      setMessage({
+        type: "danger",
+        text: error.message,
+      });
+    } finally {
+      setLoading(false);
+      setShowMessage(true);
+    }
   };
   const handleChange = (e) => {
     setScheduleAnalysisData({
