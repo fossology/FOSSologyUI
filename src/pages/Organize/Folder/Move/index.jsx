@@ -67,38 +67,34 @@ const MoveFolder = () => {
       [e.target.name]: e.target.value,
     });
 
-  const handleMove = (e) => {
+  const handleMove = async (e) => {
     e.preventDefault();
-    moveFolder(moveFolderData)
-      .then(() => {
-        setMessage({
-          type: "success",
-          text: messages.movedFolder,
-        });
-      })
-      .catch((error) => {
-        handleError(error, setMessage);
-      })
-      .finally(() => {
-        setShowMessage(true);
+    try {
+      await moveFolder(moveFolderData);
+      setMessage({
+        type: "success",
+        text: messages.movedFolder,
       });
+    } catch (error) {
+      handleError(error, setMessage);
+    } finally {
+      setShowMessage(true);
+    }
   };
 
-  const handleCopy = (e) => {
+  const handleCopy = async (e) => {
     e.preventDefault();
-    copyFolder(moveFolderData)
-      .then(() => {
-        setMessage({
-          type: "success",
-          text: messages.copiedFolder,
-        });
-      })
-      .catch((error) => {
-        handleError(error, setMessage);
-      })
-      .finally(() => {
-        setShowMessage(true);
+    try {
+      await copyFolder(moveFolderData);
+      setMessage({
+        type: "success",
+        text: messages.copiedFolder,
       });
+    } catch (error) {
+      handleError(error, setMessage);
+    } finally {
+      setShowMessage(true);
+    }
   };
 
   useEffect(() => {

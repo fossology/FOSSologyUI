@@ -85,26 +85,24 @@ const AddCandidateLicense = () => {
       });
     }
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    createCandidateLicense(createLicenseData)
-      .then(() => {
-        setMessage({
-          type: "success",
-          text: messages.createdLicense,
-        });
-      })
-      .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
-      })
-      .finally(() => {
-        setLoading(false);
-        setShowMessage(true);
+    try {
+      await createCandidateLicense(createLicenseData);
+      setMessage({
+        type: "success",
+        text: messages.createdLicense,
       });
+    } catch (error) {
+      setMessage({
+        type: "danger",
+        text: error.message,
+      });
+    } finally {
+      setLoading(false);
+      setShowMessage(true);
+    }
   };
   return (
     <>

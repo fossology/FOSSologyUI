@@ -69,28 +69,23 @@ const UnlinkFolder = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    deleteFolder(unlinkFolderData)
-      .then(() => {
-        setMessage({
-          type: "success",
-          text: messages.unlinkedFolder,
-        });
-      })
-      .then(() => {
-        getAllFolders().then((res) => {
-          setFolderList(res);
-        });
-      })
-      .catch((error) => {
-        handleError(error, setMessage);
-      })
-      .finally(() => {
-        setLoading(false);
-        setShowMessage(true);
+    try {
+      await deleteFolder(unlinkFolderData);
+      setMessage({
+        type: "success",
+        text: messages.unlinkedFolder,
       });
+      const res = await getAllFolders();
+      setFolderList(res);
+    } catch (error) {
+      handleError(error, setMessage);
+    } finally {
+      setLoading(false);
+      setShowMessage(true);
+    }
   };
 
   useEffect(() => {
