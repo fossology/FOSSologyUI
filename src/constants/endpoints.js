@@ -29,6 +29,7 @@ const endpoints = {
     allJobs: () => `${apiUrl}/jobs/all`,
     scheduleReport: () => `${apiUrl}/report`,
     downloadReport: (reportId) => `${apiUrl}/report/${reportId}`,
+    importReport: (uploadId) => `${apiUrl}/report/import?upload=${uploadId}`,
   },
   auth: {
     tokens: () => `${apiUrl}/tokens`,

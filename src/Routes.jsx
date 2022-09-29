@@ -188,7 +188,7 @@ const Routes = () => {
           />
           <PrivateLayout
             exact
-            path={routes.upload.report}
+            path={routes.upload.importReport}
             component={ImportReport}
           />
           <PublicLayout

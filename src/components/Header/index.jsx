@@ -129,7 +129,7 @@ const Header = () => {
                   <NavDropdown.Item as={Link} to={routes.upload.vcs}>
                     From VCS
                   </NavDropdown.Item>
-                  <NavDropdown.Item as={Link} to={routes.upload.report}>
+                  <NavDropdown.Item as={Link} to={routes.upload.importReport}>
                     Import Report
                   </NavDropdown.Item>
                   <NavDropdown.Item as={Link} to={routes.upload.instructions}>

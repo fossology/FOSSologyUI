@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2022 Krishna Mahato (krishhtrishh9304@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -16,31 +17,148 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // Title
 import Title from "components/Title";
 
 // Widgets
-import { Button, InputContainer } from "components/Widgets";
+import { Alert, Button, InputContainer } from "components/Widgets";
 
 // constants
-import { initialStateImportReport } from "../../../constants/constants";
+import { initialMessage, initialStateImportReport } from "constants/constants";
+import { getAllFolders } from "services/folders";
+import { getUploadsFolderId } from "services/organizeUploads";
+import { useHistory, useLocation } from "react-router-dom";
+import { importReport } from "services/jobs";
 
 const ImportReport = () => {
+  // States for setting the folder and upload list
+  const [folderlist, setFolderlist] = useState([]);
+  const [uploadList, setUploadList] = useState([]);
+
+  const { search } = useLocation();
+  const history = useHistory();
+  const query = new URLSearchParams(search);
+
+  // State Variables for handling Error Boundaries
+  const [showMessage, setShowMessage] = useState(false);
+  const [message, setMessage] = useState(initialMessage);
+
   // Data required for importing report
   const [importReportData, setImportReportData] = useState(
     initialStateImportReport
   );
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  // getting all the folders from the server
+  const fetchFolders = async () => {
+    try {
+      const folders = await getAllFolders();
+      const temp = folders.map((f) => ({
+        id: f.id,
+        name: f.name,
+        disabled: false,
+      }));
+      setFolderlist(temp);
+      if (query.get("folder")) {
+        const f = temp.filter(
+          (foldr) => String(foldr.id) === query.get("folder")
+        );
+        setImportReportData({
+          ...importReportData,
+          folder: f.length ? f[0].id : temp[0].id,
+        });
+      } else {
+        setImportReportData({
+          ...importReportData,
+          folder: temp[0].id,
+        });
+      }
+    } catch (error) {
+      setMessage({ type: "danger", text: error.message });
+      setShowMessage(true);
+    }
   };
+  useEffect(async () => {
+    await fetchFolders();
+  }, []);
+
+  // getting all the uploads based on folder id
+  const fetchUploads = async () => {
+    const uploads = await getUploadsFolderId(importReportData.folder);
+    try {
+      const temp = uploads.map((u) => ({
+        id: u.id,
+        name: `${u.uploadname}, ${u.uploaddate}`,
+        disabled: false,
+      }));
+      setUploadList(temp);
+      if (query.get("upload")) {
+        const u = temp.filter(
+          (upld) => String(upld.id) === query.get("upload")
+        );
+        setImportReportData({
+          ...importReportData,
+          upload: u.length ? u[0].id : temp[0].id,
+        });
+      } else {
+        setImportReportData({
+          ...importReportData,
+          upload: temp.length ? temp[0].id : "",
+        });
+      }
+    } catch (error) {
+      setMessage({ type: "danger", text: error.message });
+      setShowMessage(true);
+    }
+  };
+  useEffect(async () => {
+    await fetchUploads();
+  }, [importReportData.folder]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const importReportFormData = new FormData();
+    if (importReportData.report) {
+      try {
+        Object.keys(importReportData).forEach((key) => {
+          importReportFormData.append(key, importReportData[key]);
+        });
+        const res = await importReport(
+          importReportData.upload,
+          importReportFormData
+        );
+        setMessage({ type: "success", text: res.message });
+        setShowMessage(true);
+        setTimeout(() => {
+          setMessage({
+            type: "success",
+            text: "Redirecting....",
+          });
+        }, 1000);
+        setTimeout(() => {
+          history.push("/jobs/myRecentJobs");
+        }, 2000);
+      } catch (error) {
+        setMessage({ type: "danger", text: error.message });
+        setShowMessage(true);
+      }
+    } else {
+      setMessage({ type: "danger", text: "Choose a report" });
+      setShowMessage(true);
+    }
+  };
+
   const handleChange = (e) => {
     if (e.target.type === "checkbox") {
       setImportReportData({
         ...importReportData,
         [e.target.name]: e.target.checked,
+      });
+    } else if (e.target.type === "file") {
+      setImportReportData({
+        ...importReportData,
+        [e.target.name]: e.target.files[0],
       });
     } else {
       setImportReportData({
@@ -55,33 +173,42 @@ const ImportReport = () => {
       <div className="main-container my-3">
         <div className="row">
           <div className="col-lg-8 col-md-10 col-sm-12 col-12">
+            {showMessage && (
+              <Alert
+                type={message.type}
+                setShow={setShowMessage}
+                message={message.text}
+              />
+            )}
             <h3 className="font-size-main-heading">Report Import</h3>
-            <br />
             <form>
               <InputContainer
-                type="text"
-                value={importReportData.folder}
+                type="select"
                 name="folder"
-                id="upload-report"
-                onChange={(e) => handleChange(e)}
+                id="folder"
+                onChange={handleChange}
+                options={folderlist}
+                value={importReportData.folder}
+                property="name"
               >
                 Select the folder that contains the upload:
               </InputContainer>
               <InputContainer
-                type="text"
-                value={importReportData.editUpload}
-                name="editUpload"
-                id="upload-report"
-                onChange={(e) => handleChange(e)}
+                type="select"
+                name="upload"
+                id="upload"
+                onChange={handleChange}
+                options={uploadList}
+                value={importReportData.upload || ""}
+                property="name"
               >
                 Select the upload you wish to edit:
               </InputContainer>
               <InputContainer
                 type="file"
-                value={importReportData.reportUpload}
-                name="reportUpload"
+                name="report"
                 id="upload-report"
-                onChange={(e) => handleChange(e)}
+                onChange={handleChange}
               >
                 Select report to upload:
               </InputContainer>
@@ -94,13 +221,13 @@ const ImportReport = () => {
                       <li>
                         <InputContainer
                           type="radio"
-                          value="licenseCanditate"
-                          name="newLicense"
+                          value="candidate"
+                          name="addNewLicensesAs"
                           id="upload-report-license-candidate"
                           checked={
-                            importReportData.newLicense === "licenseCanditate"
+                            importReportData.addNewLicensesAs === "candidate"
                           }
-                          onChange={(e) => handleChange(e)}
+                          onChange={handleChange}
                         >
                           License candidate
                         </InputContainer>
@@ -108,11 +235,13 @@ const ImportReport = () => {
                       <li>
                         <InputContainer
                           type="radio"
-                          value="newLicense"
-                          name="newLicense"
+                          value="license"
+                          name="addNewLicensesAs"
                           id="upload-report-new-license"
-                          checked={importReportData.newLicense === "newLicense"}
-                          onChange={(e) => handleChange(e)}
+                          checked={
+                            importReportData.addNewLicensesAs === "license"
+                          }
+                          onChange={handleChange}
                         >
                           New License
                         </InputContainer>
@@ -125,10 +254,12 @@ const ImportReport = () => {
                       <li>
                         <InputContainer
                           type="checkbox"
-                          checked={importReportData.licenseInfoInFile}
-                          name="licenseInfoInFile"
+                          checked={
+                            importReportData.addLicenseInfoFromInfoInFile
+                          }
+                          name="addLicenseInfoFromInfoInFile"
                           id="upload-report-license-info-file"
-                          onChange={(e) => handleChange(e)}
+                          onChange={handleChange}
                         >
                           SPDX tag of type licenseInfoInFile
                         </InputContainer>
@@ -136,10 +267,10 @@ const ImportReport = () => {
                       <li>
                         <InputContainer
                           type="checkbox"
-                          checked={importReportData.licenseConcluded}
-                          name="licenseConcluded"
+                          checked={importReportData.addLicenseInfoFromConcluded}
+                          name="addLicenseInfoFromConcluded"
                           id="upload-report-license-concluded"
-                          onChange={(e) => handleChange(e)}
+                          onChange={handleChange}
                         >
                           SPDX tag of type licenseConcluded
                         </InputContainer>
@@ -149,10 +280,10 @@ const ImportReport = () => {
                   <li className="mt-2">
                     <InputContainer
                       type="checkbox"
-                      checked={importReportData.licenseDecision}
-                      name="licenseDecision"
+                      checked={importReportData.addConcludedAsDecisions}
+                      name="addConcludedAsDecisions"
                       id="upload-report-license-decisions"
-                      onChange={(e) => handleChange(e)}
+                      onChange={handleChange}
                     >
                       Add concluded licenses as decisions
                     </InputContainer>
@@ -160,10 +291,12 @@ const ImportReport = () => {
                       <li>
                         <InputContainer
                           type="checkbox"
-                          checked={importReportData.existingDecisions}
-                          name="existingDecisions"
+                          checked={
+                            importReportData.addConcludedAsDecisionsOverwrite
+                          }
+                          name="addConcludedAsDecisionsOverwrite"
                           id="upload-report-existing-decisions"
-                          onChange={(e) => handleChange(e)}
+                          onChange={handleChange}
                           disabled
                         >
                           Also overwrite existing decisions
@@ -172,10 +305,10 @@ const ImportReport = () => {
                       <li>
                         <InputContainer
                           type="checkbox"
-                          checked={importReportData.importDiscussed}
-                          name="importDiscussed"
+                          checked={importReportData.addConcludedAsDecisionsTBD}
+                          name="addConcludedAsDecisionsTBD"
                           id="upload-report-import-discussed"
-                          onChange={(e) => handleChange(e)}
+                          onChange={handleChange}
                         >
                           Import as "to be discussed"
                         </InputContainer>
@@ -185,10 +318,10 @@ const ImportReport = () => {
                   <li className="mt-2">
                     <InputContainer
                       type="checkbox"
-                      checked={importReportData.copyright}
-                      name="copyright"
+                      checked={importReportData.addCopyrights}
+                      name="addCopyrights"
                       id="upload-report-existing-copyright"
-                      onChange={(e) => handleChange(e)}
+                      onChange={handleChange}
                     >
                       Add the copyright information as textfindings
                     </InputContainer>

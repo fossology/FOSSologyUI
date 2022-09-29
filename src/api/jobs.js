@@ -137,4 +137,17 @@ export const downloadReportApi = (reportId) => {
   });
 };
 
+export const importReportApi = (uploadId, reqBody) => {
+  const url = endpoints.jobs.importReport(uploadId);
+  return sendRequest({
+    url,
+    method: "POST",
+    headers: {
+      Authorization: getToken(),
+    },
+    isMultipart: true,
+    body: reqBody,
+  });
+};
+
 export default getJobApi;
