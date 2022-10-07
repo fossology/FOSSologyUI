@@ -24,8 +24,10 @@ import {
   downloadReportApi,
   getAllJobApi,
   getAllAdminJobApi,
+  downloadFileApi,
   importReportApi,
 } from "api/jobs";
+
 import { getReportIdFromUrl } from "shared/helper";
 import { getLocalStorage } from "shared/storageHelper";
 
@@ -69,6 +71,12 @@ export const scheduleAnalysis = (folderId, uploadId, scanData) => {
 
 export const scheduleReport = (uploadId, reportFormat) => {
   return scheduleReportApi(uploadId, reportFormat).then((res) => {
+    return res;
+  });
+};
+
+export const scheduleDownload = (uploadId) => {
+  return downloadFileApi(uploadId).then((res) => {
     return res;
   });
 };
