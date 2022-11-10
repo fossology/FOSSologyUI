@@ -27,7 +27,7 @@ const Footer = () => {
     const fetchVersion = async () => {
     try {
       const res = await getFossologyVersion();
-      setSessionStorage("fossologyVersion", res);
+        setSessionStorage("fossologyVersion", res);
       setVersion(res);
       return res;
     } catch {
@@ -36,7 +36,7 @@ const Footer = () => {
   };
   useEffect(() => {
     if (!version) {
-      fetchVersion();
+        fetchVersion();
     }
   }, []);
   return (
