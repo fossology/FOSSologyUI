@@ -78,11 +78,11 @@
   },
   "packageManager": "yarn@3.2.1",
   "lint-staged": {
-    "*.ts*": "eslint --ignore-path .gitignore --cache --fix"
+    "src/**/*.{js,jsx}": "eslint src/ --fix"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint:check",
+      "pre-commit": "lint-staged",
       "pre-push": "npm run lint"
     }
   }
