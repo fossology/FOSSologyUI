@@ -18,7 +18,7 @@
 
 // React Imports
 // Routes for all the pages
-import routes from "constants/routes";
+import routes from   "constants/routes";
 import React from "react";
 // React Bootstrap Imports
 import { Navbar } from "react-bootstrap";
@@ -30,7 +30,7 @@ const Header = () => {
   const location = useLocation();
   return (
     <>
-      <Navbar expand="lg" className="py-0 pl-0 mt-3 bg-browse-uploads-header">
+      <Navbar   expand="lg" className="py-0 pl-0 mt-3 bg-browse-uploads-header">
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <div className="ml-auto py-2">

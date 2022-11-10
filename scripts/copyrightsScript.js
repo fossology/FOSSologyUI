@@ -18,7 +18,7 @@
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import csv from "csv-parser";
-import { createReadStream, writeFile } from "fs";
+  import { createReadStream, writeFile } from "fs";
 
 const copyrights = [];
 
@@ -29,7 +29,7 @@ createReadStream("scripts/copyrights.csv")
   })
   .on("end", () => {
     const uniqueCopyrights = [...new Set(copyrights)].sort();
-    writeFile(
+      writeFile(
       "scripts/copyrights.json",
         JSON.stringify(uniqueCopyrights),
       (err) => {

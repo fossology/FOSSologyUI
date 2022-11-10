@@ -43,11 +43,12 @@
     "prepare": "husky install"
   },
   "lint-staged": {
-    "*.js": "yarn run lint:check"
+    "*.{js,jsx}*": "yarn run lint:check"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn run lint"
     }
   },
   "browserslist": {
