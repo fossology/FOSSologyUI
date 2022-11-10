@@ -24,14 +24,15 @@ const Footer = () => {
   const [version, setVersion] = useState(
     getSessionStorage("fossologyVersion") || null
   );
-  const fetchVersion = () => {
-    return getFossologyVersion()
-      .then((res) => {
-        setSessionStorage("fossologyVersion", res);
-        setVersion(res);
-        return res;
-      })
-      .catch(() => null);
+  const fetchVersion = async () => {
+    try {
+      const res = await getFossologyVersion();
+      setSessionStorage("fossologyVersion", res);
+      setVersion(res);
+      return res;
+    } catch {
+      return null;
+    }
   };
   useEffect(() => {
     if (!version) {
