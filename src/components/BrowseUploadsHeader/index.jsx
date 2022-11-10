@@ -25,11 +25,11 @@ import { Navbar } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
 // Helper Functions
 import { isAuth } from "shared/authHelper";
-  
+
 const Header = () => {
     const location = useLocation();
   return (
-    <>
+    <>  
       <Navbar expand="lg" className="py-0 pl-0 mt-3 bg-browse-uploads-header">
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -37,7 +37,7 @@ const Header = () => {
             {/* Checking whether the user is authenticated */}
             {isAuth() && (
               <>
-                <Link
+                <Link 
                   to={routes.browseUploads.softwareHeritage}
                   className={
                     location.pathname === routes.browseUploads.softwareHeritage
