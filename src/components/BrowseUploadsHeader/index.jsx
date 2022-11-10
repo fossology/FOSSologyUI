@@ -25,7 +25,7 @@ import { Navbar } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
 // Helper Functions
 import { isAuth } from "shared/authHelper";
-
+  
 const Header = () => {
     const location = useLocation();
   return (
