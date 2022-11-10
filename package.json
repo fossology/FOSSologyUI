@@ -42,7 +42,7 @@
     "gencopy": "node scripts/copyrightsScript.js && prettier --write ./scripts/copyrights.js"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx}": "eslint src/ --fix"
+    "src/**/*.{js,jsx}": "npm run lint:check"
   },
   "husky": {
     "hooks": {
