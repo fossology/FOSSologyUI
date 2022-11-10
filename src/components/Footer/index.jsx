@@ -44,7 +44,7 @@ const Footer = () => {
         className="primary-color-wrapper text-center font-size-small py-3"
       id="footer"
     >
-      Version: [  {version?.version}], Branch: [{version?.branchName}],   Commit: [
+      Version: [  {version?.version}], Branch: [{version?.branchName}], Commit: [
       {`#${version?.commitHash}`}] {version?.commitDate} built @{" "}
       { version?.buildDate}
     </footer>
