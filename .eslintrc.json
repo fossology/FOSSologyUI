@@ -5,7 +5,10 @@
     "es2021": true,
     "jest": true
   },
-  "extends": ["airbnb", "plugin:prettier/recommended"],
+  "extends": [
+      "airbnb", 
+      "plugin:prettier/recommended"
+    ],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -37,6 +40,14 @@
     "prefer-destructuring": ["error", { "object": true, "array": false }],
     "react/require-default-props": 0,
     "jsx-a11y/control-has-associated-label": 0,
-    "react/jsx-props-no-spreading": 0
-  }
+    "react/jsx-props-no-spreading": 0,
+    "import/no-anonymous-default-export": "off"
+  },
+  "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ]
+      }
+    ]
 }
