@@ -18,19 +18,19 @@
 
 // React Imports
 // Routes for all the pages
-import routes from   "constants/routes";
+import routes from "constants/routes";
 import React from "react";
 // React Bootstrap Imports
 import { Navbar } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
 // Helper Functions
 import { isAuth } from "shared/authHelper";
-  
+
 const Header = () => {
   const location = useLocation();
   return (
     <>
-      <Navbar   expand="lg" className="py-0 pl-0 mt-3 bg-browse-uploads-header">
+      <Navbar expand="lg" className="py-0 pl-0 mt-3 bg-browse-uploads-header">
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <div className="ml-auto py-2">
@@ -45,9 +45,9 @@ const Header = () => {
                       : "browse-uploads-nav-item"
                   }
                 >
-                   Software Heritage
+                  Software Heritage
                 </Link>
-                        <Link
+                <Link
                   to={`${routes.browseUploads.licenseBrowser}/uploadID=:uploadID`}
                   className={
                     location.pathname.includes(

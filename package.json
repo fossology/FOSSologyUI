@@ -46,11 +46,6 @@
     "*.js": "yarn run lint:check",
     "*.jsx": "yarn run lint:check"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "browserslist": {
     "production": [
       ">0.2%",
