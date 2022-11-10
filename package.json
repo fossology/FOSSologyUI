@@ -48,8 +48,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "yarn run lint"
+      "pre-commit": "lint-staged"
     }
   },
   "browserslist": {
