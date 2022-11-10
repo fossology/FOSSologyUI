@@ -40,7 +40,7 @@
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",
     "gencopy": "node scripts/copyrightsScript.js && prettier --write ./scripts/copyrights.js",
-    "prepare": "husky install"
+    "postinstall": "husky install"
   },
   "lint-staged": {
     "*.js": "yarn run lint",
