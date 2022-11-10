@@ -25,7 +25,7 @@ const copyrights = [];
 createReadStream("scripts/copyrights.csv")
   .pipe(csv())
   .on("data", (data) => {
-    copyrights.push(data.copyright);
+      copyrights.push(data.copyright);
   })
   .on("end", () => {
     const uniqueCopyrights = [...new Set(copyrights)].sort();
