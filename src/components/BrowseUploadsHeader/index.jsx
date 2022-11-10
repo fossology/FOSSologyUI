@@ -16,9 +16,9 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-// React Imports
 // Routes for all the pages
 import routes from "constants/routes";
+// React Imports
 import React from "react";
 // React Bootstrap Imports
 import { Navbar } from "react-bootstrap";
@@ -27,9 +27,9 @@ import { Link, useLocation } from "react-router-dom";
 import { isAuth } from "shared/authHelper";
 
 const Header = () => {
-    const location = useLocation();
+  const location = useLocation();
   return (
-    <>  
+    <>
       <Navbar expand="lg" className="py-0 pl-0 mt-3 bg-browse-uploads-header">
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -37,7 +37,7 @@ const Header = () => {
             {/* Checking whether the user is authenticated */}
             {isAuth() && (
               <>
-                <Link 
+                <Link
                   to={routes.browseUploads.softwareHeritage}
                   className={
                     location.pathname === routes.browseUploads.softwareHeritage

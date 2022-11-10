@@ -18,24 +18,24 @@
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import csv from "csv-parser";
-  import { createReadStream, writeFile } from "fs";
+import { createReadStream, writeFile } from "fs";
 
 const copyrights = [];
 
 createReadStream("scripts/copyrights.csv")
   .pipe(csv())
   .on("data", (data) => {
-      copyrights.push(data.copyright);
+    copyrights.push(data.copyright);
   })
   .on("end", () => {
     const uniqueCopyrights = [...new Set(copyrights)].sort();
-      writeFile(
+    writeFile(
       "scripts/copyrights.json",
-        JSON.stringify(uniqueCopyrights),
+      JSON.stringify(uniqueCopyrights),
       (err) => {
         if (err) {
           /* eslint-disable-next-line no-console */
-            console.log("Unable to parse the CSV to generate copyrights array");
+          console.log("Unable to parse the CSV to generate copyrights array");
         }
       }
     );
