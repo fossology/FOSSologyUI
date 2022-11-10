@@ -81,9 +81,9 @@
     "*.ts*": "eslint --ignore-path .gitignore --cache --fix"
   },
   "husky": {
-        "hooks": {
-            "pre-commit": "npm run lint:check",
-            "pre-push": "npm run lint"
-        }
+    "hooks": {
+      "pre-commit": "npm run lint:check",
+      "pre-push": "npm run lint"
     }
+  }
 }
