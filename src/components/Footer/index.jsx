@@ -21,10 +21,10 @@ import { getFossologyVersion } from "services/info";
 import { getSessionStorage, setSessionStorage } from "shared/storageHelper";
 
 const Footer = () => {
-    const [version, setVersion] = useState(
-      getSessionStorage("fossologyVersion") || null
-    );
-  const fetchVersion = async () => {
+  const [version, setVersion] = useState(
+    getSessionStorage("fossologyVersion") || null
+  );
+    const fetchVersion = async () => {
     try {
       const res = await getFossologyVersion();
       setSessionStorage("fossologyVersion", res);
@@ -40,14 +40,14 @@ const Footer = () => {
     }
   }, []);
   return (
-      <footer
-        className="primary-color-wrapper text-center font-size-small py-3"
-        id="footer"
-      >
-        Version: [{version?.version}], Branch: [{version?.branchName}], Commit: [
-        {`#${version?.commitHash}`}] {version?.commitDate} built @{" "}
-        {version?.buildDate}
-      </footer>
+    <footer
+      className="primary-color-wrapper text-center font-size-small py-3"
+      id="footer"
+    >
+      Version: [{version?.version}], Branch: [{version?.branchName}], Commit: [
+      {`#${version?.commitHash}`}] {version?.commitDate} built @{" "}
+      {version?.buildDate}
+    </footer>
   );
 };
 
