@@ -79,5 +79,11 @@
   "packageManager": "yarn@3.2.1",
   "lint-staged": {
     "*.ts*": "eslint --ignore-path .gitignore --cache --fix"
-  }
+  },
+  "husky": {
+        "hooks": {
+            "pre-commit": "npm run lint:check",
+            "pre-push": "npm run lint"
+        }
+    }
 }
