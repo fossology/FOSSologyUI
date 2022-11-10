@@ -43,7 +43,8 @@
     "prepare": "husky install"
   },
   "lint-staged": {
-    "*.{js,jsx}*": "yarn run lint:check"
+    "*.js": "yarn run lint:check",
+    "*.jsx": "yarn run lint:check"
   },
   "husky": {
     "hooks": {
