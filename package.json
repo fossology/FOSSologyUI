@@ -34,12 +34,21 @@
     "eject": "react-scripts eject",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "lint": "eslint src/ --fix",
-    "lint:check": "eslint src/",
+    "lint": "eslint --ignore-path .gitignore src/ --fix",
+    "lint:check": "eslint --ignore-path .gitignore src/",
     "fix:all": "yarn lint && yarn format",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",
     "gencopy": "node scripts/copyrightsScript.js && prettier --write ./scripts/copyrights.js"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx}": "eslint src/ --fix"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn run fix:all"
+    }
   },
   "browserslist": {
     "production": [
@@ -76,14 +85,5 @@
     "lint-staged": "^11.0.0",
     "prettier": "^2.6.2"
   },
-  "packageManager": "yarn@3.2.1",
-  "lint-staged": {
-    "src/**/*.{js,jsx}": "eslint src/ --fix"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "npm run lint"
-    }
-  }
+  "packageManager": "yarn@3.2.1"
 }
