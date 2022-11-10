@@ -43,9 +43,12 @@
     "prepare": "husky install"
   },
   "lint-staged": {
-    "src/": [
-      "yarn run lint:check"
-    ]
+    "*.js": "yarn run lint:check"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "browserslist": {
     "production": [
@@ -82,9 +85,9 @@
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^1.7.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
-    "husky": "^7.0.0",
+    "husky": "^8.0.2",
     "jest-fetch-mock": "3.0.3",
-    "lint-staged": "^11.0.0",
+    "lint-staged": "^13.0.3",
     "prettier": "^2.6.2"
   },
   "packageManager": "yarn@3.2.1"

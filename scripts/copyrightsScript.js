@@ -25,17 +25,17 @@ const copyrights = [];
 createReadStream("scripts/copyrights.csv")
   .pipe(csv())
   .on("data", (data) => {
-    copyrights.push(data.copyright);
+      copyrights.push(data.copyright);
   })
   .on("end", () => {
     const uniqueCopyrights = [...new Set(copyrights)].sort();
     writeFile(
       "scripts/copyrights.json",
-      JSON.stringify(uniqueCopyrights),
+        JSON.stringify(uniqueCopyrights),
       (err) => {
         if (err) {
           /* eslint-disable-next-line no-console */
-          console.log("Unable to parse the CSV to generate copyrights array");
+            console.log("Unable to parse the CSV to generate copyrights array");
         }
       }
     );
