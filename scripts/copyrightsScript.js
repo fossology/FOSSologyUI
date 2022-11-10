@@ -30,7 +30,7 @@ createReadStream("scripts/copyrights.csv")
   .on("end", () => {
     const uniqueCopyrights = [...new Set(copyrights)].sort();
     writeFile(
-      "scripts/copyrights.json",
+        "scripts/copyrights.json",
       JSON.stringify(uniqueCopyrights),
       (err) => {
         if (err) {
