@@ -16,20 +16,18 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React, { useState, useEffect } from "react";
+// css
+import "./index.css";
 
 // widgets
 import { Button, InputContainer, Spinner } from "components/Widgets";
 import Modal from "components/Widgets/Modal";
 import PropTypes from "prop-types";
-
+import React, { useEffect, useState } from "react";
+import { Col, Form, Row } from "react-bootstrap";
+import { createToken, getTokens } from "services/users";
 // utils
 import formatDate from "utils";
-
-// css
-import "./index.css";
-import { createToken, getTokens } from "services/users";
-import { Col, Form, Row } from "react-bootstrap";
 
 const TokenSpace = ({ setMessage, setShowMessage }) => {
   // local states

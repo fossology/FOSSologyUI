@@ -17,45 +17,38 @@
 */
 
 // React Imports
-import React, { useState } from "react";
-import { useHistory, Link, useLocation } from "react-router-dom";
-
-// React Bootstrap Imports
-import {
-  Navbar,
-  Nav,
-  NavDropdown,
-  Dropdown,
-  DropdownButton,
-} from "react-bootstrap";
-import { QuestionCircleFill, PersonCircle } from "react-bootstrap-icons";
-
-// List of all accessible groups
-import { getAllGroups } from "services/groups";
-
-// Widgets
-import Image from "components/Widgets/Image";
-import TextIcon from "components/Widgets/TextIcon";
+// custom css
+import "./index.css";
 
 // Assets
 import logo from "assets/images/logo.svg";
-
-// Routes for all the pages
-import routes from "constants/routes";
-
+// Widgets
+import Image from "components/Widgets/Image";
+import TextIcon from "components/Widgets/TextIcon";
 // External Link for documention
 import externalLinks from "constants/externalLinks";
-
+// Routes for all the pages
+import routes from "constants/routes";
+import React, { useState } from "react";
+// React Bootstrap Imports
+import {
+  Dropdown,
+  DropdownButton,
+  Nav,
+  Navbar,
+  NavDropdown,
+} from "react-bootstrap";
+import { PersonCircle, QuestionCircleFill } from "react-bootstrap-icons";
+import { Link, useHistory, useLocation } from "react-router-dom";
+// List of all accessible groups
+import { getAllGroups } from "services/groups";
 // Helper Functions
-import { logout, isAuth, getUserName, isAdmin } from "shared/authHelper";
-import { getLocalStorage, setLocalStorage } from "shared/storageHelper";
+import { getUserName, isAdmin, isAuth, logout } from "shared/authHelper";
 import { getNameInitials } from "shared/helper";
+import { getLocalStorage, setLocalStorage } from "shared/storageHelper";
 
 // Dark Theme Toggle Button
 import DarkThemeToggle from "../DarkThemeToggle/DarkThemeToggle";
-
-// custom css
-import "./index.css";
 
 const Header = () => {
   const [currentGroup, setCurrentGroup] = useState(

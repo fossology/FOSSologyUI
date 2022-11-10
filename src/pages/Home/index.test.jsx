@@ -16,8 +16,8 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import renderComponent from "testingUtils/renderComponent";
 import Home from "pages/Home";
+import renderComponent from "testingUtils/renderComponent";
 
 test("matches Home snapshot", () => {
   const { asFragment } = renderComponent(Home);

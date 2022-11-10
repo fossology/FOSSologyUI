@@ -14,9 +14,9 @@
 */
 
 import sendRequest from "api/sendRequest";
+import { deleteUserApi, getAllUsersApi, getUserSelfApi } from "api/users";
 import endpoints from "constants/endpoints";
 import { getToken } from "shared/authHelper";
-import { deleteUserApi, getAllUsersApi, getUserSelfApi } from "api/users";
 
 jest.mock("api/sendRequest");
 

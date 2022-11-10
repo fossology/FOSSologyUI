@@ -16,10 +16,9 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+import messages from "constants/messages";
 import { stringify } from "query-string";
 import { logout } from "shared/authHelper";
-import messages from "constants/messages";
-
 // Helper function for setting the item in Localstorage
 import { getLocalStorage, setLocalStorage } from "shared/storageHelper";
 

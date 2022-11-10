@@ -16,13 +16,11 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from "react";
-
-// Title
-import Title from "components/Title";
-
 // Header
 import BrowseUploadsHeader from "components/BrowseUploadsHeader";
+// Title
+import Title from "components/Title";
+import React from "react";
 
 const SoftwareHeritage = () => {
   return (

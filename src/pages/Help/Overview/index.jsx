@@ -16,20 +16,16 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from "react";
-
-// Title
-import Title from "components/Title";
-
-// Widgets
-import Image from "components/Widgets/Image";
-
+import fossologyFlow from "assets/images/fossologyFlow.svg";
 // Assets
 import microscope from "assets/images/microscope.svg";
-import fossologyFlow from "assets/images/fossologyFlow.svg";
-
+// Title
+import Title from "components/Title";
+// Widgets
+import Image from "components/Widgets/Image";
 // External Link
 import externalLinks from "constants/externalLinks";
+import React from "react";
 
 const Overview = () => {
   return (

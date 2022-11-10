@@ -16,23 +16,18 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React, { useState, useEffect } from "react";
-import messages from "constants/messages";
-
 // Title
 import Title from "components/Title";
-
 // Common Fields for all the Uploads
 import CommonFields from "components/Upload/CommonFields";
-
 // Widgets
 import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
-
+import messages from "constants/messages";
+import React, { useEffect, useState } from "react";
+import getBrowseData from "services/browse";
 // Required functions for calling APIs
 import { getAllFolders } from "services/folders";
 import { scheduleAnalysis } from "services/jobs";
-import getBrowseData from "services/browse";
-
 // Loading the default agents list
 import { defaultAgentsList, getLocalStorage } from "shared/storageHelper";
 

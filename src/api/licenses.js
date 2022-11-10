@@ -17,7 +17,6 @@
 */
 
 import endpoints from "constants/endpoints";
-
 // Getting Authorization Token
 import { getToken } from "shared/authHelper";
 

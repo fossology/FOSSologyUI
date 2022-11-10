@@ -17,15 +17,12 @@
 */
 
 // React Imports
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
-
-// React Bootstrap Imports
-import { Navbar } from "react-bootstrap";
-
 // Routes for all the pages
 import routes from "constants/routes";
-
+import React from "react";
+// React Bootstrap Imports
+import { Navbar } from "react-bootstrap";
+import { Link, useLocation } from "react-router-dom";
 // Helper Functions
 import { isAuth } from "shared/authHelper";
 

@@ -16,16 +16,14 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from "react";
+// CSS Imports
+import "./index.css";
 
 // Title
 import Title from "components/Title";
-
 // Routes
 import routes from "constants/routes";
-
-// CSS Imports
-import "./index.css";
+import React from "react";
 
 const ThirdPartyLicenses = () => {
   return (

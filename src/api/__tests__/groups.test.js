@@ -13,9 +13,9 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+import { createGroupApi, getAllGroupsApi } from "api/groups";
 import sendRequest from "api/sendRequest";
 import endpoints from "constants/endpoints";
-import { createGroupApi, getAllGroupsApi } from "api/groups";
 import { getToken } from "shared/authHelper";
 
 jest.mock("api/sendRequest");

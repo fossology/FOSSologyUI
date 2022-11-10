@@ -16,14 +16,12 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from "react";
-
 // Title
 import Title from "components/Title";
-
+import externalLinks from "constants/externalLinks";
 // Copyrights array
 import copyrights from "data/copyright";
-import externalLinks from "constants/externalLinks";
+import React from "react";
 
 const About = () => {
   return (

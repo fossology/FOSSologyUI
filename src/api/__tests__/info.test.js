@@ -13,9 +13,9 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+import { getHealthApi, getInfoApi } from "api/info";
 import sendRequest from "api/sendRequest";
 import endpoints from "constants/endpoints";
-import { getHealthApi, getInfoApi } from "api/info";
 
 jest.mock("api/sendRequest");
 

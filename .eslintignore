@@ -16,9 +16,18 @@ package-lock.json
 .min.js
 .min.css
 
-#Dockerfile
+# Dockerfile
 .dockerignore
 Dockerfile.dev
 Dockerfile
 docker-compose.yml
 docker-compose.dev.yml
+
+# Storybook Files
+**.stories.js
+**.stories.jsx
+
+# Other Files
+**/*.svg
+**/*.css
+/src/assets/

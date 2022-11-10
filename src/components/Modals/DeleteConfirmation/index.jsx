@@ -1,6 +1,7 @@
-import React from "react";
 import PropTypes from "prop-types";
+import React from "react";
 import Spinner from "react-bootstrap/Spinner";
+
 import { Button } from "../../Widgets";
 
 const DeleteConfirmation = ({ callBack, loading }) => {

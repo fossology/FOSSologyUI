@@ -16,7 +16,7 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import { getAllLicenseApi, createCandidateLicenseApi } from "api/licenses";
+import { createCandidateLicenseApi, getAllLicenseApi } from "api/licenses";
 
 // Fetching the licenses with their kind i.e (candidate, main, all)
 export const getAllLicense = (licenseData) => {

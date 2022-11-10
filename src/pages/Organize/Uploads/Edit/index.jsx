@@ -16,19 +16,15 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React, { useState, useEffect } from "react";
-
 // Title
 import Title from "components/Title";
-
 // Widgets
 import { Alert, Button, InputContainer } from "components/Widgets";
-
+import React, { useEffect, useState } from "react";
 // Required functions for calling APIs
 import { getAllFolders } from "services/folders";
 import { getUploadsFolderId } from "services/organizeUploads";
 import { getUploadById } from "services/upload";
-
 // Helper function for error handling
 import { handleError } from "shared/helper";
 

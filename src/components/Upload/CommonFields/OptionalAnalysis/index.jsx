@@ -16,11 +16,10 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from "react";
-import PropTypes from "prop-types";
-
 // Widgets
 import InputContainer from "components/Widgets/Input";
+import PropTypes from "prop-types";
+import React from "react";
 
 function OptionalAnalysis({ analysis, handleChange }) {
   return (

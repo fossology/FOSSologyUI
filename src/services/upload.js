@@ -15,11 +15,11 @@
 
 import {
   createUploadApi,
-  getUploadByIdApi,
-  createUploadVcsApi,
   createUploadUrlApi,
-  getUploadSummaryApi,
+  createUploadVcsApi,
+  getUploadByIdApi,
   getUploadLicenseApi,
+  getUploadSummaryApi,
 } from "api/upload";
 
 // Create Uploads from File

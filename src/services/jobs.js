@@ -18,13 +18,13 @@
 */
 
 import {
+  downloadReportApi,
+  getAllAdminJobApi,
+  getAllJobApi,
   getJobApi,
+  importReportApi,
   scheduleAnalysisApi,
   scheduleReportApi,
-  downloadReportApi,
-  getAllJobApi,
-  getAllAdminJobApi,
-  importReportApi,
 } from "api/jobs";
 import { getReportIdFromUrl } from "shared/helper";
 import { getLocalStorage } from "shared/storageHelper";

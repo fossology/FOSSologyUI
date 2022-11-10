@@ -16,31 +16,26 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React, { useState, useEffect } from "react";
-import messages from "constants/messages";
-
 // Title
 import Title from "components/Title";
-
-// Widgets
-import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
-
 // Common Fields for all the Uploads
 import CommonFields from "components/Upload/CommonFields";
-
+// Widgets
+import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
+import messages from "constants/messages";
+import React, { useEffect, useState } from "react";
+import { getAllFolders } from "services/folders";
+import { scheduleAnalysis } from "services/jobs";
 // Required functions for calling APIs
 import { createUploadFile } from "services/upload";
-import { scheduleAnalysis } from "services/jobs";
-import { getAllFolders } from "services/folders";
-
 // Helper function for error handling
 import { handleError } from "shared/helper";
 
 // constants
 import {
-  initialStateFile,
-  initialScanFileDataFile,
   initialFolderListFile,
+  initialScanFileDataFile,
+  initialStateFile,
 } from "../../../constants/constants";
 
 const UploadFile = () => {

@@ -16,15 +16,13 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from "react";
-
-// Widgets
-import Image from "components/Widgets/Image";
-
+import report from "assets/images/report.svg";
+import scan from "assets/images/scan.svg";
 // Assets
 import upload from "assets/images/upload.svg";
-import scan from "assets/images/scan.svg";
-import report from "assets/images/report.svg";
+// Widgets
+import Image from "components/Widgets/Image";
+import React from "react";
 
 const Features = () => {
   // Features Array

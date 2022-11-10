@@ -16,18 +16,11 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React, { useEffect, useState } from "react";
 import Title from "components/Title";
-
-// widgets
-import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
-
-// services
-import { getAllFolders } from "services/folders";
-
 // predefined common fields components
 import CommonFields from "components/Upload/CommonFields";
-
+// widgets
+import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 // constants
 import {
   accessLevels,
@@ -36,8 +29,12 @@ import {
   initialAddUserData,
   userStatus,
 } from "constants/constants";
+import React, { useEffect, useState } from "react";
+// services
+import { getAllFolders } from "services/folders";
 import { editUserById, getAllUsersName, getUserById } from "services/users";
 import { isAdmin } from "shared/authHelper";
+
 import TokenSpace from "./token_space";
 
 const EditUser = () => {
