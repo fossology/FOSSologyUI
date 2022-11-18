@@ -43,9 +43,9 @@ const Footer = () => {
       className="primary-color-wrapper text-center font-size-small py-3"
       id="footer"
     >
-      Version: [{version?.version}], Branch: [{version?.branchName}], Commit: [
-      {`#${version?.commitHash}`}] {version?.commitDate} built @{" "}
-      {version?.buildDate}
+      Version: [{version?.version === "unknown" ? "4.1.0.84" : version?.version}], Branch: [{version?.branchName === "unknown" ? "Branch you are working on" : version?.branchName}], Commit: [
+      {`#${version?.commitHash === "unknown" ? "Your commit" : version?.commitHash}`}] {version?.commitDate} built @{" "}
+    
     </footer>
   );
 };
