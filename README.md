@@ -64,7 +64,7 @@ docker-compose logs  #To view server logs
 npm packages can be installed using `docker-compose exec`
 
 ```zsh
-docker-compose -f docker-compose.dev.yml exec -w /usr/src/fossologyui fossologyui_server yarn add --save <package name> #Install npm package for react-dev-server
+docker-compose -f docker-compose.dev.yml exec -w /usr/src/fossologyui fossologyui_server yarn add <package name> #Install npm package for react-dev-server
 ```
 
 Once done developing, you can clean up running containers and networks using:
