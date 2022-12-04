@@ -70,23 +70,21 @@ const CreateFolder = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    createFolder(createFolderData)
-      .then(() => {
-        setMessage({
-          type: "success",
-          text: messages.createdFolder,
-        });
-      })
-      .catch((error) => {
-        handleError(error, setMessage);
-      })
-      .finally(() => {
-        setLoading(false);
-        setShowMessage(true);
+    try {
+      await createFolder(createFolderData);
+      setMessage({
+        type: "success",
+        text: messages.createdFolder,
       });
+    } catch (error) {
+      handleError(error, setMessage);
+    } finally {
+      setLoading(false);
+      setShowMessage(true);
+    }
   };
 
   useEffect(() => {

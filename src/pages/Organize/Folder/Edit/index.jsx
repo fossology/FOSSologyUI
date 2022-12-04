@@ -70,23 +70,21 @@ const EditFolder = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    editFolder(editFolderData)
-      .then(() => {
-        setMessage({
-          type: "success",
-          text: messages.updatedFolderProps,
-        });
-      })
-      .catch((error) => {
-        handleError(error, setMessage);
-      })
-      .finally(() => {
-        setLoading(false);
-        setShowMessage(true);
+    try {
+      await editFolder(editFolderData);
+      setMessage({
+        type: "success",
+        text: messages.updatedFolderProps,
       });
+    } catch (error) {
+      handleError(error, setMessage);
+    } finally {
+      setLoading(false);
+      setShowMessage(true);
+    }
   };
 
   useEffect(() => {

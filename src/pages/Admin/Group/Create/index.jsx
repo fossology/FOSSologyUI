@@ -45,26 +45,24 @@ const GroupCreate = () => {
     setGroupName(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    createGroup(groupName)
-      .then(() => {
-        setMessage({
-          type: "success",
-          text: messages.groupCreate,
-        });
-      })
-      .catch((error) => {
-        setMessage({
-          type: "danger",
-          text: error.message,
-        });
-      })
-      .finally(() => {
-        setLoading(false);
-        setShowMessage(true);
+    try {
+      await createGroup(groupName);
+      setMessage({
+        type: "success",
+        text: messages.groupCreate,
       });
+    } catch (error) {
+      setMessage({
+        type: "danger",
+        text: error.message,
+      });
+    } finally {
+      setLoading(false);
+      setShowMessage(true);
+    }
   };
   return (
     <>

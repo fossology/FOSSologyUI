@@ -68,28 +68,24 @@ const DeleteFolder = () => {
       [e.target.name]: e.target.value,
     });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    deleteFolder(deleteFolderData)
-      .then(() => {
-        setMessage({
-          type: "success",
-          text: messages.deletedFolder,
-        });
-      })
-      .then(() => {
-        getAllFolders().then((res) => {
-          setFolderList(res);
-        });
-      })
-      .catch((error) => {
-        handleError(error, setMessage);
-      })
-      .finally(() => {
-        setLoading(false);
-        setShowMessage(true);
+    try {
+      await deleteFolder(deleteFolderData);
+      setMessage({
+        type: "success",
+        text: messages.deletedFolder,
       });
+      getAllFolders().then((res) => {
+        setFolderList(res);
+      });
+    } catch (error) {
+      handleError(error, setMessage);
+    } finally {
+      setLoading(false);
+      setShowMessage(true);
+    }
   };
 
   useEffect(() => {
