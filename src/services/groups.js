@@ -22,6 +22,9 @@ import {
   createGroupApi,
   deleteGroupApi,
   getAllDeletableGroupsApi,
+  getAllGroupMembersApi,
+  changeUserPermissionApi,
+  removeGroupMemberApi,
 } from "api/groups";
 import { setLocalStorage, getLocalStorage } from "shared/storageHelper";
 
@@ -54,6 +57,27 @@ export const deleteGroup = (id) => {
 // Fetching all deletable groups
 export const fetchAllDeletableGroups = () => {
   return getAllDeletableGroupsApi().then((res) => {
+    return res;
+  });
+};
+
+// Get all group members
+export const fetchAllGroupMembers = (groupId) => {
+  return getAllGroupMembersApi(groupId).then((res) => {
+    return res;
+  });
+};
+
+// Change user permission
+export const changeUserPermission = (groupId, userId, permission) => {
+  return changeUserPermissionApi(groupId, userId, permission).then((res) => {
+    return res;
+  });
+};
+
+// Remove group member
+export const removeGroupMember = (groupId, userId) => {
+  return removeGroupMemberApi(groupId, userId).then((res) => {
     return res;
   });
 };
