@@ -82,6 +82,11 @@ export const actionsOptions = [
   },
   {
     id: 6,
+    name: "Download",
+    reportFormat: "download",
+  },
+  {
+    id: 7,
     name: "Import Report",
     reportFormat: "importReport",
   },
