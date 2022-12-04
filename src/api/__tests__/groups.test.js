@@ -13,74 +13,46 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+import { createGroupApi, getAllGroupsApi } from "api/groups";
 import sendRequest from "api/sendRequest";
 import endpoints from "constants/endpoints";
 import { getToken } from "shared/authHelper";
-import { createCandidateLicenseApi, getAllLicenseApi } from "api/licenses";
 
 jest.mock("api/sendRequest");
 
-describe("licenses", () => {
-  test("getAllLicenseApi", () => {
-    const page = 1;
-    const limit = 2;
-    const kind = "kind";
-    const url = endpoints.admin.license.get();
-
+describe("groups", () => {
+  test("getAllGroupsApi", () => {
+    const url = endpoints.admin.groups.getAll();
     sendRequest.mockImplementation(() => true);
 
-    expect(getAllLicenseApi({ page, limit, kind })).toBe(sendRequest({}));
+    expect(getAllGroupsApi()).toBe(sendRequest({}));
     expect(sendRequest).toHaveBeenCalledWith(
       expect.objectContaining({
         url,
         method: "GET",
         headers: {
           Authorization: getToken(),
-          page,
-          limit,
         },
-        queryParams: {
-          kind,
-        },
+        addGroupName: false,
       })
     );
   });
 
-  test("createCandidateLicenseApi", () => {
-    const shortName = "shortName";
-    const fullName = "fullName";
-    const text = "text";
-    const risk = "risk";
-    const licenseUrl = "licenseUrl";
-    const mergeRequest = "mergeRequest";
-    const url = endpoints.admin.license.createCandidateLicense();
+  test("createGroupApi", () => {
+    const name = "name";
+    const url = endpoints.admin.groups.create();
+    sendRequest.mockImplementation(() => true);
 
-    expect(
-      createCandidateLicenseApi({
-        shortName,
-        fullName,
-        text,
-        risk,
-        licenseUrl,
-        mergeRequest,
-      })
-    ).toBe(sendRequest({}));
+    expect(createGroupApi(name)).toBe(sendRequest({}));
     expect(sendRequest).toHaveBeenCalledWith(
       expect.objectContaining({
         url,
         method: "POST",
         headers: {
           Authorization: getToken(),
+          name,
         },
-        body: {
-          shortName,
-          fullName,
-          text,
-          risk,
-          url: licenseUrl,
-          isCandidate: true,
-          mergeRequest,
-        },
+        addGroupName: false,
       })
     );
   });

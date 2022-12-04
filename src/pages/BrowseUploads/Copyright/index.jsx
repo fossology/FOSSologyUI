@@ -16,17 +16,15 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from "react";
-import styled from "styled-components";
-
-// Title
-import Title from "components/Title";
-
 // Header
 import BrowseUploadsHeader from "components/BrowseUploadsHeader";
+import Table from "components/Table";
+// Title
+import Title from "components/Title";
+import React from "react";
 import { randomString } from "shared/helper";
 import makeData from "shared/makeData";
-import Table from "components/Table";
+import styled from "styled-components";
 
 const schema = () => {
   return {

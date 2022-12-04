@@ -16,12 +16,13 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import PropTypes from "prop-types";
-import React from "react";
-import { Button } from "..";
-
 // css
 import "./index.css";
+
+import PropTypes from "prop-types";
+import React from "react";
+
+import { Button } from "..";
 
 const Modal = ({ show, setShow, children }) => {
   return (

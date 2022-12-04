@@ -1,10 +1,10 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useContext } from "react";
 import "./DarkThemeToggle.css";
-import { MoonStarsFill, BrightnessHighFill } from "react-bootstrap-icons";
 
 // Global Context for theme
 import { GlobalContext } from "context";
+import React, { useContext } from "react";
+import { BrightnessHighFill, MoonStarsFill } from "react-bootstrap-icons";
 
 const DarkThemeToggle = () => {
   const { state, setTheme } = useContext(GlobalContext);

@@ -16,10 +16,11 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import Tree, { renderers } from "react-virtualized-tree";
 import "./index.css";
+
+import PropTypes from "prop-types";
+import React, { useState } from "react";
+import Tree, { renderers } from "react-virtualized-tree";
 
 const TreeContainer = ({ data, handleClick, folderCount }) => {
   const { Expandable } = renderers;

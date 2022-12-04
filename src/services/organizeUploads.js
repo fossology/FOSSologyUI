@@ -17,10 +17,10 @@
 */
 
 import {
-  getUploadsByFolderIdApi,
-  deleteUploadsApi,
-  moveUploadApi,
   copyUploadApi,
+  deleteUploadsApi,
+  getUploadsByFolderIdApi,
+  moveUploadApi,
 } from "api/organizeUploads";
 
 // Getting uploads with folder id

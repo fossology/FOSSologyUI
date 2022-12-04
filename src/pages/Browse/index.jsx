@@ -17,37 +17,33 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React, { useState, useEffect } from "react";
-import routes from "constants/routes";
-import { Link, useHistory } from "react-router-dom";
+import Pagination from "@material-ui/lab/Pagination";
 import arrayToTree from "array-to-tree";
-import messages from "constants/messages";
-
 // Title
 import Title from "components/Title";
-
-// Widgets
-import { InputContainer, Alert } from "components/Widgets";
-
 // Tree View of folders
 import TreeContainer from "components/TreeContainer";
-
+// Widgets
+import { Alert, InputContainer } from "components/Widgets";
+import messages from "constants/messages";
+import routes from "constants/routes";
+import React, { useEffect, useState } from "react";
+import { Link, useHistory } from "react-router-dom";
 // Required functions for calling APIs
 import getBrowseData from "services/browse";
 import { getAllFolders } from "services/folders";
-import { scheduleReport, downloadReport } from "services/jobs";
+import { downloadReport, scheduleReport } from "services/jobs";
 import {
   getFileNameFromContentDispostionHeader,
   handleError,
 } from "shared/helper";
-import Pagination from "@material-ui/lab/Pagination";
 
 import {
-  statusOptions,
-  entriesOptions,
-  assignOptions,
   actionsOptions,
+  assignOptions,
+  entriesOptions,
   initialMessage,
+  statusOptions,
 } from "../../constants/constants";
 
 const Browse = () => {

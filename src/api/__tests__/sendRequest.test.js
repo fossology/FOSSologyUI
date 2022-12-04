@@ -13,11 +13,11 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+import sendRequest from "api/sendRequest";
 import { disableFetchMocks, enableFetchMocks } from "jest-fetch-mock";
 import { stringify } from "query-string";
-import { setLocalStorage } from "shared/storageHelper";
 import { logout } from "shared/authHelper";
-import sendRequest from "api/sendRequest";
+import { setLocalStorage } from "shared/storageHelper";
 
 jest.mock("shared/storageHelper", () => ({
   getLocalStorage: jest.fn(),

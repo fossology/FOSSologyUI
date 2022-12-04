@@ -1,7 +1,6 @@
 /*
- Copyright (C) 2022 Samuel Dushimimana (dushsam100@gmail.com)
+ Copyright (C) 2021 Edgar Sherman (edgarshermangh14@gmail.com)
  SPDX-License-Identifier: GPL-2.0
-
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
  version 2 as published by the Free Software Foundation.
@@ -14,28 +13,37 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+import fetchTokenApi from "api/auth";
 import sendRequest from "api/sendRequest";
+import { tokenExpiryDays, tokenScope } from "constants/auth";
 import endpoints from "constants/endpoints";
-import { getToken } from "shared/authHelper";
-import { createMaintenanceApi } from "api/maintenance";
+import * as helper from "shared/helper";
+import { getDate } from "shared/helper";
 
 jest.mock("api/sendRequest");
 
-describe("maintenance", () => {
-  test("createMaintenanceApi", () => {
-    const data = { options: ["O", "L"] };
-    const url = endpoints.admin.maintenance.create();
-
+describe("auth", () => {
+  test("fetchTokenApi", () => {
+    const username = "user";
+    const password = "pass";
+    const randomString = "random";
     sendRequest.mockImplementation(() => true);
-    expect(createMaintenanceApi(data)).toBe(sendRequest({}));
-    expect(sendRequest).toHaveBeenCalledWith(
+    jest.spyOn(helper, "randomString");
+    helper.randomString.mockReturnValue(randomString);
+
+    expect(fetchTokenApi(username, password)).toBe(sendRequest({}));
+    expect(sendRequest).toBeCalledWith(
       expect.objectContaining({
-        url,
+        url: endpoints.auth.tokens(),
         method: "POST",
-        headers: {
-          Authorization: getToken(),
+        body: {
+          username,
+          password,
+          token_name: randomString,
+          token_scope: tokenScope,
+          token_expire: getDate(tokenExpiryDays),
         },
-        body: data,
+        addGroupName: false,
       })
     );
   });

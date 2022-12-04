@@ -17,15 +17,14 @@
 */
 
 // React Imports
-import React from "react";
-import { withRouter, Route, Redirect } from "react-router-dom";
-import PropTypes from "prop-types";
-
 // Header
 import Header from "components/Header";
-
 // Helper Functions
 import routes from "constants/routes";
+import PropTypes from "prop-types";
+import React from "react";
+import { Redirect, Route, withRouter } from "react-router-dom";
+
 import { isAuth } from "./authHelper";
 
 const PrivateLayout = ({ component: Component, ...rest }) => (

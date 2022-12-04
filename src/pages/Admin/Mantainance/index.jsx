@@ -14,12 +14,11 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React, { useState } from "react";
-
 // Title
 import Title from "components/Title";
 import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 import { initialMantainanceFields, initialMessage } from "constants/constants";
+import React, { useState } from "react";
 import createMaintenance from "services/maintenance";
 
 const ManageMantainance = () => {

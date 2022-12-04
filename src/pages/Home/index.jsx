@@ -17,34 +17,27 @@
 */
 
 // React Imports
-import React, { useState, useEffect } from "react";
-
 // Title
 import Title from "components/Title";
-
-// External library imports
-import { useHistory } from "react-router-dom";
-import { Form, Row, Col } from "react-bootstrap";
-import queryString from "query-string";
-import PropTypes from "prop-types";
-
-// Required functions for calling APIs
-import fetchToken from "services/auth";
-import { getUserSelf } from "services/users";
-import { fetchAllGroups } from "services/groups";
-
+// Widgets
+import { Alert, Button, Spinner } from "components/Widgets";
 // Routes
 import routes from "constants/routes";
-
+import PropTypes from "prop-types";
+import queryString from "query-string";
+import React, { useEffect, useState } from "react";
+import { Col, Form, Row } from "react-bootstrap";
+// External library imports
+import { useHistory } from "react-router-dom";
+// Required functions for calling APIs
+import fetchToken from "services/auth";
+import { fetchAllGroups } from "services/groups";
+import { getUserSelf } from "services/users";
 // Helper function for user authentication
 import { isAuth } from "shared/authHelper";
 
-// Widgets
-import { Alert, Button, Spinner } from "components/Widgets";
-
 // Features cards
 import Features from "./Features";
-
 // CSS imports
 import LoginForm from "./style";
 

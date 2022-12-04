@@ -16,9 +16,9 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+import PropTypes from "prop-types";
 import React, { useContext } from "react";
 import { ThemeContext } from "styled-components";
-import PropTypes from "prop-types";
 
 const TextIcon = ({ text, className }) => {
   const themeContext = useContext(ThemeContext);

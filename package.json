@@ -34,28 +34,17 @@
     "eject": "react-scripts eject",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "lint": "eslint src/ --fix",
-    "lint:check": "eslint src/",
+    "lint": "eslint --ignore-path .eslintignore '**/*.{js,jsx}*' --fix",
+    "lint:check": "eslint --ignore-path .eslintignore '**/*.{js,jsx}*'",
     "fix:all": "yarn lint && yarn format",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",
-    "gencopy": "node scripts/copyrightsScript.js && prettier --write ./scripts/copyrights.js"
+    "gencopy": "node scripts/copyrightsScript.js && prettier --write ./scripts/copyrights.js",
+    "postinstall": "husky install"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ],
-    "overrides": [
-      {
-        "files": [
-          "**/*.stories.*"
-        ],
-        "rules": {
-          "import/no-anonymous-default-export": "off"
-        }
-      }
-    ]
+  "lint-staged": {
+    "*.js": "yarn run lint",
+    "*.jsx": "yarn run lint"
   },
   "browserslist": {
     "production": [
@@ -73,6 +62,8 @@
     "babel-loader": "8.1.0"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.19.1",
+    "@babel/preset-react": "^7.18.6",
     "@storybook/addon-actions": "^6.5.5",
     "@storybook/addon-essentials": "^6.5.5",
     "@storybook/addon-links": "^6.5.5",
@@ -84,10 +75,15 @@
     "eslint-config-airbnb": "18.2.1",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-json": "^3.1.0",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^1.7.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "husky": "^8.0.2",
     "jest-fetch-mock": "3.0.3",
+    "lint-staged": "^13.0.3",
     "prettier": "^2.6.2"
   },
   "packageManager": "yarn@3.2.1"

@@ -13,10 +13,10 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import sendRequest from "api/sendRequest";
 import getBrowseDataApi from "api/browse";
-import { getToken } from "shared/authHelper";
+import sendRequest from "api/sendRequest";
 import endpoints from "constants/endpoints";
+import { getToken } from "shared/authHelper";
 
 jest.mock("api/sendRequest");
 

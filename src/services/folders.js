@@ -17,11 +17,11 @@
 */
 
 import {
-  getAllFoldersApi,
-  getSingleFolderApi,
   createFolderApi,
   deleteFolderApi,
   editFolderApi,
+  getAllFoldersApi,
+  getSingleFolderApi,
   moveCopyFolderApi,
 } from "api/folders";
 

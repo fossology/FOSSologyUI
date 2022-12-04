@@ -20,6 +20,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { randomString } from "shared/helper";
 import makeData from "shared/makeData";
+
 import Table from "../index";
 
 const columns = [

@@ -17,12 +17,11 @@
 */
 
 // React Imports
-import React from "react";
-import { withRouter, Route } from "react-router-dom";
-import PropTypes from "prop-types";
-
 // Header
 import Header from "components/Header";
+import PropTypes from "prop-types";
+import React from "react";
+import { Route, withRouter } from "react-router-dom";
 
 const PublicLayout = ({ component: Component, ...rest }) => (
   <Route

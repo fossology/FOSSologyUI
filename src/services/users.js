@@ -18,13 +18,13 @@
 
 import fetchTokenApi from "api/auth";
 import {
-  getUserSelfApi,
-  getAllUsersApi,
-  deleteUserApi,
   addUserApi,
-  getUserByIdAapi,
+  deleteUserApi,
   editUserByIdApi,
+  getAllUsersApi,
   getTokensApi,
+  getUserByIdAapi,
+  getUserSelfApi,
 } from "api/users";
 import { setLocalStorage } from "shared/storageHelper";
 

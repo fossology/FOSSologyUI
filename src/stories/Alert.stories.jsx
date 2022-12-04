@@ -16,14 +16,15 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from "react";
-import { ThemeProvider } from "styled-components";
-import { lightTheme, darkTheme } from "styles/theme";
-import { GlobalProvider } from "context";
-import GlobalStyles from "styles/globalStyle";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "styles/global.css";
+
 import { Alert } from "components/Widgets";
+import { GlobalProvider } from "context";
+import React from "react";
+import { ThemeProvider } from "styled-components";
+import GlobalStyles from "styles/globalStyle";
+import { darkTheme, lightTheme } from "styles/theme";
 
 export default {
   title: "Components/Widgets/Alert",

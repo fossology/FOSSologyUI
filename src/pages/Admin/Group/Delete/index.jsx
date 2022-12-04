@@ -16,21 +16,17 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React, { useEffect, useState } from "react";
-import messages from "constants/messages";
-
-// Jquery for handling modal
-import $ from "jquery";
-
+import DeleteConfirmation from "components/Modals/DeleteConfirmation";
 // Title
 import Title from "components/Title";
-
 // Widgets
 import { Alert, Button, InputContainer } from "components/Widgets";
-
+import messages from "constants/messages";
+// Jquery for handling modal
+import $ from "jquery";
+import React, { useEffect, useState } from "react";
 // Required functions for calling APIs
 import { deleteGroup, fetchAllDeletableGroups } from "services/groups";
-import DeleteConfirmation from "components/Modals/DeleteConfirmation";
 
 const DeleteGroup = () => {
   const initialMessage = {

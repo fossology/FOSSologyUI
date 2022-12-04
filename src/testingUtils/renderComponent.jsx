@@ -14,14 +14,15 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from "react";
-import { render } from "@testing-library/react";
-import { ThemeProvider } from "styled-components";
-import { lightTheme } from "styles/theme";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-virtualized-tree/lib/main.css";
 import "styles/global.css";
+
+import { render } from "@testing-library/react";
+import React from "react";
+import { ThemeProvider } from "styled-components";
 import GlobalStyles from "styles/globalStyle";
+import { lightTheme } from "styles/theme";
 
 const initialTheme = {
   theme: "light",

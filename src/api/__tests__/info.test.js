@@ -13,46 +13,35 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+import { getHealthApi, getInfoApi } from "api/info";
 import sendRequest from "api/sendRequest";
 import endpoints from "constants/endpoints";
-import { createGroupApi, getAllGroupsApi } from "api/groups";
-import { getToken } from "shared/authHelper";
 
 jest.mock("api/sendRequest");
 
-describe("groups", () => {
-  test("getAllGroupsApi", () => {
-    const url = endpoints.admin.groups.getAll();
+describe("info", () => {
+  test("getInfoApi", () => {
+    const url = endpoints.admin.info.info();
     sendRequest.mockImplementation(() => true);
 
-    expect(getAllGroupsApi()).toBe(sendRequest({}));
+    expect(getInfoApi()).toBe(sendRequest({}));
     expect(sendRequest).toHaveBeenCalledWith(
       expect.objectContaining({
         url,
         method: "GET",
-        headers: {
-          Authorization: getToken(),
-        },
-        addGroupName: false,
       })
     );
   });
 
-  test("createGroupApi", () => {
-    const name = "name";
-    const url = endpoints.admin.groups.create();
+  test("getHealthApi", () => {
+    const url = endpoints.admin.info.health();
     sendRequest.mockImplementation(() => true);
 
-    expect(createGroupApi(name)).toBe(sendRequest({}));
+    expect(getHealthApi()).toBe(sendRequest({}));
     expect(sendRequest).toHaveBeenCalledWith(
       expect.objectContaining({
         url,
-        method: "POST",
-        headers: {
-          Authorization: getToken(),
-          name,
-        },
-        addGroupName: false,
+        method: "GET",
       })
     );
   });

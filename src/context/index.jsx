@@ -16,11 +16,10 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React, { useState } from "react";
 import PropTypes from "prop-types";
-
+import React, { useState } from "react";
 // Helper Functions for setting and getting the item from localstorage
-import { setLocalStorage, getLocalStorage } from "shared/storageHelper";
+import { getLocalStorage, setLocalStorage } from "shared/storageHelper";
 
 // Initial state
 const initialState = {

@@ -17,20 +17,17 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React, { useEffect, useState } from "react";
-
 // Title
 import Title from "components/Title";
-
 // Widgets
 import { Alert, Button, InputContainer } from "components/Widgets";
-
 // constants
 import { initialMessage, initialStateImportReport } from "constants/constants";
-import { getAllFolders } from "services/folders";
-import { getUploadsFolderId } from "services/organizeUploads";
+import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
+import { getAllFolders } from "services/folders";
 import { importReport } from "services/jobs";
+import { getUploadsFolderId } from "services/organizeUploads";
 
 const ImportReport = () => {
   // States for setting the folder and upload list

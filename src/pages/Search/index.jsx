@@ -16,22 +16,19 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React, { useState } from "react";
-
 // Title
 import Title from "components/Title";
-
 // Widgets
 import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
-
+import React, { useState } from "react";
 // Required functions for calling APIs
 import search from "services/search";
 
 // Required constants
 import {
-  initialState,
-  initialMessageSearch,
   entriesOptions,
+  initialMessageSearch,
+  initialState,
 } from "../../constants/constants";
 
 const Search = () => {

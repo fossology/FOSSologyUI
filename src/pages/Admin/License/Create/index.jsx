@@ -16,13 +16,11 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from "react";
-
 // Title
 import Title from "components/Title";
-
 // Widgets
-import { InputContainer, Button } from "components/Widgets";
+import { Button, InputContainer } from "components/Widgets";
+import React from "react";
 
 const AddLicense = () => {
   const options = [

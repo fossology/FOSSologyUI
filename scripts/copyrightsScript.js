@@ -17,23 +17,24 @@
 */
 
 // eslint-disable-next-line import/no-extraneous-dependencies
-const csv = require("csv-parser");
-const fs = require("fs");
+import csv from "csv-parser";
+import { createReadStream, writeFile } from "fs";
 
 const copyrights = [];
 
-fs.createReadStream("scripts/copyrights.csv")
+createReadStream("scripts/copyrights.csv")
   .pipe(csv())
   .on("data", (data) => {
     copyrights.push(data.copyright);
   })
   .on("end", () => {
     const uniqueCopyrights = [...new Set(copyrights)].sort();
-    fs.writeFile(
-      "scripts/copyrights.js",
+    writeFile(
+      "scripts/copyrights.json",
       JSON.stringify(uniqueCopyrights),
       (err) => {
         if (err) {
+          /* eslint-disable-next-line no-console */
           console.log("Unable to parse the CSV to generate copyrights array");
         }
       }

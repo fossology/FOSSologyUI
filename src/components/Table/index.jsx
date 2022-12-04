@@ -16,11 +16,13 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from "react";
-import { useTable, usePagination, useRowSelect, useSortBy } from "react-table";
-import CloseIcon from "assets/images/close.png";
-import IndeterminateCheckbox from "./IndeterminateCheckbox";
 import "./index.css";
+
+import CloseIcon from "assets/images/close.png";
+import React from "react";
+import { usePagination, useRowSelect, useSortBy, useTable } from "react-table";
+
+import IndeterminateCheckbox from "./IndeterminateCheckbox";
 
 /* eslint-disable react/prop-types */
 const Table = ({ columns, data }) => {

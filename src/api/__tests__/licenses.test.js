@@ -13,59 +13,73 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+import { createCandidateLicenseApi, getAllLicenseApi } from "api/licenses";
 import sendRequest from "api/sendRequest";
 import endpoints from "constants/endpoints";
 import { getToken } from "shared/authHelper";
-import { deleteUserApi, getAllUsersApi, getUserSelfApi } from "api/users";
 
 jest.mock("api/sendRequest");
 
-describe("users", () => {
-  test("getUserSelfApi", () => {
-    const url = endpoints.users.self();
+describe("licenses", () => {
+  test("getAllLicenseApi", () => {
+    const page = 1;
+    const limit = 2;
+    const kind = "kind";
+    const url = endpoints.admin.license.get();
+
     sendRequest.mockImplementation(() => true);
 
-    expect(getUserSelfApi()).toBe(sendRequest({}));
+    expect(getAllLicenseApi({ page, limit, kind })).toBe(sendRequest({}));
     expect(sendRequest).toHaveBeenCalledWith(
       expect.objectContaining({
         url,
         method: "GET",
         headers: {
           Authorization: getToken(),
+          page,
+          limit,
         },
-        addGroupName: false,
-      })
-    );
-  });
-
-  test("getAllUsersApi", () => {
-    const url = endpoints.users.getAll();
-    sendRequest.mockImplementation(() => true);
-
-    expect(getAllUsersApi()).toBe(sendRequest({}));
-    expect(sendRequest).toHaveBeenCalledWith(
-      expect.objectContaining({
-        url,
-        method: "GET",
-        headers: {
-          Authorization: getToken(),
+        queryParams: {
+          kind,
         },
       })
     );
   });
 
-  test("deleteUserApi", () => {
-    const id = 1;
-    const url = endpoints.users.delete(id);
-    sendRequest.mockImplementation(() => true);
+  test("createCandidateLicenseApi", () => {
+    const shortName = "shortName";
+    const fullName = "fullName";
+    const text = "text";
+    const risk = "risk";
+    const licenseUrl = "licenseUrl";
+    const mergeRequest = "mergeRequest";
+    const url = endpoints.admin.license.createCandidateLicense();
 
-    expect(deleteUserApi(id)).toBe(sendRequest({}));
+    expect(
+      createCandidateLicenseApi({
+        shortName,
+        fullName,
+        text,
+        risk,
+        licenseUrl,
+        mergeRequest,
+      })
+    ).toBe(sendRequest({}));
     expect(sendRequest).toHaveBeenCalledWith(
       expect.objectContaining({
         url,
-        method: "DELETE",
+        method: "POST",
         headers: {
           Authorization: getToken(),
+        },
+        body: {
+          shortName,
+          fullName,
+          text,
+          risk,
+          url: licenseUrl,
+          isCandidate: true,
+          mergeRequest,
         },
       })
     );

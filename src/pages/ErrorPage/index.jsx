@@ -16,12 +16,12 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from "react";
-import styles from "styled-components";
-import { Link } from "react-router-dom";
-import { ExclamationTriangleFill } from "react-bootstrap-icons";
-import routes from "constants/routes";
 import messages from "constants/messages";
+import routes from "constants/routes";
+import React from "react";
+import { ExclamationTriangleFill } from "react-bootstrap-icons";
+import { Link } from "react-router-dom";
+import styles from "styled-components";
 
 const ErrorPage = () => {
   return (

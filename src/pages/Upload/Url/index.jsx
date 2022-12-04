@@ -16,30 +16,25 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React, { useState, useEffect } from "react";
-import messages from "constants/messages";
-
 // Title
 import Title from "components/Title";
-
-// Widgets
-import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
-
 // Common Fields for all the Uploads
 import CommonFields from "components/Upload/CommonFields";
-
-// Required functions for calling APIs
-import { getAllFolders } from "services/folders";
-import { createUploadUrl, getUploadById } from "services/upload";
-import { scheduleAnalysis } from "services/jobs";
-
+// Widgets
+import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 // constants
 import {
-  initialScanFileData,
   initialFolderList,
+  initialScanFileData,
   initialStateUrl,
   initialUrlData,
 } from "constants/constants";
+import messages from "constants/messages";
+import React, { useEffect, useState } from "react";
+// Required functions for calling APIs
+import { getAllFolders } from "services/folders";
+import { scheduleAnalysis } from "services/jobs";
+import { createUploadUrl, getUploadById } from "services/upload";
 
 const UploadFromUrl = () => {
   // Upload Id required for scheduling Analysis

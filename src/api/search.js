@@ -16,9 +16,8 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import PropTypes from "prop-types";
 import endpoints from "constants/endpoints";
-
+import PropTypes from "prop-types";
 // Getting Authorization Token
 import { getToken } from "shared/authHelper";
 

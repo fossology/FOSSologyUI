@@ -18,18 +18,16 @@
 
 import { getInfoApi } from "api/info";
 
-export const getInfo = () => {
-  return getInfoApi().then((res) => {
-    return res;
-  });
+export const getInfo = async () => {
+  const res = await getInfoApi();
+  return res;
 };
 
-export const getFossologyVersion = () => {
-  return getInfoApi().then((res) => {
-    return {
-      ...res?.fossology,
-      buildDate: new Date(res?.fossology?.buildDate).toLocaleString(),
-      commitDate: new Date(res?.fossology?.commitDate).toLocaleString(),
-    };
-  });
+export const getFossologyVersion = async () => {
+  const res = await getInfoApi();
+  return {
+    ...res?.fossology,
+    buildDate: new Date(res?.fossology?.buildDate).toLocaleString(),
+    commitDate: new Date(res?.fossology?.commitDate).toLocaleString(),
+  };
 };

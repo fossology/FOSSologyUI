@@ -17,9 +17,9 @@
 */
 
 // query-string library to sanitize url
-import { stringify } from "query-string";
 // Routes
 import routes from "constants/routes";
+import { stringify } from "query-string";
 
 // Helper Functions
 import {

@@ -14,57 +14,58 @@
 */
 
 import sendRequest from "api/sendRequest";
+import { deleteUserApi, getAllUsersApi, getUserSelfApi } from "api/users";
 import endpoints from "constants/endpoints";
 import { getToken } from "shared/authHelper";
-import searchApi from "api/search";
 
 jest.mock("api/sendRequest");
 
-describe("search", () => {
-  test("searchApi", () => {
-    const searchType = "searchType";
-    const uploadId = 1;
-    const filename = "filename";
-    const tag = "tag";
-    const filesizemin = 2;
-    const filesizemax = 3;
-    const license = "license";
-    const copyright = "copyright";
-    const page = 4;
-    const limit = 5;
-    const url = endpoints.search.search();
+describe("users", () => {
+  test("getUserSelfApi", () => {
+    const url = endpoints.users.self();
     sendRequest.mockImplementation(() => true);
 
-    expect(
-      searchApi({
-        searchType,
-        uploadId,
-        filename,
-        tag,
-        filesizemin,
-        filesizemax,
-        license,
-        copyright,
-        page,
-        limit,
-      })
-    ).toBe(sendRequest({}));
+    expect(getUserSelfApi()).toBe(sendRequest({}));
     expect(sendRequest).toHaveBeenCalledWith(
       expect.objectContaining({
         url,
         method: "GET",
         headers: {
           Authorization: getToken(),
-          searchType,
-          uploadId,
-          filename,
-          tag,
-          filesizemin,
-          filesizemax,
-          license,
-          copyright,
-          page,
-          limit,
+        },
+        addGroupName: false,
+      })
+    );
+  });
+
+  test("getAllUsersApi", () => {
+    const url = endpoints.users.getAll();
+    sendRequest.mockImplementation(() => true);
+
+    expect(getAllUsersApi()).toBe(sendRequest({}));
+    expect(sendRequest).toHaveBeenCalledWith(
+      expect.objectContaining({
+        url,
+        method: "GET",
+        headers: {
+          Authorization: getToken(),
+        },
+      })
+    );
+  });
+
+  test("deleteUserApi", () => {
+    const id = 1;
+    const url = endpoints.users.delete(id);
+    sendRequest.mockImplementation(() => true);
+
+    expect(deleteUserApi(id)).toBe(sendRequest({}));
+    expect(sendRequest).toHaveBeenCalledWith(
+      expect.objectContaining({
+        url,
+        method: "DELETE",
+        headers: {
+          Authorization: getToken(),
         },
       })
     );

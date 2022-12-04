@@ -16,8 +16,8 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from "react";
 import PropTypes from "prop-types";
+import React from "react";
 
 const Alert = ({ message, type, setShow }) => {
   return (

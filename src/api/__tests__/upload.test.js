@@ -14,14 +14,14 @@
 */
 
 import sendRequest from "api/sendRequest";
-import endpoints from "constants/endpoints";
-import { getToken } from "shared/authHelper";
 import {
   createUploadApi,
   createUploadUrlApi,
   createUploadVcsApi,
   getUploadByIdApi,
 } from "api/upload";
+import endpoints from "constants/endpoints";
+import { getToken } from "shared/authHelper";
 
 jest.mock("api/sendRequest");
 

@@ -5,15 +5,24 @@
     "es2021": true,
     "jest": true
   },
-  "extends": ["airbnb", "plugin:prettier/recommended"],
+  "extends": [
+      "airbnb", 
+      "plugin:prettier/recommended",
+      "plugin:json/recommended"
+    ],
+  "parser": "@babel/eslint-parser",
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
     },
     "ecmaVersion": 12,
-    "sourceType": "module"
+    "sourceType": "module",
+    "requireConfigFile": false,
+    "babelOptions": {
+       "presets": ["@babel/preset-react"]
+    }
   },
-  "plugins": ["react"],
+  "plugins": ["react", "react-hooks", "prettier", "simple-import-sort"],
   "settings": {
     "react": {
       "version": "detect"
@@ -30,13 +39,23 @@
     "prettier/prettier": [
       "error",
       {
-        "endOfLine": "auto"
+        "endOfLine": "auto",
+        "semi": true,
+        "singleQuote": false,
+        "tabWidth": 2,
+        "useTabs": false
       }
     ],
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
     "prefer-destructuring": ["error", { "object": true, "array": false }],
     "react/require-default-props": 0,
     "jsx-a11y/control-has-associated-label": 0,
-    "react/jsx-props-no-spreading": 0
+    "react/jsx-props-no-spreading": 0,
+    "import/no-anonymous-default-export": 0,
+    "import/prefer-default-export": 0,
+    "react/react-in-jsx-scope": "off",
+    "simple-import-sort/imports": "error",
+    "react/jsx-filename-extension": 0,
+    "json/*": ["warn", {"allowComments": true}]
   }
 }
