@@ -34,6 +34,13 @@ import { getUploadSummary, getUploadLicense } from "services/upload";
 // Helper function for error handling
 import { handleError } from "shared/helper";
 
+// Clearing status Assests
+import DoNotUse from "../../../assets/images/do-not-use.png";
+import Identified from "../../../assets/images/identified.png";
+import NoLicense from "../../../assets/images/no-license.png";
+import NotCleared from "../../../assets/images/not-cleared.png";
+import ToBeDiscussed from "../../../assets/images/to-be-discussed.png";
+
 const LicenseBrowser = () => {
   // Setting the upload Id
   const [uploadId, setuploadId] = useState();
@@ -85,6 +92,17 @@ const LicenseBrowser = () => {
       });
     }
   }, [uploadId]);
+
+  function getClearingImage(status, scanner) {
+    if (scanner[0] === "No_license_found") return NoLicense;
+    if (status === "DO_NOT_USE") return DoNotUse;
+    if (status === "IRRELEVANT") return Identified;
+    if (status === "IDENTIFIED") return Identified;
+    if (status === "NON_FUNCTIONAL") return DoNotUse;
+    if (status === "not_found") return NotCleared;
+    if (status === "TO_BE_DISCUSSED") return ToBeDiscussed;
+    return NoLicense;
+  }
 
   return (
     <>
@@ -149,7 +167,19 @@ const LicenseBrowser = () => {
                                 })
                               : null}
                           </td>
-                          <td>-</td>
+                          <td>
+                            {data.clearing_status !== null &&
+                            filteredScanner !== null ? (
+                              <img
+                                src={getClearingImage(
+                                  data.clearing_status,
+                                  filteredScanner
+                                )}
+                                alt="clearing-img"
+                                className="rounded mx-auto d-block"
+                              />
+                            ) : null}
+                          </td>
                           <td>-</td>
                           <td>-</td>
                         </tr>
