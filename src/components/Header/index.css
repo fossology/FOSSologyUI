@@ -19,3 +19,11 @@
   display: flex;
   gap: 10px;
 }
+
+
+@media only screen and (max-width : 550px)  {
+  #navbar{
+    min-width: 102vw;
+  }
+  
+}

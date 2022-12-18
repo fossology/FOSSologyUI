@@ -107,8 +107,12 @@ h6 {
 @media (max-width: 991px) {
   .dropleft .dropdown-menu {
     right: unset !important;
-    left: 3.5em !important;
+    left: 0em !important;
+    top: 3.5em !important;
+    bottom: unset !important;
     padding: 1.5rem;
+
+    
   }
   #basic-navbar-nav {
     padding: 2rem;
