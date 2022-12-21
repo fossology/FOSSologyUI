@@ -1,0 +1,6 @@
+@media only screen and (max-width: 550px) {
+  #footer {
+    max-width: 102vw;
+    min-width: 102vw;
+  }
+}

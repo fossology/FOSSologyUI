@@ -76,6 +76,7 @@ const Header = () => {
         expand="lg"
         className="bg-primary-color py-0 pl-0 text-white"
         sticky="top"
+        id="navbar"
       >
         <Navbar.Brand as={Link} to={routes.home} className="py-0">
           <Image

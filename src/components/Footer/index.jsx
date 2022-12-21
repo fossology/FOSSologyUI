@@ -20,6 +20,9 @@ import React, { useState, useEffect } from "react";
 import { getFossologyVersion } from "services/info";
 import { getSessionStorage, setSessionStorage } from "shared/storageHelper";
 
+// custom css
+import "./index.css";
+
 const Footer = () => {
   const [version, setVersion] = useState(
     getSessionStorage("fossologyVersion") || null

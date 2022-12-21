@@ -32,7 +32,7 @@ const Features = () => {
     {
       id: 1,
       img: upload,
-      heading: "Upload and Scan files",
+      heading: "Upload and Scan Files",
       description:
         "Upload and scan files into the fossology server and get information.",
     },
