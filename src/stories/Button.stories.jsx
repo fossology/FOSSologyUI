@@ -1,36 +1,54 @@
-import React from "react";
+/*
+ Copyright (C) 2021 Jacob Moore (c.jacob.moore92@gmail.com)
 
-import { Button } from "./Button";
+ SPDX-License-Identifier: GPL-2.0
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License
+ version 2 as published by the Free Software Foundation.
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License along
+ with this program; if not, write to the Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*/
+
+import React from "react";
+import { ThemeProvider } from "styled-components";
+import { lightTheme, darkTheme } from "styles/theme";
+import { GlobalProvider } from "context";
+import GlobalStyles from "styles/globalStyle";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "styles/global.css";
+import { Button } from "components/Widgets";
 
 export default {
-  title: "Example/Button",
+  title: "Components/Widgets/Button",
   component: Button,
-  argTypes: {
-    backgroundColor: { control: "color" },
-  },
 };
 
-const Template = (args) => <Button {...args} />;
-
-export const Primary = Template.bind({});
-Primary.args = {
-  primary: true,
-  label: "Button",
+const Template = (args) => {
+  return (
+    <GlobalProvider>
+      <ThemeProvider {...args}>
+        <GlobalStyles />
+        <Button {...args}>Click Me</Button>
+      </ThemeProvider>
+    </GlobalProvider>
+  );
 };
 
-export const Secondary = Template.bind({});
-Secondary.args = {
-  label: "Button",
+export const Light = Template.bind({});
+Light.args = {
+  type: "button",
+  theme: lightTheme,
 };
 
-export const Large = Template.bind({});
-Large.args = {
-  size: "large",
-  label: "Button",
-};
-
-export const Small = Template.bind({});
-Small.args = {
-  size: "small",
-  label: "Button",
+export const Dark = Template.bind({});
+Dark.args = {
+  type: "button",
+  theme: darkTheme,
 };

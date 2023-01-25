@@ -24,6 +24,33 @@ import { getToken } from "shared/authHelper";
 // Function for calling the fetch function for the APIs
 import sendRequest from "./sendRequest";
 
+export const getAllJobApi = ({ page, limit }) => {
+  const url = endpoints.jobs.scheduleAnalysis();
+  return sendRequest({
+    url,
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+      page,
+      limit,
+    },
+  });
+};
+
+// Fetch all the jobs for admin
+export const getAllAdminJobApi = ({ page, limit }) => {
+  const url = endpoints.jobs.allJobs();
+  return sendRequest({
+    url,
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+      page,
+      limit,
+    },
+  });
+};
+
 // Fetching the jobs
 export const getJobApi = ({ jobId }) => {
   const url = endpoints.jobs.details(jobId);
@@ -107,6 +134,19 @@ export const downloadReportApi = (reportId) => {
       Authorization: getToken(),
     },
     isFile: true,
+  });
+};
+
+export const importReportApi = (uploadId, reqBody) => {
+  const url = endpoints.jobs.importReport(uploadId);
+  return sendRequest({
+    url,
+    method: "POST",
+    headers: {
+      Authorization: getToken(),
+    },
+    isMultipart: true,
+    body: reqBody,
   });
 };
 

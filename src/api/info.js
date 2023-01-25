@@ -22,7 +22,7 @@ import endpoints from "constants/endpoints";
 import sendRequest from "./sendRequest";
 
 export const getInfoApi = () => {
-  const url = endpoints.info.info();
+  const url = endpoints.admin.info.info();
   return sendRequest({
     url,
     method: "GET",
@@ -30,7 +30,7 @@ export const getInfoApi = () => {
 };
 
 export const getHealthApi = () => {
-  const url = endpoints.info.health();
+  const url = endpoints.admin.info.health();
   return sendRequest({
     url,
     method: "GET",

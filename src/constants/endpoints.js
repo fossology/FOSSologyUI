@@ -26,8 +26,10 @@ const endpoints = {
   jobs: {
     details: (jobId) => `${apiUrl}/jobs/${jobId}`,
     scheduleAnalysis: () => `${apiUrl}/jobs`,
+    allJobs: () => `${apiUrl}/jobs/all`,
     scheduleReport: () => `${apiUrl}/report`,
     downloadReport: (reportId) => `${apiUrl}/report/${reportId}`,
+    importReport: (uploadId) => `${apiUrl}/report/import?upload=${uploadId}`,
   },
   auth: {
     tokens: () => `${apiUrl}/tokens`,
@@ -40,6 +42,10 @@ const endpoints = {
     getAll: () => `${apiUrl}/users`,
     getSingle: (userId) => `${apiUrl}/users/${userId}`,
     delete: (userId) => `${apiUrl}/users/${userId}`,
+    add: () => `${apiUrl}/users`,
+    edit: (userId) => `${apiUrl}/users/${userId}`,
+    createToken: () => `${apiUrl}/users/tokens`,
+    getTokens: (type) => `${apiUrl}/users/tokens/${type}`,
   },
   folders: {
     getAll: () => `${apiUrl}/folders`,
@@ -53,6 +59,8 @@ const endpoints = {
   upload: {
     uploadCreate: () => `${apiUrl}/uploads`,
     getId: (uploadId) => `${apiUrl}/uploads/${uploadId}`,
+    getSummary: (uploadId) => `${apiUrl}/uploads/${uploadId}/summary`,
+    getLicense: (uploadId) => `${apiUrl}/uploads/${uploadId}/licenses`,
   },
   browse: {
     get: () => `${apiUrl}/uploads`,
@@ -69,15 +77,20 @@ const endpoints = {
     groups: {
       create: () => `${apiUrl}/groups`,
       getAll: () => `${apiUrl}/groups`,
+      getAllDeletable: () => `${apiUrl}/groups/deletable`,
+      delete: (groupId) => `${apiUrl}/groups/${groupId}`,
     },
-  },
-  license: {
-    get: () => `${apiUrl}/license`,
-    createCandidateLicense: () => `${apiUrl}/license`,
-  },
-  info: {
-    info: () => `${apiUrl}/info`,
-    health: () => `${apiUrl}/health`,
+    maintenance: {
+      create: () => `${apiUrl}/maintenance`,
+    },
+    license: {
+      get: () => `${apiUrl}/license`,
+      createCandidateLicense: () => `${apiUrl}/license`,
+    },
+    info: {
+      info: () => `${apiUrl}/info`,
+      health: () => `${apiUrl}/health`,
+    },
   },
 };
 

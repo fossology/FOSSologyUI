@@ -20,12 +20,25 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from "styled-components";
 
-const Button = ({ type, onClick, className, children }) => {
+const Button = ({
+  type,
+  onClick,
+  className,
+  children,
+  dataDismiss,
+  dataToggle,
+  dataTarget,
+  disabled = false,
+}) => {
   return (
     <ButtonContainer
       type={type}
       onClick={onClick}
+      dataDismiss={dataDismiss}
+      dataToggle={dataToggle}
+      dataTarget={dataTarget}
       className={`bg-primary-color text-secondary-color font-demi text-center hover-primary-color ${className}`}
+      disabled={disabled}
     >
       {children}
     </ButtonContainer>
@@ -37,6 +50,10 @@ Button.propTypes = {
   onClick: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
   className: PropTypes.string,
+  dataTarget: PropTypes.string,
+  disabled: PropTypes.bool,
+  dataToggle: PropTypes.string,
+  dataDismiss: PropTypes.string,
 };
 
 const ButtonContainer = styles.button`

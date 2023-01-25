@@ -53,7 +53,7 @@ describe("upload", () => {
           Authorization: getToken(),
           folderId,
           uploadDescription,
-          accessLevel,
+          public: accessLevel,
           ignoreScm,
           uploadType: "",
         },
@@ -93,7 +93,7 @@ describe("upload", () => {
           Authorization: getToken(),
           folderId,
           uploadDescription,
-          accessLevel,
+          public: accessLevel,
           ignoreScm,
           uploadType: "",
         },
@@ -113,7 +113,6 @@ describe("upload", () => {
       expect.objectContaining({
         url,
         method: "POST",
-        credentials: false,
         headers: {
           ...header,
           Authorization: getToken(),

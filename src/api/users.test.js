@@ -47,7 +47,6 @@ describe("users", () => {
       expect.objectContaining({
         url,
         method: "GET",
-        credentials: "include",
         headers: {
           Authorization: getToken(),
         },
@@ -65,7 +64,6 @@ describe("users", () => {
       expect.objectContaining({
         url,
         method: "DELETE",
-        credentials: "include",
         headers: {
           Authorization: getToken(),
         },

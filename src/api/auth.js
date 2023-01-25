@@ -27,12 +27,12 @@ import { randomString, getDate } from "shared/helper";
 // Function for calling the fetch function for the APIs
 import sendRequest from "./sendRequest";
 
-const fetchTokenApi = (username, password) => {
+const fetchTokenApi = (username, password, tokenDetails = null) => {
   const url = endpoints.auth.tokens();
   return sendRequest({
     url,
     method: "POST",
-    body: {
+    body: tokenDetails || {
       username,
       password,
       token_name: randomString(tokenNameLength),

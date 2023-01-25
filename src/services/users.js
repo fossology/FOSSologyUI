@@ -16,7 +16,16 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import { getUserSelfApi, getAllUsersApi, deleteUserApi } from "api/users";
+import fetchTokenApi from "api/auth";
+import {
+  getUserSelfApi,
+  getAllUsersApi,
+  deleteUserApi,
+  addUserApi,
+  getUserByIdAapi,
+  editUserByIdApi,
+  getTokensApi,
+} from "api/users";
 import { setLocalStorage } from "shared/storageHelper";
 
 // Fetching the self information
@@ -35,6 +44,13 @@ export const getAllUsers = () => {
   });
 };
 
+// sending user data payload to the API module for creating a new user
+export const addUser = (userData) => {
+  return addUserApi(userData).then((res) => {
+    return res;
+  });
+};
+
 // Fetching all the users and returning their names
 export const getAllUsersName = () => {
   return getAllUsersApi().then((res) => {
@@ -49,9 +65,41 @@ export const getAllUsersName = () => {
   });
 };
 
+// fetching a single user by id
+export const getUserById = (id) => {
+  return getUserByIdAapi(id).then((res) => {
+    return res;
+  });
+};
+
+// modifying user details by id
+export const editUserById = (id, editedUserDetails) => {
+  return editUserByIdApi(id, editedUserDetails).then((res) => {
+    return res;
+  });
+};
+
 // Deleting the user info
 export const deleteUser = (id) => {
   return deleteUserApi(id).then((res) => {
+    return res;
+  });
+};
+
+// Getting REST API Tokens based on token type (active | expired)
+export const getTokens = (type) => {
+  return getTokensApi(type).then((res) => {
+    return res;
+  });
+};
+
+// Creating a customized rest API token
+export const createToken = (tokenDetails) => {
+  return fetchTokenApi(
+    tokenDetails.username,
+    tokenDetails.password,
+    tokenDetails
+  ).then((res) => {
     return res;
   });
 };

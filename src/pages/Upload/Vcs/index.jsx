@@ -34,63 +34,23 @@ import { createUploadVcs, getUploadById } from "services/upload";
 import { scheduleAnalysis } from "services/jobs";
 
 // Default Agents list
-import { defaultAgentsList, getLocalStorage } from "shared/storageHelper";
+import {
+  initialScanFileData,
+  initialFolderList,
+  initialStateVcs,
+  initialVcsData,
+  typeVcs,
+} from "constants/constants";
 
 // Helper function for error handling
 import { handleError } from "shared/helper";
 
 const UploadFromVcs = () => {
-  const initialState = {
-    folderId: 1,
-    uploadDescription: "",
-    accessLevel: "protected",
-    ignoreScm: false,
-    uploadType: "vcs",
-  };
-  const initialScanFileData = {
-    analysis: defaultAgentsList(),
-    decider: {
-      nomosMonk: false,
-      bulkReused: false,
-      newScanner: false,
-      ojoDecider: false,
-    },
-    reuse: {
-      reuseUpload: 0,
-      reuseGroup: getLocalStorage("user")?.default_group,
-      reuseMain: false,
-      reuseEnhanced: false,
-      reuseReport: false,
-      reuseCopyright: false,
-    },
-  };
-  const initialFolderList = [
-    {
-      id: 1,
-      name: "Software Repository",
-      description: "Top Folder",
-      parent: null,
-    },
-  ];
-  const typeVcs = [
-    { id: "git", type: "Git" },
-    { id: "svn", type: "SVN" },
-  ];
-
-  const initialVcsData = {
-    vcsType: "git",
-    vcsUrl: "",
-    vcsBranch: "",
-    vcsName: "",
-    vcsUsername: "",
-    vcsPassword: "",
-  };
-
   // Upload Id required for scheduling Analysis
   let uploadId;
 
   // Data required for creating the upload
-  const [uploadVcsData, setUploadVcsData] = useState(initialState);
+  const [uploadVcsData, setUploadVcsData] = useState(initialStateVcs);
 
   // Setting the list for all the folders names
   const [folderList, setFolderList] = useState(initialFolderList);
@@ -130,7 +90,7 @@ const UploadFromVcs = () => {
                   type: "success",
                   text: messages.scheduledAnalysis,
                 });
-                setUploadVcsData(initialState);
+                setUploadVcsData(initialStateVcs);
                 setScanFileData(initialScanFileData);
               })
               .catch((error) => {

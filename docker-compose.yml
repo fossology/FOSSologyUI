@@ -1,0 +1,38 @@
+# FOSSology docker-compose file
+
+#  Copyright (C) 2022 Vineet Vatsal (vineetvatsal09@gmail.com)
+
+#  SPDX-License-Identifier: GPL-2.0
+
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of the GNU General Public License
+#  version 2 as published by the Free Software Foundation.
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+
+#  You should have received a copy of the GNU General Public License along
+#  with this program; if not, write to the Free Software Foundation, Inc.,
+#  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+# Description: docker-compose file for production environment
+
+
+version: "3.9"
+
+services:
+  fossologyui_server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - REACT_APP_SERVER_URL=localhost/repo/api/v2
+        - REACT_APP_HTTPS=false
+    image: fossologyui:react1.0
+    environment:
+      - REACT_APP_SERVER_URL=localhost/repo/api/v2
+      - REACT_APP_HTTPS=false
+    ports:
+      - "3000:3000"
+    command: yarn start

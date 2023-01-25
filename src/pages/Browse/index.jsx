@@ -1,5 +1,6 @@
 /*
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com),
+ Copyright (C) 2022 Soham Banerjee (sohambanerjee4abc@hotmail.com), Krishna Mahato (krishhtrishh9304@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -17,6 +18,8 @@
 */
 
 import React, { useState, useEffect } from "react";
+import routes from "constants/routes";
+import { Link, useHistory } from "react-router-dom";
 import arrayToTree from "array-to-tree";
 import messages from "constants/messages";
 
@@ -37,6 +40,15 @@ import {
   getFileNameFromContentDispostionHeader,
   handleError,
 } from "shared/helper";
+import Pagination from "@material-ui/lab/Pagination";
+
+import {
+  statusOptions,
+  entriesOptions,
+  assignOptions,
+  actionsOptions,
+  initialMessage,
+} from "../../constants/constants";
 
 const Browse = () => {
   const initialState = {
@@ -44,90 +56,6 @@ const Browse = () => {
     page: 1,
     limit: 10,
     recursive: false,
-  };
-
-  const statusOptions = [
-    {
-      id: 0,
-      name: "open",
-    },
-    {
-      id: 1,
-      name: "in progress",
-    },
-    {
-      id: 2,
-      name: "closed",
-    },
-    {
-      id: 3,
-      name: "rejected",
-    },
-  ];
-  const entriesOptions = [
-    {
-      id: 10,
-      entry: "10",
-    },
-    {
-      id: 25,
-      entry: "25",
-    },
-    {
-      id: 50,
-      entry: "50",
-    },
-    {
-      id: 100,
-      entry: "100",
-    },
-  ];
-  const assignOptions = [
-    {
-      id: 0,
-      name: "me",
-    },
-    {
-      id: 1,
-      name: "unassigned",
-    },
-  ];
-  const actionsOptions = [
-    {
-      id: 0,
-      name: "-- select action --",
-      reportFormat: "0",
-      disabled: true,
-    },
-    {
-      id: 1,
-      name: "Export DEP5",
-      reportFormat: "dep5",
-    },
-    {
-      id: 2,
-      name: "Export ReadMe_OSS",
-      reportFormat: "readmeoss",
-    },
-    {
-      id: 3,
-      name: "Export SPDX RDF",
-      reportFormat: "spdx2",
-    },
-    {
-      id: 4,
-      name: "Export SPDX tag:value",
-      reportFormat: "spdx2tv",
-    },
-    {
-      id: 5,
-      name: "Export Unified Report",
-      reportFormat: "unifiedreport",
-    },
-  ];
-  const initialMessage = {
-    type: "success",
-    text: "",
   };
 
   // Data required for getting the browse data list
@@ -141,11 +69,17 @@ const Browse = () => {
 
   // Setting the list for all the folders names
   const [folderList, setFolderList] = useState();
+  const [folderCount, setFolderCount] = useState(0);
 
   // State Variables for handling Error Boundaries
   // const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(initialMessage);
   const [showMessage, setShowMessage] = useState(false);
+  // qurey used for searching in the current page
+  const [query, setQuery] = useState("");
+  const [pages, setPages] = useState();
+
+  const history = useHistory();
 
   useEffect(() => {
     setMessage({
@@ -157,6 +91,7 @@ const Browse = () => {
       .then((res) => {
         setBrowseDataList(res.res);
         const arr = [];
+        setPages(res.pages);
         for (let i = 0; i < res.pages; i++) {
           arr.push({
             id: i + 1,
@@ -185,6 +120,8 @@ const Browse = () => {
             },
           };
         });
+        // setting the folders and subfolders count before converting the array to tree
+        setFolderCount(folders.length);
         setFolderList(
           arrayToTree(folders, {
             parentProperty: "parent",
@@ -196,7 +133,7 @@ const Browse = () => {
         handleError(error, setMessage);
         setShowMessage(true);
       });
-  }, []);
+  }, [browseData]);
 
   const handleChange = (e) => {
     if (e.target.name === "limit") {
@@ -211,6 +148,12 @@ const Browse = () => {
   };
 
   const handleActionChange = (e, uploadId) => {
+    if (e.target.value === "importReport") {
+      history.push(
+        `/upload/reportImport?folder=${browseData.folderId}&upload=${uploadId}`
+      );
+      return;
+    }
     scheduleReport(uploadId, e.target.value)
       .then((res) => {
         return res?.message;
@@ -257,9 +200,15 @@ const Browse = () => {
 
   const handleClick = (e, id) => {
     e.preventDefault();
-    setBrowseData({ ...browseData, folderId: id });
+    setPages(1);
+    setBrowseData({ ...browseData, folderId: id, page: 1 });
   };
-
+  const handlePageChange = (e, value) => {
+    if (value >= 1) {
+      setPages(value);
+      setBrowseData({ ...browseData, [`page`]: value });
+    }
+  };
   return (
     <>
       <Title title="Browse" />
@@ -275,7 +224,11 @@ const Browse = () => {
           <div className="col-md-3 col-lg-2">
             <h2 className="font-size-sub-heading">Folder Navigation</h2>
             {folderList && (
-              <TreeContainer data={folderList} handleClick={handleClick} />
+              <TreeContainer
+                folderCount={folderCount}
+                data={folderList}
+                handleClick={handleClick}
+              />
             )}
           </div>
           <div className="col-md-9 col-lg-10">
@@ -303,7 +256,8 @@ const Browse = () => {
                     <input
                       type="search"
                       className="form-control"
-                      placeholder="Search"
+                      placeholder="Filter upload"
+                      onChange={(event) => setQuery(event.target.value)}
                     />
                   </th>
                   <th>
@@ -337,57 +291,93 @@ const Browse = () => {
                 </tr>
               </thead>
               <tbody>
-                {browseDataList?.map((data) => (
-                  <tr key={data?.id} className="text-center">
-                    <td>
-                      <div className="font-demi">{data?.uploadname}</div>
-                      <div className="font-size-small">{data?.description}</div>
-                      <InputContainer
-                        name="action"
-                        type="select"
-                        onChange={(e) => handleActionChange(e, data?.id)}
-                        options={actionsOptions}
-                        property="name"
-                        defaultValue="0"
-                        valueProperty="reportFormat"
-                      />
-                    </td>
-                    <td>
-                      <InputContainer
-                        name="status"
-                        type="select"
-                        onChange={(e) => handleChange(e)}
-                        options={statusOptions}
-                        property="name"
-                      />
-                    </td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>
-                      <InputContainer
-                        name="status"
-                        type="select"
-                        onChange={(e) => handleChange(e)}
-                        options={assignOptions}
-                        property="name"
-                      />
-                    </td>
-                    <td>{data?.uploaddate.split(".")[0]}</td>
-                  </tr>
-                ))}
+                {browseDataList
+                  ?.filter((post) => {
+                    if (query === "") {
+                      return post;
+                    }
+                    if (
+                      post?.uploadname
+                        .toLowerCase()
+                        .includes(query.toLowerCase())
+                    )
+                      return post;
+                    return null;
+                  })
+                  ?.map((data) => (
+                    <tr key={data?.id} className="text-center">
+                      <td>
+                        <Link
+                          to={`${routes.browseUploads.licenseBrowser}/uploadID=${data.id}`}
+                        >
+                          <div className="text-primary-color">
+                            <div className="font-demi">{data?.uploadname}</div>
+                            <div className="font-size-small">
+                              {data?.description}
+                            </div>
+                          </div>
+                        </Link>
+                        <InputContainer
+                          name="action"
+                          type="select"
+                          onChange={(e) => handleActionChange(e, data?.id)}
+                          options={actionsOptions}
+                          property="name"
+                          defaultValue="0"
+                          valueProperty="reportFormat"
+                        />
+                      </td>
+                      <td>
+                        <InputContainer
+                          name="status"
+                          type="select"
+                          onChange={(e) => handleChange(e)}
+                          options={statusOptions}
+                          property="name"
+                        />
+                      </td>
+                      <td>-</td>
+                      <td>-</td>
+                      <td>
+                        <InputContainer
+                          name="status"
+                          type="select"
+                          onChange={(e) => handleChange(e)}
+                          options={assignOptions}
+                          property="name"
+                        />
+                      </td>
+                      <td>{data?.uploaddate.split(".")[0]}</td>
+                    </tr>
+                  ))}
                 <tr>
                   <td colSpan="6">
-                    Page:
-                    {pagesOptions && (
-                      <InputContainer
-                        name="page"
-                        type="select"
-                        onChange={(e) => handleChange(e)}
-                        options={pagesOptions}
-                        property="value"
-                        className="mt-n4"
-                      />
-                    )}
+                    <div className="right-pagination">
+                      Page:
+                      {pagesOptions && (
+                        <div className="row">
+                          <Pagination
+                            name="page"
+                            className="col-md-6 pagination-div "
+                            property="value"
+                            count={pages}
+                            page={browseData.page}
+                            onChange={handlePageChange}
+                          />
+                          <div className="row ">
+                            Go to: &nbsp;
+                            <input
+                              type="number"
+                              className="pagination-textarea"
+                              size="3"
+                              onChange={(event) =>
+                                handlePageChange(event, event.target.value)
+                              }
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </td>
                 </tr>
               </tbody>

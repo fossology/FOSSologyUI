@@ -26,7 +26,7 @@ import sendRequest from "./sendRequest";
 
 // Fetching the licenses with their kind i.e (candidate, main, all)
 export const getAllLicenseApi = ({ page, limit, kind }) => {
-  const url = endpoints.license.get();
+  const url = endpoints.admin.license.get();
   return sendRequest({
     url,
     method: "GET",
@@ -49,7 +49,7 @@ export const createCandidateLicenseApi = ({
   licenseUrl,
   mergeRequest,
 }) => {
-  const url = endpoints.license.createCandidateLicense();
+  const url = endpoints.admin.license.createCandidateLicense();
   return sendRequest({
     url,
     method: "POST",

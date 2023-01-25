@@ -127,3 +127,21 @@ h6 {
 .license-textarea {
   font-family: monospace;
 }
+
+/* Width for pagination UI */
+.pagination-div {
+  min-width: 71.5%;
+}
+.right-pagination {
+  width: 100%;
+  padding-left: 65%;
+}
+
+/* eight for textarea in pagination module */
+.pagination-textarea {
+  height: 30px;
+}
+
+body {
+  transition: all 0.25s linear;
+}

@@ -33,50 +33,20 @@ import { getAllFolders } from "services/folders";
 import { createUploadUrl, getUploadById } from "services/upload";
 import { scheduleAnalysis } from "services/jobs";
 
-// Default Agents list
-import { defaultAgentsList } from "shared/storageHelper";
+// constants
+import {
+  initialScanFileData,
+  initialFolderList,
+  initialStateUrl,
+  initialUrlData,
+} from "constants/constants";
 
 const UploadFromUrl = () => {
-  const initialState = {
-    folderId: 1,
-    uploadDescription: "",
-    accessLevel: "protected",
-    ignoreScm: false,
-    uploadType: "url",
-  };
-  const initialScanFileData = {
-    analysis: defaultAgentsList(),
-    decider: {
-      nomosMonk: false,
-      bulkReused: false,
-      newScanner: false,
-      ojoDecider: false,
-    },
-    reuse: {
-      reuseUpload: 0,
-      reuseGroup: "",
-      reuseMain: false,
-      reuseEnhanced: false,
-    },
-  };
-  const initialFolderList = [
-    {
-      id: 1,
-      name: "Software Repository",
-      description: "Top Folder",
-      parent: null,
-    },
-  ];
-  const initialUrlData = {
-    url: "",
-    name: "",
-  };
-
   // Upload Id required for scheduling Analysis
   let uploadId;
 
   // Data required for creating the upload
-  const [uploadUrlData, setUploadUrlData] = useState(initialState);
+  const [uploadUrlData, setUploadUrlData] = useState(initialStateUrl);
 
   // Setting the list for all the folders names
   const [folderList, setFolderList] = useState(initialFolderList);
@@ -114,7 +84,7 @@ const UploadFromUrl = () => {
                   type: "success",
                   text: messages.scheduledAnalysis,
                 });
-                setUploadUrlData(initialState);
+                setUploadUrlData(initialStateUrl);
                 setScanFileData(initialScanFileData);
               })
               .catch((error) => {

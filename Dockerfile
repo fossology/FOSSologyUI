@@ -18,7 +18,6 @@
 
 # Description: Docker container image recipe
 
-
 FROM node:14.15.4-slim
 
 LABEL maintainer="Fossology <fossology@fossology.org>"

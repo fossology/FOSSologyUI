@@ -21,7 +21,7 @@ jest.mock("api/sendRequest");
 
 describe("info", () => {
   test("getInfoApi", () => {
-    const url = endpoints.info.info();
+    const url = endpoints.admin.info.info();
     sendRequest.mockImplementation(() => true);
 
     expect(getInfoApi()).toBe(sendRequest({}));
@@ -34,7 +34,7 @@ describe("info", () => {
   });
 
   test("getHealthApi", () => {
-    const url = endpoints.info.health();
+    const url = endpoints.admin.info.health();
     sendRequest.mockImplementation(() => true);
 
     expect(getHealthApi()).toBe(sendRequest({}));

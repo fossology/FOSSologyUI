@@ -40,6 +40,7 @@ const DeleteUser = () => {
     {
       id: 0,
       name: "string",
+      disabled: false,
     },
   ];
   const initialMessage = {
@@ -70,6 +71,22 @@ const DeleteUser = () => {
     }
   };
 
+  /* Defaults for the dropdown */
+  const setDefaultsForDropdown = (res) => {
+    let userList = res.map((user) => ({
+      ...user,
+      disabled: !(user.name !== "fossy" && user.name !== "Default User"),
+    }));
+    setUsersList(userList);
+    userList = userList.filter(
+      (user) => user.name !== "fossy" && user.name !== "Default User"
+    );
+    setDeleteUserData({
+      ...deleteUserData,
+      id: userList.length ? userList[0].id : 0,
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (confirm) {
@@ -83,11 +100,14 @@ const DeleteUser = () => {
         })
         .then(() => {
           getAllUsersName().then((res) => {
-            setUsersList(res);
+            setDefaultsForDropdown(res);
           });
         })
         .catch((error) => {
-          handleError(error, setMessage);
+          if (id === 0) {
+            const err = new Error("Default users cannot be deleted");
+            handleError(err, setMessage);
+          } else handleError(error, setMessage);
         })
         .finally(() => {
           setLoading(false);
@@ -105,7 +125,7 @@ const DeleteUser = () => {
   useEffect(() => {
     getAllUsersName()
       .then((res) => {
-        setUsersList(res);
+        setDefaultsForDropdown(res);
       })
       .catch((error) => {
         handleError(error, setMessage);

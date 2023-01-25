@@ -46,7 +46,7 @@ export const createUploadApi = (
       Authorization: getToken(),
       folderId,
       uploadDescription,
-      accessLevel,
+      public: accessLevel,
       ignoreScm,
       uploadType: "",
     },
@@ -60,7 +60,6 @@ export const createUploadVcsApi = (header, body) => {
   return sendRequest({
     url,
     method: "POST",
-    credentials: false,
     headers: {
       ...header,
       Authorization: getToken(),
@@ -92,6 +91,33 @@ export const getUploadByIdApi = (uploadId, retries) => {
     retries,
     headers: {
       Authorization: getToken(),
+    },
+  });
+};
+
+// Getting a Upload Summary
+export const getUploadSummaryApi = (uploadId) => {
+  const url = endpoints.upload.getSummary(uploadId);
+  return sendRequest({
+    url,
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+};
+
+// Getting a Upload License
+export const getUploadLicenseApi = (uploadId, agent) => {
+  const url = endpoints.upload.getLicense(uploadId);
+  return sendRequest({
+    url,
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+    queryParams: {
+      agent,
     },
   });
 };

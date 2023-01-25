@@ -26,8 +26,10 @@
   padding-right: 0.5rem;
 }
 
-.tree-list {
-  height: 50rem;
+@media only screen and (min-width: 765px) {
+  .tree-list {
+    height: 50rem !important;
+  }
 }
 
 .folder-tree-list {
