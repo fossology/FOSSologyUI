@@ -21,7 +21,7 @@ import { ThemeContext } from "styled-components";
 import PropTypes from "prop-types";
 
 const TextIcon = ({ text, className }) => {
-  const { themeContext } = useContext(ThemeContext);
+  const themeContext = useContext(ThemeContext);
   return (
     <svg width="40" height="40" viewBox="0 0 40 40" className={className}>
       <g>
