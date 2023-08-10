@@ -18,9 +18,10 @@
 */
 
 import React, { useState, useEffect } from "react";
-import routes from "constants/routes";
 import { Link, useHistory } from "react-router-dom";
 import arrayToTree from "array-to-tree";
+import Pagination from "@material-ui/lab/Pagination";
+import routes from "constants/routes";
 import messages from "constants/messages";
 
 // Title
@@ -40,7 +41,6 @@ import {
   getFileNameFromContentDispostionHeader,
   handleError,
 } from "shared/helper";
-import Pagination from "@material-ui/lab/Pagination";
 
 import {
   statusOptions,
