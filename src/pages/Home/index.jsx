@@ -19,14 +19,14 @@
 // React Imports
 import React, { useState, useEffect } from "react";
 
-// Title
-import Title from "components/Title";
-
 // External library imports
 import { useHistory } from "react-router-dom";
 import { Form, Row, Col } from "react-bootstrap";
 import queryString from "query-string";
 import PropTypes from "prop-types";
+
+// Title
+import Title from "components/Title";
 
 // Required functions for calling APIs
 import fetchToken from "services/auth";
