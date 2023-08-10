@@ -19,7 +19,7 @@
 
 import React, { useEffect, useState } from "react";
 
-// Required functions for API and Error handling
+// Required function for API and Error handling
 import Pagination from "@material-ui/lab/Pagination";
 
 // Title
@@ -30,9 +30,9 @@ import { handleError } from "shared/helper";
 import { initialMessage, entriesOptions } from "constants/constants";
 import messages from "constants/messages";
 import { InputContainer, Alert } from "components/Widgets";
-import { getAllJob } from "services/jobs";
+import { getAllAdminJob } from "services/jobs";
 
-const MyRecentJobs = () => {
+const AllJobs = () => {
   const initialState = {
     page: 1,
     limit: 10,
@@ -66,12 +66,12 @@ const MyRecentJobs = () => {
       text: messages.loading,
     });
     setShowMessage(true);
-    getAllJob(jobsData)
+    getAllAdminJob(jobsData)
       .then((res) => {
         // Formatting the date from time stamp to readable date
         setShowMessage(false);
         const arr = [];
-        for (let i = 0; i < res?.res?.length; i++) {
+        for (let i = 0; i < res.res.length; i++) {
           res.res[i].queueDate = Dateformatter(res.res[i].queueDate);
           arr[i] = res.res[i];
         }
@@ -129,14 +129,14 @@ const MyRecentJobs = () => {
         )}
         <div className="row">
           <div className="col-md-3 col-lg-2">
-            <h2 className="font-size-sub-heading">My Recent Jobs</h2>
+            <h2 className="font-size-sub-heading">All Jobs</h2>
           </div>
           <div className="col-md-9 col-lg-10">
             <table className="table table-striped text-primary-color font-size-medium table-responsive-sm table-bordered">
               <thead>
                 <tr>
                   <th colSpan="6" className="font-size-sub-heading text-center">
-                    My Recent Jobs
+                    All Recent Jobs
                   </th>
                 </tr>
                 <tr className="font-demi">
@@ -230,4 +230,4 @@ const MyRecentJobs = () => {
   );
 };
 
-export default MyRecentJobs;
+export default AllJobs;
