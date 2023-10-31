@@ -19,6 +19,9 @@
 
 import React, { useEffect, useState } from "react";
 
+// constants
+import { useHistory, useLocation } from "react-router-dom";
+
 // Title
 import Title from "components/Title";
 
@@ -29,7 +32,6 @@ import { Alert, Button, InputContainer } from "components/Widgets";
 import { initialMessage, initialStateImportReport } from "constants/constants";
 import { getAllFolders } from "services/folders";
 import { getUploadsFolderId } from "services/organizeUploads";
-import { useHistory, useLocation } from "react-router-dom";
 import { importReport } from "services/jobs";
 
 const ImportReport = () => {

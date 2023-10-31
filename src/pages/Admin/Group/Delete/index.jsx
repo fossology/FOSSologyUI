@@ -17,10 +17,9 @@
 */
 
 import React, { useEffect, useState } from "react";
-import messages from "constants/messages";
-
 // Jquery for handling modal
 import $ from "jquery";
+import messages from "constants/messages";
 
 // Title
 import Title from "components/Title";

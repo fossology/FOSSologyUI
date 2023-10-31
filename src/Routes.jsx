@@ -18,8 +18,8 @@
 
 // React imports
 import React from "react";
-import routes from "constants/routes";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
+import routes from "constants/routes";
 
 // Guards imports
 const PublicLayout = React.lazy(() => import("shared/PublicLayout"));
