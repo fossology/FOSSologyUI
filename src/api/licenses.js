@@ -67,3 +67,23 @@ export const createCandidateLicenseApi = ({
     },
   });
 };
+
+export const importLicenseCsvApi = (fileInput, delimiter, enclosure) => {
+  const url = endpoints.admin.license.importCsv();
+  const formdata = new FormData();
+
+  if (fileInput) {
+    formdata.append("file_input", fileInput);
+    formdata.append("delimiter", delimiter);
+    formdata.append("enclosure", enclosure);
+  }
+  return sendRequest({
+    url,
+    method: "POST",
+    isMultipart: true,
+    headers: {
+      Authorization: getToken(),
+    },
+    body: formdata,
+  });
+};
