@@ -40,7 +40,8 @@ import routes from "constants/routes";
 import { isAuth } from "shared/authHelper";
 
 // Widgets
-import { Alert, Button, Spinner } from "components/Widgets";
+import { Button, Spinner } from "components/Widgets";
+import { useAlert } from "components/Widgets/AlertProvider";
 
 // Features cards
 import Features from "./Features";
@@ -50,6 +51,7 @@ import LoginForm from "./style";
 
 const Home = ({ location }) => {
   const history = useHistory();
+  const alertUser = useAlert();
 
   // Data required for user login
   const [values, setValues] = useState({
@@ -59,8 +61,6 @@ const Home = ({ location }) => {
 
   // State Variables for handling Error Boundaries
   const [loading, setLoading] = useState(false);
-  const [showError, setShowError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
 
   const { username, password } = values;
 
@@ -77,8 +77,7 @@ const Home = ({ location }) => {
       .then(() => history.push(routes.browse))
       .catch((err) => {
         setLoading(false);
-        setErrorMessage(err.message);
-        setShowError(true);
+        alertUser(err.message, "danger");
       });
   };
 
@@ -86,8 +85,7 @@ const Home = ({ location }) => {
     const queryParams = queryString.parse(location?.search);
     const { message } = queryParams;
     if (message) {
-      setErrorMessage(message);
-      setShowError(true);
+      alertUser(message, "danger");
     }
     window.history.replaceState(null, null, window.location.pathname);
   }, [location?.search]);
@@ -96,16 +94,6 @@ const Home = ({ location }) => {
     <>
       <Title title="Getting Started with FOSSology" />
       <div className="main-container my-3">
-        {showError && (
-          <>
-            <Alert
-              type="danger"
-              setShow={setShowError}
-              message={errorMessage}
-              heading="An error occured"
-            />
-          </>
-        )}
         <div className="row m-0">
           <div className="col-md-6">
             <b className="font-size-medium">FOSSology</b> is a framework for
