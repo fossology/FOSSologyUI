@@ -1,15 +1,11 @@
-<!-- SPDX-FileCopyrightText: © Fossology contributors
-
-     SPDX-License-Identifier: GPL-2.0-only
--->
 ---
 name: Bug report
 about: Create a report to help us improve
 labels: bug
 ---
 
-<!-- Before filling this issue, please read the wiki (https://github.com/fossology/fossology/wiki)
-and search if the bug do not already exists in the issues (https://github.com/fossology/fossology/issues). -->
+<!-- Before filling this issue, please read the wiki (https://github.com/fossology/FOSSologyUI/wiki)
+and search if the bug do not already exists in the issues (https://github.com/fossology/FOSSologyUI/issues). -->
 
 ### Description
 
@@ -27,9 +23,10 @@ If applicable, add screenshots to help explain your problem.
 
 * Last commit id on master:
 * Operating System (lsb_release -a):
+* Browser [e.g. chrome, safari]:
 
 ### Logs
-
+ 
 Any logs (if any) generated in
 
 #### FOSSology logs
@@ -43,4 +40,3 @@ Logs generated under /var/log/apache2/error.log
 #### Job logs
 
 Logs generated under Geeky Scan Details (Job history => click on agent's job id)
-
