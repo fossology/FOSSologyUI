@@ -59,11 +59,15 @@ const UploadReuse = ({ reuse, handleChange }) => {
   }, []);
 
   useEffect(() => {
-    getAllFolders(reuse.reuseGroup)
-      .then((res) => {
-        setReuseData((prevData) => ({ ...prevData, folderList: res }));
-      })
-      .catch(() => {});
+    const folderData = async () => {
+      try {
+        const res = await getAllFolders(reuse.reuseGroup);
+        return setReuseData((prevData) => ({ ...prevData, folderList: res }));
+      } catch (error) {
+        return {};
+      }
+    };
+    return folderData;
   }, [reuse.reuseGroup]);
 
   useEffect(() => {

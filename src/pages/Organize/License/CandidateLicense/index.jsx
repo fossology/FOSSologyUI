@@ -79,17 +79,19 @@ const AdviceLicenses = () => {
     });
   };
   useEffect(() => {
-    getAllLicense(licenseData)
-      .then((res) => {
+    const fetchData = async () => {
+      try {
+        const res = await getAllLicense(licenseData);
         setLicenseDataList(res);
-      })
-      .catch((error) => {
+      } catch (error) {
         setMessage({
           type: "danger",
           text: error.message,
         });
         setShowMessage(true);
-      });
+      }
+    };
+    fetchData();
   }, [licenseData]);
   return (
     <>

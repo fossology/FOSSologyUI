@@ -70,47 +70,49 @@ const EditFolder = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    editFolder(editFolderData)
-      .then(() => {
-        setMessage({
-          type: "success",
-          text: messages.updatedFolderProps,
-        });
-      })
-      .catch((error) => {
-        handleError(error, setMessage);
-      })
-      .finally(() => {
-        setLoading(false);
-        setShowMessage(true);
+    try {
+      await editFolder(editFolderData);
+      setMessage({
+        type: "success",
+        text: messages.updatedFolderProps,
       });
+    } catch (error) {
+      handleError(error, setMessage);
+    } finally {
+      setLoading(false);
+      setShowMessage(true);
+    }
   };
-
+  
   useEffect(() => {
-    getAllFolders()
-      .then((res) => {
+    const fetchData = async () => {
+      try {
+        const res = await getAllFolders();
         setFolderList(res);
-      })
-      .catch((error) => {
+      } catch (error) {
         handleError(error, setMessage);
         setShowMessage(true);
-      });
+      }
+    };
+    fetchData();
   }, []);
-
+  
   useEffect(() => {
-    getSingleFolder(id)
-      .then((res) => {
+    const fetchData = async () => {
+      try {
+        const res = await getSingleFolder(id);
         setEditFolderData(res);
-      })
-      .catch((error) => {
+      } catch (error) {
         handleError(error, setMessage);
         setShowMessage(true);
-      });
+      }
+    };
+    fetchData();
   }, [id]);
-
+  
   return (
     <>
       <Title title="Edit Folder Properties" />

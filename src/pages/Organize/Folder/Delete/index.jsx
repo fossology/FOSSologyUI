@@ -68,40 +68,37 @@ const DeleteFolder = () => {
       [e.target.name]: e.target.value,
     });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setLoading(true);
-    deleteFolder(deleteFolderData)
-      .then(() => {
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      setLoading(true);
+      try {
+        await deleteFolder(deleteFolderData);
         setMessage({
           type: "success",
           text: messages.deletedFolder,
         });
-      })
-      .then(() => {
-        getAllFolders().then((res) => {
-          setFolderList(res);
-        });
-      })
-      .catch((error) => {
+        const res = await getAllFolders();
+        setFolderList(res);
+      } catch (error) {
         handleError(error, setMessage);
-      })
-      .finally(() => {
+      } finally {
         setLoading(false);
         setShowMessage(true);
-      });
-  };
+      }
+    };
 
-  useEffect(() => {
-    getAllFolders()
-      .then((res) => {
-        setFolderList(res);
-      })
-      .catch((error) => {
-        handleError(error, setMessage);
-        setShowMessage(true);
-      });
-  }, []);
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const res = await getAllFolders();
+          setFolderList(res);
+        } catch (error) {
+          handleError(error, setMessage);
+          setShowMessage(true);
+        }
+      };
+      fetchData();
+    }, []);    
   return (
     <>
       <Title title="Delete Folder" />

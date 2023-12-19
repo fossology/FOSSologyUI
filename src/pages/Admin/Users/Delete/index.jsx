@@ -87,32 +87,29 @@ const DeleteUser = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (confirm) {
       setLoading(true);
-      deleteUser(id)
-        .then(() => {
-          setMessage({
-            type: "success",
-            text: messages.deletedUser,
-          });
-        })
-        .then(() => {
-          getAllUsersName().then((res) => {
-            setDefaultsForDropdown(res);
-          });
-        })
-        .catch((error) => {
-          if (id === 0) {
-            const err = new Error("Default users cannot be deleted");
-            handleError(err, setMessage);
-          } else handleError(error, setMessage);
-        })
-        .finally(() => {
-          setLoading(false);
-          setShowMessage(true);
+      try {
+        await deleteUser(id);
+        setMessage({
+          type: "success",
+          text: messages.deletedUser,
         });
+        const res = await getAllUsersName();
+        setDefaultsForDropdown(res);
+      } catch (error) {
+        if (id === 0) {
+          const err = new Error("Default users cannot be deleted");
+          handleError(err, setMessage);
+        } else {
+          handleError(error, setMessage);
+        }
+      } finally {
+        setLoading(false);
+        setShowMessage(true);
+      }
     } else {
       setMessage({
         type: "danger",
@@ -123,14 +120,16 @@ const DeleteUser = () => {
   };
 
   useEffect(() => {
-    getAllUsersName()
-      .then((res) => {
+    const fetchData = async () => {
+      try {
+        const res = await getAllUsersName();
         setDefaultsForDropdown(res);
-      })
-      .catch((error) => {
+      } catch (error) {
         handleError(error, setMessage);
         setShowMessage(true);
-      });
+      }
+    };
+    fetchData();
   }, []);
   return (
     <>
