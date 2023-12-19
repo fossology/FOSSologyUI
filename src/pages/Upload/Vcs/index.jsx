@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2022 Samuel Dushimimana (dushsam100@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -17,7 +18,6 @@
 */
 
 import React, { useState, useEffect } from "react";
-import messages from "constants/messages";
 
 // Title
 import Title from "components/Title";
@@ -30,8 +30,7 @@ import CommonFields from "components/Upload/CommonFields";
 
 // Required functions for calling APIs
 import { getAllFolders } from "services/folders";
-import { createUploadVcs, getUploadById } from "services/upload";
-import { scheduleAnalysis } from "services/jobs";
+import { createUploadVcs } from "services/upload";
 
 // Default Agents list
 import {
@@ -44,11 +43,9 @@ import {
 
 // Helper function for error handling
 import { handleError } from "shared/helper";
+import messages from "../../../constants/messages";
 
 const UploadFromVcs = () => {
-  // Upload Id required for scheduling Analysis
-  let uploadId;
-
   // Data required for creating the upload
   const [uploadVcsData, setUploadVcsData] = useState(initialStateVcs);
 
@@ -66,39 +63,25 @@ const UploadFromVcs = () => {
   const [loading, setLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
 
+  // Function to reset the state variables to initial state
+  const resetStateVariables = () => {
+    setUploadVcsData(initialStateVcs);
+    setVcsData(initialVcsData);
+    setScanFileData(initialScanFileData);
+    setFolderList(initialFolderList);
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    createUploadVcs(uploadVcsData, vcsData)
-      .then((res) => {
+    createUploadVcs(uploadVcsData, vcsData, scanFileData)
+      .then(() => {
+        resetStateVariables();
         window.scrollTo({ top: 0 });
         setMessage({
           type: "success",
-          text: `${messages.queuedUpload} #${res.message}`,
+          text: `${messages.uploadSuccess}`,
         });
-        uploadId = res.message;
       })
-      // Calling the api for maximum 10 times to check whether the upload is unpacked by the agent
-      .then(() => getUploadById(uploadId, 10))
-      .then(() =>
-        setTimeout(
-          () =>
-            scheduleAnalysis(uploadVcsData.folderId, uploadId, scanFileData)
-              .then(() => {
-                window.scrollTo({ top: 0 });
-                setMessage({
-                  type: "success",
-                  text: messages.scheduledAnalysis,
-                });
-                setUploadVcsData(initialStateVcs);
-                setScanFileData(initialScanFileData);
-              })
-              .catch((error) => {
-                handleError(error, setMessage);
-              }),
-          200000
-        )
-      )
       .catch((error) => {
         handleError(error, setMessage);
       })
