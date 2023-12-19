@@ -69,33 +69,33 @@ const MoveFolder = () => {
 
   const handleMove = async (e) => {
     e.preventDefault();
-      try {
-        await moveFolder(moveFolderData);
-          setMessage({
-          type: "success",
-          text: messages.movedFolder,
-        });
-      } catch (error) {
-        handleError(error, setMessage);
-      } finally {
-        setShowMessage(true);
-      }
-    };
+    try {
+      await moveFolder(moveFolderData);
+      setMessage({
+        type: "success",
+        text: messages.movedFolder,
+      });
+    } catch (error) {
+      handleError(error, setMessage);
+    } finally {
+      setShowMessage(true);
+    }
+  };
     
   const handleCopy = async (e) => {
     e.preventDefault();
-      try {
-        await copyFolder(moveFolderData);
-        setMessage({
-          type: "success",
-          text: messages.copiedFolder,
-        });
-      } catch (error) {
-        handleError(error, setMessage);
-      } finally {
-        setShowMessage(true);
-      }
-    };
+    try {
+      await copyFolder(moveFolderData);
+      setMessage({
+        type: "success",
+        text: messages.copiedFolder,
+      });
+    } catch (error) {
+      handleError(error, setMessage);
+    } finally {
+      setShowMessage(true);
+    }
+  };
     
   useEffect(() => {
     const fetchData = async () => {
@@ -109,7 +109,7 @@ const MoveFolder = () => {
       };
     fetchData();
     }, []);
-    
+
   return (
     <>
       <Title title="Move or Copy Folder" />

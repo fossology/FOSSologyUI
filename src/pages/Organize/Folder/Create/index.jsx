@@ -99,7 +99,7 @@ const CreateFolder = () => {
     };
     fetchData();
   }, []);
-  
+
   return (
     <>
       <Title title="Create a new FOSSology folder" />
