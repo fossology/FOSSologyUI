@@ -264,6 +264,12 @@ const Header = () => {
                         </NavDropdown.Item>
                       </div>
                     </DropdownButton>
+                    <NavDropdown.Item
+                      as={Link}
+                      to={routes.admin.uploadPermissions}
+                    >
+                      Upload Permissions
+                    </NavDropdown.Item>
                     <DropdownButton
                       variant=""
                       drop="right"
