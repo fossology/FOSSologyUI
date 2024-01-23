@@ -108,6 +108,7 @@ const Header = () => {
               <Nav.Link className="active-nav-item">Getting Started</Nav.Link>
             </ScrollLink>
             <Nav.Link
+              style={{ color: "white" }}
               href={externalLinks.fossologyWiki}
               target="_blank"
               rel="noreferrer"
