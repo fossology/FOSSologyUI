@@ -94,13 +94,9 @@ const Header = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link
-              as={Link}
-              to={routes.home}
-              className={location.pathname === routes.home && "active-nav-item"}
-            >
-              Home
-            </Nav.Link>
+            <ScrollLink to="HomeSection" smooth="true" duration={500}>
+              <Nav.Link className="active-nav-item">Home</Nav.Link>
+            </ScrollLink>
             <ScrollLink to="aboutSection" smooth="true" duration={500}>
               <Nav.Link className="active-nav-item">About</Nav.Link>
             </ScrollLink>
