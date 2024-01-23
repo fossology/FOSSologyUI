@@ -104,6 +104,17 @@ const Header = () => {
             <ScrollLink to="aboutSection" smooth="true" duration={500}>
               <Nav.Link className="active-nav-item">About</Nav.Link>
             </ScrollLink>
+            <ScrollLink to="gettingstartedSection" smooth="true" duration={500}>
+              <Nav.Link className="active-nav-item">Getting Started</Nav.Link>
+            </ScrollLink>
+            <Nav.Link
+              href={externalLinks.fossologyWiki}
+              target="_blank"
+              rel="noreferrer"
+              className="active-nav-item"
+            >
+              Documentation
+            </Nav.Link>
             {isAuth() && (
               <>
                 <Nav.Link

@@ -22,7 +22,7 @@ import React, { useState, useEffect } from "react";
 // Title
 import Title from "components/Title";
 import About from "pages/Help/About/index";
-
+import GettingStarted from "pages/Help/Overview/index";
 // import LicenseBrowser from "src\pages\Help\LicenseBrowser\index.jsx";
 // External library imports
 import { useHistory } from "react-router-dom";
@@ -199,6 +199,9 @@ const Home = ({ location }) => {
         </div>
         <Element name="aboutSection">
           <About />
+        </Element>
+        <Element name="gettingstartedSection">
+          <GettingStarted />
         </Element>
         <Features />
       </div>
