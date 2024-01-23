@@ -29,7 +29,7 @@ import { Alert } from "components/Widgets";
 import BrowseUploadsHeader from "components/BrowseUploadsHeader";
 
 // Required functions for calling APIs
-import { getUploadSummary, getUploadLicense } from "services/upload";
+import { getUploadSummary, getUploadLicense } from "data/services/upload";
 
 // Helper function for error handling
 import { handleError } from "shared/helper";

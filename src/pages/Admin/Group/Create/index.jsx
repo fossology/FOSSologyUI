@@ -26,7 +26,7 @@ import Title from "components/Title";
 import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 
 // Required functions for calling APIs
-import { createGroup } from "services/groups";
+import { createGroup } from "data/services/groups";
 
 const GroupCreate = () => {
   const initialMessage = {

@@ -23,7 +23,7 @@ import Title from "components/Title";
 import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 
 // services
-import { getAllFolders } from "services/folders";
+import { getAllFolders } from "data/services/folders";
 
 // predefined common fields components
 import CommonFields from "components/Upload/CommonFields";
@@ -35,7 +35,7 @@ import {
   bucketPool,
   initialAddUserData,
 } from "constants/constants";
-import { addUser } from "services/users";
+import { addUser } from "data/services/users";
 
 const AddUser = () => {
   const initialMessage = {

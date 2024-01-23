@@ -27,7 +27,7 @@ import { handleError } from "shared/helper";
 import { initialMessage, entriesOptions } from "constants/constants";
 import messages from "constants/messages";
 import { InputContainer, Alert } from "components/Widgets";
-import { getAllAdminJob } from "services/jobs";
+import { getAllAdminJob } from "data/services/jobs";
 import Pagination from "@material-ui/lab/Pagination";
 
 const AllJobs = () => {

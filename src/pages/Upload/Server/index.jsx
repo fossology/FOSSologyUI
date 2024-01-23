@@ -25,7 +25,7 @@ import { Alert, Button, InputContainer } from "components/Widgets";
 import CommonFields from "components/Upload/CommonFields";
 
 // Required functions for calling APIs
-import { getAllFolders } from "services/folders";
+import { getAllFolders } from "data/services/folders";
 
 // Title
 import Title from "components/Title";

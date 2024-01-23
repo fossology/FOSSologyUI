@@ -29,7 +29,7 @@ import Title from "components/Title";
 import { Alert, Button, InputContainer } from "components/Widgets";
 
 // Required functions for calling APIs
-import { deleteGroup, fetchAllDeletableGroups } from "services/groups";
+import { deleteGroup, fetchAllDeletableGroups } from "data/services/groups";
 import DeleteConfirmation from "components/Modals/DeleteConfirmation";
 
 const DeleteGroup = () => {

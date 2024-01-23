@@ -21,7 +21,9 @@ import React, { useState, useEffect } from "react";
 
 // Title
 import Title from "components/Title";
+import About from "pages/Help/About/index";
 
+// import LicenseBrowser from "src\pages\Help\LicenseBrowser\index.jsx";
 // External library imports
 import { useHistory } from "react-router-dom";
 import { Form, Row, Col } from "react-bootstrap";
@@ -29,16 +31,16 @@ import queryString from "query-string";
 import PropTypes from "prop-types";
 
 // Required functions for calling APIs
-import fetchToken from "services/auth";
-import { getUserSelf } from "services/users";
-import { fetchAllGroups } from "services/groups";
+import fetchToken from "data/services/auth";
+import { getUserSelf } from "data/services/users";
+import { fetchAllGroups } from "data/services/groups";
 
 // Routes
 import routes from "constants/routes";
 
 // Helper function for user authentication
 import { isAuth } from "shared/authHelper";
-
+import { Element } from "react-scroll";
 // Widgets
 import { Alert, Button, Spinner } from "components/Widgets";
 
@@ -50,7 +52,6 @@ import LoginForm from "./style";
 
 const Home = ({ location }) => {
   const history = useHistory();
-
   // Data required for user login
   const [values, setValues] = useState({
     username: "",
@@ -196,6 +197,9 @@ const Home = ({ location }) => {
             )}
           </div>
         </div>
+        <Element name="aboutSection">
+          <About />
+        </Element>
         <Features />
       </div>
     </>

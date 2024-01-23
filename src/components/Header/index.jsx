@@ -31,7 +31,7 @@ import {
 import { QuestionCircleFill, PersonCircle } from "react-bootstrap-icons";
 
 // List of all accessible groups
-import { getAllGroups } from "services/groups";
+import { getAllGroups } from "data/services/groups";
 
 // Widgets
 import Image from "components/Widgets/Image";
@@ -42,7 +42,7 @@ import logo from "assets/images/logo.svg";
 
 // Routes for all the pages
 import routes from "constants/routes";
-
+import { Link as ScrollLink } from "react-scroll";
 // External Link for documention
 import externalLinks from "constants/externalLinks";
 
@@ -61,6 +61,7 @@ const Header = () => {
   const [currentGroup, setCurrentGroup] = useState(
     getLocalStorage("currentGroup") || getLocalStorage("user")?.default_group
   );
+
   const history = useHistory();
   const location = useLocation();
   const handleLogin = () => {
@@ -70,6 +71,12 @@ const Header = () => {
     setLocalStorage("currentGroup", e.target.innerText);
     setCurrentGroup(e.target.innerText);
   };
+  // const handleScrollToAbout = () => {
+  //   scroll.scrollTo("about-page", {
+  //     smooth: true,
+  //     duration: 500,
+  //   });
+  // };
   return (
     <>
       <Navbar
@@ -94,8 +101,9 @@ const Header = () => {
             >
               Home
             </Nav.Link>
-
-            {/* Checking whether the user is authenticated */}
+            <ScrollLink to="aboutSection" smooth="true" duration={500}>
+              <Nav.Link className="active-nav-item">About</Nav.Link>
+            </ScrollLink>
             {isAuth() && (
               <>
                 <Nav.Link

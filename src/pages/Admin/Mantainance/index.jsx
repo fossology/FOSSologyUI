@@ -20,7 +20,7 @@ import React, { useState } from "react";
 import Title from "components/Title";
 import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 import { initialMantainanceFields, initialMessage } from "constants/constants";
-import createMaintenance from "services/maintenance";
+import createMaintenance from "data/services/maintenance";
 
 const ManageMantainance = () => {
   const [loading, setLoading] = useState(false);

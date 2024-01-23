@@ -26,7 +26,7 @@ import Title from "components/Title";
 import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 
 // Required functions for calling APIs
-import { createCandidateLicense } from "services/licenses";
+import { createCandidateLicense } from "data/services/licenses";
 
 const AddCandidateLicense = () => {
   const options = [

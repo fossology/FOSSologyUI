@@ -17,7 +17,7 @@
 */
 
 // Create Uploads from File
-import { createMaintenanceApi } from "../api/maintenance";
+import { createMaintenanceApi } from "../../api/maintenance";
 
 // Creating a group
 const createMaintenance = (data) => {

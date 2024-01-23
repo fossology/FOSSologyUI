@@ -30,8 +30,8 @@ import {
   moveUpload,
   copyUpload,
   getUploadsFolderId,
-} from "services/organizeUploads";
-import { getAllFolders } from "services/folders";
+} from "data/services/organizeUploads";
+import { getAllFolders } from "data/services/folders";
 
 // Helper function for error handling
 import { handleError } from "shared/helper";

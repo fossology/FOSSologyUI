@@ -29,9 +29,9 @@ import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 import CommonFields from "components/Upload/CommonFields";
 
 // Required functions for calling APIs
-import { getAllFolders } from "services/folders";
-import { createUploadUrl, getUploadById } from "services/upload";
-import { scheduleAnalysis } from "services/jobs";
+import { getAllFolders } from "data/services/folders";
+import { createUploadUrl, getUploadById } from "data/services/upload";
+import { scheduleAnalysis } from "data/services/jobs";
 
 // constants
 import {

@@ -23,7 +23,7 @@ import Title from "components/Title";
 import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 
 // services
-import { getAllFolders } from "services/folders";
+import { getAllFolders } from "data/services/folders";
 
 // predefined common fields components
 import CommonFields from "components/Upload/CommonFields";
@@ -36,7 +36,12 @@ import {
   initialAddUserData,
   userStatus,
 } from "constants/constants";
-import { editUserById, getAllUsersName, getUserById } from "services/users";
+
+import {
+  editUserById,
+  getAllUsersName,
+  getUserById,
+} from "data/services/users";
 import { isAdmin } from "shared/authHelper";
 import TokenSpace from "./token_space";
 
