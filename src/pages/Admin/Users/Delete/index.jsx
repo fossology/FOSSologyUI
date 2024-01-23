@@ -26,7 +26,7 @@ import Title from "components/Title";
 import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 
 // Required functions for calling APIs
-import { getAllUsersName, deleteUser } from "services/users";
+import { getAllUsersName, deleteUser } from "data/services/users";
 
 // Helper function for error handling
 import { handleError } from "shared/helper";

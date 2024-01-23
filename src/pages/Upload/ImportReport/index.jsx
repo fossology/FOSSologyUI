@@ -27,10 +27,10 @@ import { Alert, Button, InputContainer } from "components/Widgets";
 
 // constants
 import { initialMessage, initialStateImportReport } from "constants/constants";
-import { getAllFolders } from "services/folders";
-import { getUploadsFolderId } from "services/organizeUploads";
+import { getAllFolders } from "data/services/folders";
+import { getUploadsFolderId } from "data/services/organizeUploads";
 import { useHistory, useLocation } from "react-router-dom";
-import { importReport } from "services/jobs";
+import { importReport } from "data/services/jobs";
 
 const ImportReport = () => {
   // States for setting the folder and upload list

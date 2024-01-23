@@ -28,7 +28,7 @@ import formatDate from "utils";
 
 // css
 import "./index.css";
-import { createToken, getTokens } from "services/users";
+import { createToken, getTokens } from "data/services/users";
 import { Col, Form, Row } from "react-bootstrap";
 
 const TokenSpace = ({ setMessage, setShowMessage }) => {

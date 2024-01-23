@@ -27,7 +27,7 @@ import externalLinks from "constants/externalLinks";
 
 const About = () => {
   return (
-    <>
+    <div>
       <Title title="About FOSSology" />
       <div className="main-container my-5">
         <p className="font-regular">
@@ -1329,7 +1329,7 @@ const About = () => {
           ))}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

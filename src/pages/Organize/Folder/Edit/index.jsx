@@ -26,7 +26,11 @@ import Title from "components/Title";
 import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 
 // Required functions for calling APIs
-import { getAllFolders, editFolder, getSingleFolder } from "services/folders";
+import {
+  getAllFolders,
+  editFolder,
+  getSingleFolder,
+} from "data/services/folders";
 
 // Helper function for error handling
 import { handleError } from "shared/helper";

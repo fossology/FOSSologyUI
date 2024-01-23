@@ -21,7 +21,9 @@ import React, { useState, useEffect } from "react";
 
 // Title
 import Title from "components/Title";
-
+import About from "pages/Help/About/index";
+import GettingStarted from "pages/Help/Overview/index";
+// import LicenseBrowser from "src\pages\Help\LicenseBrowser\index.jsx";
 // External library imports
 import { useHistory } from "react-router-dom";
 import { Form, Row, Col } from "react-bootstrap";
@@ -29,16 +31,16 @@ import queryString from "query-string";
 import PropTypes from "prop-types";
 
 // Required functions for calling APIs
-import fetchToken from "services/auth";
-import { getUserSelf } from "services/users";
-import { fetchAllGroups } from "services/groups";
+import fetchToken from "data/services/auth";
+import { getUserSelf } from "data/services/users";
+import { fetchAllGroups } from "data/services/groups";
 
 // Routes
 import routes from "constants/routes";
 
 // Helper function for user authentication
 import { isAuth } from "shared/authHelper";
-
+import { Element } from "react-scroll";
 // Widgets
 import { Alert, Button, Spinner } from "components/Widgets";
 
@@ -50,7 +52,6 @@ import LoginForm from "./style";
 
 const Home = ({ location }) => {
   const history = useHistory();
-
   // Data required for user login
   const [values, setValues] = useState({
     username: "",
@@ -96,106 +97,114 @@ const Home = ({ location }) => {
     <>
       <Title title="Getting Started with FOSSology" />
       <div className="main-container my-3">
-        {showError && (
-          <>
-            <Alert
-              type="danger"
-              setShow={setShowError}
-              message={errorMessage}
-              heading="An error occured"
-            />
-          </>
-        )}
-        <div className="row m-0">
-          <div className="col-md-6">
-            <b className="font-size-medium">FOSSology</b> is a framework for
-            software analysis tools. With it, you can:
-            <ul className="my-3 list-unstyled">
-              <li>Upload files into the fossology repository.</li>
-              <li>
-                Unpack files (zip, tar, bz2, iso's, and many others) into its
-                component files.
-              </li>
-              <li>Browse upload file trees.</li>
-              <li>View file contents and meta data.</li>
-              <li>Scan for software licenses.</li>
-              <li>Scan for copyrights and other author information.</li>
-              <li>
-                View side-by-side license and bucket differences between file
-                trees.
-              </li>
-              <li>Tag and attach notes to files.</li>
-              <li>
-                Report files based on your own custom classification scheme.
-              </li>
-            </ul>
-            <div className="my-3">
-              <b className="font-size-medium">Where to begin...</b>
-              <ul className="my-3">
+        <Element name="HomeSection">
+          {showError && (
+            <>
+              <Alert
+                type="danger"
+                setShow={setShowError}
+                message={errorMessage}
+                heading="An error occured"
+              />
+            </>
+          )}
+          <div className="row m-0">
+            <div className="col-md-6">
+              <b className="font-size-medium">FOSSology</b> is a framework for
+              software analysis tools. With it, you can:
+              <ul className="my-3 list-unstyled">
+                <li>Upload files into the fossology repository.</li>
                 <li>
-                  The menu at the top contains all the primary capabilities of
-                  FOSSology.
+                  Unpack files (zip, tar, bz2, iso's, and many others) into its
+                  component files.
                 </li>
+                <li>Browse upload file trees.</li>
+                <li>View file contents and meta data.</li>
+                <li>Scan for software licenses.</li>
+                <li>Scan for copyrights and other author information.</li>
                 <li>
-                  Depending on your account's access rights, you may be able to
-                  upload files, schedule analysis tasks, or even add new users.
+                  View side-by-side license and bucket differences between file
+                  trees.
+                </li>
+                <li>Tag and attach notes to files.</li>
+                <li>
+                  Report files based on your own custom classification scheme.
                 </li>
               </ul>
+              <div className="my-3">
+                <b className="font-size-medium">Where to begin...</b>
+                <ul className="my-3">
+                  <li>
+                    The menu at the top contains all the primary capabilities of
+                    FOSSology.
+                  </li>
+                  <li>
+                    Depending on your account's access rights, you may be able
+                    to upload files, schedule analysis tasks, or even add new
+                    users.
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div className="col-md-6">
+              {!isAuth() && (
+                <LoginForm>
+                  <Form>
+                    <Form.Group as={Row} controlId="loginUsername">
+                      <Form.Label column sm="4">
+                        Username
+                      </Form.Label>
+                      <Col sm="8">
+                        <Form.Control
+                          type="text"
+                          placeholder="Enter Username"
+                          onChange={handleChange("username")}
+                          value={username}
+                        />
+                      </Col>
+                    </Form.Group>
+                    <Form.Group as={Row} controlId="loginPassword">
+                      <Form.Label column sm="4">
+                        Password
+                      </Form.Label>
+                      <Col sm="8">
+                        <Form.Control
+                          type="password"
+                          placeholder="Enter Password"
+                          onChange={handleChange("password")}
+                          value={password}
+                        />
+                        <Button
+                          type="submit"
+                          onClick={handleSubmit}
+                          className="d-block mt-4"
+                        >
+                          {loading ? (
+                            <Spinner
+                              as="span"
+                              animation="border"
+                              size="sm"
+                              role="status"
+                              aria-hidden="true"
+                            />
+                          ) : (
+                            "Login"
+                          )}
+                        </Button>
+                      </Col>
+                    </Form.Group>
+                  </Form>
+                </LoginForm>
+              )}
             </div>
           </div>
-          <div className="col-md-6">
-            {!isAuth() && (
-              <LoginForm>
-                <Form>
-                  <Form.Group as={Row} controlId="loginUsername">
-                    <Form.Label column sm="4">
-                      Username
-                    </Form.Label>
-                    <Col sm="8">
-                      <Form.Control
-                        type="text"
-                        placeholder="Enter Username"
-                        onChange={handleChange("username")}
-                        value={username}
-                      />
-                    </Col>
-                  </Form.Group>
-                  <Form.Group as={Row} controlId="loginPassword">
-                    <Form.Label column sm="4">
-                      Password
-                    </Form.Label>
-                    <Col sm="8">
-                      <Form.Control
-                        type="password"
-                        placeholder="Enter Password"
-                        onChange={handleChange("password")}
-                        value={password}
-                      />
-
-                      <Button
-                        type="submit"
-                        onClick={handleSubmit}
-                        className="d-block mt-4"
-                      >
-                        {loading ? (
-                          <Spinner
-                            as="span"
-                            animation="border"
-                            size="sm"
-                            role="status"
-                            aria-hidden="true"
-                          />
-                        ) : (
-                          "Login"
-                        )}
-                      </Button>
-                    </Col>
-                  </Form.Group>
-                </Form>
-              </LoginForm>
-            )}
-          </div>
-        </div>
+        </Element>
+        <Element name="aboutSection">
+          <About />
+        </Element>
+        <Element name="gettingstartedSection">
+          <GettingStarted />
+        </Element>
         <Features />
       </div>
     </>

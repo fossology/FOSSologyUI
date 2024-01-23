@@ -10,6 +10,8 @@
     "@testing-library/user-event": "^12.1.10",
     "array-to-tree": "^3.3.2",
     "bootstrap": "4.6.0",
+    "digital": "^0.0.1",
+    "envelope": "^2.1.0",
     "jquery": "^3.6.0",
     "js-cookie": "^2.2.1",
     "prop-types": "^15.8.1",
@@ -20,15 +22,18 @@
     "react-dom": "^17.0.2",
     "react-helmet": "^6.1.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3",
+    "react-scripts": "5.0.0",
+    "react-scroll": "^1.9.0",
     "react-table": "^7.8.0",
     "react-virtualized": "^9.22.3",
     "react-virtualized-tree": "^3.4.1",
+    "routines": "^0.3.0",
     "styled-components": "^5.3.5",
-    "web-vitals": "^1.0.1"
+    "web-vitals": "^1.0.1",
+    "yarn": "^1.22.21"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts start --openssl-legacy-provider",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -69,9 +74,6 @@
       "last 1 safari version"
     ]
   },
-  "resolutions": {
-    "babel-loader": "8.1.0"
-  },
   "devDependencies": {
     "@storybook/addon-actions": "^6.5.5",
     "@storybook/addon-essentials": "^6.5.5",
@@ -79,6 +81,7 @@
     "@storybook/node-logger": "^6.5.5",
     "@storybook/preset-create-react-app": "^3.1.7",
     "@storybook/react": "^6.5.5",
+    "babel-loader": "^8.1.0",
     "csv-parser": "^3.0.0",
     "eslint": "^7.28.0",
     "eslint-config-airbnb": "18.2.1",
@@ -88,7 +91,8 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react-hooks": "^1.7.0",
     "jest-fetch-mock": "3.0.3",
-    "prettier": "^2.6.2"
+    "prettier": "^2.6.2",
+    "webpack": "^4.44.2"
   },
   "packageManager": "yarn@3.2.1"
 }

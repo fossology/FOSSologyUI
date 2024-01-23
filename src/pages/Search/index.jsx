@@ -25,7 +25,7 @@ import Title from "components/Title";
 import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 
 // Required functions for calling APIs
-import search from "services/search";
+import search from "data/services/search";
 
 // Required constants
 import {

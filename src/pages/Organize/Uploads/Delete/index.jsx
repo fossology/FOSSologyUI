@@ -26,11 +26,11 @@ import Title from "components/Title";
 import { Alert, Button, InputContainer, Spinner } from "components/Widgets";
 
 // Required functions for calling APIs
-import { getAllFolders } from "services/folders";
+import { getAllFolders } from "data/services/folders";
 import {
   getUploadsFolderId,
   deleteUploadsbyId,
-} from "services/organizeUploads";
+} from "data/services/organizeUploads";
 
 const UploadDelete = () => {
   const initialState = {

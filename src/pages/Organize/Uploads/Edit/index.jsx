@@ -25,9 +25,9 @@ import Title from "components/Title";
 import { Alert, Button, InputContainer } from "components/Widgets";
 
 // Required functions for calling APIs
-import { getAllFolders } from "services/folders";
-import { getUploadsFolderId } from "services/organizeUploads";
-import { getUploadById } from "services/upload";
+import { getAllFolders } from "data/services/folders";
+import { getUploadsFolderId } from "data/services/organizeUploads";
+import { getUploadById } from "data/services/upload";
 
 // Helper function for error handling
 import { handleError } from "shared/helper";

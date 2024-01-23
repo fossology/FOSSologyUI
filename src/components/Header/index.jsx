@@ -31,7 +31,7 @@ import {
 import { QuestionCircleFill, PersonCircle } from "react-bootstrap-icons";
 
 // List of all accessible groups
-import { getAllGroups } from "services/groups";
+import { getAllGroups } from "data/services/groups";
 
 // Widgets
 import Image from "components/Widgets/Image";
@@ -42,7 +42,7 @@ import logo from "assets/images/logo.svg";
 
 // Routes for all the pages
 import routes from "constants/routes";
-
+import { Link as ScrollLink } from "react-scroll";
 // External Link for documention
 import externalLinks from "constants/externalLinks";
 
@@ -61,6 +61,7 @@ const Header = () => {
   const [currentGroup, setCurrentGroup] = useState(
     getLocalStorage("currentGroup") || getLocalStorage("user")?.default_group
   );
+
   const history = useHistory();
   const location = useLocation();
   const handleLogin = () => {
@@ -70,6 +71,12 @@ const Header = () => {
     setLocalStorage("currentGroup", e.target.innerText);
     setCurrentGroup(e.target.innerText);
   };
+  // const handleScrollToAbout = () => {
+  //   scroll.scrollTo("about-page", {
+  //     smooth: true,
+  //     duration: 500,
+  //   });
+  // };
   return (
     <>
       <Navbar
@@ -87,15 +94,24 @@ const Header = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
+            <ScrollLink to="HomeSection" smooth="true" duration={500}>
+              <Nav.Link className="active-nav-item">Home</Nav.Link>
+            </ScrollLink>
+            <ScrollLink to="aboutSection" smooth="true" duration={500}>
+              <Nav.Link className="active-nav-item">About</Nav.Link>
+            </ScrollLink>
+            <ScrollLink to="gettingstartedSection" smooth="true" duration={500}>
+              <Nav.Link className="active-nav-item">Getting Started</Nav.Link>
+            </ScrollLink>
             <Nav.Link
-              as={Link}
-              to={routes.home}
-              className={location.pathname === routes.home && "active-nav-item"}
+              style={{ color: "white" }}
+              href={externalLinks.fossologyWiki}
+              target="_blank"
+              rel="noreferrer"
+              className="active-nav-item"
             >
-              Home
+              Documentation
             </Nav.Link>
-
-            {/* Checking whether the user is authenticated */}
             {isAuth() && (
               <>
                 <Nav.Link

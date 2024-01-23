@@ -33,9 +33,9 @@ import { InputContainer, Alert } from "components/Widgets";
 import TreeContainer from "components/TreeContainer";
 
 // Required functions for calling APIs
-import getBrowseData from "services/browse";
-import { getAllFolders } from "services/folders";
-import { scheduleReport, downloadReport } from "services/jobs";
+import getBrowseData from "data/services/browse";
+import { getAllFolders } from "data/services/folders";
+import { scheduleReport, downloadReport } from "data/services/jobs";
 import {
   getFileNameFromContentDispostionHeader,
   handleError,

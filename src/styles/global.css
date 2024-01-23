@@ -111,10 +111,20 @@ h6 {
     padding: 1.5rem;
   }
   #basic-navbar-nav {
-    padding: 2rem;
+    padding: 1em;
   }
 }
-
+.active-nam-item{
+  cursor: pointer;
+}
+@media (min-width: 508px) {
+  .showdroplet .dropdown-menu{
+    margin:0;
+    position: relative;
+    right:20px;
+  }
+  
+}
 /* Snackbar */
 .alert-fix-position {
   position: fixed;

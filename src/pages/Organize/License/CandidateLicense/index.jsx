@@ -26,7 +26,7 @@ import Title from "components/Title";
 import { Alert, Button, InputContainer } from "components/Widgets";
 
 // Required functions for calling APIs
-import { getAllLicense } from "services/licenses";
+import { getAllLicense } from "data/services/licenses";
 
 // Routes
 import routes from "constants/routes";

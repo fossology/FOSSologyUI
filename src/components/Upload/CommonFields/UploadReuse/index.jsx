@@ -23,9 +23,9 @@ import PropTypes from "prop-types";
 import { InputContainer, Tooltip } from "components/Widgets";
 
 // Required services for calling APIs
-import { getAllFolders } from "services/folders";
-import { getUploadsFolderId } from "services/organizeUploads";
-import { getAllGroups } from "services/groups";
+import { getAllFolders } from "data/services/folders";
+import { getUploadsFolderId } from "data/services/organizeUploads";
+import { getAllGroups } from "data/services/groups";
 
 import messages from "constants/messages";
 

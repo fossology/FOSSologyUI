@@ -19,3 +19,6 @@
   display: flex;
   gap: 10px;
 }
+.dropdown-menu show{
+  background-color: "blue";
+}

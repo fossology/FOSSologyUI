@@ -17,7 +17,7 @@
 */
 
 import React, { useState, useEffect } from "react";
-import { getFossologyVersion } from "services/info";
+import { getFossologyVersion } from "data/services/info";
 import { getSessionStorage, setSessionStorage } from "shared/storageHelper";
 
 const Footer = () => {
