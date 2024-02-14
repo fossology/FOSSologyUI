@@ -25,6 +25,7 @@ const DarkThemeToggle = () => {
       <label
         htmlFor="checkbox"
         className={`${state.theme} toggle-button--label`}
+        aria-label="checkbox"
       >
         {state.theme !== "light" ? (
           <MoonStarsFill className="toggle-button--moon" size={20} />
