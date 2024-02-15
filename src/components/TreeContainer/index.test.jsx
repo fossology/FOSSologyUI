@@ -13,35 +13,47 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from 'react';
-import { render } from '@testing-library/react';
-import TreeContainer from './index';
+import React from "react";
+import { render } from "@testing-library/react";
+import TreeContainer from "./index";
 
-describe('TreeContainer', () => {
+describe("TreeContainer", () => {
   const mockHandleClick = jest.fn();
   const mockData = [
     {
       id: 1,
-      name: 'Root',
+      name: "Root",
       children: [
         {
           id: 2,
-          name: 'Child 1',
+          name: "Child 1",
         },
         {
           id: 3,
-          name: 'Child 2',
+          name: "Child 2",
         },
       ],
     },
   ];
 
-  it('renders without crashing', () => {
-    render(<TreeContainer data={mockData} handleClick={mockHandleClick} folderCount={3} />);
+  it("renders without crashing", () => {
+    render(
+      <TreeContainer
+        data={mockData}
+        handleClick={mockHandleClick}
+        folderCount={3}
+      />
+    );
   });
 
-  it('renders the correct number of buttons', () => {
-    const { getAllByRole } = render(<TreeContainer data={mockData} handleClick={mockHandleClick} folderCount={3} />);
-    expect(getAllByRole('grid')).toHaveLength(1);
+  it("renders the correct number of buttons", () => {
+    const { getAllByRole } = render(
+      <TreeContainer
+        data={mockData}
+        handleClick={mockHandleClick}
+        folderCount={3}
+      />
+    );
+    expect(getAllByRole("grid")).toHaveLength(1);
   });
 });
