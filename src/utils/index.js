@@ -27,3 +27,36 @@ export default function formatDate(date) {
 
   return [year, month, day].join("-");
 }
+export const getEquivalentPermVals = (permId) => {
+  switch (permId) {
+    case 0:
+      return "none";
+    case 1:
+      return "read_only";
+    case 3:
+      return "read_write";
+    case 5:
+      return "clearing_admin";
+    case 10:
+      return "admin";
+    default:
+      return "none";
+  }
+};
+
+export function getEquivalentValueForPermission(perm) {
+  switch (perm) {
+    case "none":
+      return 0;
+    case "read_only":
+      return 1;
+    case "read_write":
+      return 3;
+    case "clearing_admin":
+      return 5;
+    case "admin":
+      return 10;
+    default:
+      return 0;
+  }
+}
