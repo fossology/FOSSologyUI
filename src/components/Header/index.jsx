@@ -258,9 +258,9 @@ const Header = () => {
                         </NavDropdown.Item>
                         <NavDropdown.Item
                           as={Link}
-                          to={routes.admin.group.delete}
+                          to={routes.admin.group.manageGroup}
                         >
-                          Delete Group
+                          Manage Group Users
                         </NavDropdown.Item>
                       </div>
                     </DropdownButton>
