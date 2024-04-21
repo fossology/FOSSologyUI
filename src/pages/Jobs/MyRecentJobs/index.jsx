@@ -19,6 +19,9 @@
 
 import React, { useEffect, useState } from "react";
 
+// Required functions for API and Error handling
+import Pagination from "@material-ui/lab/Pagination";
+
 // Title
 import Title from "components/Title";
 
@@ -28,7 +31,6 @@ import { initialMessage, entriesOptions } from "constants/constants";
 import messages from "constants/messages";
 import { InputContainer, Alert } from "components/Widgets";
 import { getAllJob } from "services/jobs";
-import Pagination from "@material-ui/lab/Pagination";
 
 const MyRecentJobs = () => {
   const initialState = {

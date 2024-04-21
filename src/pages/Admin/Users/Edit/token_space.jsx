@@ -19,9 +19,10 @@
 import React, { useState, useEffect } from "react";
 
 // widgets
+import PropTypes from "prop-types";
+import { Col, Form, Row } from "react-bootstrap";
 import { Button, InputContainer, Spinner } from "components/Widgets";
 import Modal from "components/Widgets/Modal";
-import PropTypes from "prop-types";
 
 // utils
 import formatDate from "utils";
@@ -29,7 +30,6 @@ import formatDate from "utils";
 // css
 import "./index.css";
 import { createToken, getTokens } from "services/users";
-import { Col, Form, Row } from "react-bootstrap";
 
 const TokenSpace = ({ setMessage, setShowMessage }) => {
   // local states
