@@ -23,7 +23,7 @@ import PropTypes from "prop-types";
 const TextIcon = ({ text, className }) => {
   const themeContext = useContext(ThemeContext);
   return (
-    <svg width="40" height="40" viewBox="0 0 40 40" className={className}>
+    <svg width="40" height="40" viewBox="0 0 40 40" className={className} role='img'>
       <g>
         <circle
           style={{
