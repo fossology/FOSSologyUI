@@ -35,7 +35,11 @@ import TreeContainer from "components/TreeContainer";
 // Required functions for calling APIs
 import getBrowseData from "services/browse";
 import { getAllFolders } from "services/folders";
-import { scheduleReport, downloadReport } from "services/jobs";
+import {
+  scheduleReport,
+  downloadReport,
+  scheduleDownload,
+} from "services/jobs";
 import {
   getFileNameFromContentDispostionHeader,
   handleError,
@@ -154,48 +158,81 @@ const Browse = () => {
       );
       return;
     }
-    scheduleReport(uploadId, e.target.value)
-      .then((res) => {
-        return res?.message;
-      })
-      .then((url) => {
-        setTimeout(() => {
-          downloadReport(url)
-            .then((response) => {
-              return response;
-            })
-            .then((response) => {
-              const filename = getFileNameFromContentDispostionHeader(
-                response.headers.get("content-disposition")
-              );
-              response
-                .blob()
-                .then((blob) => {
-                  const aTag = document.createElement("a");
-                  aTag.href = window.URL.createObjectURL(blob);
-                  aTag.download = filename;
-                  document.body.appendChild(aTag); // Required for this to work in FireFox
-                  aTag.click();
-                  setTimeout(() => {
-                    window.URL.revokeObjectURL(url);
-                    document.body.removeChild(aTag);
-                  }, 150);
-                })
-                .catch((error) => {
-                  handleError(error, setMessage);
-                  setShowMessage(true);
-                });
+
+    if (e.target.value !== "download") {
+      scheduleReport(uploadId, e.target.value)
+        .then((res) => {
+          return res?.message;
+        })
+        .then((url) => {
+          setTimeout(() => {
+            downloadReport(url)
+              .then((response) => {
+                return response;
+              })
+              .then((response) => {
+                const filename = getFileNameFromContentDispostionHeader(
+                  response.headers.get("content-disposition")
+                );
+                response
+                  .blob()
+                  .then((blob) => {
+                    const aTag = document.createElement("a");
+                    aTag.href = window.URL.createObjectURL(blob);
+                    aTag.download = filename;
+                    document.body.appendChild(aTag); // Required for this to work in FireFox
+                    aTag.click();
+                    setTimeout(() => {
+                      window.URL.revokeObjectURL(url);
+                      document.body.removeChild(aTag);
+                    }, 150);
+                  })
+                  .catch((error) => {
+                    handleError(error, setMessage);
+                    setShowMessage(true);
+                  });
+              })
+              .catch((error) => {
+                handleError(error, setMessage);
+                setShowMessage(true);
+              });
+          }, 1200);
+        })
+        .catch((error) => {
+          handleError(error, setMessage);
+          setShowMessage(true);
+        });
+    } else {
+      scheduleDownload(uploadId)
+        .then((response) => {
+          const filename = getFileNameFromContentDispostionHeader(
+            response.headers.get("pragma")
+          );
+
+          response
+            .blob()
+            .then((blob) => {
+              const aTag = document.createElement("a");
+              aTag.href = window.URL.createObjectURL(blob);
+              aTag.download = filename;
+
+              document.body.appendChild(aTag); // Required for this to work in FireFox
+              aTag.click();
+              setTimeout(() => {
+                window.URL.revokeObjectURL(blob);
+                document.body.removeChild(aTag);
+              }, 150);
             })
             .catch((error) => {
               handleError(error, setMessage);
               setShowMessage(true);
             });
-        }, 1200);
-      })
-      .catch((error) => {
-        handleError(error, setMessage);
-        setShowMessage(true);
-      });
+        })
+        .catch((error) => {
+          handleError(error, setMessage);
+          setShowMessage(true);
+        });
+    }
   };
 
   const handleClick = (e, id) => {

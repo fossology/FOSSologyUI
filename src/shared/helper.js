@@ -83,7 +83,7 @@ export const getReportIdFromUrl = (url) => {
 
 export const getFileNameFromContentDispostionHeader = (header) => {
   const contentDispostion = header.split(";");
-  let fileName = "download.txt";
+  let fileName = "download";
   // eslint-disable-next-line no-restricted-syntax
   for (const headerElement of contentDispostion) {
     const matches = headerElement.trim().match(/filename="(.*)"/);

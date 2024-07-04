@@ -125,6 +125,18 @@ export const scheduleReportApi = (uploadId, reportFormat) => {
   });
 };
 
+export const downloadFileApi = (uploadId) => {
+  const url = endpoints.jobs.scheduleDownload(uploadId);
+  return sendRequest({
+    url,
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+    isFile: true,
+  });
+};
+
 export const downloadReportApi = (reportId) => {
   const url = endpoints.jobs.downloadReport(reportId);
   return sendRequest({

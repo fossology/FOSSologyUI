@@ -28,6 +28,7 @@ const endpoints = {
     scheduleAnalysis: () => `${apiUrl}/jobs`,
     allJobs: () => `${apiUrl}/jobs/all`,
     scheduleReport: () => `${apiUrl}/report`,
+    scheduleDownload: (uploadId) => `${apiUrl}/uploads/${uploadId}/download`,
     downloadReport: (reportId) => `${apiUrl}/report/${reportId}`,
     importReport: (uploadId) => `${apiUrl}/report/import?upload=${uploadId}`,
   },
