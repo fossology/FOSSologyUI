@@ -314,6 +314,12 @@ const Header = () => {
                         </NavDropdown.Item>
                         <NavDropdown.Item
                           as={Link}
+                          to={routes.admin.license.import}
+                        >
+                          CSV Import
+                        </NavDropdown.Item>
+                        <NavDropdown.Item
+                          as={Link}
                           to={routes.admin.license.selectLicense}
                         >
                           Select License

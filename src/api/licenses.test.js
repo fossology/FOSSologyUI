@@ -16,7 +16,11 @@
 import sendRequest from "api/sendRequest";
 import endpoints from "constants/endpoints";
 import { getToken } from "shared/authHelper";
-import { createCandidateLicenseApi, getAllLicenseApi } from "api/licenses";
+import {
+  createCandidateLicenseApi,
+  getAllLicenseApi,
+  importLicenseCsvApi,
+} from "api/licenses";
 
 jest.mock("api/sendRequest");
 
@@ -54,6 +58,7 @@ describe("licenses", () => {
     const licenseUrl = "licenseUrl";
     const mergeRequest = "mergeRequest";
     const url = endpoints.admin.license.createCandidateLicense();
+    sendRequest.mockImplementation(() => true);
 
     expect(
       createCandidateLicenseApi({
@@ -84,4 +89,33 @@ describe("licenses", () => {
       })
     );
   });
+});
+
+test("importLicenseCsvApi", () => {
+  const url = endpoints.admin.license.importCsv();
+  const expectedBody = new FormData();
+  const delimiter = "shortName";
+  const enclosure = "fullName";
+  const fileInput = "fileInput";
+
+  expectedBody.append("file_input", fileInput);
+  expectedBody.append("delimiter", delimiter);
+  expectedBody.append("enclosure", enclosure);
+
+  sendRequest.mockImplementation(() => true);
+
+  expect(importLicenseCsvApi(fileInput, delimiter, enclosure)).toBe(
+    sendRequest({})
+  );
+  expect(sendRequest).toHaveBeenCalledWith(
+    expect.objectContaining({
+      url,
+      method: "POST",
+      isMultipart: true,
+      headers: {
+        Authorization: getToken(),
+      },
+      body: expectedBody,
+    })
+  );
 });
