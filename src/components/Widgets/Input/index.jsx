@@ -26,6 +26,7 @@ const InputContainer = ({
   id,
   className,
   onChange,
+  defaultValue = null,
   children,
   checked = false,
   placeholder = null,
@@ -70,6 +71,7 @@ const InputContainer = ({
             className ? `mr-2 form-control ${className}` : `mr-2 form-control`
           }
           value={value}
+          defaultValue={defaultValue}
           onChange={onChange}
           multiple={multiple && multiple}
           size={multiple ? "15" : ""}
@@ -125,6 +127,7 @@ InputContainer.propTypes = {
   onChange: PropTypes.func,
   checked: PropTypes.bool,
   disabled: PropTypes.bool,
+  defaultValue: PropTypes.string,
   children: PropTypes.node,
   options: PropTypes.arrayOf(
     PropTypes.shape({

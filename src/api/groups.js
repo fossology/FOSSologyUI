@@ -76,3 +76,42 @@ export const deleteGroupApi = (id) => {
     addGroupName: false,
   });
 };
+
+// Get all group members
+export const getAllGroupMembersApi = (groupId) => {
+  const url = endpoints.admin.groups.getAllGroupMembers(groupId);
+  return sendRequest({
+    url,
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+};
+
+// Remove Group Member
+export const removeGroupMemberApi = (groupId, userId) => {
+  const url = endpoints.admin.groups.removeGroupMember(groupId, userId);
+  return sendRequest({
+    url,
+    method: "DELETE",
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+};
+
+// Change user permission
+export const changeUserPermissionApi = (groupId, userId, permission) => {
+  const url = endpoints.admin.groups.changeUserPermission(groupId, userId);
+  return sendRequest({
+    url,
+    method: "PUT",
+    headers: {
+      Authorization: getToken(),
+    },
+    body: {
+      perm: permission,
+    },
+  });
+};
