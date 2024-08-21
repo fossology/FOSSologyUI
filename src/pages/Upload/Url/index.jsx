@@ -30,8 +30,7 @@ import CommonFields from "components/Upload/CommonFields";
 
 // Required functions for calling APIs
 import { getAllFolders } from "services/folders";
-import { createUploadUrl, getUploadById } from "services/upload";
-import { scheduleAnalysis } from "services/jobs";
+import { createUploadUrl } from "services/upload";
 
 // constants
 import {
@@ -42,9 +41,6 @@ import {
 } from "constants/constants";
 
 const UploadFromUrl = () => {
-  // Upload Id required for scheduling Analysis
-  let uploadId;
-
   // Data required for creating the upload
   const [uploadUrlData, setUploadUrlData] = useState(initialStateUrl);
 
@@ -62,39 +58,25 @@ const UploadFromUrl = () => {
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState();
 
+  // Function to reset the state variables to initial state
+  const resetStateVariables = () => {
+    setScanFileData(initialScanFileData);
+    setFolderList(initialFolderList);
+    setUploadUrlData(initialStateUrl);
+    setUrlData(initialUrlData);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    createUploadUrl(uploadUrlData, urlData)
-      .then((res) => {
+    createUploadUrl(uploadUrlData, urlData, scanFileData)
+      .then(() => {
+        resetStateVariables();
+        window.scrollTo({ top: 0 });
         setMessage({
           type: "success",
-          text: `${messages.queuedUpload} #${res.message}`,
+          text: `${messages.uploadSuccess}`,
         });
-        uploadId = res.message;
-      })
-      // Calling the api for maximum 10 times to check whether the upload is unpacked by the agent
-      .then(() => getUploadById(uploadId, 10))
-      .then(() => {
-        setTimeout(
-          () =>
-            scheduleAnalysis(uploadUrlData.folderId, uploadId, scanFileData)
-              .then(() => {
-                setMessage({
-                  type: "success",
-                  text: messages.scheduledAnalysis,
-                });
-                setUploadUrlData(initialStateUrl);
-                setScanFileData(initialScanFileData);
-              })
-              .catch((error) => {
-                setMessage({
-                  type: "danger",
-                  text: error.message,
-                });
-              }),
-          150000
-        );
       })
       .catch((error) => {
         setMessage({

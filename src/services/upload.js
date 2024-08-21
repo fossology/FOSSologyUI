@@ -1,5 +1,7 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2022 Samuel Dushimimana (dushsam100@gmail.com)
+
  SPDX-License-Identifier: GPL-2.0
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -23,53 +25,41 @@ import {
 } from "api/upload";
 
 // Create Uploads from File
-export const createUploadFile = ({
-  folderId,
-  uploadDescription,
-  accessLevel,
-  ignoreScm,
-  fileInput,
-}) => {
-  return createUploadApi(
-    folderId,
-    uploadDescription,
-    accessLevel,
-    ignoreScm,
-    fileInput
-  ).then((res) => {
+export const createUploadFile = (uploadFileData, scanData) => {
+  return createUploadApi(uploadFileData, scanData).then((res) => {
     return res;
   });
 };
 
 // Create Uploads from Version Control System
-export const createUploadVcs = (header, body) => {
-  return createUploadVcsApi(header, body).then((res) => {
+export const createUploadVcs = (header, vcsData, scanData) => {
+  return createUploadVcsApi(header, vcsData, scanData).then((res) => {
     return res;
   });
 };
 
 // Create Uploads from URL
-export const createUploadUrl = (header, body) => {
-  return createUploadUrlApi(header, body).then((res) => {
+export const createUploadUrl = (header, urlData, scanData) => {
+  return createUploadUrlApi(header, urlData, scanData).then((res) => {
     return res;
   });
 };
 
-// Getting a Upload by id
+// Getting an Upload by id
 export const getUploadById = (uploadId, retries) => {
   return getUploadByIdApi(uploadId, retries).then((res) => {
     return res;
   });
 };
 
-// Getting a Upload Summary
+// Getting an Upload Summary
 export const getUploadSummary = (uploadId) => {
   return getUploadSummaryApi(uploadId).then((res) => {
     return res;
   });
 };
 
-// Getting a Upload License
+// Getting an Upload License
 export const getUploadLicense = (uploadId, agent) => {
   return getUploadLicenseApi(uploadId, agent).then((res) => {
     return res;
