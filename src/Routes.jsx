@@ -109,7 +109,7 @@ const Footer = React.lazy(() => import("components/Footer"));
 const Routes = () => {
   return (
     <>
-      <BrowserRouter basename={process.env.PUBLIC_URL}>
+      <BrowserRouter basename={import.meta.env.PUBLIC_URL}>
         <Switch>
           {/* Home Page */}
           <PublicLayout exact path={routes.home} component={Home} />
