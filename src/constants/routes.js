@@ -58,6 +58,7 @@ const routes = {
     },
   },
   help: {
+    access: "/help/helpAccess",
     overview: "/help/overview",
     licenseBrowser: "/help/licenseBrowser",
     about: "/help/about",

@@ -56,11 +56,14 @@ import DarkThemeToggle from "../DarkThemeToggle/DarkThemeToggle";
 
 // custom css
 import "./index.css";
+import { param } from "jquery";
 
 const Header = () => {
   const [currentGroup, setCurrentGroup] = useState(
     getLocalStorage("currentGroup") || getLocalStorage("user")?.default_group
   );
+  const [expanded, setExpanded] = useState(false);
+  const [renderKey, setRenderKey] = useState(0);
   const history = useHistory();
   const location = useLocation();
   const handleLogin = () => {
@@ -69,6 +72,10 @@ const Header = () => {
   const handleGroupChange = (e) => {
     setLocalStorage("currentGroup", e.target.innerText);
     setCurrentGroup(e.target.innerText);
+  };
+  const handleExpand = () => {
+    setExpanded(!expanded);
+    setRenderKey(prev=>prev+1);
   };
   return (
     <>
@@ -84,7 +91,7 @@ const Header = () => {
             alt="FOSSology"
           />
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={handleExpand}/>
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
             <Nav.Link
@@ -341,6 +348,9 @@ const Header = () => {
                 <QuestionCircleFill color="#fff" size={40} className="m-2" />
               </Dropdown.Toggle>
               <Dropdown.Menu>
+                <Dropdown.Item as={Link} to={{ pathname: routes.help.access, state: { isActiveNavItem: expanded }, key: renderKey }}>
+                  Help
+                </Dropdown.Item>
                 <Dropdown.Item as={Link} to={routes.help.about}>
                   About
                 </Dropdown.Item>

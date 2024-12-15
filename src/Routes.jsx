@@ -45,6 +45,7 @@ const CopyrightBrowser = React.lazy(() =>
 const Ecc = React.lazy(() => import("pages/BrowseUploads/Ecc"));
 
 // Help Pages
+const access = React.lazy(() => import("pages/Help/Access"));
 const About = React.lazy(() => import("pages/Help/About"));
 const Overview = React.lazy(() => import("pages/Help/Overview"));
 const LicenseBrowser = React.lazy(() => import("pages/Help/LicenseBrowser"));
@@ -148,6 +149,11 @@ const Routes = () => {
           />
 
           {/* Help Pages */}
+          <PublicLayout
+            exact
+            path={routes.help.access}
+            component={access}
+          />
           <PublicLayout exact path={routes.help.about} component={About} />
           <PublicLayout
             exact
