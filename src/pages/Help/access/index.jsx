@@ -1,6 +1,4 @@
-import React,{useEffect,useState} from "react";
-
-import { useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 
 import Title from "components/Title";
 
@@ -12,30 +10,22 @@ import { Navbar } from "react-bootstrap";
 
 import externalLinks from "constants/externalLinks";
 
-const Access = () => {
-    const location = useLocation();
-    const [localExpanded, setLocalExpanded] = useState(false);
-
-    useEffect(() => {
-        if (location.state && location.state.isActiveNavItem !== undefined) {
-            setLocalExpanded(location.state?.isActiveNavItem ?? false);
-        }
-    }, [location.state]);
-
+const Access = (refreshKey) => {
+    
     const styles = {
         secondNavbar: {
-            top: localExpanded ? '232px' : '70px',
+            top: (refreshKey.refreshKey % 2 == 1 && window.innerWidth <= 992) ? '232px' : '70px',
             zIndex: 100,
             position: 'sticky',
-            // display: 'flex',
             overflow: 'auto'
         },
     };
+
     return (
         <>
             <Navbar bg="dark" variant="dark" style={styles.secondNavbar}>
                 <Navbar.Brand href="#About" overflow="scroll">
-                    About
+                    About{refreshKey.refreshKey}
                 </Navbar.Brand>
                 <Navbar.Brand href="#Overview" overflow="scroll">
                     Getting Started

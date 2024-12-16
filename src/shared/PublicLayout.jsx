@@ -17,26 +17,36 @@
 */
 
 // React Imports
-import React from "react";
+import React, { useState } from "react";
 import { withRouter, Route } from "react-router-dom";
 import PropTypes from "prop-types";
 
 // Header
 import Header from "components/Header";
 
-const PublicLayout = ({ component: Component, ...rest }) => (
-  <Route
-    {...rest}
-    render={(props) => (
-      <>
-        <div className="wrapper">
-          <Header />
-          <Component {...props} />
-        </div>
-      </>
-    )}
-  />
-);
+const PublicLayout = ({ component: Component, ...rest }) => {
+  // State to trigger re-renders
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  // Callback to handle Header updates
+  const handleHeaderUpdate = () => {
+    setRefreshKey((prev) => prev + 1); // Increment refresh key to force re-render
+  };
+
+  return (
+    <Route
+      {...rest}
+      render={(props) => (
+        <>
+          <div className="wrapper" key={refreshKey}>
+            <Header onUpdate={handleHeaderUpdate} refreshKey={refreshKey} />
+            <Component {...props} refreshKey={refreshKey} />
+          </div>
+        </>
+      )}
+    />
+  );
+};
 
 PublicLayout.propTypes = {
   component: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),

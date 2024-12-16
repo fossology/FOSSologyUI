@@ -17,7 +17,7 @@
 */
 
 // React Imports
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import { useHistory, Link, useLocation } from "react-router-dom";
 
 // React Bootstrap Imports
@@ -56,14 +56,12 @@ import DarkThemeToggle from "../DarkThemeToggle/DarkThemeToggle";
 
 // custom css
 import "./index.css";
-import { param } from "jquery";
 
-const Header = () => {
+const Header = ({onUpdate,refreshKey}) => {
   const [currentGroup, setCurrentGroup] = useState(
     getLocalStorage("currentGroup") || getLocalStorage("user")?.default_group
   );
-  const [expanded, setExpanded] = useState(false);
-  const [renderKey, setRenderKey] = useState(0);
+  const [isExpanded, setIsExpanded] = useState(false);
   const history = useHistory();
   const location = useLocation();
   const handleLogin = () => {
@@ -74,15 +72,19 @@ const Header = () => {
     setCurrentGroup(e.target.innerText);
   };
   const handleExpand = () => {
-    setExpanded(!expanded);
-    setRenderKey(prev=>prev+1);
+    // setIsExpanded(refreshKey.refreshKey%2===1);
+    if(onUpdate) onUpdate();
   };
+  useEffect(() => {
+    // setIsExpanded(refreshKey.refreshKey%2===1);
+  }, []);
   return (
     <>
       <Navbar
         expand="lg"
         className="bg-primary-color py-0 pl-0 text-white"
         sticky="top"
+        expanded={(!!(refreshKey%2))}
       >
         <Navbar.Brand as={Link} to={routes.home} className="py-0">
           <Image
@@ -348,7 +350,7 @@ const Header = () => {
                 <QuestionCircleFill color="#fff" size={40} className="m-2" />
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item as={Link} to={{ pathname: routes.help.access, state: { isActiveNavItem: expanded }, key: renderKey }}>
+                <Dropdown.Item as={Link} to={routes.help.access}>
                   Help
                 </Dropdown.Item>
                 <Dropdown.Item as={Link} to={routes.help.about}>
