@@ -25,7 +25,7 @@ const Access = (refreshKey) => {
         <>
             <Navbar bg="dark" variant="dark" style={styles.secondNavbar}>
                 <Navbar.Brand href="#About" overflow="scroll">
-                    About{refreshKey.refreshKey}
+                    About
                 </Navbar.Brand>
                 <Navbar.Brand href="#Overview" overflow="scroll">
                     Getting Started
