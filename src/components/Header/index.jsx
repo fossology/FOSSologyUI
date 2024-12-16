@@ -71,13 +71,10 @@ const Header = ({onUpdate,refreshKey}) => {
     setLocalStorage("currentGroup", e.target.innerText);
     setCurrentGroup(e.target.innerText);
   };
-  const handleExpand = () => {
-    // setIsExpanded(refreshKey.refreshKey%2===1);
+  const handleExpand = async() => {
+    // await new Promise(r => setTimeout(r, 1000));
     if(onUpdate) onUpdate();
   };
-  useEffect(() => {
-    // setIsExpanded(refreshKey.refreshKey%2===1);
-  }, []);
   return (
     <>
       <Navbar
@@ -346,10 +343,10 @@ const Header = ({onUpdate,refreshKey}) => {
             </Dropdown>
             {/* Help Pages */}
             <Dropdown drop="left">
-              <Dropdown.Toggle variant="link" bsPrefix="p-0">
+              <Dropdown.Toggle variant="link" bsPrefix="p-0" as={Link} to={routes.help.access}>
                 <QuestionCircleFill color="#fff" size={40} className="m-2" />
               </Dropdown.Toggle>
-              <Dropdown.Menu>
+              {/* <Dropdown.Menu>
                 <Dropdown.Item as={Link} to={routes.help.access}>
                   Help
                 </Dropdown.Item>
@@ -372,7 +369,7 @@ const Header = ({onUpdate,refreshKey}) => {
                 <Dropdown.Item as={Link} to={routes.help.thirdPartyLicenses}>
                   Third Party Licenses
                 </Dropdown.Item>
-              </Dropdown.Menu>
+              </Dropdown.Menu> */}
             </Dropdown>
 
             {/* User Info */}
