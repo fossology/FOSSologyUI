@@ -20,8 +20,9 @@ import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import "@mui/material/styles"; // Import Material-UI styles
 
-ReactDOM.render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Suspense fallback={<div>Loading... </div>}>
       <App />

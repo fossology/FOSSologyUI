@@ -56,13 +56,23 @@ function App() {
   }, []);
 
   return (
+    <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="100vh">
+      {loading ? (
+    <>
     <ThemeProvider theme={state.theme === "light" ? lightTheme : darkTheme}>
       <GlobalStyles />
       <Routes />
     </ThemeProvider>
+    <FullScreenLoader />
+    <SkeletonLoader />
 
-
-
+    </>
+     ) : (
+      <CSSTransition in={!loading} timeout={500} classNames="fade" unmountOnExit>
+        <Typography variant="h5">{data}</Typography>
+      </CSSTransition>
+    )}
+  </Box>
 
   );
 }
