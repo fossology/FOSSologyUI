@@ -37,14 +37,43 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "react-virtualized-tree/lib/main.css";
 import "styles/global.css";
 import GlobalStyles from "styles/globalStyle";
+import { CircularProgress, Box, Typography } from "@mui/material";
+import { CSSTransition } from "react-transition-group";
+import { FullScreenLoader } from "../components/Loader";
+import SkeletonLoader from "../components/SkeletonLoader";
+import "./styles/fade.css"; // Import fade animation styles
 
 function App() {
   const { state } = useContext(GlobalContext);
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setData("Fetched Data");
+      setLoading(false);
+    }, 3000); // Simulating API call
+  }, []);
+
   return (
+    <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="100vh">
+      {loading ? (
+    <>
     <ThemeProvider theme={state.theme === "light" ? lightTheme : darkTheme}>
       <GlobalStyles />
       <Routes />
     </ThemeProvider>
+    <FullScreenLoader />
+    <SkeletonLoader />
+
+    </>
+     ) : (
+      <CSSTransition in={!loading} timeout={500} classNames="fade" unmountOnExit>
+        <Typography variant="h5">{data}</Typography>
+      </CSSTransition>
+    )}
+  </Box>
+
   );
 }
 
