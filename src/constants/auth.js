@@ -17,10 +17,10 @@
 */
 
 // Length of the random string for login
-export const tokenNameLength = process.env.TOKEN_NAME_LENGTH || 40;
+export const tokenNameLength = import.meta.TOKEN_NAME_LENGTH || 40;
 
 // By default the scope for user is to write
-export const tokenScope = process.env.TOKEN_SCOPE || "write";
+export const tokenScope = import.meta.TOKEN_SCOPE || "write";
 
 // Authorization token expiry days
-export const tokenExpiryDays = process.env.TOKEN_EXPIRY_DAYS || 2;
+export const tokenExpiryDays = import.meta.TOKEN_EXPIRY_DAYS || 2;

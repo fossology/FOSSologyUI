@@ -20,7 +20,6 @@
     "react-dom": "^17.0.2",
     "react-helmet": "^6.1.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3",
     "react-table": "^7.8.0",
     "react-virtualized": "^9.22.3",
     "react-virtualized-tree": "^3.4.1",
@@ -28,10 +27,10 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "type": "module",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint src/ --fix",
@@ -79,16 +78,15 @@
     "@storybook/node-logger": "^6.5.5",
     "@storybook/preset-create-react-app": "^3.1.7",
     "@storybook/react": "^6.5.5",
+    "@vitejs/plugin-react": "^4.3.4",
     "csv-parser": "^3.0.0",
-    "eslint": "^7.28.0",
-    "eslint-config-airbnb": "18.2.1",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-prettier": "^3.4.0",
-    "eslint-plugin-react-hooks": "^1.7.0",
     "jest-fetch-mock": "3.0.3",
-    "prettier": "^2.6.2"
+    "prettier": "^2.6.2",
+    "vite": "^6.2.4"
   },
   "packageManager": "yarn@3.2.1"
 }

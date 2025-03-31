@@ -16,7 +16,7 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import { getInfoApi } from "api/info";
+import { getInfoApi } from "../api/info";
 
 export const getInfo = () => {
   return getInfoApi().then((res) => {

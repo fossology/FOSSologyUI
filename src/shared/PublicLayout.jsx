@@ -22,7 +22,7 @@ import { withRouter, Route } from "react-router-dom";
 import PropTypes from "prop-types";
 
 // Header
-import Header from "components/Header";
+import Header from "./components/Header";
 
 const PublicLayout = ({ component: Component, ...rest }) => (
   <Route

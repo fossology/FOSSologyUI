@@ -21,13 +21,13 @@ import React, { useContext, useEffect } from "react";
 
 // Theme Provider
 import { ThemeProvider } from "styled-components";
-import { lightTheme, darkTheme } from "styles/theme";
+import { lightTheme, darkTheme } from "./styles/theme";
 
 // GlobalContext
-import { GlobalContext, GlobalProvider } from "context";
+import { GlobalContext, GlobalProvider } from "./context";
 
 // Routes
-import Routes from "Routes";
+import Routes from "./Routes";
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import "popper.js";
@@ -35,8 +35,8 @@ import "popper.js";
 // Global CSS (Bootstrap, Tree View of Folders, Custom Styling)
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-virtualized-tree/lib/main.css";
-import "styles/global.css";
-import GlobalStyles from "styles/globalStyle";
+import "./styles/global.css";
+import GlobalStyles from "./styles/globalStyle";
 
 function App() {
   const { state } = useContext(GlobalContext);
