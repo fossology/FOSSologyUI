@@ -28,19 +28,19 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "lint": "eslint src/ --fix",
-    "lint:check": "eslint src/",
-    "fix:all": "yarn lint && yarn format",
-    "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public",
-    "gencopy": "node scripts/copyrightsScript.js && prettier --write ./scripts/copyrights.js"
-  },
+  "start": "set NODE_OPTIONS=--openssl-legacy-provider && react-scripts start",
+  "build": "set NODE_OPTIONS=--openssl-legacy-provider && react-scripts build",
+  "test": "set NODE_OPTIONS=--openssl-legacy-provider && react-scripts test",
+  "eject": "set NODE_OPTIONS=--openssl-legacy-provider && react-scripts eject",
+  "format": "prettier --write .",
+  "format:check": "prettier --check .",
+  "lint": "eslint src/ --fix",
+  "lint:check": "eslint src/",
+  "fix:all": "yarn lint && yarn format",
+  "storybook": "set NODE_OPTIONS=--openssl-legacy-provider && start-storybook -p 6006 -s public",
+  "build-storybook": "set NODE_OPTIONS=--openssl-legacy-provider && build-storybook -s public",
+  "gencopy": "node scripts/copyrightsScript.js && prettier --write ./scripts/copyrights.js"
+},
   "eslintConfig": {
     "extends": [
       "react-app",
