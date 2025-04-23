@@ -34,7 +34,7 @@ const ThirdPartyLicenses = () => {
       <div className="mx-auto my-3">
         {/* Loading thirdPartLicenses.html with iframe */}
         <iframe
-          src={routes.help.thirdPartyLicensesHTML}
+          src={`${process.env.PUBLIC_URL}${routes.help.thirdPartyLicensesHTML}`}
           frameBorder="0"
           marginHeight="0"
           marginWidth="0"
@@ -45,7 +45,7 @@ const ThirdPartyLicenses = () => {
           title="third party licenses"
         >
           Your browser does not support iframe. Visit the
-          <a href={routes.help.thirdPartyLicensesHTML}>
+          <a href={`${process.env.PUBLIC_URL}${routes.help.thirdPartyLicensesHTML}`}>
             {" "}
             third party licenses page
           </a>
