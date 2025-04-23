@@ -18,14 +18,16 @@ import { getFossologyVersion } from "services/info";
 import { getSessionStorage, setSessionStorage } from "shared/storageHelper";
 
 const Footer = () => {
+  const defaultVersion = {
+    version: "Unknown",
+    branchName: "Unknown",
+    commitHash: "Unknown",
+    commitDate: "",
+    buildDate: ""
+  };
+
   const [version, setVersion] = useState(
-    getSessionStorage("fossologyVersion") || {
-      version: "Unknown",
-      branchName: "Unknown",
-      commitHash: "Unknown",
-      commitDate: "",
-      buildDate: ""
-    }
+    getSessionStorage("fossologyVersion") || defaultVersion
   );
  
   const fetchVersion = () => {
@@ -43,11 +45,13 @@ const Footer = () => {
           setSessionStorage("fossologyVersion", versionData);
           setVersion(versionData);
         } else {
+          // eslint-disable-next-line no-console
           console.error("Invalid version data received:", res);
         }
         return res;
       })
       .catch((error) => {
+        // eslint-disable-next-line no-console
         console.error("Error fetching version:", error);
         return null;
       });
@@ -63,9 +67,9 @@ const Footer = () => {
       className="primary-color-wrapper text-center font-size-small py-3"
       id="footer"
     >
-      Version: [{version.version || "Unknown"}], Branch: [{version.branchName || "Unknown"}], Commit: [
-      {`#${version.commitHash || "Unknown"}`}] {version.commitDate || ""} built @{" "}
-      {version.buildDate || ""}
+      Version: [{version.version}], Branch: [{version.branchName}], Commit: [
+      {`#${version.commitHash}`}] {version.commitDate} built @{" "}
+      {version.buildDate}
     </footer>
   );
 };

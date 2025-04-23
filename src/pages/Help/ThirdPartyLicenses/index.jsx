@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+ // eslint-disable-next-line 
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
 
