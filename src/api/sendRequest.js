@@ -17,11 +17,11 @@
 */
 
 import { stringify } from "query-string";
-import { logout } from "shared/authHelper";
-import messages from "constants/messages";
+import { logout } from "@/shared/authHelper";
+import messages from "@/constants/messages";
 
 // Helper function for setting the item in Localstorage
-import { getLocalStorage, setLocalStorage } from "shared/storageHelper";
+import { getLocalStorage, setLocalStorage } from "@/shared/storageHelper";
 
 const sendRequest = ({
   url,

@@ -1,34 +1,19 @@
-/*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
- 
- SPDX-License-Identifier: GPL-2.0
-
- This program is free software; you can redistribute it and/or
- modify it under the terms of the GNU General Public License
- version 2 as published by the Free Software Foundation.
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License along
- with this program; if not, write to the Free Software Foundation, Inc.,
- 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-*/
+"use client";
 
 import React, { useContext } from "react";
-import { ThemeContext } from "styled-components";
 import PropTypes from "prop-types";
+import { ThemeContext } from "styled-components";
 
 const TextIcon = ({ text, className }) => {
   const themeContext = useContext(ThemeContext);
+
   return (
     <svg width="40" height="40" viewBox="0 0 40 40" className={className}>
       <g>
         <circle
           style={{
             fill: "white",
-            stroke: themeContext.primaryColor,
+            stroke: themeContext?.primaryColor || "#000",
             strokeWidth: 1,
             strokeMiterlimit: 10,
           }}
@@ -40,8 +25,8 @@ const TextIcon = ({ text, className }) => {
           x="50%"
           y="50%"
           textAnchor="middle"
-          stroke={themeContext.primaryColor}
-          fill={themeContext.primaryColor}
+          stroke={themeContext?.primaryColor || "#000"}
+          fill={themeContext?.primaryColor || "#000"}
           strokeWidth="0.8px"
           dy=".3em"
         >
