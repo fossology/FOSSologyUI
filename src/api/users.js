@@ -16,10 +16,10 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import endpoints from "constants/endpoints";
+import endpoints from "@/constants/endpoints";
 
 // Getting Authorization Token
-import { getToken } from "shared/authHelper";
+import { getToken } from "@/shared/authHelper";
 
 // Function for calling the fetch function for the APIs
 import sendRequest from "./sendRequest";

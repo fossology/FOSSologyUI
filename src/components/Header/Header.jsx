@@ -66,7 +66,7 @@ const Header = () => {
           width={120}
           height={40}
           alt="FOSSology"
-          className="img-fluid bg-white py-1 px-2"
+          className="logo-img"
         />
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -79,8 +79,8 @@ const Header = () => {
           >
             Home
           </Nav.Link>
-
-          {isAuth() && (
+          {/* isAuth() in place of true */}
+          {true && (
             <>
               <Nav.Link
                 as={Link}
@@ -149,9 +149,9 @@ const Header = () => {
                   variant=""
                   drop="right"
                   title="Folders"
-                  className="font-regular dropdown-item-bottom w-100"
+                  className="dropdown-btn-full"
                 >
-                  <div className="bg-secondaryColor text-white font-12 py-2">
+                  <div className="dropdown-section">
                     <NavDropdown.Item as={Link} href={routes.organize.folders.create}>
                       Create
                     </NavDropdown.Item>
@@ -176,9 +176,9 @@ const Header = () => {
                   variant=""
                   drop="right"
                   title="Uploads"
-                  className="font-regular dropdown-item-bottom w-100"
+                  className="dropdown-btn-full"
                 >
-                  <div className="bg-secondaryColor text-white font-12 py-2">
+                  <div className="dropdown-section">
                     <NavDropdown.Item as={Link} href={routes.organize.uploads.delete}>
                       Delete Uploaded File
                     </NavDropdown.Item>
@@ -199,9 +199,9 @@ const Header = () => {
                     variant=""
                     drop="right"
                     title="Groups"
-                    className="font-regular dropdown-item-bottom w-100"
+                    className="dropdown-btn-full"
                   >
-                    <div className="bg-secondaryColor text-white font-12 py-2">
+                    <div className="dropdown-section">
                       <NavDropdown.Item as={Link} href={routes.admin.group.create}>
                         Add Group
                       </NavDropdown.Item>
@@ -214,9 +214,9 @@ const Header = () => {
                     variant=""
                     drop="right"
                     title="Users"
-                    className="font-regular dropdown-item-bottom w-100"
+                    className="dropdown-btn-full"
                   >
-                    <div className="bg-secondaryColor text-white font-12">
+                    <div className="dropdown-section">
                       <NavDropdown.Item as={Link} href={routes.admin.users.add}>
                         Add User
                       </NavDropdown.Item>
@@ -232,9 +232,9 @@ const Header = () => {
                     variant=""
                     drop="right"
                     title="License Administration"
-                    className="font-regular dropdown-item-bottom w-100"
+                    className="dropdown-btn-full"
                   >
-                    <div className="bg-secondaryColor text-white font-12 py-2">
+                    <div className="dropdown-section">
                       <NavDropdown.Item as={Link} href={routes.admin.license.create}>
                         Add License
                       </NavDropdown.Item>
@@ -259,11 +259,11 @@ const Header = () => {
         </Nav>
 
         {/* Right side icons */}
-        <div className="navIcons" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        <div className="nav-icons">
           {/* Help */}
           <Dropdown drop="down" align="end">
             <Dropdown.Toggle variant="link" bsPrefix="p-0">
-              <QuestionCircleFill color="#fff" size={40} className="m-2" />
+              <QuestionCircleFill className="icon-style" />
             </Dropdown.Toggle>
             <Dropdown.Menu>
               <Dropdown.Item as={Link} href={routes.help.about}>About</Dropdown.Item>
@@ -286,7 +286,7 @@ const Header = () => {
           {getAllGroups() && (
             <Dropdown drop="down" align="end">
               <Dropdown.Toggle variant="link" bsPrefix="p-0">
-                <TextIcon className="m-2" text={getNameInitials(currentGroup)} />
+                <TextIcon className="group-icon" text={getNameInitials(currentGroup)} />
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 {getAllGroups().map((group) => (
@@ -305,7 +305,7 @@ const Header = () => {
           {/* User Info */}
           <Dropdown drop="down" align="end">
             <Dropdown.Toggle variant="link" bsPrefix="p-0">
-              <PersonCircle color="#fff" size={40} className="m-2" />
+              <PersonCircle className="icon-style" />
             </Dropdown.Toggle>
             {isAuth() ? (
               <Dropdown.Menu>

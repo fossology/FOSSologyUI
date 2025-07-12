@@ -6,6 +6,7 @@ const Footer = () => {
   const [version, setVersion] = useState(
     getSessionStorage("fossologyVersion") || null
   );
+
   const fetchVersion = () => {
     return getFossologyVersion()
       .then((res) => {
@@ -15,16 +16,15 @@ const Footer = () => {
       })
       .catch(() => null);
   };
+
   useEffect(() => {
     if (!version) {
       fetchVersion();
     }
   }, []);
+
   return (
-    <footer
-      className="primary-color-wrapper text-center font-size-small py-3"
-      id="footer"
-    >
+    <footer className="footer" id="footer">
       Version: [{version?.version}], Branch: [{version?.branchName}], Commit: [
       {`#${version?.commitHash}`}] {version?.commitDate} built @{" "}
       {version?.buildDate}

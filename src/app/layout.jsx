@@ -29,13 +29,14 @@ export default function RootLayout({ children }) {
 function LayoutWithTheme({ children }) {
   const { state } = useContext(GlobalContext);
 
-  useEffect(() => {
+/*  useEffect(() => {
     (async () => {
       const $ = await import("jquery");
       window.$ = window.jQuery = $;
       await import("bootstrap");
     })();
   }, []);
+*/
 
   return (
     <ThemeProvider theme={state.theme === "light" ? lightTheme : darkTheme}>
