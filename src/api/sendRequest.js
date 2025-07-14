@@ -16,7 +16,7 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import { stringify } from "query-string";
+import queryString from "query-string";
 import { logout } from "@/shared/authHelper";
 import messages from "@/constants/messages";
 
@@ -80,7 +80,7 @@ const sendRequest = ({
     options.body = null;
   }
   if (queryParams) {
-    URL = `${url}?${stringify(queryParams)}`;
+    URL = `${url}?${queryString.stringify(queryParams)}`;
   }
   return fetch(URL, options).then((res) => {
     if (res.ok) {

@@ -20,7 +20,7 @@ import {
   createUploadUrlApi,
   getUploadSummaryApi,
   getUploadLicenseApi,
-} from "api/upload";
+} from "@/api/upload";
 
 // Create Uploads from File
 export const createUploadFile = ({

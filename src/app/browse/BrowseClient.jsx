@@ -139,7 +139,7 @@ const BrowseClient = () => {
   };
 
   const handleClick = (e, id) => {
-    e.preventDefault();
+    if (e?.preventDefault) e.preventDefault();
     setPages(1);
     setBrowseData({ ...browseData, folderId: id, page: 1 });
   };

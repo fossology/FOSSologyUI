@@ -19,6 +19,7 @@
     "prop-types": "^15.8.1",
     "query-string": "^9.2.1",
     "react": "^19.1.0",
+    "react-arborist": "^3.4.3",
     "react-bootstrap": "^2.10.10",
     "react-bootstrap-icons": "^1.11.6",
     "react-dom": "^19.1.0",
