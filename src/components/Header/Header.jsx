@@ -169,9 +169,21 @@ const Header = () => {
                     </NavDropdown.Item>
                   </div>
                 </DropdownButton>
-                <NavDropdown.Item as={Link} href={routes.organize.licenses.candidate}>
-                  Licenses
-                </NavDropdown.Item>
+                <DropdownButton
+                  variant=""
+                  drop="right"
+                  title="Licenses"
+                  className="dropdown-btn-full"
+                >
+                  <div className="dropdown-section">
+                    <NavDropdown.Item as={Link} href={routes.organize.licenses.candidate}>
+                      Candidate Licenses
+                    </NavDropdown.Item>
+                    <NavDropdown.Item as={Link} href={routes.organize.licenses.create}>
+                      Create Candidate License
+                    </NavDropdown.Item>
+                  </div>
+                </DropdownButton>
                 <DropdownButton
                   variant=""
                   drop="right"
