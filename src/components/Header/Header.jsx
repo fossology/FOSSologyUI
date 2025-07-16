@@ -252,7 +252,7 @@ const Header = () => {
                       </NavDropdown.Item>
                       <NavDropdown.Item
                         href={routes.admin.license.licenseCSV}
-                        download
+                        download={routes.admin.license.licenseCSV}
                       >
                         CSV Export
                       </NavDropdown.Item>
@@ -261,8 +261,8 @@ const Header = () => {
                       </NavDropdown.Item>
                     </div>
                   </DropdownButton>
-                  <NavDropdown.Item as={Link} href={routes.admin.mantainance}>
-                    Mantainance
+                  <NavDropdown.Item as={Link} href={routes.admin.maintenance}>
+                    Maintenance
                   </NavDropdown.Item>
                 </NavDropdown>
               )}

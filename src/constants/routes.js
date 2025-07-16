@@ -76,10 +76,10 @@ const routes = {
     },
     license: {
       create: "/admin/license/create",
-      selectLicense: "/admin/selectLicense",
+      selectLicense: "/admin/license/selectLicense",
       licenseCSV: "/licenseCSV/fossology-license-export.csv",
     },
-    mantainance: "/admin/mantainance",
+    maintenance: "/admin/maintenance",
   },
   browseUploads: {
     softwareHeritage: "/browse/softwareHeritage",
