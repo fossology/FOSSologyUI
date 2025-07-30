@@ -16,57 +16,46 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React, { useState } from "react";
+"use client";
+import React from "react";
 import PropTypes from "prop-types";
-import Tree, { renderers } from "react-virtualized-tree";
+import { Tree } from "react-arborist";
 import "./index.css";
 
-const TreeContainer = ({ data, handleClick, folderCount }) => {
-  const { Expandable } = renderers;
-  const [state, setState] = useState(data);
-
-  const handleChange = (nodes) => {
-    setState(nodes);
-  };
-
+const TreeContainer = ({ data, handleClick }) => {
   return (
-    <div>
-      <div
-        className="tree-list"
-        style={{
-          height: state ? `${folderCount * 40}px` : "0",
-        }}
+    <div className="tree-list" style={{ height: "100%", width: "100%" }}>
+      <Tree
+        data={data}
+        openByDefault={true}
+        disableDrag
+        height={400}
+        width={"100%"}
+        indent={24}
+        rowHeight={40}
+        onSelect={(node) => handleClick(null, node.id)}
       >
-        <Tree nodes={state} onChange={handleChange}>
-          {({ style, node, ...rest }) => (
-            <div style={style}>
-              <Expandable node={node} {...rest}>
-                <button
-                  className="folder-tree-list text-primary-color"
-                  type="button"
-                  onClick={(e) => handleClick(e, node.id)}
-                >
-                  {node.name}
-                </button>
-              </Expandable>
-            </div>
-          )}
-        </Tree>
-      </div>
+        {({ node, style }) => (
+          <div
+            style={style}
+            className="folder-tree-list text-primary-color"
+          >
+            {node.data.name}
+          </div>
+        )}
+      </Tree>
     </div>
   );
 };
 
 const treeDataFormat = {
-  id: PropTypes.number,
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   name: PropTypes.string,
-  description: PropTypes.string,
+  children: PropTypes.array,
 };
-treeDataFormat.children = PropTypes.arrayOf(PropTypes.shape(treeDataFormat));
 TreeContainer.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape(treeDataFormat)),
   handleClick: PropTypes.func.isRequired,
-  folderCount: PropTypes.number,
 };
 
 export default TreeContainer;

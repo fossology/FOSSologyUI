@@ -17,7 +17,7 @@
 */
 
 // constants used in Browse component
-import { defaultAgentsList, getLocalStorage } from "shared/storageHelper";
+import { defaultAgentsList, getLocalStorage } from "@/shared/storageHelper";
 
 export const statusOptions = [
   {

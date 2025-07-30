@@ -16,12 +16,12 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import { stringify } from "query-string";
-import { logout } from "shared/authHelper";
-import messages from "constants/messages";
+import queryString from "query-string";
+import { logout } from "@/shared/authHelper";
+import messages from "@/constants/messages";
 
 // Helper function for setting the item in Localstorage
-import { getLocalStorage, setLocalStorage } from "shared/storageHelper";
+import { getLocalStorage, setLocalStorage } from "@/shared/storageHelper";
 
 const sendRequest = ({
   url,
@@ -80,7 +80,7 @@ const sendRequest = ({
     options.body = null;
   }
   if (queryParams) {
-    URL = `${url}?${stringify(queryParams)}`;
+    URL = `${url}?${queryString.stringify(queryParams)}`;
   }
   return fetch(URL, options).then((res) => {
     if (res.ok) {

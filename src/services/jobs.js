@@ -25,9 +25,9 @@ import {
   getAllJobApi,
   getAllAdminJobApi,
   importReportApi,
-} from "api/jobs";
-import { getReportIdFromUrl } from "shared/helper";
-import { getLocalStorage } from "shared/storageHelper";
+} from "@/api/jobs";
+import { getReportIdFromUrl } from "@/shared/helper";
+import { getLocalStorage } from "@/shared/storageHelper";
 
 // Fetching the jobs
 export const getJob = (jobId) => {

@@ -18,8 +18,8 @@
 
 // Api Url set in the env file
 const apiUrl = `${
-  process.env.REACT_APP_HTTPS === "true" ? "https" : "http"
-}://${process.env.REACT_APP_SERVER_URL}`;
+  process.env.NEXT_PUBLIC_HTTPS === "true" ? "https" : "http"
+}://${process.env.NEXT_PUBLIC_SERVER_URL}`;
 
 // Endpoints for all the REST APIs
 const endpoints = {

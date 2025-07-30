@@ -20,14 +20,14 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 // Widgets
-import { InputContainer, Tooltip } from "components/Widgets";
+import { InputContainer, Tooltip } from "@/components/Widgets";
 
 // Required services for calling APIs
-import { getAllFolders } from "services/folders";
-import { getUploadsFolderId } from "services/organizeUploads";
-import { getAllGroups } from "services/groups";
+import { getAllFolders } from "@/services/folders";
+import { getUploadsFolderId } from "@/services/organizeUploads";
+import { getAllGroups } from "@/services/groups";
 
-import messages from "constants/messages";
+import messages from "@/constants/messages";
 
 const UploadReuse = ({ reuse, handleChange }) => {
   const initialGroupList = [{ id: 3, name: "fossy" }];

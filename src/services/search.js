@@ -16,8 +16,8 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import searchApi from "api/search";
-import { getLocalStorage } from "shared/storageHelper";
+import searchApi from "@/api/search";
+import { getLocalStorage } from "@/shared/storageHelper";
 
 // Fetching all the uploads on the basis of search criteria
 const search = (searchData) => {

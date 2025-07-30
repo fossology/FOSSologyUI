@@ -27,12 +27,12 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        - REACT_APP_SERVER_URL=localhost/repo/api/v2
-        - REACT_APP_HTTPS=false
+        - NEXT_PUBLIC_SERVER_URL=localhost/repo/api/v2
+        - NEXT_PUBLIC_HTTPS=false
     image: fossologyui:react1.0
     environment:
-      - REACT_APP_SERVER_URL=localhost/repo/api/v2
-      - REACT_APP_HTTPS=false
+      - NEXT_PUBLIC_SERVER_URL=localhost/repo/api/v2
+      - NEXT_PUBLIC_HTTPS=false
     ports:
       - "3000:3000"
     command: yarn start

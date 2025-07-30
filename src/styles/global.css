@@ -1,28 +1,33 @@
 /*
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
-
- SPDX-License-Identifier: GPL-2.0
-
- This program is free software; you can redistribute it and/or
- modify it under the terms of the GNU General Public License
- version 2 as published by the Free Software Foundation.
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License along
- with this program; if not, write to the Free Software Foundation, Inc.,
- 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-*/
-
-/*
 * This file contains all styling which is common for all theme (which defines basic layout)
 */
 
+:root {
+  --primary-color: #DC3545;
+  --secondary-color: #A93232;
+  --tertiary-color: #E5E5E5;
+  --body-bg: #ffffff;
+  --text-color: #212121;
+  --primary-text: #212121;
+  --secondary-text: #ffffff;
+  --hover-bg: #A93232;
+}
+
+[data-theme="dark"] {
+  --primary-color: #525252;
+  --secondary-color: #212121;
+  --tertiary-color: #E5E5E5;
+  --body-bg: #212121;
+  --text-color: #ffffff;
+  --primary-text: #ffffff;
+  --secondary-text: #ffffff;
+  --hover-bg: #212121;
+}
+
+
 /* Main wrapper for the header and pages */
 .wrapper {
-  min-height: calc(100vh - 3.3125rem); /* pushes the footer at bottom*/
+  min-height: calc(100vh - 3.3125rem); 
   margin: auto;
 }
 .main-container {
@@ -33,27 +38,27 @@
 /* Font family */
 @font-face {
   font-family: Mulish-bold;
-  src: url("../assets/fonts/Mulish-Bold.ttf");
+  src: url("/assets/fonts/Mulish-Bold.ttf");
   font-display: swap;
 }
 @font-face {
   font-family: Mulish-demi;
-  src: url("../assets/fonts/Mulish-Demi.ttf");
+  src: url("/assets/fonts/Mulish-Demi.ttf");
   font-display: swap;
 }
 @font-face {
   font-family: Mulish-medium;
-  src: url("../assets/fonts/Mulish-Medium.ttf");
+  src: url("/assets/fonts/Mulish-Medium.ttf");
   font-display: swap;
 }
 @font-face {
   font-family: Mulish-regular;
-  src: url("../assets/fonts/Mulish-Regular.ttf");
+  src: url("/assets/fonts/Mulish-Regular.ttf");
   font-display: swap;
 }
 @font-face {
   font-family: IndieFlower-regular;
-  src: url("../assets/fonts/IndieFlower-Regular.ttf");
+  src: url("/assets/fonts/IndieFlower-Regular.ttf");
   font-display: swap;
 }
 
@@ -104,6 +109,49 @@ h6 {
 }
 
 /* Header */
+
+/* Header logo */
+.logo-img {
+  background-color: white;
+  padding: 0.25rem 0.5rem;
+  height: 100%;          
+  object-fit: contain;   
+  display: block;
+}
+
+/* Dropdown section block style */
+.dropdown-section {
+  background-color: var(--secondary-color, #343a40);
+  color: white;
+  font-size: 0.75rem;
+  padding: 0.5rem 0;
+}
+
+/* Full-width dropdown for nested items */
+.dropdown-btn-full {
+  font-family: Mulish-regular;
+  width: 100%;
+}
+
+/* Right icon block */
+.nav-icons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Common icon size/style */
+.icon-style {
+  color: white;
+  font-size: 2.5rem;
+  margin: 0.5rem;
+}
+
+/* Group avatar/icon */
+.group-icon {
+  margin: 0.5rem;
+}
+
 @media (max-width: 991px) {
   .dropleft .dropdown-menu {
     right: unset !important;
@@ -144,4 +192,14 @@ h6 {
 
 body {
   transition: all 0.25s linear;
+}
+
+/* Footer */
+.footer {
+  background-color: var(--primary-color);
+  color: var(--secondary-text);
+  text-align: center;
+  font-size: 0.875rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }

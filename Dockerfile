@@ -1,6 +1,7 @@
 # FOSSology Dockerfile
 
 #  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
+#  Copyright (C) 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 #  SPDX-License-Identifier: GPL-2.0
 
@@ -18,22 +19,25 @@
 
 # Description: Docker container image recipe
 
-FROM node:14.15.4-slim
+FROM node:22.17-slim
 
 LABEL maintainer="Fossology <fossology@fossology.org>"
 
-ARG REACT_APP_SERVER_URL
-ENV REACT_APP_SERVER_URL=$REACT_APP_SERVER_URL
+ARG NEXT_PUBLIC_SERVER_URL
+ENV NEXT_PUBLIC_SERVER_URL=$NEXT_PUBLIC_SERVER_URL
 
-ARG REACT_APP_HTTPS
-ENV REACT_APP_HTTPS=$REACT_APP_HTTPS
+ARG NEXT_PUBLIC_HTTPS
+ENV NEXT_PUBLIC_HTTPS=$NEXT_PUBLIC_HTTPS
 
 WORKDIR /fossologyui
 
+RUN npm install -g pnpm@latest-10
+
 COPY . .
 
-RUN yarn
+RUN pnpm install \
+ && pnpm build
 
 EXPOSE 3000
 
-CMD [ "yarn", "start" ]
+CMD [ "pnpm", "start" ]

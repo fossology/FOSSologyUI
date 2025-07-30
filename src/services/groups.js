@@ -22,8 +22,8 @@ import {
   createGroupApi,
   deleteGroupApi,
   getAllDeletableGroupsApi,
-} from "api/groups";
-import { setLocalStorage, getLocalStorage } from "shared/storageHelper";
+} from "@/api/groups";
+import { setLocalStorage, getLocalStorage } from "@/shared/storageHelper";
 
 // Fetching all the groups
 export const getAllGroups = () => {

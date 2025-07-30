@@ -69,7 +69,7 @@ const InputContainer = ({
           className={
             className ? `mr-2 form-control ${className}` : `mr-2 form-control`
           }
-          value={value}
+          value={value === null ? "" : value}
           onChange={onChange}
           multiple={multiple && multiple}
           size={multiple ? "15" : ""}

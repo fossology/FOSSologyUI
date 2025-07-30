@@ -15,7 +15,7 @@ https://fossology.org/
 
 ## Overview
 
-The UI Migration project is an effort focused on generating the new component-based architecture with the integration of the APIs. To make the project more **efficient** and **easily accessible**, an entire code base shift from Symfony-Twig to React.js is proposed. React.js features an incrementally adaptable architecture that focuses on declarative rendering and component composition. React.js component system will enable us to organize the current working APIs appropriately.
+The UI Migration project is an effort focused on generating the new component-based architecture with the integration of the APIs. To make the project more **efficient** and **easily accessible**, an entire code base shift from Symfony-Twig to NextJS is proposed. NextJS with NextAuth and other libraries will enable us to organize the current working APIs appropriately.
 
 ## Objectives
 
@@ -28,7 +28,7 @@ The UI Migration project is an effort focused on generating the new component-ba
 
 ## Requirements
 
-- [NodeJS](https://nodejs.org/en/download/) and NPM or [yarn](https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable)
+- [NodeJS](https://nodejs.org/en/download/) and [pnpm](https://pnpm.io/installation)
 
 ## Installation
 
@@ -115,39 +115,32 @@ This will clean up running containers and networks.
 
 ### Project Setup
 
-- Create a `.env` in root directory of project and copy the contents from `.env.sample`
+- Copy the `.env.sample` as `.env` file and update the variables to appropriate values.
 
 - Installs the packages:
 
-```sh
- yarn
-```
+    ```sh
+    pnpm install
+    ```
 
 - Runs the app in the development mode at [http://localhost:3000](http://localhost:3000)
 
-```sh
-yarn start
-```
+    ```sh
+    pnpm run dev
+    ```
 
 ### Deployment
 
-Launches the test runner in the interactive watch mode.
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Build the app for production.
 
 ```sh
-yarn test
+pnpm build
 ```
 
-Builds the app for production to the `build` folder.
-
-```sh
-yarn build
-```
-
-It correctly bundles React in production mode and optimizes the build for the best performance.
+It correctly bundles NextJS in production mode and optimizes the build for the best performance.
 
 The build is minified and the filenames include the hashes. Your app is ready to be deployed!
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+See the section about [deployment](https://nextjs.org/docs/14/app/building-your-application/deploying) for more information.
 
 ## Support
 

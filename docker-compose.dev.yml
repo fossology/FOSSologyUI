@@ -27,12 +27,12 @@ services:
       context: .
       dockerfile: Dockerfile.dev
       args:
-        - REACT_APP_SERVER_URL=localhost/repo/api/v2
-        - REACT_APP_HTTPS=false
+        - NEXT_PUBLIC_SERVER_URL=localhost/repo/api/v2
+        - NEXT_PUBLIC_HTTPS=false
     image: fossologyui:react1.0
     environment:
-      - REACT_APP_SERVER_URL=localhost/repo/api/v2
-      - REACT_APP_HTTPS=false
+      - NEXT_PUBLIC_SERVER_URL=localhost/repo/api/v2
+      - NEXT_PUBLIC_HTTPS=false
     command: ../node_modules/.bin/react-scripts start
     ports:
       - "3000:3000"
@@ -45,8 +45,7 @@ services:
       # NOTE: this won't work on Docker Toolbox (virtualbox) which doesn't bind-mount single files
       # docker-compose exec node npm install --save bower
       - ./package.json:/usr/src/fossologyui/package.json
-      - ./package-lock.json:/usr/src/fossologyui/package-lock.json
-      - ./yarn.lock:/usr/src/fossologyui/yarn.lock
+      - ./pnpm-lock.yaml:/usr/src/fossologyui/pnpm-lock.yaml
       # this is a workaround to prevent host node_modules from accidently getting mounted in container
       # in case you want to use node/npm both outside container for test/lint etc. and also inside container
       # this will overwrite the default node_modules dir in container so it won't conflict with our

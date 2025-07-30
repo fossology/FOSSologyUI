@@ -17,9 +17,9 @@
 */
 
 // query-string library to sanitize url
-import { stringify } from "query-string";
+import queryString from "query-string";
 // Routes
-import routes from "constants/routes";
+import routes from "@/constants/routes";
 
 // Helper Functions
 import {
@@ -51,7 +51,7 @@ export const logout = (message) => {
   removeLocalStorage("currentGroup");
   let Url = routes.home;
   if (message) {
-    Url = `${routes.home}?${stringify(message)}`;
+    Url = `${routes.home}?${queryString.stringify(message)}`;
   }
   window.location.href = Url;
 };
