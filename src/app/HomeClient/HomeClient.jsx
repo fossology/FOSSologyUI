@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { Alert, Button, Spinner } from '@/components/Widgets';
-import Features from '../Features';
+// import Features from '../Features';
 
 // Services
 import fetchToken from '@/services/auth';
@@ -159,8 +159,6 @@ const HomeClient = () => {
           )}
         </div>
       </div>
-
-      <Features />
     </div>
   );
 };

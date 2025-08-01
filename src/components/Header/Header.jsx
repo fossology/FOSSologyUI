@@ -3,22 +3,20 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import clsx from "clsx";
 import Image from "next/image";
 
-import {
-  Navbar,
-  Nav,
-  NavDropdown,
-  Dropdown,
-  DropdownButton,
-} from "react-bootstrap";
-import { QuestionCircleFill, PersonCircle } from "react-bootstrap-icons";
+import { DropdownMenu, 
+  DropdownMenuTrigger, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuSub, 
+  DropdownMenuSubTrigger, 
+  DropdownMenuSubContent} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 
 // Services
 import { getAllGroups } from "@/services/groups";
-
-// Widgets
-import TextIcon from "@/components/Widgets/TextIcon";
 
 // Constants
 import routes from "@/constants/routes";
@@ -27,15 +25,36 @@ import externalLinks from "@/constants/externalLinks";
 // Helpers
 import { logout, isAuth, getUserName, isAdmin } from "@/shared/authHelper";
 import { getLocalStorage, setLocalStorage } from "@/shared/storageHelper";
-import { getNameInitials } from "@/shared/helper";
 
-// Styles
-import "./Header.module.css";
 
-const Header = () => {
+export default function Header() {
   const [currentGroup, setCurrentGroup] = useState(null);
   const pathname = usePathname();
   const router = useRouter();
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [isJobsOpen, setIsJobsOpen] = useState(false);
+  const [isOrganizeOpen, setIsOrganizeOpen] = useState(false);
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [isHelpOpen, setIsHelpOpen] = useState(false);
+  const [isGroupOpen, setIsGroupOpen] = useState(false);
+  const [isGroupSelectOpen, setIsGroupSelectOpen] = useState(false);
+
+  const isHomeActive = pathname === routes.home;
+
+  const isSearchActive = pathname === routes.search;
+
+  const isBrowseActive = pathname === routes.browse;
+
+  const isUploadActive = (isOpen || pathname.startsWith("/upload"));
+
+  const isJobsActive = (isJobsOpen || pathname.startsWith("/jobs"));
+
+  const isOrganizeActive = (isOrganizeOpen || pathname.startsWith("/organize"));
+
+  const isAdminActive = (isAdminOpen || pathname.startsWith("/admin"));
+
+  const isHelpActive = (isHelpOpen || pathname.startsWith("/help"));
 
   useEffect(() => {
     const defaultGroup =
@@ -48,295 +67,513 @@ const Header = () => {
     router.push(routes.home);
   };
 
-  const handleGroupChange = (e) => {
-    const selected = e.target.innerText;
-    setLocalStorage("currentGroup", selected);
-    setCurrentGroup(selected);
+  const handleGroupChange = (groupName) => {
+    setLocalStorage("currentGroup", groupName);
+    setCurrentGroup(groupName);
   };
 
   return (
-    <Navbar
-      expand="lg"
-      className="bg-primary-color py-0 pl-0 text-white"
-      sticky="top"
-    >
-      <Navbar.Brand as={Link} href={routes.home} className="py-0">
-        <Image
-          src="/assets/images/logo.svg"
-          width={120}
-          height={40}
-          alt="FOSSology"
-          className="logo-img"
-        />
-      </Navbar.Brand>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="me-auto">
-          <Nav.Link
-            as={Link}
-            href={routes.home}
-            className={pathname === routes.home ? "active-nav-item" : ""}
-          >
-            Home
-          </Nav.Link>
-          {/* isAuth() in place of true */}
-          {true && (
-            <>
-              <Nav.Link
-                as={Link}
-                href={routes.search}
-                className={pathname === routes.search ? "active-nav-item" : ""}
-              >
-                Search
-              </Nav.Link>
-              <Nav.Link
-                as={Link}
-                href={routes.browse}
-                className={pathname === routes.browse ? "active-nav-item" : ""}
-              >
-                Browse
-              </Nav.Link>
+    <header className="sticky top-0 z-50 bg-neutral-300 text-sm border-b border-neutral-400 flex items-center justify-between px-6">
+      {/* Logo */}
+      <div className="flex items-center gap-4">
+        <img src="/assets/images/logo.svg" alt="FOSSology Logo" className="h-13" />
 
-              {/* Upload Dropdown */}
-              <NavDropdown title="Upload" id="uploads">
-                <NavDropdown.Item as={Link} href={routes.upload.file}>
-                  From File
-                </NavDropdown.Item>
-                <NavDropdown.Item as={Link} href={routes.upload.server}>
-                  From Server
-                </NavDropdown.Item>
-                <NavDropdown.Item as={Link} href={routes.upload.url}>
-                  From URL
-                </NavDropdown.Item>
-                <NavDropdown.Item as={Link} href={routes.upload.vcs}>
-                  From VCS
-                </NavDropdown.Item>
-                <NavDropdown.Item as={Link} href={routes.upload.importReport}>
-                  Import Report
-                </NavDropdown.Item>
-                <NavDropdown.Item as={Link} href={routes.upload.instructions}>
-                  Instructions
-                </NavDropdown.Item>
-                <NavDropdown.Item as={Link} href={routes.upload.oneShotAnalysis}>
-                  One-Shot Analysis
-                </NavDropdown.Item>
-                <NavDropdown.Item as={Link} href={routes.upload.oneShotCopyright}>
-                  One-Shot Copyright/Email/URL
-                </NavDropdown.Item>
-                <NavDropdown.Item as={Link} href={routes.upload.oneShotMonk}>
-                  One-Shot Monk
-                </NavDropdown.Item>
-              </NavDropdown>
+        {/* Navigation Menu */}
+        <nav className="hidden md:flex">
+          <Link href={routes.home} className={clsx("flex items-center h-13 p-4 justify-between", !isHomeActive ? "hover:border-b-2 hover:border-[#C31730] hover:font-medium" : "border-b-2 border-[#C31730] font-medium")}>Home</Link>
+          {isAuth() && (
+            <>
+              <Link href={routes.search} className={clsx("flex items-center h-13 p-4 justify-between", !isSearchActive ? "hover:border-b-2 hover:border-[#C31730] hover:font-medium" : "border-b-2 border-[#C31730] font-medium")}>Search</Link>
+              <Link href={routes.browse} className={clsx("flex items-center h-13 p-4 justify-between", !isBrowseActive ? "hover:border-b-2 hover:border-[#C31730] hover:font-medium" : "border-b-2 border-[#C31730] font-medium")}>Browse</Link>
+
+              {/* Uploads Dropdown */}
+              <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+                <DropdownMenuTrigger
+                  className={clsx(
+                    "flex items-center h-13 p-4 justify-between gap-1 cursor-pointer", !isUploadActive ? "hover:border-b-2 hover:border-[#C31730] hover:font-medium" : "border-b-2 border-[#C31730] font-medium"
+                  )}
+                >
+                  Upload
+                  {isOpen ? (
+                      <img
+                      src="/assets/icons/chevron_up/chevron_up_20px.svg"
+                      alt="Chevron Up"
+                      />
+                  ) : (
+                    <img
+                      src="/assets/icons/chevron_down/chevron_down_20px.svg"
+                      alt="Chevron Down"
+                      />
+                  )}
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" sideOffset={4} className="p-0 m-0 min-w-[200px] bg-white shadow-lg border border-gray-200 z-50">
+                  <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={routes.upload.file}>From File</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={routes.upload.server}>From Server</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={routes.upload.url}>From URL</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={routes.upload.vcs}>From Version Control System</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={""}>Import FOSSology Dump</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={routes.upload.importReport}>Import Report</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={routes.upload.instructions}>Instructions</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={routes.upload.oneShotCopyright}>One-Shot Copyright/Email/URL</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={routes.upload.oneShotMonk}>One-Shot Monk Analysis</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={routes.upload.oneShotAnalysis}>One-Shot Nomos Analysis</Link></DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
 
               {/* Jobs Dropdown */}
-              <NavDropdown title="Jobs" id="jobs">
-                <NavDropdown.Item as={Link} href={routes.jobs.myRecentJobs}>
-                  My Recent Jobs
-                </NavDropdown.Item>
-                {isAdmin() && (
-                  <NavDropdown.Item as={Link} href={routes.jobs.allRecentJobs}>
-                    All Recent Jobs
-                  </NavDropdown.Item>
-                )}
-                <NavDropdown.Item as={Link} href={routes.jobs.scheduleAgents}>
-                  Schedule Agents
-                </NavDropdown.Item>
-              </NavDropdown>
+              <DropdownMenu open={isJobsOpen} onOpenChange={setIsJobsOpen}>
+                <DropdownMenuTrigger
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setIsJobsOpen((prev) => !prev);
+                  }}
+                  className={clsx(
+                    "flex items-center h-13 p-4 justify-between gap-1 cursor-pointer", !isJobsActive ? "hover:border-b-2 hover:border-[#C31730] hover:font-medium" : "border-b-2 border-[#C31730] font-medium"
+                  )}
+                >
+                  Jobs
+                  {isJobsOpen ? <img
+                      src="/assets/icons/chevron_up/chevron_up_20px.svg"
+                      alt="Chevron Up"
+                      />
+                      : <img
+                      src="/assets/icons/chevron_down/chevron_down_20px.svg"
+                      alt="Chevron Down"
+                      />}
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" sideOffset={4} className="p-0 m-0 min-w-[200px] bg-white shadow-lg border border-gray-200 z-50">
+                  <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold">
+                    <Link href={routes.jobs.myRecentJobs}>My Recent Jobs</Link>
+                  </DropdownMenuItem>
+                  {isAdmin() && (
+                    <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold">
+                      <Link href={routes.jobs.allRecentJobs}>All Recent Jobs</Link>
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold">
+                    <Link href={routes.jobs.scheduleAgents}>Schedule Agents</Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
 
               {/* Organize Dropdown */}
-              <NavDropdown title="Organize" id="organize">
-                <DropdownButton
-                  variant=""
-                  drop="right"
-                  title="Folders"
-                  className="dropdown-btn-full"
+              <DropdownMenu open={isOrganizeOpen} onOpenChange={setIsOrganizeOpen}>
+                <DropdownMenuTrigger
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setIsOrganizeOpen((prev) => !prev);
+                  }}
+                  className={clsx(
+                    "flex items-center h-13 p-4 justify-between gap-1 cursor-pointer", !isOrganizeActive ? "hover:border-b-2 hover:border-[#C31730] hover:font-medium" : "border-b-2 border-[#C31730] font-medium"
+                  )}
                 >
-                  <div className="dropdown-section">
-                    <NavDropdown.Item as={Link} href={routes.organize.folders.create}>
-                      Create
-                    </NavDropdown.Item>
-                    <NavDropdown.Item as={Link} href={routes.organize.folders.delete}>
-                      Delete Folder
-                    </NavDropdown.Item>
-                    <NavDropdown.Item as={Link} href={routes.organize.folders.edit}>
-                      Edit Properties
-                    </NavDropdown.Item>
-                    <NavDropdown.Item as={Link} href={routes.organize.folders.move}>
-                      Move or Copy
-                    </NavDropdown.Item>
-                    <NavDropdown.Item as={Link} href={routes.organize.folders.unlinkContent}>
-                      Unlink Content
-                    </NavDropdown.Item>
-                  </div>
-                </DropdownButton>
-                <DropdownButton
-                  variant=""
-                  drop="right"
-                  title="Licenses"
-                  className="dropdown-btn-full"
-                >
-                  <div className="dropdown-section">
-                    <NavDropdown.Item as={Link} href={routes.organize.licenses.candidate}>
-                      Candidate Licenses
-                    </NavDropdown.Item>
-                    <NavDropdown.Item as={Link} href={routes.organize.licenses.create}>
-                      Create Candidate License
-                    </NavDropdown.Item>
-                  </div>
-                </DropdownButton>
-                <DropdownButton
-                  variant=""
-                  drop="right"
-                  title="Uploads"
-                  className="dropdown-btn-full"
-                >
-                  <div className="dropdown-section">
-                    <NavDropdown.Item as={Link} href={routes.organize.uploads.delete}>
-                      Delete Uploaded File
-                    </NavDropdown.Item>
-                    <NavDropdown.Item as={Link} href={routes.organize.uploads.edit}>
-                      Edit Properties
-                    </NavDropdown.Item>
-                    <NavDropdown.Item as={Link} href={routes.organize.uploads.move}>
-                      Move or Copy
-                    </NavDropdown.Item>
-                  </div>
-                </DropdownButton>
-              </NavDropdown>
+                  Organize
+                  {isOrganizeOpen ? <img
+                      src="/assets/icons/chevron_up/chevron_up_20px.svg"
+                      alt="Chevron Up"
+                      />: <img
+                      src="/assets/icons/chevron_down/chevron_down_20px.svg"
+                      alt="Chevron Down"
+                      />}
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" sideOffset={4} className="p-0 m-0 min-w-[220px] bg-white shadow-lg border border-gray-200 z-50">
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger   
+                    className={clsx(
+                        "flex items-center justify-between w-full px-2 py-2 text-sm rounded-md cursor-pointer",
+                        "hover:bg-[#EDEDED] hover:text-gray-900 hover:font-bold",
+                        "focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold",
+                        "data-[state=open]:bg-[#EDEDED] data-[state=open]:text-gray-900 data-[state=open]:font-bold"
+                    )}>Folders
+                    </DropdownMenuSubTrigger>
+                    <DropdownMenuSubContent className="p-0 m-0 bg-white border border-gray-200">
+                      <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={routes.organize.folders.create}>Create</Link></DropdownMenuItem>
+                      <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={routes.organize.folders.delete}>Delete Folder</Link></DropdownMenuItem>
+                      <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={routes.organize.folders.edit}>Edit Properties</Link></DropdownMenuItem>
+                      <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={routes.organize.folders.move}>Move or Copy</Link></DropdownMenuItem>
+                      <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={routes.organize.folders.unlinkContent}>Unlink Content</Link></DropdownMenuItem>
+                    </DropdownMenuSubContent>
+                  </DropdownMenuSub>
 
-              {/* Admin */}
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger
+                    className={clsx(
+                        "flex items-center justify-between w-full px-2 py-2 text-sm rounded-md cursor-pointer",
+                        "hover:bg-[#EDEDED] hover:text-gray-900 hover:font-bold",
+                        "focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold",
+                        "data-[state=open]:bg-[#EDEDED] data-[state=open]:text-gray-900 data-[state=open]:font-bold"
+                    )}>Licenses
+                    </DropdownMenuSubTrigger>
+                    <DropdownMenuSubContent className="p-0 m-0 bg-white border border-gray-200">
+                      <DropdownMenuItem asChild className="focus:bg-[#EDEDED]  focus:text-gray-900 focus:font-bold"><Link href={routes.organize.licenses.candidate}>Candidate Licenses</Link></DropdownMenuItem>
+                      <DropdownMenuItem asChild className="focus:bg-[#EDEDED]  focus:text-gray-900 focus:font-bold"><Link href={routes.organize.licenses.create}>Create Candidate License</Link></DropdownMenuItem>
+                    </DropdownMenuSubContent>
+                  </DropdownMenuSub>
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger
+                    className={clsx(
+                        "flex items-center justify-between w-full px-2 py-2 text-sm rounded-md cursor-pointer",
+                        "hover:bg-[#EDEDED] hover:text-gray-900 hover:font-bold",
+                        "focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold",
+                        "data-[state=open]:bg-[#EDEDED] data-[state=open]:text-gray-900 data-[state=open]:font-bold"
+                    )}>Uploads
+                    </DropdownMenuSubTrigger>
+                    <DropdownMenuSubContent className="p-0 m-0 bg-white border border-gray-200">
+                      <DropdownMenuItem asChild className="focus:bg-[#EDEDED]  focus:text-gray-900 focus:font-bold"><Link href={routes.organize.uploads.delete}>Delete Uploaded File</Link></DropdownMenuItem>
+                      <DropdownMenuItem asChild className="focus:bg-[#EDEDED]  focus:text-gray-900 focus:font-bold"><Link href={routes.organize.uploads.edit}>Edit Properties</Link></DropdownMenuItem>
+                      <DropdownMenuItem asChild className="focus:bg-[#EDEDED]  focus:text-gray-900 focus:font-bold"><Link href={routes.organize.uploads.move}>Move or Copy</Link></DropdownMenuItem>
+                    </DropdownMenuSubContent>
+                  </DropdownMenuSub>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              {/* Admin Dropdown */}
               {isAdmin() && (
-                <NavDropdown title="Admin" id="admin">
-                  <DropdownButton
-                    variant=""
-                    drop="right"
-                    title="Groups"
-                    className="dropdown-btn-full"
+                <DropdownMenu open={isAdminOpen} onOpenChange={setIsAdminOpen}>
+                  <DropdownMenuTrigger
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setIsAdminOpen((prev) => !prev);
+                    }}
+                    className={clsx(
+                      "flex items-center h-13 p-4 justify-between gap-1 cursor-pointer", !isAdminActive ? "hover:border-b-2 hover:border-[#C31730] hover:font-medium" : "border-b-2 border-[#C31730] font-medium"
+                    )}
                   >
-                    <div className="dropdown-section">
-                      <NavDropdown.Item as={Link} href={routes.admin.group.create}>
-                        Add Group
-                      </NavDropdown.Item>
-                      <NavDropdown.Item as={Link} href={routes.admin.group.delete}>
-                        Delete Group
-                      </NavDropdown.Item>
-                    </div>
-                  </DropdownButton>
-                  <DropdownButton
-                    variant=""
-                    drop="right"
-                    title="Users"
-                    className="dropdown-btn-full"
-                  >
-                    <div className="dropdown-section">
-                      <NavDropdown.Item as={Link} href={routes.admin.users.add}>
-                        Add User
-                      </NavDropdown.Item>
-                      <NavDropdown.Item as={Link} href={routes.admin.users.edit}>
-                        Edit User Account
-                      </NavDropdown.Item>
-                      <NavDropdown.Item as={Link} href={routes.admin.users.delete}>
-                        Delete User
-                      </NavDropdown.Item>
-                    </div>
-                  </DropdownButton>
-                  <DropdownButton
-                    variant=""
-                    drop="right"
-                    title="License Administration"
-                    className="dropdown-btn-full"
-                  >
-                    <div className="dropdown-section">
-                      <NavDropdown.Item as={Link} href={routes.admin.license.create}>
-                        Add License
-                      </NavDropdown.Item>
-                      <NavDropdown.Item
-                        href={routes.admin.license.licenseCSV}
-                        download={routes.admin.license.licenseCSV}
-                      >
-                        CSV Export
-                      </NavDropdown.Item>
-                      <NavDropdown.Item as={Link} href={routes.admin.license.selectLicense}>
-                        Select License
-                      </NavDropdown.Item>
-                    </div>
-                  </DropdownButton>
-                  <NavDropdown.Item as={Link} href={routes.admin.maintenance}>
-                    Maintenance
-                  </NavDropdown.Item>
-                </NavDropdown>
+                    Admin
+                    {isAdminOpen ? <img
+                      src="/assets/icons/chevron_up/chevron_up_20px.svg"
+                      alt="Chevron Up"
+                      />: <img
+                      src="/assets/icons/chevron_down/chevron_down_20px.svg"
+                      alt="Chevron Down"
+                      />}
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" sideOffset={4} className="p-0 m-0 min-w-[240px] bg-white shadow-lg border border-gray-200 z-50">
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger 
+                      className={clsx(
+                        "flex items-center justify-between w-full px-2 py-2 text-sm rounded-md cursor-pointer",
+                        "hover:bg-[#EDEDED] hover:text-gray-900 hover:font-bold",
+                        "focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold",
+                        "data-[state=open]:bg-[#EDEDED] data-[state=open]:text-gray-900 data-[state=open]:font-bold"
+                      )}>Agent
+                      </DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent className="p-0 m-0 bg-white border border-gray-200">
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={""}>Monk</Link></DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger 
+                      className={clsx(
+                        "flex items-center justify-between w-full px-2 py-2 text-sm rounded-md cursor-pointer",
+                        "hover:bg-[#EDEDED] hover:text-gray-900 hover:font-bold",
+                        "focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold",
+                        "data-[state=open]:bg-[#EDEDED] data-[state=open]:text-gray-900 data-[state=open]:font-bold"
+                      )}>Buckets
+                      </DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent className="p-0 m-0 bg-white border border-gray-200">
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={""}>Duplicate Bucketpool</Link></DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+                    <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold">
+                    <Link href={""}>Customize</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger 
+                      className={clsx(
+                        "flex items-center justify-between w-full px-2 py-2 text-sm rounded-md cursor-pointer",
+                        "hover:bg-[#EDEDED] hover:text-gray-900 hover:font-bold",
+                        "focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold",
+                        "data-[state=open]:bg-[#EDEDED] data-[state=open]:text-gray-900 data-[state=open]:font-bold"
+                      )}>Dashboards
+                      </DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent className="p-0 m-0 bg-white border border-gray-200">
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={""}>All Jobs</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={""}>Folder/Upload Proportions</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={""}>Overview</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={""}>Statistics</Link></DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+                    <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold">
+                    <Link href={""}>Fossdash</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger 
+                      className={clsx(
+                        "flex items-center justify-between w-full px-2 py-2 text-sm rounded-md cursor-pointer",
+                        "hover:bg-[#EDEDED] hover:text-gray-900 hover:font-bold",
+                        "focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold",
+                        "data-[state=open]:bg-[#EDEDED] data-[state=open]:text-gray-900 data-[state=open]:font-bold"
+                      )}>Groups
+                      </DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent className="p-0 m-0 bg-white border border-gray-200">
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={routes.admin.group.create}>Add Group</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={routes.admin.group.delete}>Delete Group</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={""}>Manage Group Users</Link></DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger 
+                      className={clsx(
+                        "flex items-center justify-between w-full px-2 py-2 text-sm rounded-md cursor-pointer",
+                        "hover:bg-[#EDEDED] hover:text-gray-900 hover:font-bold",
+                        "focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold",
+                        "data-[state=open]:bg-[#EDEDED] data-[state=open]:text-gray-900 data-[state=open]:font-bold"
+                      )}>License Administration
+                      </DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent className="p-0 m-0 bg-white border border-gray-200">
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={""}>Acknowledgements</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={routes.admin.license.create}>Add License</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={routes.admin.license.licenseCSV}>CSV Export All</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={""}>CSV Export Marrydone</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={""}>Candidates</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={""}>Compatibility Rules</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={""}>JSON Export All</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={""}>JSON Export Marrydone</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={""}>License Import</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={""}>Rules Export</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={""}>Rules Import</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={routes.admin.license.selectLicense}>Select License</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={""}>Standard Comments</Link></DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+                    <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold">
+                    <Link href={routes.admin.maintenance}>Maintenance</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger 
+                      className={clsx(
+                        "flex items-center justify-between w-full px-2 py-2 text-sm rounded-md cursor-pointer",
+                        "hover:bg-[#EDEDED] hover:text-gray-900 hover:font-bold",
+                        "focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold",
+                        "data-[state=open]:bg-[#EDEDED] data-[state=open]:text-gray-900 data-[state=open]:font-bold"
+                      )}>Obligation Administration
+                      </DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent className="p-0 m-0 bg-white border border-gray-200">
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={""}>Add Obligation</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={""}>CSV Export</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={""}>JSON Export</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={""}>Obligation Import</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={""}>Select Obligation</Link></DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+                    <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold">
+                    <Link href={""}>Scheduler</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger 
+                      className={clsx(
+                        "flex items-center justify-between w-full px-2 py-2 text-sm rounded-md cursor-pointer",
+                        "hover:bg-[#EDEDED] hover:text-gray-900 hover:font-bold",
+                        "focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold",
+                        "data-[state=open]:bg-[#EDEDED] data-[state=open]:text-gray-900 data-[state=open]:font-bold"
+                      )}>Tag
+                      </DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent className="p-0 m-0 bg-white border border-gray-200">
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={""}>Create Tag</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={""}>Enable/Disable Tag</Link></DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+                    <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold">
+                    <Link href={""}>Upload Permissions</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger 
+                      className={clsx(
+                        "flex items-center justify-between w-full px-2 py-2 text-sm rounded-md cursor-pointer",
+                        "hover:bg-[#EDEDED] hover:text-gray-900 hover:font-bold",
+                        "focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold",
+                        "data-[state=open]:bg-[#EDEDED] data-[state=open]:text-gray-900 data-[state=open]:font-bold"
+                      )}>Users
+                      </DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent className="p-0 m-0 bg-white border border-gray-200">
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={routes.admin.users.add}>Add User</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={routes.admin.users.edit}>Edit User Account</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={routes.admin.users.delete}>Delete User</Link></DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               )}
+              {/* Help Dropdown */}
+                <DropdownMenu open={isHelpOpen} onOpenChange={setIsHelpOpen}>
+                <DropdownMenuTrigger
+                  className={clsx(
+                    "flex items-center h-13 p-4 justify-between gap-1 cursor-pointer", !isHelpActive ? "hover:border-b-2 hover:border-[#C31730] hover:font-medium" : "border-b-2 border-[#C31730] font-medium"
+                  )}
+                >
+                  Help
+                  {isHelpOpen ? (
+                    <img
+                      src="/assets/icons/chevron_up/chevron_up_20px.svg"
+                      alt="Chevron Up"
+                      />
+                  ) : (
+                    <img
+                      src="/assets/icons/chevron_down/chevron_down_20px.svg"
+                      alt="Chevron Down"
+                      />
+                  )}
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" sideOffset={4} className="p-0 m-0 min-w-[200px] bg-white shadow-lg border border-gray-200 z-50">
+                    <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={routes.help.about}>About</Link></DropdownMenuItem>
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger 
+                      className={clsx(
+                        "flex items-center justify-between w-full px-2 py-2 text-sm rounded-md cursor-pointer",
+                        "hover:bg-[#EDEDED] hover:text-gray-900 hover:font-bold",
+                        "focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold",
+                        "data-[state=open]:bg-[#EDEDED] data-[state=open]:text-gray-900 data-[state=open]:font-bold"
+                      )}>Debug
+                      </DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent className="p-0 m-0 bg-white border border-gray-200">
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={""}>Debug Menus</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={""}>Debug Plugins</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={""}>Debug User</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={""}>Flush Cache</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={""}>Global Variables</Link></DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+                    <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={externalLinks.fossologyWiki} target="_blank" rel="noreferrer">Documentation</Link></DropdownMenuItem>
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger 
+                      className={clsx(
+                        "flex items-center justify-between w-full px-2 py-2 text-sm rounded-md cursor-pointer",
+                        "hover:bg-[#EDEDED] hover:text-gray-900 hover:font-bold",
+                        "focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold",
+                        "data-[state=open]:bg-[#EDEDED] data-[state=open]:text-gray-900 data-[state=open]:font-bold"
+                      )}>Getting Started
+                      </DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent className="p-0 m-0 bg-white border border-gray-200">
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={routes.help.licenseBrowser}>License Browser</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={routes.help.overview}>Overview</Link></DropdownMenuItem>                        
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+                    <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold"><Link href={routes.help.thirdPartyLicenses}>Third Party Licenses</Link></DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
             </>
           )}
-        </Nav>
+        </nav>
+      </div>
 
-        {/* Right side icons */}
-        <div className="nav-icons">
-          {/* Help */}
-          <Dropdown drop="down" align="end">
-            <Dropdown.Toggle variant="link" bsPrefix="p-0">
-              <QuestionCircleFill className="icon-style" />
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item as={Link} href={routes.help.about}>About</Dropdown.Item>
-              <Dropdown.Item as={Link} href={routes.help.overview}>Getting Started</Dropdown.Item>
-              <Dropdown.Item as={Link} href={routes.help.licenseBrowser}>License Browser</Dropdown.Item>
-              <Dropdown.Item
-                href={externalLinks.fossologyWiki}
-                target="_blank"
-                rel="noreferrer"
-              >
-                Documentation
-              </Dropdown.Item>
-              <Dropdown.Item as={Link} href={routes.help.thirdPartyLicenses}>
-                Third Party Licenses
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+      {/* Right Side Icons */}
+      <div className="flex items-center gap-6 text-sm text-gray-800">
+        {/* Group Dropdown */}
+        {getAllGroups() && (
+          <DropdownMenu open={isGroupOpen} onOpenChange={setIsGroupOpen}>
+            <DropdownMenuTrigger
+              onClick={(e) => {
+                e.preventDefault();
+                setIsGroupOpen((prev) => !prev);
+              }}
+              className={clsx(
+                "flex items-center h-13 pr-2 pl-2 pt-4 pb-4 justify-between gap-2 hover:border-b-2 hover:border-gray-900 cursor-pointer",
+                isGroupOpen && "text-[#C31730]"
+              )}
+            >
+              <img
+              src="/assets/icons/User/User_24px.svg"
+              alt="User"
+              /> 
+              Group: {currentGroup}
+              {isGroupOpen ? (
+                <img
+                        src="/assets/icons/chevron_up/chevron_up_16px.svg"
+                        alt="Chevron Up"
+                        />
+              ) : (
+                <img
+                      src="/assets/icons/chevron_down/chevron_down_16px.svg"
+                      alt="Chevron Down"
+                      />
+              )}
+            </DropdownMenuTrigger>
 
-          {/* Group selection */}
-          {getAllGroups() && (
-            <Dropdown drop="down" align="end">
-              <Dropdown.Toggle variant="link" bsPrefix="p-0">
-                <TextIcon className="group-icon" text={getNameInitials(currentGroup)} />
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                {getAllGroups().map((group) => (
-                  <Dropdown.Item
-                    key={group.id}
-                    onClick={handleGroupChange}
-                    className={group.name === currentGroup ? "active" : ""}
-                  >
-                    {group.name}
-                  </Dropdown.Item>
-                ))}
-              </Dropdown.Menu>
-            </Dropdown>
-          )}
+            {/* Dropdown Content */}
+            <DropdownMenuContent
+              align="end"
+              sideOffset={4}
+              className="min-w-[180px] bg-white shadow-md border border-gray-200 p-3"
+            >
+              <div className="flex flex-col gap-2">
+                {/* Group Label */}
+                <div htmlFor="groupSelect" className="text-sm  text-gray-700">
+                <span className="font-semibold">Group: </span>{currentGroup}
+                </div>
 
-          {/* User Info */}
-          <Dropdown drop="down" align="end">
-            <Dropdown.Toggle variant="link" bsPrefix="p-0">
-              <PersonCircle className="icon-style" />
-            </Dropdown.Toggle>
-            {isAuth() ? (
-              <Dropdown.Menu>
-                <Dropdown.Item>
-                  User: <b>{getUserName()}</b>
-                </Dropdown.Item>
-                <Dropdown.Divider />
-                <Dropdown.Item onClick={() => logout(null)}>Log out</Dropdown.Item>
-              </Dropdown.Menu>
-            ) : (
-              <Dropdown.Menu>
-                <Dropdown.Item onClick={handleLogin}>Log in</Dropdown.Item>
-              </Dropdown.Menu>
-            )}
-          </Dropdown>
-        </div>
-      </Navbar.Collapse>
-    </Navbar>
+                {/* Group Select (custom dropdown) */}
+                  <div className="relative">
+                    <div
+                      onClick={() => setIsGroupSelectOpen((prev) => !prev)}
+                      className="border rounded-[4px] border-[#CECECE] px-3 py-2 text-sm cursor-pointer bg-white hover:bg-[#EDEDED] flex justify-between items-center"
+                    >
+                      {currentGroup}
+                      {isGroupSelectOpen ? (
+                        <img
+                        src="/assets/icons/chevron_up/chevron_up_16px.svg"
+                        alt="Chevron Up"
+                        />
+                      ) : (
+                        <img
+                        src="/assets/icons/chevron_down/chevron_down_16px.svg"
+                        alt="Chevron Down"
+                        />
+                      )}
+                            </div>
+
+                    {isGroupSelectOpen && (
+                      <div className="mt-1 border rounded-[4px] border-[#CECECE] shadow bg-white overflow-hidden">
+                        {getAllGroups().map((group) => (
+                          <div
+                            key={group.id}
+                            onClick={() => {
+                              handleGroupChange(group.name);
+                              setIsGroupSelectOpen(false);
+                            }}
+                            className={clsx(
+                              "px-3 py-2 text-sm cursor-pointer hover:bg-[#EDEDED]",
+                              group.name === currentGroup && "bg-[#EDEDED] font-semibold"
+                            )}
+                          >
+                            {group.name}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                {/* User Info */}
+                <div className="text-sm mt-2">
+                  <span className="font-semibold">User:</span> {getUserName()}
+                </div>
+
+                {/* Logout Button */}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full justify-center gap-2 
+                  text-[#004494] 
+                  border-[#004494] 
+                  hover:bg-[#DEE7F2] 
+                  hover:text-[#000B54] 
+                  hover:border-[#000B54] 
+                  cursor-pointer 
+                  rounded-[4px] h-10 
+                  font-medium text-[16px] px-4 py-2"
+                  onClick={() => logout(null)}
+                >
+                  <img
+                  src="/assets/icons/Logout/Logout_24px.svg"
+                  alt="Logout"
+                  /> 
+                  Logout
+                </Button>
+              </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
+      </div>
+    </header>
   );
-};
-
-export default Header;
+}

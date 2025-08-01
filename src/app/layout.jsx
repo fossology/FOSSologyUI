@@ -1,49 +1,33 @@
 "use client";
 
-import React, { useEffect, useContext } from "react";
-import { ThemeProvider } from "styled-components";
-import { lightTheme, darkTheme } from "@/styles/theme";
-import { GlobalContext, GlobalProvider } from "@/context";
+import React from "react";
+import { GlobalProvider } from "@/context";
 
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 
 // Global CSS
-import "bootstrap/dist/css/bootstrap.min.css";
 import "react-virtualized-tree/lib/main.css";
 import "@/styles/global.css";
-import GlobalStyles from "@/styles/globalStyle";
+
+import { Inter } from "next/font/google"
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-inter",
+});
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className="d-flex flex-column min-vh-100">
+    <html lang="en" className={inter.variable}>
+      <body className="flex flex-col min-h-screen bg-white text-black font-inter">
         <GlobalProvider>
-          <LayoutWithTheme>{children}</LayoutWithTheme>
+          <Header />
+          <main className="flex-grow px-page">{children}</main>
+          <Footer />
         </GlobalProvider>
       </body>
     </html>
-  );
-}
-
-function LayoutWithTheme({ children }) {
-  const { state } = useContext(GlobalContext);
-
-/*  useEffect(() => {
-    (async () => {
-      const $ = await import("jquery");
-      window.$ = window.jQuery = $;
-      await import("bootstrap");
-    })();
-  }, []);
-*/
-
-  return (
-    <ThemeProvider theme={state.theme === "light" ? lightTheme : darkTheme}>
-      <GlobalStyles />
-      <Header />
-      <main className="flex-grow-1">{children}</main>
-      <Footer />
-    </ThemeProvider>
   );
 }
