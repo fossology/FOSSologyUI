@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function HomePage() {
   return (
-    <Suspense>
+    <Suspense fallback={<div>Loading home page...</div>}>
       <HomeClient />
     </Suspense>
   );

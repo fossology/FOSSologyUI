@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function ImportReportPage() {
   return (
-    <Suspense>
+    <Suspense fallback={<div>Loading report importer...</div>}>
       <ImportReportClient />
     </Suspense>
   );
