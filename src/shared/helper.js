@@ -30,7 +30,6 @@ export const randomString = (length) => {
 
 // Get date in YYYY-MM-DD format
 export const getDate = (day) => {
-  // eslint-disable-next-line no-extend-native, func-names
   Date.prototype.addDays = function (days) {
     const currentDate = new Date(this.valueOf());
     currentDate.setDate(currentDate.getDate() + days);
@@ -84,7 +83,6 @@ export const getReportIdFromUrl = (url) => {
 export const getFileNameFromContentDispostionHeader = (header) => {
   const contentDispostion = header.split(";");
   let fileName = "download.txt";
-  // eslint-disable-next-line no-restricted-syntax
   for (const headerElement of contentDispostion) {
     const matches = headerElement.trim().match(/filename="(.*)"/);
     if (matches != null) {

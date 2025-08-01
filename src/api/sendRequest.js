@@ -84,7 +84,6 @@ const sendRequest = ({
   }
   return fetch(URL, options).then((res) => {
     if (res.ok) {
-      // eslint-disable-next-line no-restricted-syntax
       for (const pair of res.headers.entries()) {
         if (pair[0] === "x-total-pages") {
           setLocalStorage("pages", pair[1]);

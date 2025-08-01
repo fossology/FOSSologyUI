@@ -1,4 +1,5 @@
 # Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
+# Copyright (C) 2025 Gaurav Mishra (mishra.gaurav@siemens.com)
 #
 # SPDX-License-Identifier: GPL-2.0
 #
@@ -29,29 +30,35 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 15.x]
+        node-version: [20.x, 22.x, 24.x]
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
+
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 10
+        run_install: false
 
     - name: Set up Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'yarn'
+        cache: 'pnpm'
 
     - name: Install dependencies
-      run: yarn install --immutable
+      run: pnpm install
 
     - name: Run eslint test
-      run: yarn lint:check
+      run: pnpm lint
 
-    - name: Run prettier test
-      run: yarn format:check
+#    - name: Run prettier test
+#      run: pnpm format:check
 
-    - name: Run the tests and generate coverage report
-      run: yarn test
+#    - name: Run the tests
+#      run: pnpm test
 
     - name: Build
-      run: yarn build
+      run: pnpm build

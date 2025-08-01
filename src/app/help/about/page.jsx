@@ -19,7 +19,7 @@
 import React from "react";
 
 // Copyrights array
-import copyrights from "@/data/copyright";
+// import copyrights from "@/data/copyright";
 import externalLinks from "@/constants/externalLinks";
 
 export const metadata = {
@@ -1323,10 +1323,10 @@ const About = () => {
           <div className="primary-color-wrapper text-center font-bold my-4">
             Copyright Notices
           </div>
-          {copyrights.map((copyright, index) => (
+          {/* {copyrights.map((copyright, index) => (
             // eslint-disable-next-line react/no-array-index-key
             <div key={index}>{copyright}</div>
-          ))}
+          ))} */}
         </div>
       </div>
     </>
