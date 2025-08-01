@@ -62,8 +62,8 @@ const routes = {
     licenseBrowser: "/help/licenseBrowser",
     about: "/help/about",
     thirdPartyLicenses: "/help/thirdPartyLicenses",
-    thirdPartyLicensesHTML: "/thirdPartyLicenses.html",
   },
+  thirdPartyLicensesHTML: "/thirdPartyLicenses.html",
   admin: {
     group: {
       create: "/admin/group/create",
@@ -82,11 +82,23 @@ const routes = {
     maintenance: "/admin/maintenance",
   },
   browseUploads: {
-    softwareHeritage: "/browse/softwareHeritage",
-    licenseBrowser: "/browse/licenseBrowser",
-    fileBrowser: "/browse/fileBrowser",
-    copyright: "/browse/copyright",
-    ecc: "/browse/ecc",
+    licenseBrowser: "/browseUploads/licenseBrowser",
+    copyright: "/browseUploads/copyright",
+    ecc: "/browseUploads/ecc",
+    ipra: "/browseUploads/ipra",
+    conf: "/browseUPloads/conf",
+    more: {
+      softwareHeritage: "/browseUploads/more/softwareHeritage",
+      fileBrowser: "/browseUploads/more/fileBrowser",
+      email: "/browseUploads/more/email",
+      spasht: "/browseUploads/more/spasht",
+      keyword: "/browseUploads/more/keyword",
+      exportList: "/browseUploads/more/exportList",
+      search: "/browseUploads/more/search",
+      bucket: "/browseUploads/more/bucket",
+      view: "/browseUploads/more/view",
+      info: "/browseUploads/more/info",
+    }
   },
 };
 
