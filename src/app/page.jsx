@@ -1,6 +1,10 @@
 // Server component
-import HomeClient from './HomeClient/HomeClient';
+import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
+
+const HomeClient = dynamic(() => import('./HomeClient/HomeClient'), {
+  suspense: true,
+});
 
 export const metadata = {
   title: 'Home | FOSSology',
@@ -8,7 +12,8 @@ export const metadata = {
 
 export default function HomePage() {
   return (
-    <Suspense>
+
+    <Suspense fallback={<div>Loading...</div>}>
       <HomeClient />
     </Suspense>
   );
