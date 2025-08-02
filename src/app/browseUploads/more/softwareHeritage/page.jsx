@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -16,12 +16,21 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-.thirdPartyIframe {
-  display: block;
-  width: 100%;
-  border: none;
-  overflow-y: auto;
-  overflow-x: hidden;
-  margin-left: 2rem;
-  height: 342547px;
+import dynamic from "next/dynamic";
+import { Suspense } from "react";
+
+export const metadata = {
+  title: "Software Heritage | FOSSology",
+};
+
+const SoftwareHeritage = dynamic(() => import("./SoftwareHeritageClient"), {
+  suspense: true,
+});
+
+export default function SoftwareHeritagePage() {
+  return (
+    <Suspense fallback={<div>Loading software heritage...</div>}>
+      <SoftwareHeritage />
+    </Suspense>
+  );
 }
