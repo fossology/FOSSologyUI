@@ -25,9 +25,10 @@ const Footer = () => {
 
   return (
     <footer className="footer" id="footer">
-      Version: [{version?.version}], Branch: [{version?.branchName}], Commit: [
-      {`#${version?.commitHash}`}] {version?.commitDate} built @{" "}
-      {version?.buildDate}
+      Version: [{version?.version || "N/A"}], Branch: [
+      {version?.branchName || "N/A"}], Commit: [
+      {`#${version?.commitHash || "N/A"}`}] {version?.commitDate} built @{" "}
+      {version?.buildDate || "N/A"}
     </footer>
   );
 };
