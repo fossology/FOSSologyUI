@@ -6,6 +6,7 @@
 name: Check PRs for conflicts
 
 on:
+  push:
   pull_request_target:
     types: [synchronize]
 
@@ -14,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check if PRs are dirty
-        uses: eps1lon/actions-label-merge-conflict@releases/3.0.3
+        uses: eps1lon/actions-label-merge-conflict@v3
         with:
           dirtyLabel: "has merge conflicts"
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
