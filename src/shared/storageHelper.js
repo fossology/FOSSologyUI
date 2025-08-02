@@ -20,7 +20,7 @@ import cookie from "js-cookie";
 
 // Set in cookie
 export const setCookie = (key, value) => {
-  if (window !== "undefined") {
+  if (typeof window !== "undefined") {
     cookie.set(key, value, {
       expires: 1,
       sameSite: "strict",
@@ -31,7 +31,7 @@ export const setCookie = (key, value) => {
 
 // Remove from cookie
 export const removeCookie = (key) => {
-  if (window !== "undefined") {
+  if (typeof window !== "undefined") {
     cookie.remove(key, {
       expires: 1,
     });
@@ -40,7 +40,7 @@ export const removeCookie = (key) => {
 
 // Get from cookie
 export const getCookie = (key) => {
-  if (window !== "undefined") {
+  if (typeof window !== "undefined") {
     return cookie.get(key);
   }
   return null;
@@ -56,7 +56,13 @@ export const setLocalStorage = (key, value) => {
 // Get from localstorage
 export const getLocalStorage = (key) => {
   if (typeof window !== "undefined") {
-    return JSON.parse(localStorage.getItem(key));
+    try {
+      const item = localStorage.getItem(key);
+      return item ? JSON.parse(item) : null;
+    } catch (error) {
+      return null;
+    }
+    // return JSON.parse(localStorage.getItem(key));
   }
   return null;
 };
