@@ -16,34 +16,34 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import { randomString } from "@/shared/helper";
+import React from "react";
+import ReactDOM from "react-dom";
+import { randomString } from "shared/helper";
+import makeData from "shared/makeData";
+import Table from "../index";
 
-const range = (len) => {
-  const arr = [];
-  for (let i = 0; i < len; i++) {
-    arr.push(i);
-  }
-  return arr;
-};
+const columns = [
+  {
+    Header: "Count",
+    accessor: "count",
+  },
+  {
+    Header: "Agent Findings",
+    accessor: "agentFindings",
+  },
+];
 
-const defaultSchema = () => {
+const schema = () => {
   return {
     count: Math.floor(Math.random() * 100),
     agentFindings: randomString(10),
   };
 };
 
-const makeData = (schema = defaultSchema, ...lens) => {
-  const makeDataLevel = (depth = 0) => {
-    const len = lens[depth];
-    return range(len).map(() => {
-      return {
-        ...schema(),
-        subRows: lens[depth + 1] ? makeDataLevel(depth + 1) : undefined,
-      };
-    });
-  };
-  return makeDataLevel();
-};
+const data = makeData(500, schema);
 
-export default makeData;
+it("renders without crashing", () => {
+  const div = document.createElement("div");
+  ReactDOM.render(<Table columns={columns} data={data} />, div);
+  ReactDOM.unmountComponentAtNode(div);
+});

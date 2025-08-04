@@ -1,12 +1,12 @@
 'use client';
 
 import React from "react";
-import BrowseUploadsHeader from "@/components/SecondaryNavBar";
+import SecondaryNavBar from "@/components/SecondaryNavBar";
 
 const FileBrowser = () => {
   return (
     <>
-      <BrowseUploadsHeader title="File Browser" />
+      <SecondaryNavBar title="File Browser" />
       <div className="main-container my-4" />
     </>
   );

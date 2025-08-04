@@ -23,7 +23,7 @@ import { useParams } from "next/navigation";
 
 // Components
 import { Alert } from "@/components/Widgets";
-import BrowseUploadsHeader from "@/components/SecondaryNavBar";
+import SecondaryNavBar from "@/components/SecondaryNavBar";
 
 // Services
 import { getUploadSummary, getUploadLicense } from "@/services/upload";
@@ -76,8 +76,8 @@ export default function LicenseBrowser() {
 
   return (
     <>
-      <BrowseUploadsHeader title="License Browser" />
-        <div className="main-container my-4">
+      <SecondaryNavBar title="License Browser" />
+        <div className="main-container my-4 mx-8">
         {showMessage && (
           <Alert
             type={message?.type}

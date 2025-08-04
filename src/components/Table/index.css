@@ -16,34 +16,27 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import { randomString } from "@/shared/helper";
+.delete-checkbox {
+  display: none;
+}
 
-const range = (len) => {
-  const arr = [];
-  for (let i = 0; i < len; i++) {
-    arr.push(i);
-  }
-  return arr;
-};
+.delete-checkbox + label > img {
+  display: block;
+}
 
-const defaultSchema = () => {
-  return {
-    count: Math.floor(Math.random() * 100),
-    agentFindings: randomString(10),
-  };
-};
+.delete-checkbox:checked + label > img {
+  display: none;
+}
 
-const makeData = (schema = defaultSchema, ...lens) => {
-  const makeDataLevel = (depth = 0) => {
-    const len = lens[depth];
-    return range(len).map(() => {
-      return {
-        ...schema(),
-        subRows: lens[depth + 1] ? makeDataLevel(depth + 1) : undefined,
-      };
-    });
-  };
-  return makeDataLevel();
-};
+.delete-checkbox + label > span {
+  display: none;
+}
 
-export default makeData;
+.delete-checkbox:checked + label > span {
+  display: block;
+}
+
+.delete-checkbox + label > span u {
+  cursor: pointer;
+  color: blue;
+}

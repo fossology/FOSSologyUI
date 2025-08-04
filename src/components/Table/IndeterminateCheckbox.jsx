@@ -15,35 +15,24 @@
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
+import React from "react";
 
-import { randomString } from "@/shared/helper";
+const IndeterminateCheckbox = React.forwardRef(
+  // eslint-disable-next-line react/prop-types
+  ({ indeterminate, ...rest }, ref) => {
+    const defaultRef = React.useRef();
+    const resolvedRef = ref || defaultRef;
 
-const range = (len) => {
-  const arr = [];
-  for (let i = 0; i < len; i++) {
-    arr.push(i);
+    React.useEffect(() => {
+      resolvedRef.current.indeterminate = indeterminate;
+    }, [resolvedRef, indeterminate]);
+
+    return (
+      <>
+        <input type="checkbox" ref={resolvedRef} {...rest} />
+      </>
+    );
   }
-  return arr;
-};
+);
 
-const defaultSchema = () => {
-  return {
-    count: Math.floor(Math.random() * 100),
-    agentFindings: randomString(10),
-  };
-};
-
-const makeData = (schema = defaultSchema, ...lens) => {
-  const makeDataLevel = (depth = 0) => {
-    const len = lens[depth];
-    return range(len).map(() => {
-      return {
-        ...schema(),
-        subRows: lens[depth + 1] ? makeDataLevel(depth + 1) : undefined,
-      };
-    });
-  };
-  return makeDataLevel();
-};
-
-export default makeData;
+export default IndeterminateCheckbox;

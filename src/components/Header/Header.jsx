@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import clsx from "clsx";
-import Image from "next/image";
 
 import { DropdownMenu, 
   DropdownMenuTrigger, 
@@ -63,17 +62,13 @@ export default function Header() {
     setCurrentGroup(defaultGroup);
   }, []);
 
-  const handleLogin = () => {
-    router.push(routes.home);
-  };
-
   const handleGroupChange = (groupName) => {
     setLocalStorage("currentGroup", groupName);
     setCurrentGroup(groupName);
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-neutral-300 text-sm border-b border-neutral-400 flex items-center justify-between px-6">
+    <header className="sticky top-0 z-50 bg-neutral-300 text-sm border-b border-neutral-300 flex items-center justify-between px-6">
       {/* Logo */}
       <div className="flex items-center gap-4">
         <img src="/assets/images/logo.svg" alt="FOSSology Logo" className="h-13" />
@@ -520,7 +515,7 @@ export default function Header() {
                         alt="Chevron Down"
                         />
                       )}
-                            </div>
+                  </div>
 
                     {isGroupSelectOpen && (
                       <div className="mt-1 border rounded-[4px] border-[#CECECE] shadow bg-white overflow-hidden">

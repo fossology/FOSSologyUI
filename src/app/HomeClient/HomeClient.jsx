@@ -2,24 +2,31 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { cn } from "@/lib/utils" 
 
-import { Alert, Button, Spinner } from '@/components/Widgets';
-// import Features from '../Features';
+import { Eye, EyeOff } from "lucide-react"
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import {
+  Alert,
+  AlertTitle,
+  AlertDescription,
+} from '@/components/ui/alert';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card"
 
-// Services
 import fetchToken from '@/services/auth';
 import { getUserSelf } from '@/services/users';
 import { fetchAllGroups } from '@/services/groups';
-
-// Helpers
 import routes from '@/constants/routes';
 import { isAuth } from '@/shared/authHelper';
 
-// Styles
-import LoginForm from '../style';
-import { Form, Row, Col } from 'react-bootstrap';
-
-const HomeClient = () => {
+export default function HomeClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -58,109 +65,136 @@ const HomeClient = () => {
     }
   }, [searchParams, router]);
 
-  return (
-    <div className="main-container my-3">
-      {showError && (
-        <Alert
-          type="danger"
-          setShow={setShowError}
-          message={errorMessage}
-          heading="An error occurred"
-        />
-      )}
+  const [showPassword, setShowPassword] = useState(false)
 
-      <div className="row m-0">
-        <div className="col-md-6">
-          <b className="font-size-medium">FOSSology</b> is a framework for
-          software analysis tools. With it, you can:
-          <ul className="my-3 list-unstyled">
-            <li>Upload files into the FOSSology repository.</li>
-            <li>
-              Unpack files (zip, tar, bz2, isos, and many others) into their
-              component files.
-            </li>
+  return (
+    <div className="min-h-screen bg-white py-10 text-gray-800 mx-8">
+      <div className="grid grid-cols-1 md:grid-cols-[1fr_400px] gap-12">
+        {/* Left: Intro Content */}
+        <div>
+          <h1 className="text-[32px] font-bold mb-6 text-gray-900">
+            Getting Started with FOSSology
+          </h1>
+
+          <p className="text-base font-semibold mb-4">
+            <span className="font-bold">FOSSology</span> is a framework for software analysis tools. With it, you can:
+          </p>
+
+          <ul className="list-disc list-inside space-y-1 text-sm mb-6">
+            <li>Upload files into the fossology repository.</li>
+            <li>Unpack files (zip, tar, bz2, iso's, and many others) into its component files.</li>
             <li>Browse upload file trees.</li>
-            <li>View file contents and metadata.</li>
+            <li>View file contents and meta data.</li>
             <li>Scan for software licenses.</li>
-            <li>Scan for copyrights and author information.</li>
-            <li>
-              View side-by-side license and bucket differences between file
-              trees.
-            </li>
+            <li>Scan for copyrights and other author information.</li>
+            <li>View side-by-side license and bucket differences between file trees.</li>
             <li>Tag and attach notes to files.</li>
-            <li>
-              Report files based on your custom classification scheme.
-            </li>
+            <li>Report files based on your own custom classification scheme.</li>
           </ul>
 
-          <div className="my-3">
-            <b className="font-size-medium">Where to begin...</b>
-            <ul className="my-3">
-              <li>The top menu contains all primary features of FOSSology.</li>
-              <li>
-                Depending on your access rights, you may be able to upload,
-                analyze files, or manage users.
-              </li>
-            </ul>
-          </div>
+          <h2 className="text-base font-semibold mb-2">Where to Begin</h2>
+          <ul className="list-disc list-inside space-y-1 text-sm">
+            <li>The menu at the top contains all the primary capabilities of FOSSology.</li>
+            <li>
+              Login: Depending on your account&apos;s access rights, you may be able to upload files,
+              schedule analysis tasks, or even add new users.
+            </li>
+          </ul>
         </div>
 
-        <div className="col-md-6">
-          {!isAuth() && (
-            <LoginForm>
-              <Form>
-                <Form.Group as={Row} controlId="loginUsername">
-                  <Form.Label column sm="4">
-                    Username
-                  </Form.Label>
-                  <Col sm="8">
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter Username"
-                      onChange={handleChange('username')}
-                      value={username}
-                    />
-                  </Col>
-                </Form.Group>
+        {/* Right: Login Form */}
+        {!isAuth() && (
+          <Card className="bg-[#F6F6F6] p-6 w-full max-w-md border-0">
+            <CardHeader className="p-0 pb-0">
+                <CardTitle className="text-2xl font-bold text-[#101010]">
+                  Log in to your account
+                </CardTitle>
+                <CardDescription className="text-base font-semibold text-[#101010] mt-2">
+                  Hello there! Welcome to FOSSology
+                </CardDescription>
+                <p className="text-sm font-normal text-[#101010] mt-2">
+                  This login uses HTTP, so passwords are transmitted in plain text. This is not a secure connection.
+                </p>
+            </CardHeader>
 
-                <Form.Group as={Row} controlId="loginPassword">
-                  <Form.Label column sm="4">
-                    Password
-                  </Form.Label>
-                  <Col sm="8">
-                    <Form.Control
-                      type="password"
-                      placeholder="Enter Password"
-                      onChange={handleChange('password')}
-                      value={password}
-                    />
+            <CardContent className="p-0 pt-2 space-y-6">
+            {showError && (
+              <div className="mb-4">
+                <Alert
+                  variant="destructive"
+                  className="flex items-start gap-3 bg-[#FFEBEE] rounded-[4px] border-0"
+                >
+                  <img
+                    src="/assets/icons/Alert/ErrorFilled.svg"
+                    alt="Error"
+                    width={24}
+                    height={24}
+                    className="mt-1"
+                  />
+                  <div>
+                    <AlertTitle className="text-base font-semibold text-[#A41411]">
+                      An error occurred
+                    </AlertTitle>
+                    <AlertDescription className="text-sm text-[#A41411]">
+                      {errorMessage}
+                    </AlertDescription>
+                  </div>
+                </Alert>
+              </div>
+            )}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label htmlFor="username" className="block text-base font-normal text-[#101010] mb-1">
+                  Username
+                </label>
+                <Input
+                  id="username"
+                  type="text"
+                  placeholder="Enter username"
+                  value={username}
+                  onChange={handleChange("username")}
+                  disabled={loading}
+                />
 
-                    <Button
-                      type="submit"
-                      onClick={handleSubmit}
-                      className="d-block mt-4"
-                    >
-                      {loading ? (
-                        <Spinner
-                          as="span"
-                          animation="border"
-                          size="sm"
-                          role="status"
-                          aria-hidden="true"
-                        />
-                      ) : (
-                        'Login'
-                      )}
-                    </Button>
-                  </Col>
-                </Form.Group>
-              </Form>
-            </LoginForm>
-          )}
-        </div>
+              </div>
+
+              <div>
+                <label htmlFor="password" className="block text-base font-normal text-[#101010] mb-1">
+                  Password
+                </label>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter password"
+                    value={password}
+                    onChange={handleChange("password")}
+                  />
+
+
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="absolute inset-y-0 right-2 flex items-center text-gray-500"
+                    tabIndex={-1}
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+              </div>
+
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full h-10 bg-[#004494] text-base text-white rounded-[4px] hover:bg-[#003377]"
+              >
+                {loading ? "Logging in..." : "Login"}
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+        )}
       </div>
     </div>
   );
-};
-
-export default HomeClient;
+}

@@ -1,12 +1,12 @@
 'use client';
 
 import React from "react";
-import BrowseUploadsHeader from "@/components/SecondaryNavBar";
+import SecondaryNavBar from "@/components/SecondaryNavBar";
 
 const SoftwareHeritage = () => {
   return (
     <>
-      <BrowseUploadsHeader title="Software Heritage Details" />
+      <SecondaryNavBar title="Software Heritage Details" />
       <div className="main-container my-4">
       </div>
     </>
