@@ -19,7 +19,7 @@
 
 # Description: Docker container image recipe
 
-FROM node:22.17-slim
+FROM node:22.18-slim
 
 LABEL maintainer="Fossology <fossology@fossology.org>"
 
