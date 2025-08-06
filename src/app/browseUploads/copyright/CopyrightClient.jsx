@@ -16,17 +16,17 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+'use client'
+
 import React from "react";
 import styled from "styled-components";
 
-// Title
-import Title from "components/Title";
-
 // Header
-import BrowseUploadsHeader from "components/BrowseUploadsHeader";
-import { randomString } from "shared/helper";
-import makeData from "shared/makeData";
-import Table from "components/Table";
+import SecondaryNavBar from "@/components/SecondaryNavBar";
+import { randomString } from "@/shared/helper";
+import makeData from "@/shared/makeData";
+import Table from "@/components/Table";
+
 
 const schema = () => {
   return {
@@ -86,11 +86,9 @@ const CopyrightBrowser = () => {
   const data = makeData(schema, 500);
   return (
     <>
-      <Title title="Copyright Browser" />
+    <SecondaryNavBar  title="Copyright Browser" />
       <div className="main-container my-3">
-        <h1 className="font-size-main-heading">Copyright Browser</h1>
       </div>
-      <BrowseUploadsHeader />
       <Styles>
         <Table columns={columns} data={data} />
       </Styles>

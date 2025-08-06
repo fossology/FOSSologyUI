@@ -15,25 +15,21 @@
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
+'use client'
 
 import React from "react";
 
-// Title
-import Title from "components/Title";
-
 // Header
-import BrowseUploadsHeader from "components/BrowseUploadsHeader";
+import SecondaryNavBar from "@/components/SecondaryNavBar";
 
-const SoftwareHeritage = () => {
+const Ecc = () => {
   return (
     <>
-      <Title title="Software Heritage" />
+    <SecondaryNavBar title="ECC" />
       <div className="main-container my-3">
-        <h1 className="font-size-main-heading">Software Heritage Details</h1>
       </div>
-      <BrowseUploadsHeader />
     </>
   );
 };
 
-export default SoftwareHeritage;
+export default Ecc;

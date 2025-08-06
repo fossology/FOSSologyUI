@@ -15,13 +15,24 @@
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
+import React from "react";
 
-.thirdPartyIframe {
-  display: block;
-  width: 100%;
-  border: none;
-  overflow-y: auto;
-  overflow-x: hidden;
-  margin-left: 2rem;
-  height: 342547px;
-}
+const IndeterminateCheckbox = React.forwardRef(
+  // eslint-disable-next-line react/prop-types
+  ({ indeterminate, ...rest }, ref) => {
+    const defaultRef = React.useRef();
+    const resolvedRef = ref || defaultRef;
+
+    React.useEffect(() => {
+      resolvedRef.current.indeterminate = indeterminate;
+    }, [resolvedRef, indeterminate]);
+
+    return (
+      <>
+        <input type="checkbox" ref={resolvedRef} {...rest} />
+      </>
+    );
+  }
+);
+
+export default IndeterminateCheckbox;
