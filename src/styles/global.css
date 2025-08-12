@@ -1,84 +1,24 @@
 /*
 * This file contains all styling which is common for all theme (which defines basic layout)
 */
+@import 'tailwindcss';
+@import "tw-animate-css";
+/*
+---break---
+*/
+@custom-variant dark (&:is(.dark *));
 
 :root {
-  --primary-color: #DC3545;
-  --secondary-color: #A93232;
-  --tertiary-color: #E5E5E5;
-  --body-bg: #ffffff;
-  --text-color: #212121;
-  --primary-text: #212121;
-  --secondary-text: #ffffff;
-  --hover-bg: #A93232;
+  --background: #FFFFFF;
+  --foreground: #101010;
 }
 
+/* Dark theme override */
 [data-theme="dark"] {
-  --primary-color: #525252;
-  --secondary-color: #212121;
-  --tertiary-color: #E5E5E5;
-  --body-bg: #212121;
-  --text-color: #ffffff;
-  --primary-text: #ffffff;
-  --secondary-text: #ffffff;
-  --hover-bg: #212121;
+  --background: #212121;
+  --foreground: #ffffff;
 }
 
-
-/* Main wrapper for the header and pages */
-.wrapper {
-  min-height: calc(100vh - 3.3125rem); 
-  margin: auto;
-}
-.main-container {
-  width: 95%;
-  margin: auto;
-}
-
-/* Font family */
-@font-face {
-  font-family: Mulish-bold;
-  src: url("/assets/fonts/Mulish-Bold.ttf");
-  font-display: swap;
-}
-@font-face {
-  font-family: Mulish-demi;
-  src: url("/assets/fonts/Mulish-Demi.ttf");
-  font-display: swap;
-}
-@font-face {
-  font-family: Mulish-medium;
-  src: url("/assets/fonts/Mulish-Medium.ttf");
-  font-display: swap;
-}
-@font-face {
-  font-family: Mulish-regular;
-  src: url("/assets/fonts/Mulish-Regular.ttf");
-  font-display: swap;
-}
-@font-face {
-  font-family: IndieFlower-regular;
-  src: url("/assets/fonts/IndieFlower-Regular.ttf");
-  font-display: swap;
-}
-
-/* Font weight */
-.font-bold {
-  margin: 0;
-  font-family: Mulish-bold;
-}
-.font-demi {
-  margin: 0;
-  font-family: Mulish-demi;
-}
-.font-medium {
-  margin: 0;
-  font-family: Mulish-medium;
-}
-.font-regular {
-  margin: 0;
-  font-family: Mulish-regular;
-}
 
 /* Font size */
 .font-size-small {
@@ -99,58 +39,13 @@
   list-style-type: disclosure-closed;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: Mulish-bold;
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
 }
 
 /* Header */
 
-/* Header logo */
-.logo-img {
-  background-color: white;
-  padding: 0.25rem 0.5rem;
-  height: 100%;          
-  object-fit: contain;   
-  display: block;
-}
-
-/* Dropdown section block style */
-.dropdown-section {
-  background-color: var(--secondary-color, #343a40);
-  color: white;
-  font-size: 0.75rem;
-  padding: 0.5rem 0;
-}
-
-/* Full-width dropdown for nested items */
-.dropdown-btn-full {
-  font-family: Mulish-regular;
-  width: 100%;
-}
-
-/* Right icon block */
-.nav-icons {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* Common icon size/style */
-.icon-style {
-  color: white;
-  font-size: 2.5rem;
-  margin: 0.5rem;
-}
-
-/* Group avatar/icon */
-.group-icon {
-  margin: 0.5rem;
-}
 
 @media (max-width: 991px) {
   .dropleft .dropdown-menu {
@@ -185,21 +80,92 @@ h6 {
   padding-left: 65%;
 }
 
-/* eight for textarea in pagination module */
+/* Height for textarea in pagination module */
 .pagination-textarea {
   height: 30px;
 }
 
 body {
-  transition: all 0.25s linear;
+  @apply antialiased;
 }
 
-/* Footer */
-.footer {
-  background-color: var(--primary-color);
-  color: var(--secondary-text);
-  text-align: center;
-  font-size: 0.875rem;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+/*
+---break---
+*/
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+}
+/*
+---break---
+*/
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+}
+/*
+---break---
+*/
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+  }
 }

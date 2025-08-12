@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -16,24 +16,27 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from "react";
+.delete-checkbox {
+  display: none;
+}
 
-// Title
-import Title from "components/Title";
+.delete-checkbox + label > img {
+  display: block;
+}
 
-// Header
-import BrowseUploadsHeader from "components/BrowseUploadsHeader";
+.delete-checkbox:checked + label > img {
+  display: none;
+}
 
-const FileBrowser = () => {
-  return (
-    <>
-      <Title title="File Browser" />
-      <div className="main-container my-3">
-        <h1 className="font-size-main-heading">File Browser</h1>
-      </div>
-      <BrowseUploadsHeader />
-    </>
-  );
-};
+.delete-checkbox + label > span {
+  display: none;
+}
 
-export default FileBrowser;
+.delete-checkbox:checked + label > span {
+  display: block;
+}
+
+.delete-checkbox + label > span u {
+  cursor: pointer;
+  color: blue;
+}

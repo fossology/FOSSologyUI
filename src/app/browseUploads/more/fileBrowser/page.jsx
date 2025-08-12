@@ -16,24 +16,22 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from "react";
 
-// Title
-import Title from "components/Title";
+import dynamic from "next/dynamic";
+import { Suspense } from "react";
 
-// Header
-import BrowseUploadsHeader from "components/BrowseUploadsHeader";
-
-const Ecc = () => {
-  return (
-    <>
-      <Title title="ECC" />
-      <div className="main-container my-3">
-        <h1 className="font-size-main-heading">ECC</h1>
-      </div>
-      <BrowseUploadsHeader />
-    </>
-  );
+export const metadata = {
+  title: "File Browser | FOSSology",
 };
 
-export default Ecc;
+const FileBrowser = dynamic(() => import("./FileBrowserClient"), {
+  suspense: true,
+});
+
+export default function FileBrowserPage() {
+  return (
+    <Suspense fallback={<div>Loading file browser...</div>}>
+      <FileBrowser />
+    </Suspense>
+  );
+}
