@@ -19,23 +19,33 @@ SPDX-License-Identifier: GPL-2.0-only
 "use client"
 
 import * as React from "react"
-import * as LabelPrimitive from "@radix-ui/react-label"
-
+import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
+import { CheckIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-function Label({
-  className,
-  ...props
-}) {
+function Checkbox({ className, ...props }) {
   return (
-    <LabelPrimitive.Root
-      data-slot="label"
+    <CheckboxPrimitive.Root
+      data-slot="checkbox"
       className={cn(
-        "flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
+        // Base size + shape
+        "peer size-4.5 shrink-0 rounded border-2 border-[#616161]",
+        // Colors & backgrounds
+        "bg-white data-[state=checked]:bg-[#004494] data-[state=checked]:border-[#004494]",
+        // Transitions & disabled state
+        "transition-colors duration-150 ease-in-out disabled:cursor-not-allowed disabled:opacity-50",
         className
       )}
-      {...props} />
-  );
+      {...props}
+    >
+      <CheckboxPrimitive.Indicator
+        data-slot="checkbox-indicator"
+        className="flex items-center justify-center text-white"
+      >
+        <CheckIcon className="size-3" strokeWidth={3} />
+      </CheckboxPrimitive.Indicator>
+    </CheckboxPrimitive.Root>
+  )
 }
 
-export { Label }
+export { Checkbox }

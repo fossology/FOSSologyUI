@@ -95,12 +95,12 @@ const SearchClient = () => {
         <Alert type={message.type} setShow={setShowMessage} message={message.text} />
       )}
 
-      <h1 className="text-[32px] font-semibold text-[#101010] mb-4">Search</h1>
+      <h1 className="text-3xl font-semibold text-[#101010] mb-4">Search</h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Upload type */}
         <div className="space-y-4">
-          <p className="text-[18px] font-medium text-[#101010]">Limit search to:</p>
+          <p className="text-lg font-medium text-[#101010]">Limit search to:</p>
           <RadioGroup
             value={searchData.searchType}
             onValueChange={(val) => setSearchData(prev => ({ ...prev, searchType: val }))}
@@ -144,7 +144,7 @@ const SearchClient = () => {
         {/* Required search criteria */}
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="search-criteria">
-            <AccordionTrigger className="flex w-full items-center justify-between text-[18px] font-semibold mb-2 transition-all">
+            <AccordionTrigger className="flex w-full items-center justify-between text-lg font-semibold mb-2 transition-all">
                 You must choose one or more search criteria (not case sensitive)
             </AccordionTrigger>
 
@@ -221,7 +221,7 @@ const SearchClient = () => {
         {/* Optional filters */}
         <AccordionItem value="optional-filters">
           <AccordionTrigger
-            className="flex w-full items-center justify-between text-[18px] font-semibold text-left
+            className="flex w-full items-center justify-between text-lg font-semibold text-left
             [&[data-state=open]>svg]:rotate-180 after:hidden"
           >
             <span>

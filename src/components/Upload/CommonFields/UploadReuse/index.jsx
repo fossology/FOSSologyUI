@@ -1,7 +1,8 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
+ SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
- SPDX-License-Identifier: GPL-2.0
+SPDX-License-Identifier: GPL-2.0-only
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -53,11 +54,6 @@ const UploadReuse = ({ reuse, handleChange }) => {
     uploadList: initialUploadList,
     reuseFolder: 1,
   });
-
-  useEffect(() => {
-    setReuseData((prevData) => ({ ...prevData, groupList: getAllGroups() }));
-  }, []);
-
   useEffect(() => {
     getAllFolders(reuse.reuseGroup)
       .then((res) => {
@@ -82,11 +78,22 @@ const UploadReuse = ({ reuse, handleChange }) => {
   };
 
   return (
-    <div id="upload-reuse" className="mt-4">
-      <p className="font-demi">
-        (Optional) Reuse
-        <Tooltip title="copy clearing decisions if there is the same file hash between two files" />
+    <div id="upload-optional-reuse" className="mt-4 space-y-2">
+      <p className="font-semibold text-base inline-flex items-center gap-1">
+        1. (Optional) Reuse
+        <Tooltip title="Copy clearing decisions if there is the same file hash between two files" />
       </p>
+      <div className="flex items-center gap-4">
+        <InputContainer
+          type="checkbox"
+          name="reuseGroupCheckbox"
+          id="reuse-group-checkbox"
+          checked={reuse.groupChecked}
+          onChange={(checked) => handleChange(checked, "groupChecked", "checkbox")}
+        >
+          Select the reuse group:
+        </InputContainer>
+
       <InputContainer
         type="select"
         name="reuseGroup"
@@ -97,22 +104,95 @@ const UploadReuse = ({ reuse, handleChange }) => {
         property="name"
         valueProperty="name"
         noDataMessage={messages.noGroup}
+      />
+      </div>
+
+      <div className="flex items-center gap-4">
+        <InputContainer
+          type="checkbox"
+          name="reuseFolderCheckbox"
+          id="reuse-folder-checkbox"
+          checked={reuse.folderChecked}
+          onChange={(checked) => handleChange(checked, "folderChecked", "checkbox")}
+        >
+          Select the reuse folder:
+        </InputContainer>
+
+        <InputContainer
+          type="select"
+          name="reuseFolder"
+          id="upload-file-reuse-folder"
+          onChange={handleReuseDataChange}
+          options={reuseData.folderList}
+          value={reuseData.reuseFolder}
+          property="name"
+          noDataMessage={messages.noFolder}
+        />
+      </div>
+      <InputContainer
+        type="checkbox"
+        checked={reuse.reuseEnhanced}
+        name="reuseEnhanced"
+        id="upload-file-reuse-enhanced"
+        onChange={(checked) => handleChange(checked, "reuseEnhanced", "checkbox")}
       >
-        Select the reuse group:
+        Enhanced reuse (slower)
+        <Tooltip title="will copy a clearing decision if the two files differ by one line determined by a diff tool" />
       </InputContainer>
       <InputContainer
-        type="select"
-        name="reuseFolder"
-        id="upload-file-reuse-folder"
-        onChange={handleReuseDataChange}
-        options={reuseData.folderList}
-        value={reuseData.reuseFolder}
-        property="name"
-        noDataMessage={messages.noFolder}
+        type="checkbox"
+        checked={reuse.reuseMain}
+        name="reuseMain"
+        id="upload-file-reuse-main"
+        onChange={(checked) => handleChange(checked, "reuseMain", "checkbox")}
       >
-        Select the reuse folder:
+        Reuse main license/s
+        <Tooltip title="will copy a main license decision if any" />
       </InputContainer>
       <InputContainer
+        type="checkbox"
+        checked={reuse.reuseReport}
+        name="reuseReport"
+        id="upload-file-reuse-report"
+        onChange={(checked) => handleChange(checked, "reuseReport", "checkbox")}
+      >
+        Reuse report configuration settings
+        <Tooltip title="use to copy all the information from conf page(if any)" />
+      </InputContainer>
+      <InputContainer
+        type="checkbox"
+        checked={reuse.reuseCopyright}
+        name="reuseCopyright"
+        id="upload-file-reuse-copyright"
+        onChange={(checked) => handleChange(checked, "reuseCopyright", "checkbox")}
+      >
+        Reuse edited and deactivated copyrights
+        <Tooltip title="use to copy edited and deactivated copyrights from the reused package" />
+      </InputContainer>
+      <div className="mt-4 space-y-4">
+        <p className="font-semibold text-base">
+          2. Upload to reuse:
+        </p>
+
+        {reuseData.uploadList && reuseData.uploadList.length > 0 ? (
+          reuseData.uploadList.map((item, index) => (
+            <InputContainer
+              key={`${item.id ?? "no-id"}-${index}`}
+              type="checkbox"
+              name="reuseUpload"
+              value={item.id}
+              checked={Array.isArray(reuse.reuseUpload) ? reuse.reuseUpload.includes(item.id) : false}
+              onChange={(checked) => handleChange(checked, "reuseUpload", "checkbox", item.id)}
+            >
+              {item.uploadname} ({item.uploadDate})
+            </InputContainer>
+          ))
+        ) : (
+          <p>{messages.noUploads}</p>
+        )}
+      </div>
+
+            {/* <InputContainer
         type="select"
         name="reuseUpload"
         id="upload-file-reuse-upload"
@@ -124,47 +204,7 @@ const UploadReuse = ({ reuse, handleChange }) => {
         noDataMessage={messages.noUploads}
       >
         Select the reuse upload:
-      </InputContainer>
-      <InputContainer
-        type="checkbox"
-        checked={reuse.reuseEnhanced}
-        name="reuseEnhanced"
-        id="upload-file-reuse-enhanced"
-        onChange={handleChange}
-      >
-        Enhanced reuse (slower)
-        <Tooltip title="will copy a clearing decision if the two files differ by one line determined by a diff tool" />
-      </InputContainer>
-      <InputContainer
-        type="checkbox"
-        checked={reuse.reuseMain}
-        name="reuseMain"
-        id="upload-file-reuse-main"
-        onChange={handleChange}
-      >
-        Reuse main license/s
-        <Tooltip title="will copy a main license decision if any" />
-      </InputContainer>
-      <InputContainer
-        type="checkbox"
-        checked={reuse.reuseReport}
-        name="reuseReport"
-        id="upload-file-reuse-report"
-        onChange={handleChange}
-      >
-        Reuse report configuration settings
-        <Tooltip title="use to copy all the information from conf page(if any)" />
-      </InputContainer>
-      <InputContainer
-        type="checkbox"
-        checked={reuse.reuseCopyright}
-        name="reuseCopyright"
-        id="upload-file-reuse-copyright"
-        onChange={handleChange}
-      >
-        Reuse edited and deactivated copyrights
-        <Tooltip title="use to copy edited and deactivated copyrights from the reused package" />
-      </InputContainer>
+      </InputContainer> */}
     </div>
   );
 };
