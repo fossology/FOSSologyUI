@@ -1,7 +1,8 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
+ SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
- SPDX-License-Identifier: GPL-2.0
+SPDX-License-Identifier: GPL-2.0-only
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -18,6 +19,15 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const InputContainer = ({
   type,
@@ -36,9 +46,8 @@ const InputContainer = ({
   valueProperty,
   noDataMessage = "No Data Found",
 }) => {
-  if (type === "radio" || type === "checkbox") {
-    return (
-      <div className="my-0">
+  if (type === "radio") {
+    <div className="my-0">
         <input
           type={type}
           name={name}
@@ -53,47 +62,64 @@ const InputContainer = ({
           {children}
         </label>
       </div>
+  }
+  if (type === "checkbox") {
+    return (
+      <div className="flex items-center gap-3">
+        <Checkbox
+          className={className}
+          name={name}
+          value={value}
+          onCheckedChange={onChange}
+          checked={checked}
+          disabled={disabled}
+          id={id}
+        />
+        <Label htmlFor={id} className="text-base font-normal">{children} </Label>
+      </div>
     );
   }
   if (type === "select") {
     return (
-      <div className="my-1 py-0">
-        {children && (
-          <label htmlFor={id} className="font-demi">
-            {children}
-          </label>
-        )}
-        &emsp;
-        <select
-          name={name}
-          className={
-            className ? `mr-2 form-control ${className}` : `mr-2 form-control`
-          }
-          value={value === null ? "" : value}
-          onChange={onChange}
-          multiple={multiple && multiple}
-          size={multiple ? "15" : ""}
-          id={id}
-        >
-          {options.length > 0 ? (
-            options.map((option, index) => (
-              <option
-                key={option.id || index}
-                value={valueProperty ? option[valueProperty] : option.id}
-                disabled={option.disabled}
-              >
-                {property ? option[property] : option}
-              </option>
-            ))
-          ) : (
-            <option className="font-demi" disabled>
-              {noDataMessage}
-            </option>
+      <div className="my-1">
+        <div className="flex items-center gap-3">
+          {children && (
+            <label htmlFor={id} className="font-base whitespace-nowrap">
+              {children}
+            </label>
           )}
-        </select>
+          <Select
+            name={name}
+            value={value === null ? "" : value}
+            onValueChange={(val) => onChange(val)}
+            id={id}
+          >
+            <SelectTrigger className="h-8 text-sm flex items-center">
+              <SelectValue placeholder="All uploads" />
+            </SelectTrigger>
+            <SelectContent className="max-h-48 overflow-y-auto">
+              {options.length > 0 ? (
+                options.map((option, index) => (
+                  <SelectItem
+                    key={option.id || index}
+                    value={valueProperty ? option[valueProperty] : option.id}
+                    disabled={option.disabled}
+                  >
+                    {property ? option[property] : option}
+                  </SelectItem>
+                ))
+              ) : (
+                <SelectItem className="font-demi" disabled>
+                  {noDataMessage}
+                </SelectItem>
+              )}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
     );
   }
+
   return (
     <div className="my-2">
       <label htmlFor={id} className="font-demi">

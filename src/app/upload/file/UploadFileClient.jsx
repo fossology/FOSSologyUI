@@ -22,10 +22,23 @@ import React, { useState, useEffect } from "react";
 import messages from "@/constants/messages";
 
 // Widgets
-import { Alert, Button, InputContainer, Spinner } from "@/components/Widgets";
-
-// Common Fields for all the Uploads
-import CommonFields from "@/components/Upload/CommonFields";
+import { Alert, Spinner } from "@/components/Widgets";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion";
 
 // Required functions for calling APIs
 import { createUploadFile } from "@/services/upload";
@@ -42,34 +55,27 @@ import {
   initialFolderListFile,
 } from "@/constants/constants";
 
-const UploadFilePage = () => {
-  // Upload Id required for scheduling Analysis
+const UploadFileClient = () => {
   let uploadId;
 
-  // Data required for creating the upload
   const [uploadFileData, setUploadFileData] = useState(initialStateFile);
-
-  // Setting the list for all the folders names
   const [folderList, setFolderList] = useState(initialFolderListFile);
-
-  // Setting the data for scheduling analysis of an uploads
   const [scanFileData, setScanFileData] = useState(initialScanFileDataFile);
 
-  // State Variables for handling Error Boundaries
   const [loading, setLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState();
+  const [fileSelected, setFileSelected] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!fileSelected) return;
+
     setLoading(true);
     createUploadFile(uploadFileData)
       .then((res) => {
         window.scrollTo({ top: 0 });
-        setMessage({
-          type: "success",
-          text: messages.uploadSuccess,
-        });
+        setMessage({ type: "success", text: messages.uploadSuccess });
         uploadId = res.message;
       })
       .then(() => {
@@ -83,15 +89,12 @@ const UploadFilePage = () => {
               });
               setUploadFileData(initialStateFile);
               setScanFileData(initialScanFileDataFile);
+              setFileSelected(false);
             })
-            .catch((error) => {
-              handleError(error, setMessage);
-            });
+            .catch((error) => handleError(error, setMessage));
         }, 1200);
       })
-      .catch((error) => {
-        handleError(error, setMessage);
-      })
+      .catch((error) => handleError(error, setMessage))
       .finally(() => {
         setLoading(false);
         setShowMessage(true);
@@ -109,6 +112,7 @@ const UploadFilePage = () => {
         ...uploadFileData,
         [e.target.name]: e.target.files[0],
       });
+      setFileSelected(!!e.target.files.length);
     } else {
       setUploadFileData({
         ...uploadFileData,
@@ -119,9 +123,7 @@ const UploadFilePage = () => {
 
   const handleScanChange = (e) => {
     const { name } = e.target;
-    if (
-      Object.keys(scanFileData.analysis).includes(name)
-    ) {
+    if (Object.keys(scanFileData.analysis).includes(name)) {
       setScanFileData({
         ...scanFileData,
         analysis: {
@@ -129,9 +131,7 @@ const UploadFilePage = () => {
           [name]: e.target.checked,
         },
       });
-    } else if (
-      Object.keys(scanFileData.decider).includes(name)
-    ) {
+    } else if (Object.keys(scanFileData.decider).includes(name)) {
       setScanFileData({
         ...scanFileData,
         decider: {
@@ -160,7 +160,7 @@ const UploadFilePage = () => {
   }, []);
 
   return (
-    <div className="main-container my-3">
+    <div className="max-w-4xl mx-40 my-6 px-4">
       {showMessage && (
         <Alert
           type={message.type}
@@ -168,81 +168,123 @@ const UploadFilePage = () => {
           message={message.text}
         />
       )}
-      <div className="row">
-        <div className="col-lg-8 col-md-12 col-sm-12 col-12">
-          <h1 className="font-size-main-heading">Upload a New file</h1>
-          <br />
-          <p className="font-demi">
-            To manage your own group permissions go into Admin &gt; Groups &gt;
-            Manage Group Users. To manage permissions for this one upload, go
-            to Admin &gt; Upload Permissions.
-          </p>
-          <p>
-            This option permits uploading a single file (which may be iso, tar,
-            rpm, jar, zip, bz2, msi, cab, etc.) from your computer to FOSSology.
-            Your FOSSology server has imposed a maximum upload file size of
-            700Mbytes.
-          </p>
-          <form className="my-3">
-            <InputContainer
-              type="select"
-              name="folderId"
-              id="upload-folder-id"
-              onChange={handleChange}
-              options={folderList}
-              property="name"
-              value={uploadFileData.folderId}
-            >
-              Select the folder for storing the uploaded files:
-            </InputContainer>
-            <InputContainer
-              type="file"
-              name="fileInput"
-              id="upload-file-input"
-              onChange={handleChange}
-            >
-              Select file to upload:
-            </InputContainer>
-            <div className="my-2">
-              <label htmlFor="upload" className="font-demi w-100">
-                (Optional) Enter a description of this file:
-                <textarea
-                  name="uploadDescription"
-                  className="form-control font-regular mt-2"
-                  value={uploadFileData.uploadDescription}
-                  id="upload-file-description"
-                  rows="3"
-                  onChange={handleChange}
-                />
-              </label>
-            </div>
-            <CommonFields
-              accessLevel={uploadFileData.accessLevel}
-              ignoreScm={uploadFileData.ignoreScm}
-              analysis={scanFileData.analysis}
-              decider={scanFileData.decider}
-              reuse={scanFileData.reuse}
-              handleChange={handleChange}
-              handleScanChange={handleScanChange}
-            />
-            <Button type="submit" onClick={handleSubmit} className="mt-4">
-              {loading ? (
-                <Spinner
-                  as="span"
-                  animation="border"
-                  size="sm"
-                  role="status"
-                  aria-hidden="true"
-                />
-              ) : (
-                "Upload"
-              )}
-            </Button>
-          </form>
-        </div>
+
+      {/* Top Info Alert */}
+      <div className="flex items-start gap-3 p-4 mb-6 text-sm text-blue-900 bg-blue-50 rounded-md border border-blue-200">
+        <svg
+          className="w-5 h-5 mt-0.5 text-blue-600"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path d="M10 2a8 8 0 100 16 8 8 0 000-16zM9 9h2v6H9V9zm0-4h2v2H9V5z" />
+        </svg>
+        <p>
+          To manage your own group permissions go into{" "}
+          <strong>Admin &gt; Groups &gt; Manage Group Users</strong>. To manage
+          permissions for this one upload, go to{" "}
+          <strong>Admin &gt; Upload Permissions</strong>.
+        </p>
       </div>
+
+      <h1 className="text-2xl font-semibold text-gray-900 mb-4">
+        Upload a New File
+      </h1>
+      <p className="text-gray-700 mb-2">
+        This option permits uploading a single file (which may be iso, tar, rpm,
+        jar, zip, bz2, msi, cab, etc.) from your computer to FOSSology. Your
+        FOSSology server has imposed a maximum upload file size of{" "}
+        <strong>700Mbytes</strong>.
+      </p>
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* 1. Folder Select */}
+        <div>
+          <label className="block font-medium mb-1">
+            1. Select the folder for storing the uploaded files:
+          </label>
+          <Select
+            onValueChange={(value) =>
+              setUploadFileData({ ...uploadFileData, folderId: value })
+            }
+            value={uploadFileData.folderId}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select a folder" />
+            </SelectTrigger>
+            <SelectContent>
+              {folderList.map((folder) => (
+                <SelectItem key={folder.id} value={folder.id}>
+                  {folder.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* 2. File Upload */}
+        <div>
+          <label className="block font-medium mb-1">
+            2. Select the file(s) to upload:
+          </label>
+          <Input type="file" name="fileInput" onChange={handleChange} />
+        </div>
+
+        {/* 3. Description */}
+        <div>
+          <label className="block font-medium mb-1">3. Description(s)</label>
+          <Textarea
+            name="uploadDescription"
+            rows={3}
+            value={uploadFileData.uploadDescription}
+            onChange={handleChange}
+            placeholder="Enter a description of this file (Optional)"
+          />
+        </div>
+
+        {/* Scancode Accordion */}
+        <Accordion type="single" collapsible>
+          <AccordionItem value="scancode">
+            <AccordionTrigger className="text-blue-600">
+              Scancode
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="mt-3 space-y-2 pl-4">
+                {["License", "Copyright", "Email", "URL"].map((item) => (
+                  <label key={item} className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      name={item.toLowerCase()}
+                      onChange={handleScanChange}
+                    />
+                    {item}
+                  </label>
+                ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+
+        {/* Upload Button */}
+        <Button
+          type="submit"
+          disabled={!fileSelected || loading}
+          className="mt-4"
+        >
+          {loading ? (
+            <Spinner
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+            />
+          ) : (
+            "Upload"
+          )}
+        </Button>
+      </form>
     </div>
   );
 };
 
-export default UploadFilePage;
+export default UploadFileClient;

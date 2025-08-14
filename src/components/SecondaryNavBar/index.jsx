@@ -1,7 +1,8 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
+ SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
- SPDX-License-Identifier: GPL-2.0
+SPDX-License-Identifier: GPL-2.0-only
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -37,7 +38,7 @@ const navLinks = [
     name: "License Browser",
     href: (uploadID) => 
       uploadID 
-    ? `${routes.browseUploads.licenseBrowser}/uploadID=${uploadID}`
+    ? `${routes.browseUploads.licenseBrowser}?uploadID=${uploadID}`
     : routes.browseUploads.licenseBrowser,
     match: routes.browseUploads.licenseBrowser,
   },
@@ -98,7 +99,7 @@ const BrowseHeader = ({ title }) => {
     <div className="w-full bg-gray-100 h-18 px-4 flex items-end justify-between">
       {/* <div className="flex items-end justify-between"> */}
         {/* Dynamic Page Title */}
-        <h1 className="text-[32px] font-bold text-gray-900 mb-2 ml-8">{title}</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2 ml-8">{title}</h1>
 
         {/* Tabs */}
         <div className="flex h-full items-end">

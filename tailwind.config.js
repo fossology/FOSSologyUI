@@ -80,7 +80,7 @@ const config = {
         letterSpacing: {
             normal: "0px",
         },
-        fontColor: {
+        textColor: {
             default: "#101010",
         },
         spacing: {
