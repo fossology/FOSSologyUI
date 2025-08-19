@@ -31,9 +31,9 @@ function AccessLevel({ accessLevel, handleChange }) {
         name="accessLevel"
         id="upload-access-level-private"
         checked={accessLevel === "private"}
-        onChange={(e) => handleChange(e)}
+        onChange={(checked) => handleChange(checked, "private")}
       >
-        Visible only for active group&nbsp;
+        Visible only for active group
         <Tooltip title="which is the currently selected group" />
       </InputContainer>
       <InputContainer
@@ -42,9 +42,9 @@ function AccessLevel({ accessLevel, handleChange }) {
         name="accessLevel"
         id="upload-access-level-protected"
         checked={accessLevel === "protected"}
-        onChange={(e) => handleChange(e)}
+        onChange={(checked) => handleChange(checked, "protected")}
       >
-        Visible for all groups&nbsp;
+        Visible for all groups
         <Tooltip title="which are accessible by you now" />
       </InputContainer>
       <InputContainer
@@ -53,9 +53,9 @@ function AccessLevel({ accessLevel, handleChange }) {
         name="accessLevel"
         id="upload-access-level-public"
         checked={accessLevel === "public"}
-        onChange={(e) => handleChange(e)}
+        onChange={(checked) => handleChange(checked, "public")}
       >
-        Make Public&nbsp;
+        Make Public
         <Tooltip title="visible for all users" />
       </InputContainer>
     </div>

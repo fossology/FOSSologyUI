@@ -21,6 +21,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label'
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Select,
   SelectContent,
@@ -46,23 +47,28 @@ const InputContainer = ({
   valueProperty,
   noDataMessage = "No Data Found",
 }) => {
-  if (type === "radio") {
-    <div className="my-0">
-        <input
-          type={type}
-          name={name}
+if (type === "radio") {
+  return (
+    <RadioGroup
+      value={value}
+      onValueChange={onChange}
+      className="space-y-2"
+    >
+      <div className="flex items-start gap-2">
+        <RadioGroupItem
           value={value}
-          className={className && `mr-2 ${className}`}
-          onChange={onChange}
+          id={id}
           checked={checked}
           disabled={disabled}
-          id={id}
+          className="w-4 h-4 mt-1"
         />
-        <label htmlFor={id} className="font-medium ml-2">
+        <Label htmlFor={id} className="text-base font-normal">
           {children}
-        </label>
+        </Label>
       </div>
-  }
+    </RadioGroup>
+  );
+}
   if (type === "checkbox") {
     return (
       <div className="flex items-center gap-3">

@@ -59,7 +59,7 @@ const Scancode = ({ scancode, handleChange }) => {
         onChange={(checked) => handleChange(checked, "email")}
       >
         Email
-        <Tooltip title="Email(s) present in the scan code file" />
+        <Tooltip title="Email(s) present in the source files" />
       </InputContainer>
       <InputContainer
         type="checkbox"

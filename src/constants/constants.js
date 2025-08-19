@@ -134,6 +134,12 @@ export const initialScanFileDataFile = {
     reuseReport: false,
     reuseCopyright: false,
   },
+  scancode: {
+    license: false,
+    copyright: false,
+    email: false,
+    url: false,
+  }
 };
 export const initialFolderListFile = [
   {

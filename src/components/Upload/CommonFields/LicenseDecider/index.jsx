@@ -27,7 +27,7 @@ const LicenseDecider = ({ decider, handleChange }) => {
   return (
     <div id="upload-concluded-license-decider" className="mt-4 space-y-2">
       <p className="font-semibold text-base inline-flex items-center gap-1">
-        1. Automatic Concluded License Decider, based on 
+        Automatic Concluded License Decider, based on 
         <Tooltip title="Only for relevant files" />
       </p>
       <InputContainer

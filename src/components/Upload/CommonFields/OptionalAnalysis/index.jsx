@@ -29,6 +29,9 @@ function OptionalAnalysis({ analysis, handleChange }) {
       id="uplod-optional-analysis"
       className="mt-4 space-y-2"
     >
+      <p className="font-semibold text-base inline-flex items-center gap-1">
+        Select additional analysis:
+      </p>
       <InputContainer
         type="checkbox"
         checked={analysis.compatibility}
@@ -140,20 +143,20 @@ function OptionalAnalysis({ analysis, handleChange }) {
       </InputContainer>
       <InputContainer
         type="checkbox"
-        checked={analysis.reuse}
-        name="reuse"
-        id="upload-analysis-reuse"
-        onChange={(checked) => handleChange(checked, "reuse")}
+        checked={analysis.softwareAnalysis}
+        name="softwareAnalysis"
+        id="upload-analysis-softwareAnalysis"
+        onChange={(checked) => handleChange(checked, "softwareAnalysis")}
       >
         REUSE.Software Analysis
         <Tooltip title="ReSo agent marks licensed files with a license found in the .license files (outside of the licensed files)." />
       </InputContainer>
       <InputContainer
         type="checkbox"
-        checked={analysis.toolkit}
-        name="toolkit"
-        id="upload-analysis-toolkit"
-        onChange={(checked) => handleChange(checked, "toolkit")}
+        checked={analysis.scanoss}
+        name="scanoss"
+        id="upload-analysis-scanoss"
+        onChange={(checked) => handleChange(checked, "scanoss")}
       >
         SCANOSS Toolkit
         <Tooltip title="Matches code to known open source components" />
@@ -184,8 +187,8 @@ OptionalAnalysis.propTypes = {
     nomos: PropTypes.bool.isRequired,
     ojo: PropTypes.bool.isRequired,
     package: PropTypes.bool.isRequired,
-    reuse: PropTypes.bool.isRequired,
-    toolkit: PropTypes.bool.isRequired,
+    softwareAnalysis: PropTypes.bool.isRequired,
+    scanoss: PropTypes.bool.isRequired,
     heritage: PropTypes.bool.isRequired,
   }).isRequired,
   handleChange: PropTypes.func,

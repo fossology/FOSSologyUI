@@ -332,15 +332,16 @@ const ScheduleAgentsPage = () => {
           </Select>
         </div>
 
-        <div>
-        <label className="block text-base font-normal text-[#101010] mb-3">3. Select additional analysis:</label>
-
-        {/* Common Fields */}
-          <CommonFields
-          analysis={scanFileData.analysis}
-          handleChange={handleChange}
-          handleScanChange={handleScanChange}
-        />
+        <div className="flex items-baseline gap-2 mb-3">
+        <span className="text-base font-medium text-[#101010] mb-3">3.</span>
+          <div className="flex-1">
+            <CommonFields
+              analysis={scanFileData.analysis}
+              handleChange={handleChange}
+              handleScanChange={handleScanChange}
+            />
+          </div>
+        </div>
 
         <p className="text-lg font-semibold text-[#101010] mb-4 mt-4">
         Reuser:
@@ -350,8 +351,7 @@ const ScheduleAgentsPage = () => {
           reuse={scanFileData.reuse}
           handleChange={handleChange}
           handleScanChange={handleScanChange}
-        />
-        </div>        
+        />    
 
         <div>
           <Accordion type="single" collapsible className="w-full">
@@ -364,21 +364,31 @@ const ScheduleAgentsPage = () => {
                 <p className="text-lg font-semibold text-[#101010] mb-4">
                 Decider:
                 </p>
+                <div className="flex items-baseline gap-2 mb-3">
+                <span className="text-base font-medium text-[#101010] mb-3">1.</span>
+                  <div className="flex-1">
                 <CommonFields
                   decider={scanFileData.decider}
                   handleChange={handleChange}
                   handleScanChange={handleScanChange}
                 />
+                </div>
+                </div> 
             </AccordionContent>
             <AccordionContent className="space-y-4 pb-2">
                 <p className="text-lg font-semibold text-[#101010] mb-4">
                 Scancode:
                 </p>
+                <div className="flex items-baseline gap-2 mb-3">
+                <span className="text-base font-medium text-[#101010] mb-3">2.</span>
+                  <div className="flex-1">
                 <CommonFields
                   scancode={scanFileData.scancode}
                   handleChange={handleChange}
                   handleScanChange={handleScanChange}
                 />
+                </div>
+                </div>
             </AccordionContent>
           </AccordionItem>
         </Accordion>
@@ -390,7 +400,7 @@ const ScheduleAgentsPage = () => {
             disabled={loading || isButtonDisabled}
             className="bg-[#004494] text-white h-10 px-8 py-2 rounded text-base font-medium hover:bg-[#00095C] disabled:bg-[#9EB9D3] disabled:text-white"
           >
-            {loading ? "Uploading..." : "Analyze"}
+            {loading ? "Analyzing..." : "Analyze"}
           </Button>
         </div>
       </form>

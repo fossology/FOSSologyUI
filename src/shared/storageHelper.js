@@ -89,8 +89,8 @@ export const defaultAgentsList = () => {
     nomos: false,
     ojo: false,
     package: false,
-    reuse: false,
-    toolkit: false,
+    softwareAnalysis: false,
+    scanoss: false,
     heritage: false,
   };
 };

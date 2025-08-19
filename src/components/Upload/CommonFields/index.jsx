@@ -72,8 +72,8 @@ CommonFields.propTypes = {
     nomos: PropTypes.bool.isRequired,
     ojo: PropTypes.bool.isRequired,
     package: PropTypes.bool.isRequired,
-    reuse: PropTypes.bool.isRequired,
-    toolkit: PropTypes.bool.isRequired,
+    softwareAnalysis: PropTypes.bool.isRequired,
+    scanoss: PropTypes.bool.isRequired,
     heritage: PropTypes.bool.isRequired,
   }),
   decider: PropTypes.shape({
