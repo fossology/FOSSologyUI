@@ -1,7 +1,8 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
+ SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
- SPDX-License-Identifier: GPL-2.0
+SPDX-License-Identifier: GPL-2.0-only
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -78,15 +79,19 @@ export const defaultAgentsList = () => {
     return agentsList;
   }
   return {
-    bucket: false,
+    compatibility: false,
     copyrightEmailAuthor: false,
     ecc: false,
+    ipra: false,
     keyword: false,
     mime: false,
     monk: false,
     nomos: false,
     ojo: false,
     package: false,
+    softwareAnalysis: false,
+    scanoss: false,
+    heritage: false,
   };
 };
 

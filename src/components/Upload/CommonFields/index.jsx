@@ -1,7 +1,8 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
+ SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
- SPDX-License-Identifier: GPL-2.0
+SPDX-License-Identifier: GPL-2.0-only
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -23,6 +24,7 @@ import AccessLevel from "./AccessLevel";
 import OptionalAnalysis from "./OptionalAnalysis";
 import LicenseDecider from "./LicenseDecider";
 import UploadReuse from "./UploadReuse";
+import Scancode from "./Scancode";
 
 function CommonFields({
   accessLevel,
@@ -30,6 +32,7 @@ function CommonFields({
   analysis,
   decider,
   reuse,
+  scancode,
   handleChange,
   handleScanChange,
 }) {
@@ -48,6 +51,9 @@ function CommonFields({
         <LicenseDecider decider={decider} handleChange={handleScanChange} />
       )}
       {reuse && <UploadReuse reuse={reuse} handleChange={handleScanChange} />}
+      {scancode && (
+        <Scancode scancode={scancode} handleChange={handleScanChange} />
+      )}
     </>
   );
 }
@@ -56,15 +62,19 @@ CommonFields.propTypes = {
   accessLevel: PropTypes.string,
   ignoreScm: PropTypes.bool,
   analysis: PropTypes.shape({
-    bucket: PropTypes.bool.isRequired,
+    compatibility: PropTypes.bool.isRequired,
     copyrightEmailAuthor: PropTypes.bool.isRequired,
     ecc: PropTypes.bool.isRequired,
+    ipra: PropTypes.bool.isRequired,
     keyword: PropTypes.bool.isRequired,
     mime: PropTypes.bool.isRequired,
     monk: PropTypes.bool.isRequired,
     nomos: PropTypes.bool.isRequired,
     ojo: PropTypes.bool.isRequired,
     package: PropTypes.bool.isRequired,
+    softwareAnalysis: PropTypes.bool.isRequired,
+    scanoss: PropTypes.bool.isRequired,
+    heritage: PropTypes.bool.isRequired,
   }),
   decider: PropTypes.shape({
     nomosMonk: PropTypes.bool.isRequired,
@@ -73,10 +83,13 @@ CommonFields.propTypes = {
     ojoDecider: PropTypes.bool.isRequired,
   }),
   reuse: PropTypes.shape({
-    reuseUpload: PropTypes.number.isRequired,
+    groupChecked: PropTypes.bool.isRequired,
+    folderChecked: PropTypes.bool.isRequired,
     reuseGroup: PropTypes.string.isRequired,
-    reuseMain: PropTypes.bool.isRequired,
+    reuseFolder: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    reuseUpload: PropTypes.number.isRequired,
     reuseEnhanced: PropTypes.bool.isRequired,
+    reuseMain: PropTypes.bool.isRequired,
     reuseReport: PropTypes.bool.isRequired,
     reuseCopyright: PropTypes.bool.isRequired,
   }),

@@ -1,3 +1,21 @@
+/*
+ SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+
+SPDX-License-Identifier: GPL-2.0-only
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License
+ version 2 as published by the Free Software Foundation.
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License along
+ with this program; if not, write to the Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*/
+
 "use client"
 
 import * as React from "react"
@@ -98,7 +116,11 @@ function SelectItem({ className, children, ...props }) {
       {...props}
     >
       <span className="absolute right-2 flex size-3.5 items-center justify-center"></span>
-      <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+      {/* <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+    </SelectPrimitive.Item> */}
+          {React.Children.map(children, (child, index) => (
+        <SelectPrimitive.ItemText key={index}>{child}</SelectPrimitive.ItemText>
+      ))}
     </SelectPrimitive.Item>
   )
 }

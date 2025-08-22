@@ -1,7 +1,8 @@
 /*
  Copyright (C) 2022 Soham Banerjee(sohambanerjee4abc@hotmail.com), Krishna Mahato (krishhtrishh9304@gmail.com)
+ SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
- SPDX-License-Identifier: GPL-2.0
+SPDX-License-Identifier: GPL-2.0-only
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -133,6 +134,12 @@ export const initialScanFileDataFile = {
     reuseReport: false,
     reuseCopyright: false,
   },
+  scancode: {
+    license: false,
+    copyright: false,
+    email: false,
+    url: false,
+  }
 };
 export const initialFolderListFile = [
   {

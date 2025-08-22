@@ -27,13 +27,13 @@ function IgnoreScm({ ignoreScm, handleChange }) {
     <div id="upload-ignore-files" className="mt-4">
       <InputContainer
         type="checkbox"
-        checked={ignoreScm}
+        checked={ignoreScm.ignoreScm}
         name="ignoreScm"
         id="upload-ignore-scm"
-        onChange={(e) => handleChange(e)}
+        onChange={(checked) => handleChange(checked, "ignoreScm")}
       >
         Ignore SCM files (Git, SVN, TFS) and files with particular
-        Mimetype&nbsp;
+        Mimetype
         <Tooltip title="Configure mimetypes from Admin-Customize-Skip MimeTypes from scanning" />
       </InputContainer>
     </div>
