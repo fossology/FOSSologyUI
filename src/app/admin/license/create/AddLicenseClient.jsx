@@ -82,6 +82,28 @@ const AddLicensePage = () => {
             </InputContainer>
 
             <InputContainer
+              type="text"
+              name="spdxId"
+              id="admin-add-license-spdx-id"
+              value={formData.spdxId}
+              placeholder="SPDX Identifier (e.g. MIT, GPL-2.0)"
+              onChange={handleChange}
+            >
+              SPDX ID
+            </InputContainer>
+
+            <InputContainer
+              type="text"
+              name="level0"
+              id="admin-add-license-level0"
+              value={formData.level0}
+              placeholder="Level 0 (e.g. 0, 1, 2)"
+              onChange={handleChange}
+            >
+              Level 0
+            </InputContainer>
+
+            <InputContainer
               type="select"
               name="checked"
               id="admin-add-license-checked"
