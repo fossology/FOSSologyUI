@@ -42,8 +42,35 @@ This method only requires that you have the `Docker engine` and `docker-compose`
 
 - Added benefits to this method other than the ones that docker already provides is you are not confined to developing in the docker container. You can also develop using your local modules as defined above.
 
+**Quick Start (Recommended):**
+
+For Unix/macOS/Linux:
+```zsh
+./scripts/setup-dev.sh
+```
+
+For Windows:
+```cmd
+scripts\setup-dev.bat
+```
+
+These scripts automatically detect your architecture and configure Docker appropriately.
+
+**Manual Setup:**
 ```zsh
 docker-compose -f docker-compose.dev.yml pull fossology_server && docker-compose -f docker-compose.dev.yml up     #Starts the react-dev-server on localhost:3000
+```
+
+**Note for Apple Silicon (ARM64) users:** If you're using an Apple Silicon Mac (M1, M2, M3, etc.) and encounter architecture compatibility errors, see our [Apple Silicon Setup Guide](docs/APPLE_SILICON_SETUP.md) for detailed instructions.
+
+Quick fix: Make sure your `.env` file includes:
+```bash
+DOCKER_PLATFORM=linux/amd64
+```
+
+Alternatively, you can run the command with the platform specified directly:
+```zsh
+DOCKER_PLATFORM=linux/amd64 docker-compose -f docker-compose.dev.yml pull fossology_server && DOCKER_PLATFORM=linux/amd64 docker-compose -f docker-compose.dev.yml up
 ```
 
 On Windows you might have to forego the `&&` and run both commands individually.
@@ -141,6 +168,35 @@ It correctly bundles NextJS in production mode and optimizes the build for the b
 
 The build is minified and the filenames include the hashes. Your app is ready to be deployed!
 See the section about [deployment](https://nextjs.org/docs/14/app/building-your-application/deploying) for more information.
+
+## Troubleshooting
+
+### Docker Architecture Issues (Apple Silicon)
+
+If you're experiencing issues with Docker on Apple Silicon (ARM64) Macs, particularly with the fossology_server container, try the following solutions:
+
+1. **Use the automated setup script (Recommended):**
+   ```zsh
+   ./scripts/setup-dev.sh
+   ```
+
+2. **Manually set the platform:**
+   ```zsh
+   export DOCKER_PLATFORM=linux/amd64
+   docker-compose -f docker-compose.dev.yml up
+   ```
+
+3. **Update your `.env` file:**
+   Add the following line to your `.env` file:
+   ```bash
+   DOCKER_PLATFORM=linux/amd64
+   ```
+
+4. **Clear Docker cache if needed:**
+   ```zsh
+   docker system prune -a
+   docker-compose -f docker-compose.dev.yml pull --quiet
+   ```
 
 ## Support
 

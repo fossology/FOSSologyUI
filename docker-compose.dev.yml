@@ -54,6 +54,7 @@ services:
 
   fossology_server:
     image: fossology/fossology:latest
+    platform: ${DOCKER_PLATFORM:-linux/amd64}
     ports:
       - "8081:80"
     volumes:
