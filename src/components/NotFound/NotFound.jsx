@@ -25,7 +25,7 @@ import routes from "@/constants/routes";
 
 const NotFoundPage = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#F5F5F5] text-center px-4">
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-90px)] bg-[#F5F5F5] text-center px-4 -mx-page py-12">
       <div className="max-w-2xl mx-auto">
         {/* Creative 404 with error icon */}
         <div className="flex items-center justify-center space-x-2 mb-6">
@@ -33,9 +33,9 @@ const NotFoundPage = () => {
             4
           </span>
 
-            <span className="text-[140px] font-bold text-[#2C2C2C] leading-none hover:scale-105 transition-transform duration-300 cursor-default">
-              0
-            </span>
+          <span className="text-[140px] font-bold text-[#2C2C2C] leading-none hover:scale-105 transition-transform duration-300 cursor-default">
+            0
+          </span>
 
           <span className="text-[140px] font-bold text-[#2C2C2C] leading-none hover:scale-105 transition-transform duration-300 cursor-default">
             4
@@ -54,7 +54,7 @@ const NotFoundPage = () => {
         <Link href={routes.home}>
           <Button
             size="lg"
-            className="bg-[#2C2C2C] hover:bg-[#1A1A1A] text-white font-medium px-10 py-6 rounded-full text-base h-auto cursor-pointer"
+            className="bg-[#2C2C2C] hover:bg-[#1A1A1A] text-white font-medium px-10 py-6 rounded-full text-base h-auto"
           >
             Back to Home
           </Button>

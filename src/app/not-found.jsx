@@ -16,19 +16,12 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from "react";
 import NotFoundPage from "@/components/NotFound/NotFound";
 
 export const metadata = {
   title: "404 - Page Not Found | FOSSology",
 };
 
-const notFound = () => {
-  return (
-    <div>
-      <NotFoundPage />
-    </div>
-  );
-};
-
-export default notFound;
+export default function NotFound() {
+  return <NotFoundPage />;
+}
