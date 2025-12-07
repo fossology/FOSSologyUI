@@ -16,10 +16,18 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 
 const Alert = ({ message, type, setShow }) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShow(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [setShow]);
+
   return (
     <div className="main-container d-flex justify-content-end mt-3">
       <div
