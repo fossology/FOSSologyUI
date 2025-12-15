@@ -83,6 +83,13 @@ export default function HomeClient() {
     }
   }, [searchParams, router]);
 
+  useEffect(() => {
+    if (showError) {
+      const timer = setTimeout(() => setShowError(false), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [showError]);
+
   const [showPassword, setShowPassword] = useState(false)
 
   return (
