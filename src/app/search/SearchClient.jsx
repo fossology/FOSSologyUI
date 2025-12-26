@@ -10,18 +10,21 @@
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License along
- with this program; if not, write to the Free Software Foundation, Inc.,
- 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 'use client';
 
 import React, { useState } from "react";
 import search from "@/services/search";
-import { initialState, initialMessageSearch, entriesOptions } from "../../constants/constants";
-import { Alert } from "@/components/Widgets";
+import { initialState, entriesOptions } from "../../constants/constants";
+import { useNotification } from "@/hooks/use-notification";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -42,14 +45,12 @@ import {
   AccordionContent,
 } from "@/components/ui/accordion";
 
-
 const SearchClient = () => {
+  const { error, success } = useNotification();
   const [searchData, setSearchData] = useState(initialState);
   const [searchResult, setSearchResult] = useState("");
   const [pagesOptions, setPagesOptions] = useState();
   const [loading, setLoading] = useState(false);
-  const [showMessage, setShowMessage] = useState(false);
-  const [message, setMessage] = useState(initialMessageSearch);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -57,15 +58,15 @@ const SearchClient = () => {
     search(searchData)
       .then((result) => {
         setSearchResult(result.search);
+        success(`Found ${result.search.length} files matching your search.`);
         const arr = [];
         for (let i = 0; i < result.pages; i++) {
           arr.push({ id: i + 1, value: i + 1 });
         }
         setPagesOptions(arr);
       })
-      .catch((error) => {
-        setMessage({ type: "danger", text: error.message });
-        setShowMessage(true);
+      .catch((err) => {
+        error(err.message || "An error occurred during search.");
       })
       .finally(() => setLoading(false));
   };
@@ -90,228 +91,198 @@ const SearchClient = () => {
   ]
 
   return (
-    <div className="min-h-screen mx-40 py-8">
-      {showMessage && (
-        <Alert type={message.type} setShow={setShowMessage} message={message.text} />
-      )}
+    <div className="min-h-screen py-8 max-w-5xl mx-auto px-4">
+      <Card className="border-0 shadow-lg bg-[#F9FAFB]">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-3xl font-bold text-gray-900">Advanced Search</CardTitle>
+          <CardDescription className="text-gray-500">
+            Find files across uploads based on filename, license, or copyright.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Upload type */}
+            <div className="space-y-4">
+              <p className="text-lg font-medium text-[#101010]">Limit search to:</p>
+              <RadioGroup
+                value={searchData.searchType}
+                onValueChange={(val) => setSearchData(prev => ({ ...prev, searchType: val }))}
+                className="space-y-2"
+              >
+                <div className="flex items-start gap-2">
+                  <RadioGroupItem value="directory" id="directory" className="w-4 h-4 mt-1" />
+                  <Label htmlFor="directory" className="text-base text-[#101010]">
+                    Containers only (rpms, tars, isos, etc), including directories.
+                  </Label>
+                </div>
 
-      <h1 className="text-3xl font-semibold text-[#101010] mb-4">Search</h1>
+                <div className="flex items-start gap-2">
+                  <RadioGroupItem value="containers" id="containers" className="w-4 h-4 mt-1" />
+                  <Label htmlFor="containers" className="text-base text-[#101010]">
+                    Containers only (rpms, tars, isos, etc), excluding directories.
+                  </Label>
+                </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Upload type */}
-        <div className="space-y-4">
-          <p className="text-lg font-medium text-[#101010]">Limit search to:</p>
-          <RadioGroup
-            value={searchData.searchType}
-            onValueChange={(val) => setSearchData(prev => ({ ...prev, searchType: val }))}
-            className="space-y-2"
-          >
-            <div className="flex items-start gap-2">
-              <RadioGroupItem
-                value="directory"
-                id="directory"
-                className="w-4 h-4 mt-1"
-              />
-              <Label htmlFor="directory" className="text-base text-[#101010]">
-                Containers only (rpms, tars, isos, etc), including directories.
-              </Label>
+                <div className="flex items-start gap-2">
+                  <RadioGroupItem value="allfiles" id="allfiles" className="w-4 h-4 mt-1" />
+                  <Label htmlFor="allfiles" className="text-base text-[#101010]">
+                    All Files
+                  </Label>
+                </div>
+              </RadioGroup>
             </div>
 
-              <div className="flex items-start gap-2">
-                <RadioGroupItem
-                  value="containers"
-                  id="containers"
-                  className="w-4 h-4 mt-1"
-                />
-                <Label htmlFor="containers" className="text-base text-[#101010]">
-                  Containers only (rpms, tars, isos, etc), excluding directories. The filtering for license or copyright is not supported in this case.
-                </Label>
-              </div>
+            {/* Required search criteria */}
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="search-criteria">
+                <AccordionTrigger className="text-lg font-semibold">
+                  Required Search Criteria
+                </AccordionTrigger>
+                <AccordionContent className="space-y-4 pt-4">
+                  <div>
+                    <Label className="mb-2 block">Choose upload to search into:</Label>
+                    <Select
+                      name="uploadId"
+                      onValueChange={(value) => handleChange({ target: { name: "uploadId", value } })}
+                    >
+                      <SelectTrigger className="h-10">
+                        <SelectValue placeholder="All uploads" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {uploadOptions.map((upload) => (
+                          <SelectItem key={upload.id} value={String(upload.id)}>
+                            {upload.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-            <div className="flex items-start gap-2">
-              <RadioGroupItem
-                value="allfiles"
-                id="allfiles"
-                className="w-4 h-4 mt-1"
-              />
-              <Label htmlFor="allfiles" className="text-base text-[#101010]">
-                All Files
-              </Label>
+                  <div>
+                    <Label className="mb-2 block">Filename to find:</Label>
+                    <Input
+                      type="text"
+                      name="filename"
+                      value={searchData.filename}
+                      onChange={handleChange}
+                      placeholder="Enter filename (e.g. %v3.war)"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label className="mb-2 block">File size ≥ (bytes):</Label>
+                      <Input
+                        type="text"
+                        name="filesizemin"
+                        value={searchData.filesizemin}
+                        onChange={handleChange}
+                        placeholder="Min size"
+                      />
+                    </div>
+                    <div>
+                      <Label className="mb-2 block">File size ≤ (bytes):</Label>
+                      <Input
+                        type="text"
+                        name="filesizemax"
+                        value={searchData.filesizemax}
+                        onChange={handleChange}
+                        placeholder="Max size"
+                      />
+                    </div>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+
+              {/* Optional filters */}
+              <AccordionItem value="optional-filters">
+                <AccordionTrigger className="text-lg font-semibold">
+                  Optional Search Filters
+                </AccordionTrigger>
+                <AccordionContent className="space-y-4 pt-4">
+                  <div>
+                    <Label className="mb-2 block">License:</Label>
+                    <Input
+                      type="text"
+                      name="license"
+                      value={searchData.license}
+                      onChange={handleChange}
+                      placeholder="e.g. ^AGPL$"
+                    />
+                  </div>
+                  <div>
+                    <Label className="mb-2 block">Copyright:</Label>
+                    <Input
+                      type="text"
+                      name="copyright"
+                      value={searchData.copyright}
+                      onChange={handleChange}
+                      placeholder="e.g. Copyright 2024"
+                    />
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+
+            {/* Pagination settings */}
+            <div className="flex items-center gap-2 text-sm text-gray-700 pt-4">
+              <span>Show</span>
+              <Select
+                name="limit"
+                onValueChange={(value) => handleChange({ target: { name: "limit", value } })}
+              >
+                <SelectTrigger className="h-8 w-[70px]">
+                  <SelectValue placeholder={searchData.limit || entriesOptions[0].entry} />
+                </SelectTrigger>
+                <SelectContent>
+                  {entriesOptions.map((opt) => (
+                    <SelectItem key={opt.entry} value={String(opt.entry)}>
+                      {opt.entry}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <span>entries</span>
             </div>
-          </RadioGroup>
-        </div>
 
-        {/* Required search criteria */}
-        <Accordion type="single" collapsible className="w-full">
-          <AccordionItem value="search-criteria">
-            <AccordionTrigger className="flex w-full items-center justify-between text-lg font-semibold mb-2 transition-all">
-                You must choose one or more search criteria (not case sensitive)
-            </AccordionTrigger>
-
-            <AccordionContent className="space-y-4 pb-2">
-              <div>
-                <label className="block text-base font-medium text-gray-700 mb-1">
-                  Choose upload to search into:
-                </label>
-                <Select
-                  name="uploadId"
-                  onValueChange={(value) =>
-                    handleChange({ target: { name: "uploadId", value } })
-                  }
-                >
-                  <SelectTrigger className="h-10 text-sm">
-                    <SelectValue placeholder="All uploads" />
-                  </SelectTrigger>
-                  <SelectContent className="max-h-48 overflow-y-auto">
-                    {uploadOptions.map((upload) => (
-                      <SelectItem key={upload.id} value={String(upload.id)}>
-                        {upload.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-
-              <div>
-                <label className="block text-base font-medium text-gray-700 mb-1">
-                  Enter the filename to find:
-                </label>
-                <Input
-                  type="text"
-                  name="filename"
-                  value={searchData.filename}
-                  onChange={handleChange}
-                  placeholder="Enter filename"
-                />
-                <p className="text-sm text-[#00669D] mt-1">
-                  You can use '%' as a wild-card. For example: '%v3.war', or 'mypkg%.tar'.
-                </p>
-              </div>
-
-              <div>
-                <label className="block text-base font-medium text-gray-700 mb-1">
-                  File size is ≥
-                </label>
-                <Input
-                  type="text"
-                  name="filesizemin"
-                  value={searchData.filesizemin}
-                  onChange={handleChange}
-                  placeholder="Enter file size in bytes"
-                />
-              </div>
-
-              <div>
-                <label className="block text-base font-medium text-gray-700 mb-1">
-                  File size is ≤
-                </label>
-                <Input
-                  type="text"
-                  name="filesizemax"
-                  value={searchData.filesizemax}
-                  onChange={handleChange}
-                  placeholder="Enter file size in bytes"
-                  className={"mb-4"}
-                />
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-
-        {/* Optional filters */}
-        <AccordionItem value="optional-filters">
-          <AccordionTrigger
-            className="flex w-full items-center justify-between text-lg font-semibold text-left
-            [&[data-state=open]>svg]:rotate-180 after:hidden"
-          >
-            <span>
-              You may also choose one or more optional search filters (not case sensitive)
-            </span>
-          </AccordionTrigger>
-          <AccordionContent>
-            <div className="space-y-4 mt-2">
-              <div>
-                <label className="block text-base font-medium text-gray-700 mb-1">License:</label>
-                <Input
-                  type="text"
-                  name="license"
-                  value={searchData.license}
-                  onChange={handleChange}
-                  placeholder="Enter license"
-                />
-                <p className="text-sm text-[#00669D] mt-1">For example, '^AGPL$'.</p>
-              </div>
-
-              <div>
-                <label className="block text-base font-medium text-gray-700 mb-1">Copyright:</label>
-                <Input
-                  type="text"
-                  name="copyright"
-                  value={searchData.copyright}
-                  onChange={handleChange}
-                  placeholder="Enter copyright"
-                />
-                <p className="text-sm text-[#00669D] mt-1">
-                  For example, 'Copyright 2014-2020 fossology'.
-                </p>
-              </div>
+            <div className="pt-4">
+              <Button
+                type="submit"
+                disabled={loading || !searchData.searchType || (!searchData.uploadId?.trim() && !searchData.filename?.trim() && !searchData.filesizemin?.trim() && !searchData.filesizemax?.trim())}
+                className="w-full md:w-auto bg-[#004494] text-white h-11 px-12 hover:bg-[#003377]"
+              >
+                {loading ? "Searching..." : "Search Files"}
+              </Button>
             </div>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
-
-        {/* Entries dropdown */}
-        <div className="flex items-center gap-2 text-sm text-gray-700">
-          <span>Show</span>
-          <Select
-            name="limit"
-            onValueChange={(value) =>
-              handleChange({ target: { name: "limit", value } })
-            }
-          >
-            <SelectTrigger className="h-8 py-1 text-sm w-fit">
-              <SelectValue placeholder={searchData.limit || entriesOptions[0].entry} />
-            </SelectTrigger>
-            <SelectContent>
-              {entriesOptions.map((opt) => (
-                <SelectItem key={opt.entry} value={String(opt.entry)}>
-                  {opt.entry}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <span>entries</span>
-        </div>
-
-        {/* Submit */}
-        <div>
-        <Button
-          type="submit"
-          disabled={loading || !searchData.searchType || !searchData.uploadId?.trim() && !searchData.filename?.trim() && !searchData.filesizemin?.trim() && !searchData.filesizemax?.trim()}
-          className="bg-[#004494] text-white h-10 px-8 py-2 rounded text-base font-medium hover:bg-[#00095C] disabled:bg-[#9EB9D3] disabled:text-white"
-        >
-          {loading ? "Searching..." : "Search"}
-        </Button>
-        </div>
-      </form>
+          </form>
+        </CardContent>
+      </Card>
 
       {/* Search results */}
       {searchResult && (
-        <div className="mt-8">
-          <h3 className="text-lg font-semibold mb-2">
-            {searchResult.length} files matching your search result.
-          </h3>
-          {searchResult.map(({ uploadTreeId, uploadName, folderName, fileName }, index) => (
-            <div key={uploadTreeId} className="p-4 border border-gray-300 rounded mb-3">
-              <div className="font-medium">
-                {index + 1}. Folder: {folderName}
+        <Card className="mt-8 border-0 shadow-md">
+          <CardHeader>
+            <CardTitle className="text-xl font-semibold">
+              {searchResult.length} Results Found
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {searchResult.map(({ uploadTreeId, uploadName, folderName, fileName }, index) => (
+              <div 
+                key={uploadTreeId} 
+                className="p-4 border border-gray-100 rounded-lg hover:bg-blue-50 transition-colors bg-white shadow-sm"
+              >
+                <div className="flex items-center gap-2">
+                  <span className="text-blue-600 font-bold">{index + 1}.</span>
+                  <div className="font-semibold text-gray-800">Folder: {folderName}</div>
+                </div>
+                <div className="ml-6 mt-1 text-sm text-gray-600 font-mono italic">
+                  {uploadName}/{fileName}
+                </div>
               </div>
-              <div className="ml-3 text-sm text-gray-700">
-                {uploadName}/{fileName}
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </CardContent>
+        </Card>
       )}
     </div>
   );
