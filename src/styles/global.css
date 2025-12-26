@@ -19,7 +19,7 @@ SPDX-License-Identifier: GPL-2.0-only
 /*
 * This file contains all styling which is common for all theme (which defines basic layout)
 */
-@import 'tailwindcss' important; 
+@import "tailwindcss" important;
 /* @import "tailwindcss/preflight"; */
 /* @tailwind components; */
 /* @tailwind utilities; */
@@ -30,8 +30,16 @@ SPDX-License-Identifier: GPL-2.0-only
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #FFFFFF;
+  --background: #ffffff;
   --foreground: #101010;
+
+  /* Notification Colors */
+  --success-bg: #e6ffed;
+  --success-border: #b7eb8f;
+  --success-text: #14532d;
+  --error-bg: #fff1f0;
+  --error-border: #ffa39e;
+  --error-text: #721c24;
 }
 
 /* Dark theme override */
@@ -39,7 +47,6 @@ SPDX-License-Identifier: GPL-2.0-only
   --background: #212121;
   --foreground: #ffffff;
 }
-
 
 /* Font size */
 .font-size-small {
@@ -60,13 +67,17 @@ SPDX-License-Identifier: GPL-2.0-only
   list-style-type: disclosure-closed;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Inter', sans-serif;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Inter", sans-serif;
   font-weight: 700;
 }
 
 /* Header */
-
 
 @media (max-width: 991px) {
   .dropleft .dropdown-menu {

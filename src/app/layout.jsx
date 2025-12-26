@@ -23,6 +23,7 @@ import { GlobalProvider } from "@/context";
 
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
+import { Toaster } from "@/components/ui/sonner";
 
 // Global CSS
 import "react-virtualized-tree/lib/main.css";
@@ -44,6 +45,7 @@ export default function RootLayout({ children }) {
           <Header />
           <main className="flex-grow px-page">{children}</main>
           <Footer />
+          <Toaster />
         </GlobalProvider>
       </body>
     </html>
