@@ -25,11 +25,7 @@ import { cn } from "@/lib/utils"
 import { Eye, EyeOff } from "lucide-react"
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-  Alert,
-  AlertTitle,
-  AlertDescription,
-} from '@/components/ui/alert';
+import { useNotification } from "@/hooks/use-notification";
 import {
   Card,
   CardHeader,
@@ -48,10 +44,9 @@ export default function HomeClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  const { error, success } = useNotification();
   const [values, setValues] = useState({ username: '', password: '' });
   const [loading, setLoading] = useState(false);
-  const [showError, setShowError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
 
   const { username, password } = values;
 
@@ -66,19 +61,18 @@ export default function HomeClient() {
       await fetchToken(values);
       await getUserSelf();
       await fetchAllGroups();
+      success("Logged in successfully!");
       router.push(routes.browse);
     } catch (err) {
       setLoading(false);
-      setErrorMessage(err.message);
-      setShowError(true);
+      error(err.message);
     }
   };
 
   useEffect(() => {
     const message = searchParams.get('message');
     if (message) {
-      setErrorMessage(message);
-      setShowError(true);
+      error(message);
       router.replace(window.location.pathname);
     }
   }, [searchParams, router]);
@@ -136,30 +130,6 @@ export default function HomeClient() {
             </CardHeader>
 
             <CardContent className="p-0 pt-2 space-y-6">
-            {showError && (
-              <div className="mb-4">
-                <Alert
-                  variant="destructive"
-                  className="flex items-start gap-3 bg-[#FFEBEE] rounded-[4px] border-0"
-                >
-                  <img
-                    src="/assets/icons/Alert/ErrorFilled.svg"
-                    alt="Error"
-                    width={24}
-                    height={24}
-                    className="mt-1"
-                  />
-                  <div>
-                    <AlertTitle className="text-base font-semibold text-[#A41411]">
-                      An error occurred
-                    </AlertTitle>
-                    <AlertDescription className="text-sm text-[#A41411]">
-                      {errorMessage}
-                    </AlertDescription>
-                  </div>
-                </Alert>
-              </div>
-            )}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label htmlFor="username" className="block text-base font-normal text-[#101010] mb-1">
