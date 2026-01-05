@@ -57,7 +57,16 @@ export const setLocalStorage = (key, value) => {
 // Get from localstorage
 export const getLocalStorage = (key) => {
   if (typeof window !== "undefined") {
-    return JSON.parse(localStorage.getItem(key));
+    const item = localStorage.getItem(key);
+    if (item === null) {
+      return null;
+    }
+    try {
+      return JSON.parse(item);
+    } catch (error) {
+      console.warn(`Failed to parse localStorage item "${key}":`, error);
+      return null;
+    }
   }
   return null;
 };
@@ -98,7 +107,16 @@ export const defaultAgentsList = () => {
 // Get from session storage
 export const getSessionStorage = (key) => {
   if (typeof window !== "undefined") {
-    return JSON.parse(sessionStorage.getItem(key));
+    const item = sessionStorage.getItem(key);
+    if (item === null) {
+      return null;
+    }
+    try {
+      return JSON.parse(item);
+    } catch (error) {
+      console.warn(`Failed to parse sessionStorage item "${key}":`, error);
+      return null;
+    }
   }
   return null;
 };
