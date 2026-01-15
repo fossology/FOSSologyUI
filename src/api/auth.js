@@ -30,16 +30,59 @@ import sendRequest from "./sendRequest";
 
 const fetchTokenApi = (username, password, tokenDetails = null) => {
   const url = endpoints.auth.tokens();
-  return sendRequest({
-    url,
-    method: "POST",
-    body: tokenDetails || {
+
+  const isApiV2 =
+    typeof process !== "undefined" &&
+    process.env?.NEXT_PUBLIC_SERVER_URL &&
+    process.env.NEXT_PUBLIC_SERVER_URL.includes("/api/v2");
+
+  const buildDefaultBody = () => {
+    if (isApiV2) {
+      return {
+        username,
+        password,
+        tokenName: randomString(tokenNameLength),
+        tokenScope: tokenScope,
+        tokenExpire: getDate(tokenExpiryDays),
+      };
+    }
+
+    return {
       username,
       password,
       token_name: randomString(tokenNameLength),
       token_scope: tokenScope,
       token_expire: getDate(tokenExpiryDays),
-    },
+    };
+  };
+
+  const transformProvidedDetails = (details) => {
+    if (!details) return null;
+    if (isApiV2) {
+      return {
+        username: details.username,
+        password: details.password,
+        tokenName: details.tokenName ?? details.token_name,
+        tokenScope: details.tokenScope ?? details.token_scope,
+        tokenExpire: details.tokenExpire ?? details.token_expire,
+      };
+    }
+
+    return {
+      username: details.username,
+      password: details.password,
+      token_name: details.token_name ?? details.tokenName,
+      token_scope: details.token_scope ?? details.tokenScope,
+      token_expire: details.token_expire ?? details.tokenExpire,
+    };
+  };
+
+  const body = tokenDetails ? transformProvidedDetails(tokenDetails) : buildDefaultBody();
+
+  return sendRequest({
+    url,
+    method: "POST",
+    body,
     addGroupName: false,
   });
 };
