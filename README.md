@@ -26,121 +26,22 @@ The UI Migration project is an effort focused on generating the new component-ba
 - Writing detailed ​ documentation of the project, to make the
   codebase simpler for other contributors.
 
-## Requirements
+## Quick Start
 
-- [NodeJS](https://nodejs.org/en/download/) and [pnpm](https://pnpm.io/installation)
+**Docker Development (Recommended):**
+```bash
+docker-compose -f docker-compose.dev.yml pull fossology_server && docker-compose -f docker-compose.dev.yml up
+```
+Access at `http://localhost:3000` (username: `fossy`, password: `fossy`)
 
-## Installation
-
-### Docker
-
-#### Development
-
-FOSSology comes with a Dockerfile allowing for containerized execution.
-
-This method only requires that you have the `Docker engine` and `docker-compose` installed on your machine.
-
-- Added benefits to this method other than the ones that docker already provides is you are not confined to developing in the docker container. You can also develop using your local modules as defined above.
-
-```zsh
-docker-compose -f docker-compose.dev.yml pull fossology_server && docker-compose -f docker-compose.dev.yml up     #Starts the react-dev-server on localhost:3000
+**Local Development:**
+```bash
+cp .env.sample .env
+pnpm install
+pnpm run dev
 ```
 
-On Windows you might have to forego the `&&` and run both commands individually.
-
-Running the `docker-compose pull ...` command each time you run the docker container isn't required but recommended so as to get the latest fossology image.
-
-This will start the react-dev-server on localhost on `port:3000`.
-
-The docker image can then be used using http://IP_OF_DOCKER_HOST:3000/ user fossy password fossy. (IP_OF_DOCKER_HOST is generally localhost)
-
-You can even run it detached in the background using the -d option.
-
-```zsh
-docker-compose -f docker-compose.dev.yml up -d
-docker-compose logs  #To view server logs
-```
-
-npm packages can be installed using `docker-compose exec`
-
-```zsh
-docker-compose -f docker-compose.dev.yml exec -w /usr/src/fossologyui fossologyui_server yarn add <package name> #Install npm package for react-dev-server
-```
-
-Once done developing, you can clean up running containers and networks using:
-
-```zsh
-docker-compose -f docker-compose.dev.yml down
-```
-
-#### Production
-
-For production level deployment you can use:
-
-```zsh
-docker build \
--t fossologyui:react1.0 \
---build-arg REACT_APP_SERVER_URL="localhost/repo/api/v2" \
---build-arg REACT_APP_HTTPS="false" .
-```
-
-for building the image and then host the image using:
-
-```zsh
-docker run -p 3000:3000 fossologyui:react1.0
-```
-
-The docker image would then be hosted on http://IP_OF_DOCKER_HOST:3000/ user fossy password fossy. (IP_OF_DOCKER_HOST is generally localhost)
-
-Alternatively, you can also deploy it using docker-compose:
-
-```zsh
-docker-compose up
-```
-
-You can even run it detached in the background using the -d option.
-
-```zsh
-docker-compose up -d
-docker-compose logs  #To view server logs
-```
-
-Deployed image can be pulled down using:
-
-```zsh
-docker-compose down
-```
-
-This will clean up running containers and networks.
-
-### Project Setup
-
-- Copy the `.env.sample` as `.env` file and update the variables to appropriate values.
-
-- Installs the packages:
-
-    ```sh
-    pnpm install
-    ```
-
-- Runs the app in the development mode at [http://localhost:3000](http://localhost:3000)
-
-    ```sh
-    pnpm run dev
-    ```
-
-### Deployment
-
-Build the app for production.
-
-```sh
-pnpm build
-```
-
-It correctly bundles NextJS in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes. Your app is ready to be deployed!
-See the section about [deployment](https://nextjs.org/docs/14/app/building-your-application/deploying) for more information.
+📖 **For detailed installation instructions, see [INSTALL.md](INSTALL.md)**
 
 ## Support
 
