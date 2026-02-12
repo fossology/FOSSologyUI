@@ -62,18 +62,20 @@ export default function HomeClient() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
+  
     try {
-      await fetchToken(values);
-      await getUserSelf();
-      await fetchAllGroups();
+      // fake login
+      document.cookie = "token=fake-token";
+  
+      // redirect to main page
       router.push(routes.browse);
     } catch (err) {
       setLoading(false);
-      setErrorMessage(err.message);
+      setErrorMessage("Mock login failed");
       setShowError(true);
     }
   };
-
+  
   useEffect(() => {
     const message = searchParams.get('message');
     if (message) {
