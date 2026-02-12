@@ -109,7 +109,11 @@ const BrowseClient = () => {
       });
   }, []);
 
+  
+
+
   const handleChange = (e) => {
+    
     if (e.target.name === "limit") {
       setBrowseData({ ...browseData, [e.target.name]: e.target.value, page: 1 });
     } else {
@@ -251,9 +255,11 @@ const BrowseClient = () => {
             </thead>
             <tbody>
               {browseDataList
-                ?.filter((item) =>
-                  query ? item?.uploadname.toLowerCase().includes(query.toLowerCase()) : true
-                )
+               ?.filter((item) =>
+               query
+                 ? item?.uploadname?.toLowerCase().includes(query.toLowerCase())
+                 : true
+                 )             
                 ?.map((data) => (
                   <tr key={data?.id} className="text-center">
                     <td>
@@ -295,7 +301,7 @@ const BrowseClient = () => {
                         property="name"
                       />
                     </td>
-                    <td>{data?.uploaddate.split(".")[0]}</td>
+                    <td>{data?.uploaddate?.split(".")[0]}</td>
                   </tr>
                 ))}
               <tr>
