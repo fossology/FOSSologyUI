@@ -57,7 +57,16 @@ export const setLocalStorage = (key, value) => {
 // Get from localstorage
 export const getLocalStorage = (key) => {
   if (typeof window !== "undefined") {
-    return JSON.parse(localStorage.getItem(key));
+    const item = localStorage.getItem(key);
+    if (item === null || item === undefined || item === "undefined") {
+      return null;
+    }
+    try {
+      return JSON.parse(item);
+    } catch (error) {
+      console.error("Error parsing localStorage item", error);
+      return null;
+    }
   }
   return null;
 };
