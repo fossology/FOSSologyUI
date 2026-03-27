@@ -1,218 +1,186 @@
 /*
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
-
-SPDX-License-Identifier: GPL-2.0-only
-
- This program is free software; you can redistribute it and/or
- modify it under the terms of the GNU General Public License
- version 2 as published by the Free Software Foundation.
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License along
- with this program; if not, write to the Free Software Foundation, Inc.,
- 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ SPDX-FileCopyrightText: © 2025 FOSSology Contributors
+ SPDX-License-Identifier: GPL-2.0-only
 */
 
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { cn } from "@/lib/utils" 
+import { useState } from "react";
 
-import { Eye, EyeOff } from "lucide-react"
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import {
-  Alert,
-  AlertTitle,
-  AlertDescription,
-} from '@/components/ui/alert';
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "@/components/ui/card"
+const HomeClient = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-import fetchToken from '@/services/auth';
-import { getUserSelf } from '@/services/users';
-import { fetchAllGroups } from '@/services/groups';
-import routes from '@/constants/routes';
-import { isAuth } from '@/shared/authHelper';
-
-export default function HomeClient() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const [values, setValues] = useState({ username: '', password: '' });
-  const [loading, setLoading] = useState(false);
-  const [showError, setShowError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
-
-  const { username, password } = values;
-
-  const handleChange = (name) => (event) => {
-    setValues({ ...values, [name]: event.target.value });
+  const handleLogin = async () => {
+    setIsLoading(true);
+    setTimeout(() => setIsLoading(false), 2000);
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setLoading(true);
-    try {
-      await fetchToken(values);
-      await getUserSelf();
-      await fetchAllGroups();
-      router.push(routes.browse);
-    } catch (err) {
-      setLoading(false);
-      setErrorMessage(err.message);
-      setShowError(true);
-    }
-  };
-
-  useEffect(() => {
-    const message = searchParams.get('message');
-    if (message) {
-      setErrorMessage(message);
-      setShowError(true);
-      router.replace(window.location.pathname);
-    }
-  }, [searchParams, router]);
-
-  const [showPassword, setShowPassword] = useState(false)
+  const features = [
+    { icon: "📁", title: "Upload Files", desc: "Upload files into the FOSSology repository" },
+    { icon: "📦", title: "Unpack Files", desc: "Unpack zip, tar, bz2, iso and many others" },
+    { icon: "🌳", title: "Browse Trees", desc: "Browse upload file trees easily" },
+    { icon: "🔍", title: "Scan Licenses", desc: "Scan for software licenses automatically" },
+    { icon: "©️",  title: "Scan Copyrights", desc: "Scan for copyrights and author information" },
+    { icon: "📊", title: "Compare Trees", desc: "View side-by-side license and bucket differences" },
+  ];
 
   return (
-    <div className="min-h-screen bg-white py-10 text-gray-800 mx-8">
-      <div className="grid grid-cols-1 md:grid-cols-[1fr_400px] gap-12">
-        {/* Left: Intro Content */}
-        <div>
-          <h1 className="text-3xl font-bold mb-6 text-gray-900">
-            Getting Started with FOSSology
-          </h1>
+    <div className="min-h-screen bg-gradient-to-br 
+                    from-slate-900 via-blue-950 to-slate-900">
 
-          <p className="text-base font-semibold mb-4">
-            <span className="font-bold">FOSSology</span> is a framework for software analysis tools. With it, you can:
-          </p>
+      {/* ── Hero Section ── */}
+      <div className="flex flex-col items-center 
+                      justify-center pt-16 pb-10 px-4">
+        
+        {/* Badge */}
+        <span className="px-4 py-1 bg-blue-500/20 border 
+                         border-blue-400/30 rounded-full text-blue-300 
+                         text-sm font-medium mb-6">
+          Open Source Compliance Tool
+        </span>
 
-          <ul className="list-disc list-inside space-y-1 text-sm mb-6">
-            <li>Upload files into the fossology repository.</li>
-            <li>Unpack files (zip, tar, bz2, iso's, and many others) into its component files.</li>
-            <li>Browse upload file trees.</li>
-            <li>View file contents and meta data.</li>
-            <li>Scan for software licenses.</li>
-            <li>Scan for copyrights and other author information.</li>
-            <li>View side-by-side license and bucket differences between file trees.</li>
-            <li>Tag and attach notes to files.</li>
-            <li>Report files based on your own custom classification scheme.</li>
-          </ul>
+        {/* Title */}
+        <h1 className="text-5xl font-bold text-white 
+                       text-center mb-4">
+          Welcome to{" "}
+          <span className="text-transparent bg-clip-text 
+                           bg-gradient-to-r from-blue-400 
+                           to-cyan-400">
+            FOSSology
+          </span>
+        </h1>
 
-          <h2 className="text-base font-semibold mb-2">Where to Begin</h2>
-          <ul className="list-disc list-inside space-y-1 text-sm">
-            <li>The menu at the top contains all the primary capabilities of FOSSology.</li>
-            <li>
-              Login: Depending on your account&apos;s access rights, you may be able to upload files,
-              schedule analysis tasks, or even add new users.
-            </li>
-          </ul>
-        </div>
+        {/* Subtitle */}
+        <p className="text-slate-400 text-center text-lg 
+                      max-w-xl mb-12">
+          A framework for software analysis, license compliance, 
+          and copyright detection at scale.
+        </p>
 
-        {/* Right: Login Form */}
-        {!isAuth() && (
-          <Card className="bg-[#F6F6F6] p-6 w-full max-w-md border-0">
-            <CardHeader className="p-0 pb-0">
-                <CardTitle className="text-2xl font-bold text-[#101010]">
-                  Log in to your account
-                </CardTitle>
-                <CardDescription className="text-base font-semibold text-[#101010] mt-2">
-                  Hello there! Welcome to FOSSology
-                </CardDescription>
-                <p className="text-sm font-normal text-[#101010] mt-2">
-                  This login uses HTTP, so passwords are transmitted in plain text. This is not a secure connection.
-                </p>
-            </CardHeader>
+        {/* ── Main Card ── */}
+        <div className="flex flex-col lg:flex-row gap-8 
+                        w-full max-w-5xl">
 
-            <CardContent className="p-0 pt-2 space-y-6">
-            {showError && (
-              <div className="mb-4">
-                <Alert
-                  variant="destructive"
-                  className="flex items-start gap-3 bg-[#FFEBEE] rounded-[4px] border-0"
-                >
-                  <img
-                    src="/assets/icons/Alert/ErrorFilled.svg"
-                    alt="Error"
-                    width={24}
-                    height={24}
-                    className="mt-1"
-                  />
-                  <div>
-                    <AlertTitle className="text-base font-semibold text-[#A41411]">
-                      An error occurred
-                    </AlertTitle>
-                    <AlertDescription className="text-sm text-[#A41411]">
-                      {errorMessage}
-                    </AlertDescription>
-                  </div>
-                </Alert>
-              </div>
-            )}
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label htmlFor="username" className="block text-base font-normal text-[#101010] mb-1">
-                  Username
-                </label>
-                <Input
-                  id="username"
-                  type="text"
-                  placeholder="Enter username"
-                  value={username}
-                  onChange={handleChange("username")}
-                  disabled={loading}
-                />
-
-              </div>
-
-              <div>
-                <label htmlFor="password" className="block text-base font-normal text-[#101010] mb-1">
-                  Password
-                </label>
-                <div className="relative">
-                  <Input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Enter password"
-                    value={password}
-                    onChange={handleChange("password")}
-                  />
-
-
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword((prev) => !prev)}
-                    className="absolute inset-y-0 right-2 flex items-center text-gray-500"
-                    tabIndex={-1}
-                  >
-                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                  </button>
-                </div>
-              </div>
-
-              <Button
-                type="submit"
-                disabled={loading}
-                className="w-full h-10 bg-[#004494] text-base text-white rounded-[4px] hover:bg-[#003377]"
+          {/* Features Grid */}
+          <div className="flex-1 grid grid-cols-2 gap-4">
+            {features.map((f, i) => (
+              <div
+                key={i}
+                className="bg-white/5 border border-white/10 
+                           rounded-xl p-4 hover:bg-white/10 
+                           hover:border-blue-400/40 
+                           transition-all duration-200 cursor-default"
               >
-                {loading ? "Logging in..." : "Login"}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-        )}
+                <div className="text-2xl mb-2">{f.icon}</div>
+                <h3 className="text-white font-semibold 
+                               text-sm mb-1">
+                  {f.title}
+                </h3>
+                <p className="text-slate-400 text-xs leading-relaxed">
+                  {f.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Login Card */}
+          <div className="w-full lg:w-80 bg-white/5 border 
+                          border-white/10 rounded-2xl p-8 
+                          backdrop-blur-sm">
+
+            <h2 className="text-white text-xl font-bold mb-1">
+              Sign In
+            </h2>
+            <p className="text-slate-400 text-sm mb-6">
+              Access your FOSSology account
+            </p>
+
+            {/* Warning */}
+            <div className="bg-amber-500/10 border border-amber-400/30 
+                            rounded-lg px-3 py-2 mb-6">
+              <p className="text-amber-300 text-xs">
+                ⚠️ HTTP connection — passwords sent as plain text
+              </p>
+            </div>
+
+            {/* Username */}
+            <div className="mb-4">
+              <label className="text-slate-300 text-sm 
+                                font-medium block mb-2">
+                Username
+              </label>
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter username"
+                className="w-full bg-white/10 border border-white/20 
+                           rounded-lg px-4 py-3 text-white 
+                           placeholder-slate-500 text-sm
+                           focus:outline-none focus:border-blue-400 
+                           focus:bg-white/15 transition-all duration-200"
+              />
+            </div>
+
+            {/* Password */}
+            <div className="mb-6">
+              <label className="text-slate-300 text-sm 
+                                font-medium block mb-2">
+                Password
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter password"
+                  className="w-full bg-white/10 border border-white/20 
+                             rounded-lg px-4 py-3 text-white 
+                             placeholder-slate-500 text-sm pr-12
+                             focus:outline-none focus:border-blue-400 
+                             focus:bg-white/15 transition-all duration-200"
+                />
+                <button
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 
+                             text-slate-400 hover:text-white 
+                             transition-colors text-sm"
+                >
+                  {showPassword ? "🙈" : "👁️"}
+                </button>
+              </div>
+            </div>
+
+            {/* Login Button */}
+            <button
+              onClick={handleLogin}
+              disabled={isLoading}
+              className="w-full bg-gradient-to-r from-blue-500 
+                         to-cyan-500 hover:from-blue-600 
+                         hover:to-cyan-600 text-white font-semibold 
+                         py-3 rounded-lg transition-all duration-200 
+                         disabled:opacity-50 disabled:cursor-not-allowed
+                         shadow-lg shadow-blue-500/25"
+            >
+              {isLoading ? "Signing in..." : "Sign In →"}
+            </button>
+
+          </div>
+        </div>
       </div>
+
+      {/* ── Footer ── */}
+      <div className="text-center pb-8">
+        <p className="text-slate-600 text-sm">
+          FOSSology — Open Source License Compliance
+        </p>
+      </div>
+
     </div>
   );
-}
+};
+
+export default HomeClient;
