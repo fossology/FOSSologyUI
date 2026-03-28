@@ -149,7 +149,8 @@ const HomeClient = () => {
                              text-slate-400 hover:text-white 
                              transition-colors text-sm"
                 >
-                  {showPassword ? "🙈" : "👁️"}
+                {showPassword ? "👁️" : "👀"}
+
                 </button>
               </div>
             </div>

@@ -24,15 +24,16 @@ import React from "react";
 import { Button, InputContainer } from "@/components/Widgets";
 
 const OneShotAnalysisPage = () => {
+  const [selectedFile, setSelectedFile] = React.useState(null);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: Add file handling and real-time license analysis logic here
-    console.log("Analyze button clicked");
+    if (!selectedFile) return;
+    // File is stored in selectedFile, ready for API integration
   };
 
   const handleChange = (e) => {
-    // TODO: Handle file input change here
-    console.log("Selected file:", e.target.files[0]);
+    setSelectedFile(e.target.files[0] || null);
   };
 
   return (

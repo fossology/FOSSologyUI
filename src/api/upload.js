@@ -96,6 +96,22 @@ export const getUploadByIdApi = (uploadId, retries) => {
   });
 };
 
+// Updating an Upload's name and description
+export const updateUploadApi = (uploadId, uploadName, uploadDescription) => {
+  const url = endpoints.upload.update(uploadId);
+  return sendRequest({
+    url,
+    method: "PATCH",
+    headers: {
+      Authorization: getToken(),
+    },
+    body: {
+      uploadName,
+      uploadDescription,
+    },
+  });
+};
+
 // Getting a Upload Summary
 export const getUploadSummaryApi = (uploadId) => {
   const url = endpoints.upload.getSummary(uploadId);

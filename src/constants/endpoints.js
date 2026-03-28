@@ -60,6 +60,7 @@ const endpoints = {
   upload: {
     uploadCreate: () => `${apiUrl}/uploads`,
     getId: (uploadId) => `${apiUrl}/uploads/${uploadId}`,
+    update: (uploadId) => `${apiUrl}/uploads/${uploadId}`,
     getSummary: (uploadId) => `${apiUrl}/uploads/${uploadId}/summary`,
     getLicense: (uploadId) => `${apiUrl}/uploads/${uploadId}/licenses`,
   },

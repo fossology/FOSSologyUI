@@ -33,6 +33,7 @@ const messages = {
   createdFolder: "Successfully created the folder",
   deletedFolder: "Successfully deleted the folder",
   updatedFolderProps: "Successfully updated the folder properties",
+  updatedUploadProps: "Successfully updated the upload properties",
   movedFolder: "Successfully moved the folder",
   copiedFolder: "Successfully copied the folder",
   unlinkedFolder: "Successfully unlinked the folder",
