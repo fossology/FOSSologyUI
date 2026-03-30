@@ -22,13 +22,23 @@ SPDX-License-Identifier: GPL-2.0-only
 import React, { useState } from "react";
 
 // Widgets
-import { InputContainer, Button } from "@/components/Widgets";
+import { InputContainer, Button, Alert, Spinner } from "@/components/Widgets";
+
+// Service
+import { createCandidateLicense } from "@/services/licenses";
+
+// Constants
+import { initialMessage } from "@/constants/constants";
 
 const AddLicensePage = () => {
   const options = [
     { id: 1, value: "Yes" },
     { id: 2, value: "No" },
   ];
+
+  const [loading, setLoading] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
+  const [message, setMessage] = useState(initialMessage);
 
   const [formData, setFormData] = useState({
     active: "",
@@ -55,16 +65,54 @@ const AddLicensePage = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Submit formData via API here
-    console.log("Submitted:", formData);
+    setLoading(true);
+    try {
+      const res = await createCandidateLicense({
+        shortName: formData.shortName,
+        fullName: formData.fullName,
+        text: formData.licenseText,
+        risk: formData.riskLevel,
+        licenseUrl: formData.url,
+        mergeRequest: false,
+      });
+      setMessage({ type: "success", text: res.message || "License added successfully." });
+      setFormData({
+        active: "",
+        checked: "",
+        spdxCompatible: "",
+        shortName: "",
+        fullName: "",
+        licenseText: "",
+        textUpdatable: "",
+        detectorType: "",
+        url: "",
+        publicNotes: "",
+        conclusion: "",
+        reportedLicense: "",
+        riskLevel: "",
+        obligations: "",
+      });
+    } catch (error) {
+      setMessage({ type: "danger", text: error.message || "Failed to add license." });
+    } finally {
+      setLoading(false);
+      setShowMessage(true);
+    }
   };
 
   return (
     <div className="main-container my-3">
       <div className="row">
         <div className="col-lg-8 col-md-12 col-sm-12 col-12">
+          {showMessage && (
+            <Alert
+              type={message.type}
+              setShow={setShowMessage}
+              message={message.text}
+            />
+          )}
           <h1 className="font-size-main-heading">Add License</h1>
           <br />
           <form onSubmit={handleSubmit}>
@@ -236,8 +284,8 @@ const AddLicensePage = () => {
               Associated Obligations
             </InputContainer>
 
-            <Button type="submit" className="mt-4">
-              Add License
+            <Button type="submit" className="mt-4" disabled={loading}>
+              {loading ? <Spinner /> : "Add License"}
             </Button>
           </form>
         </div>
