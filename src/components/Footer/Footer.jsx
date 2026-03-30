@@ -44,8 +44,14 @@ const Footer = () => {
   return (
     <footer className="w-full bg-neutral-300 text-gray-900 text-xs px-4 py-3">
       <div className="max-w-screen-xl mx-auto text-center">
-        Version: [{version?.version}], Branch: [{version?.branchName}], Commit: [#{version?.commitHash}]{" "}
-        {version?.commitDate} built @ {version?.buildDate}
+        {version ? (
+  <>
+    Version: [{version.version}], Branch: [{version.branchName}], Commit: [#{version.commitHash}]{" "}
+    {version.commitDate} built @ {version.buildDate}
+  </>
+) : (
+  <>Version information unavailable</>
+)}
       </div>
     </footer>
   );
