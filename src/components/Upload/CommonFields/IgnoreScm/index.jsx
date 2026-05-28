@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
+ SPDX-FileCopyrightText: 2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -24,13 +25,21 @@ import { InputContainer, Tooltip } from "@/components/Widgets";
 
 function IgnoreScm({ ignoreScm, handleChange }) {
   return (
-    <div id="upload-ignore-files" className="mt-4">
+    <div id="upload-ignore-files" className="mt-1">
       <InputContainer
         type="checkbox"
-        checked={ignoreScm.ignoreScm}
+        checked={ignoreScm}
         name="ignoreScm"
         id="upload-ignore-scm"
-        onChange={(checked) => handleChange(checked, "ignoreScm")}
+        onChange={(checked) =>
+          handleChange({
+            target: {
+              type: "checkbox",
+              name: "ignoreScm",
+              checked,
+            },
+          })
+        }
       >
         Ignore SCM files (Git, SVN, TFS) and files with particular
         Mimetype

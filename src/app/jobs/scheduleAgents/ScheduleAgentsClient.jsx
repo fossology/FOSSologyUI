@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -63,14 +63,17 @@ const ScheduleAgentsPage = () => {
       bulkReused: false,
       newScanner: false,
       ojoDecider: false,
+      autoConclude: false,
+      autoConcludeType: "permissive",
     },
     reuse: {
-      reuseUpload: 0,
-      reuseGroup: getLocalStorage("user")?.default_group,
+      reuseUpload: [],
+      reuseGroup: "",
       reuseMain: false,
       reuseEnhanced: false,
       reuseReport: false,
       reuseCopyright: false,
+      reuseChecked: false,
     },
     scancode: {
       license: false,
@@ -99,6 +102,16 @@ const ScheduleAgentsPage = () => {
   const [uploadList, setUploadList] = useState([]);
   const [folderList, setFolderList] = useState(initialFolderList);
   const [scanFileData, setScanFileData] = useState(initialScanFileData);
+
+  useEffect(() => {
+    const defaultGroup = getLocalStorage("user")?.default_group;
+    if (defaultGroup) {
+      setScanFileData((prev) => ({
+        ...prev,
+        reuse: { ...prev.reuse, reuseGroup: defaultGroup },
+      }));
+    }
+  }, []);
   const [loading, setLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState(null);
@@ -163,15 +176,20 @@ const ScheduleAgentsPage = () => {
           const current = Array.isArray(prev.reuse.reuseUpload)
             ? prev.reuse.reuseUpload
             : [];
-          const numValue = Number(value); // ensure integer
-
+          
+          const exists = value
+          ? current.find((item) => item.id === value.id)
+          : false;
+          
           return {
             ...prev,
             reuse: {
               ...prev.reuse,
               reuseUpload: checked
-                ? [...current, numValue]
-                : current.filter((id) => id !== numValue),
+                ? exists
+                  ? current
+                  : [...current, value]
+                : current.filter((item) => item.id !== value.id),
             },
           };
         }
@@ -206,8 +224,8 @@ const ScheduleAgentsPage = () => {
 
   return (
     <div className="max-w-4xl mx-40 px-4 py-8">
-      <h1 className="text-3xl font-bold text-[#101010] mb-6">Schedule an Analysis</h1>
-      <p className="text-lg font-semibold text-[#101010] mb-4">
+      <h1 className="text-3xl font-bold text-foreground mb-6">Schedule an Analysis</h1>
+      <p className="text-lg font-semibold text-foreground mb-4">
         Select an uploaded file for additional analysis.
       </p>
       {showMessage && (
@@ -215,7 +233,7 @@ const ScheduleAgentsPage = () => {
         <Alert
           variant={message.type === "success" ? "default" : "destructive"}
           className={`relative flex items-start gap-3 rounded-[4px] border-0 pr-10 ${
-            message.type === "success" ? "bg-green-100" : "bg-[#FFEBEE]"
+            message.type === "success" ? "bg-green-100" : "bg-error-100"
           }`}
         >
           {/* Close Button */}
@@ -248,14 +266,14 @@ const ScheduleAgentsPage = () => {
           <div>
             <AlertTitle
               className={`text-base font-semibold ${
-                message.type === "success" ? "text-green-700" : "text-[#A41411]"
+                message.type === "success" ? "text-green-700" : "text-error-700"
               }`}
             >
               {message.type === "success" ? "Success" : "Error"}
             </AlertTitle>
             <AlertDescription
               className={`text-sm ${
-                message.type === "success" ? "text-green-700" : "text-[#A41411]"
+                message.type === "success" ? "text-green-700" : "text-error-700"
               }`}
             >
               {message.text}
@@ -270,7 +288,7 @@ const ScheduleAgentsPage = () => {
         <div>
           <label
             htmlFor="folderId"
-            className="block text-base font-normal text-[#101010] mb-3"
+            className="block text-base font-normal text-foreground mb-3"
           >
             1. Select the folder containing the upload you wish to analyze:
           </label>
@@ -301,7 +319,7 @@ const ScheduleAgentsPage = () => {
         <div>
           <label
             htmlFor="uploadId"
-            className="block text-base font-normal text-[#101010] mb-3"
+            className="block text-base font-normal text-foreground mb-3"
           >
             2. Select the upload to analyze:
           </label>
@@ -333,23 +351,21 @@ const ScheduleAgentsPage = () => {
         </div>
 
         <div className="flex items-baseline gap-2 mb-3">
-        <span className="text-base font-medium text-[#101010] mb-3">3.</span>
+        <span className="text-base font-medium text-foreground mb-3">3.</span>
           <div className="flex-1">
             <CommonFields
               analysis={scanFileData.analysis}
-              handleChange={handleChange}
               handleScanChange={handleScanChange}
             />
           </div>
         </div>
 
-        <p className="text-lg font-semibold text-[#101010] mb-4 mt-4">
+        <p className="text-lg font-semibold text-foreground mb-4 mt-4">
         Reuser:
         </p>
 
         <CommonFields
           reuse={scanFileData.reuse}
-          handleChange={handleChange}
           handleScanChange={handleScanChange}
         />    
 
@@ -361,30 +377,28 @@ const ScheduleAgentsPage = () => {
             </AccordionTrigger>
 
             <AccordionContent className="space-y-4 pb-2">
-                <p className="text-lg font-semibold text-[#101010] mb-4">
+                <p className="text-lg font-semibold text-foreground mb-4">
                 Decider:
                 </p>
                 <div className="flex items-baseline gap-2 mb-3">
-                <span className="text-base font-medium text-[#101010] mb-3">1.</span>
+                <span className="text-base font-medium text-foreground mb-3">1.</span>
                   <div className="flex-1">
                 <CommonFields
                   decider={scanFileData.decider}
-                  handleChange={handleChange}
                   handleScanChange={handleScanChange}
                 />
                 </div>
                 </div> 
             </AccordionContent>
             <AccordionContent className="space-y-4 pb-2">
-                <p className="text-lg font-semibold text-[#101010] mb-4">
+                <p className="text-lg font-semibold text-foreground mb-4">
                 Scancode:
                 </p>
                 <div className="flex items-baseline gap-2 mb-3">
-                <span className="text-base font-medium text-[#101010] mb-3">2.</span>
+                <span className="text-base font-medium text-foreground mb-3">2.</span>
                   <div className="flex-1">
                 <CommonFields
                   scancode={scanFileData.scancode}
-                  handleChange={handleChange}
                   handleScanChange={handleScanChange}
                 />
                 </div>
@@ -398,7 +412,7 @@ const ScheduleAgentsPage = () => {
           <Button
             type="submit"
             disabled={loading || isButtonDisabled}
-            className="bg-[#004494] text-white h-10 px-8 py-2 rounded text-base font-medium hover:bg-[#00095C] disabled:bg-[#9EB9D3] disabled:text-white"
+            className="bg-primary text-white h-10 px-8 py-2 rounded text-base font-medium hover:bg-tertiary1-900 disabled:bg-tertiary1-400 disabled:text-white"
           >
             {loading ? "Analyzing..." : "Analyze"}
           </Button>

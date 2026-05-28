@@ -1,5 +1,5 @@
 /*
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -28,16 +28,16 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90",
+          "bg-tertiary1-800 text-white shadow-xs hover:bg-tertiary1-900 disabled:opacity-100 disabled:bg-tertiary1-400 disabled:text-white",
         destructive:
           "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
         outline:
-          "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
+          "border border-tertiary1-800 text-tertiary1-800 bg-white shadow-xs hover:bg-tertiary1-200 hover:text-tertiary1-800 hover:border-tertiary1-800 disabled:opacity-100 disabled:border-tertiary1-400 disabled:text-tertiary1-400 disabled:bg-white",
         secondary:
           "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
         ghost:
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
-        link: "text-primary underline-offset-4 hover:underline",
+        link: "text-tertiary1-800 underline-offset-4 hover:underline hover:text-tertiary1-900 hover:decoration-tertiary1-900 disabled:opacity-100 disabled:text-tertiary1-400 disabled:underline disabled:decoration-tertiary1-400",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",

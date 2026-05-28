@@ -1,5 +1,5 @@
 /*
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -50,7 +50,7 @@ function SelectTrigger({ className, children, open, ...props }) {
   return (
     <SelectPrimitive.Trigger
       className={cn(
-        "flex w-full items-center justify-between gap-2 rounded border border-[#616161] bg-white px-3 py-2 text-sm text-black transition focus:border-[#616161] focus:outline-none disabled:cursor-not-allowed disabled:bg-[#F5F5F5] disabled:text-[#BDBDBD]",
+        "group flex w-full items-center justify-between gap-2 rounded border border-neutral-800 bg-white px-3 py-2 text-sm text-black transition focus:border-neutral-800 focus:outline-none disabled:cursor-not-allowed data-[disabled]:cursor-not-allowed data-[disabled]:border-[#CECECE] data-[disabled]:bg-white data-[disabled]:text-[#A9A9A9]",
         className
       )}
       {...props}
@@ -66,7 +66,7 @@ function SelectTrigger({ className, children, open, ...props }) {
           alt="Chevron"
           width={20}
           height={20}
-          className="ml-2"
+          className="ml-2 group-data-[disabled]:[filter:brightness(0)_invert(1)_brightness(0.663)]"
         />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
@@ -78,7 +78,7 @@ function SelectContent({ className, children, position = "popper", ...props }) {
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
         className={cn(
-          "w-[var(--radix-select-trigger-width)] overflow-hidden rounded border border-[#E1E1E1] bg-white text-black shadow-md z-50",
+          "w-[var(--radix-select-trigger-width)] overflow-hidden rounded border border-neutral-300 bg-white text-black shadow-md z-50",
           position === "popper" && "data-[side=bottom]:translate-y-1",
           className
         )}
@@ -110,7 +110,7 @@ function SelectItem({ className, children, ...props }) {
       className={cn(
         "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-2 pr-8 text-sm outline-none",
         "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-        "focus:bg-[#004494] focus:text-white",
+        "focus:bg-primary focus:text-white",
         className
       )}
       {...props}

@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -19,13 +19,14 @@ SPDX-License-Identifier: GPL-2.0-only
 
 "use client";
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import routes from "@/constants/routes";
 import { isAuth } from "@/shared/authHelper";
 import Image from "next/image"
 import { cn } from "@/lib/utils";
+import { ACTION_800, BODY_TEXT } from "@/constants/colors";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -84,6 +85,11 @@ const BrowseHeader = ({ title }) => {
   const uploadID = searchParams.get("uploadID");
 
   const [open, setOpen] = useState(false)
+  const [authenticated, setAuthenticated] = useState(false)
+
+  useEffect(() => {
+    setAuthenticated(isAuth());
+  }, [pathname]);
 
   const isActive = moreItems.some((item) => pathname === item.href)
 
@@ -91,9 +97,9 @@ const BrowseHeader = ({ title }) => {
     ? "/assets/icons/chevron_up/chevron_up_16px.svg"
     : "/assets/icons/chevron_down/chevron_down_16px.svg"
 
-  const chevronColor = isActive ? "#004494" : "#101010"
+  const chevronColor = isActive ? ACTION_800 : BODY_TEXT
 
-  if (!isAuth()) return null;
+  if (!authenticated) return null;
 
   return (
     <div className="w-full bg-gray-100 h-18 px-4 flex items-end justify-between">
@@ -113,8 +119,8 @@ const BrowseHeader = ({ title }) => {
               className={cn(
                 "px-4 py-2 text-sm font-medium border border-transparent rounded-t-md",
                 isActive
-                  ? "border-gray-300 border-b-white text-[#004494] bg-white"
-                  : "text-gray-800 hover:text-[#004494] hover:bg-gray-100"
+                  ? "border-gray-300 border-b-white text-primary bg-white"
+                  : "text-gray-800 hover:text-primary hover:bg-gray-100"
               )}
             >
               {item.name}
@@ -128,8 +134,8 @@ const BrowseHeader = ({ title }) => {
             className={cn(
               "flex items-center gap-1 px-3 py-2 text-sm font-medium border border-transparent rounded-t-md",
               isActive
-                ? "border-gray-300 border-b-white text-[#004494] bg-white"
-                : "text-gray-800 hover:text-[#004494] hover:bg-gray-100"
+                ? "border-gray-300 border-b-white text-primary bg-white"
+                : "text-gray-800 hover:text-primary hover:bg-gray-100"
             )}
           >
             More

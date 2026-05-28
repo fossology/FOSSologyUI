@@ -1,5 +1,5 @@
 /*
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -16,14 +16,14 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+"use client";
+
 import { useState, useEffect } from "react";
 import { getFossologyVersion } from "@/services/info";
 import { getSessionStorage, setSessionStorage } from "@/shared/storageHelper";
 
 const Footer = () => {
-  const [version, setVersion] = useState(
-    getSessionStorage("fossologyVersion") || null
-  );
+  const [version, setVersion] = useState(null);
 
   const fetchVersion = () => {
     return getFossologyVersion()
@@ -36,7 +36,10 @@ const Footer = () => {
   };
 
   useEffect(() => {
-    if (!version) {
+    const cached = getSessionStorage("fossologyVersion");
+    if (cached) {
+      setVersion(cached);
+    } else {
       fetchVersion();
     }
   }, []);

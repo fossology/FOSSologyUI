@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -38,10 +38,13 @@ function CommonFields({
 }) {
   return (
     <>
-      {ignoreScm && (
-        <IgnoreScm ignoreScm={ignoreScm} handleChange={handleChange} />
+      {typeof ignoreScm === "boolean" && (
+        <IgnoreScm
+          ignoreScm={ignoreScm}
+          handleChange={handleChange}
+        />
       )}
-      {accessLevel && (
+            {accessLevel && (
         <AccessLevel accessLevel={accessLevel} handleChange={handleChange} />
       )}
       {analysis && (
@@ -50,7 +53,7 @@ function CommonFields({
       {decider && (
         <LicenseDecider decider={decider} handleChange={handleScanChange} />
       )}
-      {reuse && <UploadReuse reuse={reuse} handleChange={handleScanChange} />}
+      {reuse && <UploadReuse reuse={reuse} handleScanChange={handleScanChange} />}
       {scancode && (
         <Scancode scancode={scancode} handleChange={handleScanChange} />
       )}
@@ -81,13 +84,13 @@ CommonFields.propTypes = {
     bulkReused: PropTypes.bool.isRequired,
     newScanner: PropTypes.bool.isRequired,
     ojoDecider: PropTypes.bool.isRequired,
+    autoConclude: PropTypes.bool.isRequired,
+    autoConcludeType: PropTypes.string.isRequired,
   }),
   reuse: PropTypes.shape({
-    groupChecked: PropTypes.bool.isRequired,
-    folderChecked: PropTypes.bool.isRequired,
+    reuseChecked: PropTypes.bool.isRequired,
     reuseGroup: PropTypes.string.isRequired,
-    reuseFolder: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    reuseUpload: PropTypes.number.isRequired,
+    reuseUpload: PropTypes.array.isRequired,
     reuseEnhanced: PropTypes.bool.isRequired,
     reuseMain: PropTypes.bool.isRequired,
     reuseReport: PropTypes.bool.isRequired,

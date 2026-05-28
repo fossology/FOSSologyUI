@@ -1,3 +1,21 @@
+/*
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
+
+SPDX-License-Identifier: GPL-2.0-only
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License
+ version 2 as published by the Free Software Foundation.
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License along
+ with this program; if not, write to the Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*/
+
 const config = {
     content: [
     "./src/app/**/*.{js,ts,jsx,tsx}",
@@ -10,17 +28,12 @@ const config = {
         'gutter': '24px',
     },
     colors: {
-        // Primary
-        primary: {
+        // Brand (FOSSology red — renamed from "primary" to avoid conflict with ShadCN --color-primary CSS variable)
+        brand: {
             900: "#C31730",
             800: "#EC4958",
             700: "#F57B85",
             100: "#FFCED7",
-        },
-        // Secondary
-        secondary: {
-            900: "#101010",
-            700: "#807F82",
         },
         // Tertiary 1
         tertiary1: {
@@ -28,7 +41,7 @@ const config = {
             800: "#004494",
             600: "#4D7CB7",
             400: "#B0C4DE",
-            200: "#DEE7F2",
+            200: "#E2EFFF",
         },
         // Tertiary 2
         tertiary2: {
@@ -53,6 +66,7 @@ const config = {
         error: {
             100: "#FFEBEE",
             500: "#E03C31",
+            600: "#A41411",
             700: "#5F2120",
         },
         warning: {

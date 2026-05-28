@@ -1,5 +1,5 @@
 /*
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -19,7 +19,7 @@ SPDX-License-Identifier: GPL-2.0-only
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { cn } from "@/lib/utils" 
 
 import { Eye, EyeOff } from "lucide-react"
@@ -47,11 +47,17 @@ import { isAuth } from '@/shared/authHelper';
 export default function HomeClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
 
+  const [authenticated, setAuthenticated] = useState(false);
   const [values, setValues] = useState({ username: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+
+  useEffect(() => {
+    setAuthenticated(isAuth());
+  }, [pathname]);
 
   const { username, password } = values;
 
@@ -79,7 +85,7 @@ export default function HomeClient() {
     if (message) {
       setErrorMessage(message);
       setShowError(true);
-      router.replace(window.location.pathname);
+      router.replace(pathname);
     }
   }, [searchParams, router]);
 
@@ -121,16 +127,16 @@ export default function HomeClient() {
         </div>
 
         {/* Right: Login Form */}
-        {!isAuth() && (
-          <Card className="bg-[#F6F6F6] p-6 w-full max-w-md border-0">
+        {!authenticated && (
+          <Card className="bg-muted p-6 w-full max-w-md border-0">
             <CardHeader className="p-0 pb-0">
-                <CardTitle className="text-2xl font-bold text-[#101010]">
+                <CardTitle className="text-2xl font-bold text-foreground">
                   Log in to your account
                 </CardTitle>
-                <CardDescription className="text-base font-semibold text-[#101010] mt-2">
+                <CardDescription className="text-base font-semibold text-foreground mt-2">
                   Hello there! Welcome to FOSSology
                 </CardDescription>
-                <p className="text-sm font-normal text-[#101010] mt-2">
+                <p className="text-sm font-normal text-foreground mt-2">
                   This login uses HTTP, so passwords are transmitted in plain text. This is not a secure connection.
                 </p>
             </CardHeader>
@@ -140,7 +146,7 @@ export default function HomeClient() {
               <div className="mb-4">
                 <Alert
                   variant="destructive"
-                  className="flex items-start gap-3 bg-[#FFEBEE] rounded-[4px] border-0"
+                  className="flex items-start gap-3 bg-error-100 rounded-[4px] border-0"
                 >
                   <img
                     src="/assets/icons/Alert/ErrorFilled.svg"
@@ -150,10 +156,10 @@ export default function HomeClient() {
                     className="mt-1"
                   />
                   <div>
-                    <AlertTitle className="text-base font-semibold text-[#A41411]">
+                    <AlertTitle className="text-base font-semibold text-error-700">
                       An error occurred
                     </AlertTitle>
-                    <AlertDescription className="text-sm text-[#A41411]">
+                    <AlertDescription className="text-sm text-error-700">
                       {errorMessage}
                     </AlertDescription>
                   </div>
@@ -162,7 +168,7 @@ export default function HomeClient() {
             )}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label htmlFor="username" className="block text-base font-normal text-[#101010] mb-1">
+                <label htmlFor="username" className="block text-base font-normal text-foreground mb-1">
                   Username
                 </label>
                 <Input
@@ -177,7 +183,7 @@ export default function HomeClient() {
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-base font-normal text-[#101010] mb-1">
+                <label htmlFor="password" className="block text-base font-normal text-foreground mb-1">
                   Password
                 </label>
                 <div className="relative">
@@ -204,7 +210,7 @@ export default function HomeClient() {
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full h-10 bg-[#004494] text-base text-white rounded-[4px] hover:bg-[#003377]"
+                className="w-full h-10 text-base rounded-[4px]"
               >
                 {loading ? "Logging in..." : "Login"}
               </Button>

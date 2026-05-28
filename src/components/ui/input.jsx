@@ -1,5 +1,5 @@
 /*
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -26,8 +26,8 @@ function Input({ className, type, ...props }) {
       type={type}
       data-slot="input"
       className={cn(
-        "w-full px-3 py-2 bg-white border border-[#616161] placeholder-[#616161] rounded text-base shadow-xs transition-colors",
-        "focus:border-[#004494] focus:shadow-[0px_0px_3px_2px_#00449440] focus:outline-none",
+        "w-full px-3 py-2 bg-white border border-neutral-800 placeholder:text-neutral-800 rounded text-sm shadow-xs transition-colors",
+        "focus:border-primary focus:shadow-[0px_0px_3px_2px_#00449440] focus:outline-none",
         "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
         className
       )}

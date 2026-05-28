@@ -1,5 +1,5 @@
 /*
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -16,25 +16,31 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-"use client"; // Ensure client context
+"use client";
 
-import React, { useState, createContext } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import PropTypes from "prop-types";
 
 // Helper functions to persist theme
 import { setLocalStorage, getLocalStorage } from "@/shared/storageHelper";
 
-// Initial state
-const initialState = {
-  theme: getLocalStorage("theme") || "light",
+// Static default — must not read localStorage here (causes SSR/client hydration mismatch)
+const defaultState = {
+  theme: "light",
 };
 
 // Create context
-export const GlobalContext = createContext(initialState);
+export const GlobalContext = createContext(defaultState);
 
 // Provider component
 export const GlobalProvider = ({ children }) => {
-  const [state, setState] = useState(initialState);
+  const [state, setState] = useState(defaultState);
+
+  // Read saved theme only after hydration to keep server/client render in sync
+  useEffect(() => {
+    const savedTheme = getLocalStorage("theme");
+    if (savedTheme) setState({ theme: savedTheme });
+  }, []);
 
   const setTheme = (theme) => {
     setState({ theme });
