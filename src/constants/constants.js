@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2022 Soham Banerjee(sohambanerjee4abc@hotmail.com), Krishna Mahato (krishhtrishh9304@gmail.com)
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -116,7 +116,7 @@ export const initialStateFile = {
   uploadDescription: "",
   accessLevel: "protected",
   ignoreScm: false,
-  fileInput: null,
+  fileInput: [],
 };
 export const initialScanFileDataFile = {
   analysis: defaultAgentsList(),
@@ -125,10 +125,13 @@ export const initialScanFileDataFile = {
     bulkReused: false,
     newScanner: false,
     ojoDecider: false,
+    autoConclude: false,
+    autoConcludeType: "permissive",
   },
   reuse: {
-    reuseUpload: 0,
+    reuseUpload: [],
     reuseGroup: getLocalStorage("user")?.default_group,
+    reuseChecked: false,
     reuseMain: false,
     reuseEnhanced: false,
     reuseReport: false,
@@ -155,6 +158,7 @@ export const initialStateImportReport = {
   upload: "",
   report: null,
   addNewLicensesAs: "candidate",
+  matchLicenseUsing: "spdxid",
   addConcludedAsDecisions: true,
   addLicenseInfoFromInfoInFile: true,
   addLicenseInfoFromConcluded: false,
@@ -165,17 +169,20 @@ export const initialStateImportReport = {
 
 // constants for upload/UploadFromServer
 export const initialStateUploadFromServer = {
-  folderId: 1,
+  folderId: "",
   uploadDescription: "",
   accessLevel: "protected",
   ignoreScm: false,
   uploadType: "server",
   groupName: "",
+  filePath: "",
+  viewableName: "",
+  description: "",
 };
 
 // constants for upload/url
 export const initialStateUrl = {
-  folderId: 1,
+  folderId: "",
   uploadDescription: "",
   accessLevel: "protected",
   ignoreScm: false,
@@ -189,7 +196,7 @@ export const initialUrlData = {
 
 // constants from upload/vcs
 export const initialStateVcs = {
-  folderId: 1,
+  folderId: "",
   uploadDescription: "",
   accessLevel: "protected",
   ignoreScm: false,
@@ -235,10 +242,13 @@ export const initialScanFileData = {
     bulkReused: false,
     newScanner: false,
     ojoDecider: false,
+    autoConclude: false,
+    autoConcludeType: "permissive",
   },
   reuse: {
-    reuseUpload: 0,
+    reuseUpload: [],
     reuseGroup: getLocalStorage("user")?.default_group,
+    reuseChecked: false,
     reuseMain: false,
     reuseEnhanced: false,
     reuseReport: false,

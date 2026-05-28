@@ -1,7 +1,7 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
  Copyright (C) 2022 Krishna Mahato <krishhtrishh9304@gmail.com>
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -31,7 +31,7 @@ const routes = {
     vcs: "/upload/vcs",
     importReport: "/upload/reportImport",
     instructions: "/upload/instructions",
-    oneShotAnalysis: "/upload/oneShotAnalysis",
+    oneShotNomos: "/upload/oneShotNomos",
     oneShotCopyright: "/upload/oneShotCopyright",
     oneShotMonk: "/upload/oneShotMonk",
   },
@@ -66,6 +66,7 @@ const routes = {
   },
   thirdPartyLicensesHTML: "/thirdPartyLicenses.html",
   admin: {
+    customize:"/admin/customize",
     group: {
       create: "/admin/group/create",
       delete: "/admin/group/delete",
@@ -87,7 +88,7 @@ const routes = {
     copyright: "/browseUploads/copyright",
     ecc: "/browseUploads/ecc",
     ipra: "/browseUploads/ipra",
-    conf: "/browseUPloads/conf",
+    conf: "/browseUploads/conf",
     more: {
       softwareHeritage: "/browseUploads/more/softwareHeritage",
       fileBrowser: "/browseUploads/more/fileBrowser",

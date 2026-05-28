@@ -1,5 +1,5 @@
 /*
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -52,7 +52,7 @@ function TooltipContent({ className, sideOffset = 4, children, ...props }) {
       <TooltipPrimitive.Content
         sideOffset={sideOffset}
         className={cn(
-          "bg-[#303030] text-white rounded-xs z-50 w-fit px-3 py-1.5 text-xs text-balance",
+          "bg-neutral-900 text-white rounded-xs z-50 w-fit px-3 py-1.5 text-xs text-balance",
           "animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
           "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2",
           "data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
@@ -62,7 +62,7 @@ function TooltipContent({ className, sideOffset = 4, children, ...props }) {
         {...props}
       >
         {children}
-        <TooltipPrimitive.Arrow className="fill-[#1E1E1E]" />
+        <TooltipPrimitive.Arrow className="fill-neutral-900" />
       </TooltipPrimitive.Content>
     </TooltipPrimitive.Portal>
   );

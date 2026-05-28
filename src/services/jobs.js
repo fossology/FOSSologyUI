@@ -1,7 +1,7 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
  Copyright (C) 2022 Krishna Mahato (krishhtrishh9304@gmail.com)
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -32,12 +32,9 @@ import { getLocalStorage } from "@/shared/storageHelper";
 
 // Fetching the jobs
 export const getJob = (jobId) => {
-  return getJobApi(jobId).then((res) => {
-    return res.entity.map((jsonObject) => {
-      const tag = {};
-      tag.stats = { score: jsonObject.score };
-      return tag;
-    });
+  return getJobApi({ jobId }).then((res) => {
+    if (!res) return null;
+    return res;
   });
 };
 
@@ -77,7 +74,7 @@ export const scheduleReport = (uploadId, reportFormat) => {
 export const downloadReport = (url) => {
   const reportId = getReportIdFromUrl(url);
   if (reportId === null) {
-    return null;
+    return Promise.reject(new Error("Invalid or missing report URL"));
   }
   return downloadReportApi(reportId).then((res) => {
     return res;

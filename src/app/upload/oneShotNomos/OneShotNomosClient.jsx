@@ -24,16 +24,22 @@ import React, { useRef, useState } from "react";
 // Widgets
 import { Button } from "@/components/ui/button";
 
-const OneShotMonk = () => {
+const OneShotNomosPage = () => {
   const fileInputRef = useRef(null);
 
   const [selectedFile, setSelectedFile] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // TODO: Add file handling and real-time license analysis logic here
+    console.log("Analyze button clicked");
   };
 
   const handleChange = (e) => {
+    // TODO: Handle file input change here
+    console.log("Selected file:", e.target.files[0]);
+
     setSelectedFile(e.target.files?.[0] || null);
   };
 
@@ -42,13 +48,13 @@ const OneShotMonk = () => {
   return (
     <div className="max-w-4xl mx-40 my-6 px-4">
       <h1 className="text-2xl font-semibold text-gray-900 mb-6">
-        One-Shot Monk
+        One-Shot License Analysis
       </h1>
 
       <div className="text-base text-foreground space-y-2 mb-8">
         <p>
-          This analyzer allows you to upload a single file for license
-          analysis. The limitations:
+          This analyzer allows you to upload a single file for
+          license analysis. The limitations:
         </p>
 
         <ul className="list-disc pl-6 space-y-1">
@@ -82,7 +88,7 @@ const OneShotMonk = () => {
             <input
               ref={fileInputRef}
               type="file"
-              name="file"
+              name="analysisFile"
               className="hidden"
               onChange={handleChange}
             />
@@ -127,5 +133,4 @@ const OneShotMonk = () => {
   );
 };
 
-export default OneShotMonk;
-
+export default OneShotNomosPage;

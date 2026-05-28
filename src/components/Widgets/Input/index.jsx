@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -49,24 +49,21 @@ const InputContainer = ({
 }) => {
 if (type === "radio") {
   return (
-    <RadioGroup
-      value={value}
-      onValueChange={onChange}
-      className="space-y-2"
-    >
-      <div className="flex items-start gap-2">
-        <RadioGroupItem
-          value={value}
-          id={id}
-          checked={checked}
-          disabled={disabled}
-          className="w-4 h-4 mt-1"
-        />
-        <Label htmlFor={id} className="text-base font-normal">
-          {children}
-        </Label>
-      </div>
-    </RadioGroup>
+    <div className="flex items-start gap-2">
+      <RadioGroupItem
+        value={value}
+        id={id}
+        disabled={disabled}
+        className="w-4 h-4 mt-[2px]"
+      />
+
+      <Label
+        htmlFor={id}
+        className="text-base font-normal leading-none cursor-pointer"
+      >
+        {children}
+      </Label>
+    </div>
   );
 }
   if (type === "checkbox") {
@@ -99,9 +96,10 @@ if (type === "radio") {
             value={value === null ? "" : value}
             onValueChange={(val) => onChange(val)}
             id={id}
+            disabled={disabled}
           >
-            <SelectTrigger className="h-8 text-sm flex items-center">
-              <SelectValue placeholder="All uploads" />
+            <SelectTrigger className="h-8 text-sm flex items-center" disabled={disabled}>
+              <SelectValue placeholder={placeholder ?? "Select..."} />
             </SelectTrigger>
             <SelectContent className="max-h-48 overflow-y-auto">
               {options.length > 0 ? (
@@ -115,7 +113,7 @@ if (type === "radio") {
                   </SelectItem>
                 ))
               ) : (
-                <SelectItem className="font-demi" disabled>
+                <SelectItem key="__no_data__" value="__no_data__" className="font-demi" disabled>
                   {noDataMessage}
                 </SelectItem>
               )}

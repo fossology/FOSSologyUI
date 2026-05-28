@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -17,65 +17,85 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+"use client";
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 // Widgets
 import { InputContainer, Tooltip } from "@/components/Widgets";
+import Chip from "@/components/ui/chip";
+import { Input } from "@/components/ui/input";
 
 // Required services for calling APIs
 import { getAllFolders } from "@/services/folders";
 import { getUploadsFolderId } from "@/services/organizeUploads";
-import { getAllGroups } from "@/services/groups";
 
 import messages from "@/constants/messages";
 
-const UploadReuse = ({ reuse, handleChange }) => {
-  const initialGroupList = [{ id: 3, name: "fossy" }];
-  const initialFolderList = [
-    {
-      id: 1,
-      name: "Software Repository",
-      description: "Top Folder",
-      parent: null,
-    },
-  ];
-  const initialUploadList = [
-    {
-      folderId: 1,
-      uploadId: null,
-      uploadName: "",
-      uploadDescription: "",
-    },
-  ];
+const UploadReuse = ({ reuse, handleScanChange }) => {
   const [reuseData, setReuseData] = useState({
-    groupList: initialGroupList,
-    folderList: initialFolderList,
-    uploadList: initialUploadList,
-    reuseFolder: 1,
+    combinedOptions: [],
+    uploadList: [],
+    reuseFolder: null,
   });
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredUploads = reuseData.uploadList.filter((item) =>
+    item.uploadname?.toLowerCase().includes((searchTerm || "").toLowerCase())
+  );
+
+  // Load folders for the current group and build combined "Folder (group:id)" options
   useEffect(() => {
+    if (!reuse.reuseGroup) return;
     getAllFolders(reuse.reuseGroup)
-      .then((res) => {
-        setReuseData((prevData) => ({ ...prevData, folderList: res }));
+      .then((folders) => {
+        const opts = (folders || []).map((f) => ({
+          id: `${f.id}|${reuse.reuseGroup}`,
+          name: `${f.name} (${reuse.reuseGroup}:${f.id})`,
+        }));
+        setReuseData((prev) => ({
+          ...prev,
+          combinedOptions: opts,
+          // Auto-select first folder so the dropdown always shows a real value
+          reuseFolder: prev.reuseFolder ?? (opts.length > 0 ? parseInt(opts[0].id.split('|')[0], 10) : null),
+        }));
       })
       .catch(() => {});
   }, [reuse.reuseGroup]);
 
+  // Load uploads whenever selected folder+group change
   useEffect(() => {
-    getUploadsFolderId(reuseData.reuseFolder, reuse.reuseGroup)
-      .then((res) => {
-        setReuseData((prevData) => ({ ...prevData, uploadList: res }));
-      })
-      .catch(() => {});
+    if (reuseData.reuseFolder && reuse.reuseGroup) {
+      getUploadsFolderId(reuseData.reuseFolder, reuse.reuseGroup)
+        .then((res) => {
+          setReuseData((prev) => ({ ...prev, uploadList: res || [] }));
+        })
+        .catch(() => {});
+    }
   }, [reuse.reuseGroup, reuseData.reuseFolder]);
 
-  const handleReuseDataChange = (e) => {
-    setReuseData((prevData) => ({
-      ...prevData,
-      [e.target.name]: e.target.value,
-    }));
+  const handleCombinedSelect = (value) => {
+    const separatorIndex = value.indexOf("|");
+    if (separatorIndex === -1) return;
+    const folderId = parseInt(value.slice(0, separatorIndex), 10);
+    const groupName = value.slice(separatorIndex + 1);
+    handleScanChange(null, "reuseGroup", "text", groupName);
+    setReuseData((prev) => ({ ...prev, reuseFolder: folderId }));
   };
+
+  const handleSelectUpload = (item) => {
+    handleScanChange(true, "reuseUpload", "checkbox", item);
+    setSearchTerm("");
+  };
+
+  const handleRemoveUpload = (item) => {
+    handleScanChange(false, "reuseUpload", "checkbox", item);
+  };
+
+  const currentCombinedValue =
+    reuseData.reuseFolder && reuse.reuseGroup
+      ? `${reuseData.reuseFolder}|${reuse.reuseGroup}`
+      : "";
 
   return (
     <div id="upload-optional-reuse" className="mt-4 space-y-2">
@@ -83,51 +103,34 @@ const UploadReuse = ({ reuse, handleChange }) => {
         1. (Optional) Reuse
         <Tooltip title="Copy clearing decisions if there is the same file hash between two files" />
       </p>
+
       <div className="flex items-center gap-4">
         <InputContainer
           type="checkbox"
-          name="reuseGroupCheckbox"
-          id="reuse-group-checkbox"
-          checked={reuse.groupChecked}
-          onChange={(checked) => handleChange(checked, "groupChecked", "checkbox")}
+          name="reuseChecked"
+          id="reuse-checked-checkbox"
+          checked={reuse.reuseChecked}
+          onChange={(checked) =>
+            handleScanChange(checked, "reuseChecked", "checkbox")
+          }
         >
-          Select the reuse group:
+          Select an already uploaded package for reuse in specific folder
         </InputContainer>
-
-      <InputContainer
-        type="select"
-        name="reuseGroup"
-        // name="reuseGroup[a.zip]"
-        id="upload-file-reuse-group"
-        onChange={handleChange}
-        options={reuseData.groupList}
-        value={reuse.reuseGroup}
-        property="name"
-        valueProperty="name"
-        noDataMessage={messages.noGroup}
-      />
       </div>
 
-      <div className="flex items-center gap-4">
-        <InputContainer
-          type="checkbox"
-          name="reuseFolderCheckbox"
-          id="reuse-folder-checkbox"
-          checked={reuse.folderChecked}
-          onChange={(checked) => handleChange(checked, "folderChecked", "checkbox")}
-        >
-          Select the reuse folder:
-        </InputContainer>
-
+      <div className="w-[282px]">
         <InputContainer
           type="select"
           name="reuseFolder"
-          id="upload-file-reuse-folder"
-          onChange={handleReuseDataChange}
-          options={reuseData.folderList}
-          value={reuseData.reuseFolder}
+          id="upload-file-reuse-folder-group"
+          onChange={handleCombinedSelect}
+          options={reuseData.combinedOptions}
+          value={currentCombinedValue}
           property="name"
+          valueProperty="id"
           noDataMessage={messages.noFolder}
+          disabled={!reuse.reuseChecked}
+          placeholder=""
         />
       </div>
       <InputContainer
@@ -135,7 +138,7 @@ const UploadReuse = ({ reuse, handleChange }) => {
         checked={reuse.reuseEnhanced}
         name="reuseEnhanced"
         id="upload-file-reuse-enhanced"
-        onChange={(checked) => handleChange(checked, "reuseEnhanced", "checkbox")}
+        onChange={(checked) => handleScanChange(checked, "reuseEnhanced", "checkbox")}
       >
         Enhanced reuse (slower)
         <Tooltip title="will copy a clearing decision if the two files differ by one line determined by a diff tool" />
@@ -145,7 +148,7 @@ const UploadReuse = ({ reuse, handleChange }) => {
         checked={reuse.reuseMain}
         name="reuseMain"
         id="upload-file-reuse-main"
-        onChange={(checked) => handleChange(checked, "reuseMain", "checkbox")}
+        onChange={(checked) => handleScanChange(checked, "reuseMain", "checkbox")}
       >
         Reuse main license/s
         <Tooltip title="will copy a main license decision if any" />
@@ -155,7 +158,7 @@ const UploadReuse = ({ reuse, handleChange }) => {
         checked={reuse.reuseReport}
         name="reuseReport"
         id="upload-file-reuse-report"
-        onChange={(checked) => handleChange(checked, "reuseReport", "checkbox")}
+        onChange={(checked) => handleScanChange(checked, "reuseReport", "checkbox")}
       >
         Reuse report configuration settings
         <Tooltip title="use to copy all the information from conf page(if any)" />
@@ -165,7 +168,7 @@ const UploadReuse = ({ reuse, handleChange }) => {
         checked={reuse.reuseCopyright}
         name="reuseCopyright"
         id="upload-file-reuse-copyright"
-        onChange={(checked) => handleChange(checked, "reuseCopyright", "checkbox")}
+        onChange={(checked) => handleScanChange(checked, "reuseCopyright", "checkbox")}
       >
         Reuse edited and deactivated copyrights
         <Tooltip title="use to copy edited and deactivated copyrights from the reused package" />
@@ -174,8 +177,50 @@ const UploadReuse = ({ reuse, handleChange }) => {
         <p className="font-semibold text-base">
           2. Upload to reuse:
         </p>
+          {reuse.reuseChecked && reuseData.reuseFolder ? (
+            <div className="w-[282px] relative">
+            {/* Input */}
+            <Input
+              type="text"
+              placeholder="Search to upload"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="h-[32px] pt-2 pb-2 pr-2 pl-3 rounded-[4px] text-[14px]"
+            />
 
-        {reuseData.uploadList && reuseData.uploadList.length > 0 ? (
+            {/* Dropdown */}
+            {searchTerm && filteredUploads.length > 0 && (
+              <div className="absolute z-10 w-full bg-white border border-gray-300 rounded mt-1 max-h-40 overflow-y-auto">
+                {filteredUploads.map((item) => (
+                  <div
+                    key={item.id}
+                    onClick={() => handleSelectUpload(item)}
+                    className="px-3 py-2 text-sm cursor-pointer hover:bg-gray-100"
+                  >
+                    {item.uploadname} ({item.uploadDate})
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Chips */}
+            <div className="mt-2 space-y-2">
+              {Array.isArray(reuse.reuseUpload) &&
+                reuse.reuseUpload.map((item) => (
+                  <Chip
+                    key={item.id}
+                    label={`${item.uploadname} (${item.uploadDate})`}
+                    onRemove={() => handleRemoveUpload(item)}
+                  />
+                ))}
+            </div>
+          </div>
+          ) : (
+          <p className="text-error-600 text-sm">
+            No repository chosen
+          </p>
+          )}
+        {/* {reuseData.uploadList && reuseData.uploadList.length > 0 ? (
           reuseData.uploadList.map((item, index) => (
             <InputContainer
               key={`${item.id ?? "no-id"}-${index}`}
@@ -190,7 +235,7 @@ const UploadReuse = ({ reuse, handleChange }) => {
           ))
         ) : (
           <p>{messages.noUploads}</p>
-        )}
+        )} */}
       </div>
 
             {/* <InputContainer
@@ -212,14 +257,15 @@ const UploadReuse = ({ reuse, handleChange }) => {
 
 UploadReuse.propTypes = {
   reuse: PropTypes.shape({
-    reuseUpload: PropTypes.number.isRequired,
+    reuseUpload: PropTypes.array.isRequired,
     reuseGroup: PropTypes.string.isRequired,
+    reuseChecked: PropTypes.bool.isRequired,
     reuseMain: PropTypes.bool.isRequired,
     reuseEnhanced: PropTypes.bool.isRequired,
     reuseReport: PropTypes.bool.isRequired,
     reuseCopyright: PropTypes.bool.isRequired,
   }).isRequired,
-  handleChange: PropTypes.func,
+  handleScanChange: PropTypes.func,
 };
 
 export default UploadReuse;

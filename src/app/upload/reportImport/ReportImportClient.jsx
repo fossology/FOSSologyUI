@@ -1,6 +1,7 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
  Copyright (C) 2022 Krishna Mahato (krishhtrishh9304@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -19,14 +20,30 @@
 
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 // Widgets
-import { Alert, Button, InputContainer } from "@/components/Widgets";
+import { Button } from "@/components/ui/button";
+import { InputContainer } from "@/components/Widgets";
+import { RadioGroup } from "@/components/ui/radio-group";
+import {
+  Alert,
+  AlertDescription,
+} from "@/components/ui/alert";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/select";
 
 // Constants
-import { initialMessage, initialStateImportReport } from "@/constants/constants";
+import {
+  initialMessage,
+  initialStateImportReport,
+} from "@/constants/constants";
 
 // Services
 import { getAllFolders } from "@/services/folders";
@@ -36,35 +53,48 @@ import { importReport } from "@/services/jobs";
 const ImportReportPage = () => {
   const [folderlist, setFolderlist] = useState([]);
   const [uploadList, setUploadList] = useState([]);
-  const [importReportData, setImportReportData] = useState(initialStateImportReport);
+  const [importReportData, setImportReportData] = useState(
+    initialStateImportReport
+  );
+
   const [message, setMessage] = useState(initialMessage);
   const [showMessage, setShowMessage] = useState(false);
 
   const searchParams = useSearchParams();
   const router = useRouter();
 
+  const fileInputRef = useRef(null);
+
   // Fetch all folders
   useEffect(() => {
     const fetchFolders = async () => {
       try {
         const folders = await getAllFolders();
+
         const temp = folders.map((f) => ({
           id: f.id,
           name: f.name,
           disabled: false,
         }));
+
         setFolderlist(temp);
 
         const folderQuery = searchParams.get("folder");
+
         const defaultFolder = folderQuery
           ? temp.find((f) => String(f.id) === folderQuery)?.id
-          : temp[0]?.id;
+          : "";
 
-        if (defaultFolder) {
-          setImportReportData((prev) => ({ ...prev, folder: defaultFolder }));
-        }
+        setImportReportData((prev) => ({
+          ...prev,
+          folder: defaultFolder || "",
+        }));
       } catch (error) {
-        setMessage({ type: "danger", text: error.message });
+        setMessage({
+          type: "danger",
+          text: error.message,
+        });
+
         setShowMessage(true);
       }
     };
@@ -76,25 +106,34 @@ const ImportReportPage = () => {
   useEffect(() => {
     const fetchUploads = async () => {
       try {
-        const uploads = await getUploadsFolderId(importReportData.folder);
+        const uploads = await getUploadsFolderId(
+          importReportData.folder
+        );
+
         const temp = uploads.map((u) => ({
           id: u.id,
           name: `${u.uploadname}, ${u.uploaddate}`,
           disabled: false,
         }));
+
         setUploadList(temp);
 
         const uploadQuery = searchParams.get("upload");
+
         const defaultUpload = uploadQuery
           ? temp.find((u) => String(u.id) === uploadQuery)?.id
-          : temp[0]?.id;
+          : "";
 
         setImportReportData((prev) => ({
           ...prev,
           upload: defaultUpload || "",
         }));
       } catch (error) {
-        setMessage({ type: "danger", text: error.message });
+        setMessage({
+          type: "danger",
+          text: error.message,
+        });
+
         setShowMessage(true);
       }
     };
@@ -106,15 +145,17 @@ const ImportReportPage = () => {
 
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
+
     if (!name) return;
 
     setImportReportData((prev) => ({
       ...prev,
-      [name]: type === "checkbox"
-        ? checked
-        : type === "file"
-        ? files[0]
-        : value,
+      [name]:
+        type === "checkbox"
+          ? checked
+          : type === "file"
+          ? files[0]
+          : value,
     }));
   };
 
@@ -122,203 +163,405 @@ const ImportReportPage = () => {
     e.preventDefault();
 
     if (!importReportData.report) {
-      setMessage({ type: "danger", text: "Choose a report" });
+      setMessage({
+        type: "danger",
+        text: "Choose a report",
+      });
+
       setShowMessage(true);
       return;
     }
 
     try {
       const formData = new FormData();
+
       Object.keys(importReportData).forEach((key) => {
         formData.append(key, importReportData[key]);
       });
 
-      const res = await importReport(importReportData.upload, formData);
-      setMessage({ type: "success", text: res.message });
+      const res = await importReport(
+        importReportData.upload,
+        formData
+      );
+
+      setMessage({
+        type: "success",
+        text: res.message,
+      });
+
       setShowMessage(true);
 
       setTimeout(() => {
-        setMessage({ type: "success", text: "Redirecting...." });
+        setMessage({
+          type: "success",
+          text: "Redirecting....",
+        });
       }, 1000);
 
       setTimeout(() => {
         router.push("/jobs/myRecentJobs");
       }, 2000);
     } catch (error) {
-      setMessage({ type: "danger", text: error.message });
+      setMessage({
+        type: "danger",
+        text: error.message,
+      });
+
       setShowMessage(true);
     }
   };
 
+  const isButtonDisabled = !importReportData.report;
+
   return (
-    <>
-      <div className="main-container my-3">
-        <div className="row">
-          <div className="col-lg-8 col-md-10 col-sm-12 col-12">
-            {showMessage && (
-              <Alert
-                type={message.type}
-                setShow={setShowMessage}
-                message={message.text}
+    <div className="max-w-4xl mx-40 my-6 px-4">
+      {showMessage && (
+        <div className="mb-4">
+          <Alert
+            variant={message.type}
+            className="relative flex items-start gap-2 rounded border-0 bg-info-100 px-4 py-2 text-sm text-info-500 pr-10"
+          >
+            <button
+              onClick={() => setShowMessage(false)}
+              className="absolute top-2 right-2 p-1 rounded hover:bg-black/10"
+              aria-label="Close"
+            >
+              <span
+                className="block w-5 h-5 bg-info-500 [mask-image:url('/assets/icons/Close/Close_20px.svg')] [mask-size:contain] [mask-repeat:no-repeat]"
               />
-            )}
-            <h3 className="font-size-main-heading">Report Import</h3>
-            <form>
-              <InputContainer
-                type="select"
-                name="folder"
-                id="folder"
-                onChange={handleChange}
-                options={folderlist}
-                value={importReportData.folder}
-                property="name"
-              >
-                Select the folder that contains the upload:
-              </InputContainer>
+            </button>
 
-              <InputContainer
-                type="select"
-                name="upload"
-                id="upload"
-                onChange={handleChange}
-                options={uploadList}
-                value={importReportData.upload || ""}
-                property="name"
-              >
-                Select the upload you wish to edit:
-              </InputContainer>
+            <img
+              src="/assets/icons/Alert/InfoFilled.svg"
+              alt="Info"
+              width={24}
+              height={24}
+              className="mt-1"
+            />
 
-              <InputContainer
-                type="file"
-                name="report"
-                id="upload-report"
-                onChange={handleChange}
-              >
-                Select report to upload:
-              </InputContainer>
+            <AlertDescription className="text-sm text-info-500">
+              {message.text}
+            </AlertDescription>
+          </Alert>
+        </div>
+      )}
 
-              <div className="font-medium">
-                Select how the information should be imported:
-                <ul>
-                  <li className="mt-2">
-                    Create new licenses as:
-                    <ul>
-                      <li>
-                        <InputContainer
-                          type="radio"
-                          value="candidate"
-                          name="addNewLicensesAs"
-                          id="upload-report-license-candidate"
-                          checked={importReportData.addNewLicensesAs === "candidate"}
-                          onChange={handleChange}
-                        >
-                          License candidate
-                        </InputContainer>
-                      </li>
-                      <li>
-                        <InputContainer
-                          type="radio"
-                          value="license"
-                          name="addNewLicensesAs"
-                          id="upload-report-new-license"
-                          checked={importReportData.addNewLicensesAs === "license"}
-                          onChange={handleChange}
-                        >
-                          New License
-                        </InputContainer>
-                      </li>
-                    </ul>
-                  </li>
+      <h1 className="text-2xl font-semibold text-gray-900 mb-6">
+        Report Import
+      </h1>
 
-                  <li className="mt-2">
-                    Add the License Info as findings from:
-                    <ul>
-                      <li>
-                        <InputContainer
-                          type="checkbox"
-                          name="addLicenseInfoFromInfoInFile"
-                          id="upload-report-license-info-file"
-                          checked={importReportData.addLicenseInfoFromInfoInFile}
-                          onChange={handleChange}
-                        >
-                          SPDX tag of type licenseInfoInFile
-                        </InputContainer>
-                      </li>
-                      <li>
-                        <InputContainer
-                          type="checkbox"
-                          name="addLicenseInfoFromConcluded"
-                          id="upload-report-license-concluded"
-                          checked={importReportData.addLicenseInfoFromConcluded}
-                          onChange={handleChange}
-                        >
-                          SPDX tag of type licenseConcluded
-                        </InputContainer>
-                      </li>
-                    </ul>
-                  </li>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* 1. Folder Selection */}
+        <div>
+          <label className="block font-normal mb-3">
+            1. Select the folder that contains the upload:
+          </label>
 
-                  <li className="mt-2">
-                    <InputContainer
-                      type="checkbox"
-                      name="addConcludedAsDecisions"
-                      id="upload-report-license-decisions"
-                      checked={importReportData.addConcludedAsDecisions}
-                      onChange={handleChange}
-                    >
-                      Add concluded licenses as decisions
-                    </InputContainer>
-                    <ul>
-                      <li>
-                        <InputContainer
-                          type="checkbox"
-                          name="addConcludedAsDecisionsOverwrite"
-                          id="upload-report-existing-decisions"
-                          checked={importReportData.addConcludedAsDecisionsOverwrite}
-                          onChange={handleChange}
-                          disabled
-                        >
-                          Also overwrite existing decisions
-                        </InputContainer>
-                      </li>
-                      <li>
-                        <InputContainer
-                          type="checkbox"
-                          name="addConcludedAsDecisionsTBD"
-                          id="upload-report-import-discussed"
-                          checked={importReportData.addConcludedAsDecisionsTBD}
-                          onChange={handleChange}
-                        >
-                          Import as "to be discussed"
-                        </InputContainer>
-                      </li>
-                    </ul>
-                  </li>
+          <Select
+            value={
+              importReportData.folder
+                ? importReportData.folder.toString()
+                : ""
+            }
+            onValueChange={(value) =>
+              setImportReportData((prev) => ({
+                ...prev,
+                folder: value,
+              }))
+            }
+          >
+            <SelectTrigger className="w-[282px]">
+              <SelectValue placeholder="Select Folder" />
+            </SelectTrigger>
 
-                  <li className="mt-2">
-                    <InputContainer
-                      type="checkbox"
-                      name="addCopyrights"
-                      id="upload-report-existing-copyright"
-                      checked={importReportData.addCopyrights}
-                      onChange={handleChange}
-                    >
-                      Add the copyright information as textfindings
-                    </InputContainer>
-                  </li>
-                </ul>
-              </div>
+            <SelectContent>
+              {folderlist.map((folder) => (
+                <SelectItem
+                  key={folder.id}
+                  value={folder.id.toString()}
+                >
+                  {folder.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
-              <Button type="submit" onClick={handleSubmit} className="mt-4">
-                Upload and Import
-              </Button>
-            </form>
+        {/* 2. Upload Selection */}
+        <div>
+          <label className="block font-normal mb-3">
+            2. Select the upload you wish to edit:
+          </label>
+
+          <Select
+            value={
+              importReportData.upload
+                ? importReportData.upload.toString()
+                : ""
+            }
+            onValueChange={(value) =>
+              setImportReportData((prev) => ({
+                ...prev,
+                upload: value,
+              }))
+            }
+          >
+            <SelectTrigger className="w-[400px]">
+              <SelectValue placeholder="Select Upload" />
+            </SelectTrigger>
+
+            <SelectContent>
+              {uploadList.map((upload) => (
+                <SelectItem
+                  key={upload.id}
+                  value={upload.id.toString()}
+                >
+                  {upload.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* 3. Report Upload */}
+        <div>
+          <label className="block font-normal mb-3">
+            3. Select report to upload:
+          </label>
+
+          <div className="flex items-end gap-3">
+            <input
+              ref={fileInputRef}
+              type="file"
+              name="report"
+              className="hidden"
+              onChange={handleChange}
+            />
+
+            <Button
+              type="button"
+              variant="outline"
+              className="font-medium text-primary rounded border-primary hover:bg-accent hover:text-accent-foreground"
+              onClick={() => fileInputRef.current?.click()}
+            >
+              Choose File
+            </Button>
+
+            <span
+              className={`self-end text-sm ${
+                importReportData.report
+                  ? "text-info-500"
+                  : "text-error-600"
+              }`}
+            >
+              {importReportData.report
+                ? importReportData.report.name
+                : "No file chosen"}
+            </span>
           </div>
         </div>
-      </div>
-    </>
+
+        {/* 4. Import Settings */}
+        <div>
+          <h2 className="font-semibold text-foreground mb-4">
+            4. Select how the information should be imported
+          </h2>
+
+          <div className="space-y-5">
+            {/* Create licenses */}
+            <div>
+              <p className="font-medium mb-3">Create new licenses as</p>
+
+              <RadioGroup
+                value={importReportData.addNewLicensesAs}
+                onValueChange={(value) =>
+                  setImportReportData((prev) => ({
+                    ...prev,
+                    addNewLicensesAs: value,
+                  }))
+                }
+                className="space-y-2 ml-2"
+              >
+                <InputContainer
+                  type="radio"
+                  value="candidate"
+                  name="addNewLicensesAs"
+                  id="import-report-license-candidate"
+                >
+                  License candidate
+                </InputContainer>
+
+                <InputContainer
+                  type="radio"
+                  value="license"
+                  name="addNewLicensesAs"
+                  id="import-report-new-license"
+                >
+                  New License
+                </InputContainer>
+              </RadioGroup>
+            </div>
+
+            {/* Match license using */}
+            <div>
+              <p className="font-medium mb-3">Match license using</p>
+
+              <RadioGroup
+                value={importReportData.matchLicenseUsing}
+                onValueChange={(value) =>
+                  setImportReportData((prev) => ({
+                    ...prev,
+                    matchLicenseUsing: value,
+                  }))
+                }
+                className="space-y-2 ml-2"
+              >
+                <InputContainer
+                  type="radio"
+                  value="shortname"
+                  name="matchLicenseUsing"
+                  id="match-license-shortname"
+                >
+                  Shortname
+                </InputContainer>
+
+                <InputContainer
+                  type="radio"
+                  value="spdxid"
+                  name="matchLicenseUsing"
+                  id="match-license-spdxid"
+                >
+                  SPDX ID
+                </InputContainer>
+              </RadioGroup>
+            </div>
+
+            {/* License findings */}
+            <div className="space-y-2">
+              <p className="font-medium inline-flex items-center gap-1">
+                Add the License Info as findings from
+              </p>
+
+              <InputContainer
+                type="checkbox"
+                name="addLicenseInfoFromInfoInFile"
+                id="upload-report-license-info-file"
+                checked={importReportData.addLicenseInfoFromInfoInFile}
+                onChange={(checked) =>
+                  setImportReportData((prev) => ({
+                    ...prev,
+                    addLicenseInfoFromInfoInFile: checked,
+                  }))
+                }
+              >
+                SPDX tag of type licenseInfoInFile
+              </InputContainer>
+
+              <InputContainer
+                type="checkbox"
+                name="addLicenseInfoFromConcluded"
+                id="upload-report-license-concluded"
+                checked={importReportData.addLicenseInfoFromConcluded}
+                onChange={(checked) =>
+                  setImportReportData((prev) => ({
+                    ...prev,
+                    addLicenseInfoFromConcluded: checked,
+                  }))
+                }
+              >
+                SPDX tag of type licenseConcluded
+              </InputContainer>
+            </div>
+
+            {/* Decisions */}
+            <div className="space-y-2">
+              <InputContainer
+                type="checkbox"
+                name="addConcludedAsDecisions"
+                id="upload-report-license-decisions"
+                checked={importReportData.addConcludedAsDecisions}
+                onChange={(checked) =>
+                  setImportReportData((prev) => ({
+                    ...prev,
+                    addConcludedAsDecisions: checked,
+                  }))
+                }
+              >
+                <p className="font-medium">
+                  Add concluded licenses as decisions
+                </p>
+              </InputContainer>
+
+              <div className="ml-6 space-y-2">
+                <InputContainer
+                  type="checkbox"
+                  name="addConcludedAsDecisionsOverwrite"
+                  id="upload-report-existing-decisions"
+                  checked={importReportData.addConcludedAsDecisionsOverwrite}
+                  disabled
+                  onChange={(checked) =>
+                    setImportReportData((prev) => ({
+                      ...prev,
+                      addConcludedAsDecisionsOverwrite: checked,
+                    }))
+                  }
+                >
+                  Also overwrite existing decisions
+                </InputContainer>
+
+                <InputContainer
+                  type="checkbox"
+                  name="addConcludedAsDecisionsTBD"
+                  id="upload-report-import-discussed"
+                  checked={importReportData.addConcludedAsDecisionsTBD}
+                  onChange={(checked) =>
+                    setImportReportData((prev) => ({
+                      ...prev,
+                      addConcludedAsDecisionsTBD: checked,
+                    }))
+                  }
+                >
+                  Import as "to be discussed"
+                </InputContainer>
+              </div>
+            </div>
+
+            {/* Copyright */}
+            <div>
+              <InputContainer
+                type="checkbox"
+                name="addCopyrights"
+                id="upload-report-existing-copyright"
+                checked={importReportData.addCopyrights}
+                onChange={(checked) =>
+                  setImportReportData((prev) => ({
+                    ...prev,
+                    addCopyrights: checked,
+                  }))
+                }
+              >
+                Add the copyright information as textfindings
+              </InputContainer>
+            </div>
+          </div>
+        </div>
+
+        <div className="border-t border-gray-300 my-4"></div>
+
+        {/* Submit */}
+        <div className="pt-2">
+          <Button
+            type="submit"
+            onClick={handleSubmit}
+            disabled={isButtonDisabled}
+            className="bg-primary text-white h-10 px-8 py-2 rounded text-base font-medium hover:bg-tertiary1-900 disabled:bg-tertiary1-400 disabled:text-white"
+          >
+            Upload and Import
+          </Button>
+        </div>
+      </form>
+    </div>
   );
 };
 
 export default ImportReportPage;
-

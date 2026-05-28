@@ -1,7 +1,7 @@
 /*
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
+ SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
- SPDX-License-Identifier: GPL-2.0
+ SPDX-License-Identifier: GPL-2.0-only
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -15,21 +15,12 @@
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
+import OneShotNomosClient from "./OneShotNomosClient";
 
-import styled from "styled-components";
+export const metadata = {
+    title: "One-Shot License Analysis | FOSSology",
+};
 
-const LoginForm = styled.div`
-  border: 1px dashed;
-  border-color: ${({ theme }) => theme.primaryText};
-  min-width: 35vw;
-  padding: 1rem;
-  @media (max-width: 768px) {
-    float: none;
-    margin: 1rem;
-  }
-  @media (min-width: 768px) {
-    float: right;
-  }
-`;
-
-export default LoginForm;
+export default function OneShotNomosPage() {
+  return <OneShotNomosClient />;
+}

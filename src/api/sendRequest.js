@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -97,15 +97,23 @@ const sendRequest = ({
     }
     // Checking the retries for hitting the request several times
     if (retries > 0) {
-      return setTimeout(() => {
-        const retriesLeft = retries - 1;
-        sendRequest({
-          url,
-          method,
-          headers,
-          retries: retriesLeft,
-        });
-      }, 10000);
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          sendRequest({
+            url,
+            method,
+            body,
+            groupName,
+            headers,
+            queryParams,
+            isMultipart,
+            noHeaders,
+            addGroupName,
+            retries: retries - 1,
+            isFile,
+          }).then(resolve).catch(reject);
+        }, 10000);
+      });
     }
     return res.json().then((json) => {
       const error = {

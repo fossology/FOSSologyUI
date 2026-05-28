@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -66,7 +66,7 @@ export const scheduleAnalysisApi = (folderId, uploadId, scanData) => {
   const url = endpoints.jobs.scheduleAnalysis();
   const { bucket, copyrightEmailAuthor, ecc, keyword, mime, monk, nomos, ojo } =
     scanData?.analysis;
-  const { nomosMonk, bulkReused, newScanner, ojoDecider } = scanData?.decider;
+  const { nomosMonk, bulkReused, newScanner, ojoDecider, autoConclude, autoConcludeType } = scanData?.decider;
   const {
     reuseUpload,
     reuseGroup,
@@ -100,6 +100,8 @@ export const scheduleAnalysisApi = (folderId, uploadId, scanData) => {
         bulk_reused: bulkReused,
         new_scanner: newScanner,
         ojo_decider: ojoDecider,
+        auto_conclude: autoConclude,
+        auto_conclude_type: autoConcludeType,
       },
       reuse: {
         reuse_upload: reuseUpload,

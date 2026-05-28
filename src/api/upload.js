@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -17,7 +17,6 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import PropTypes from "prop-types";
 import endpoints from "@/constants/endpoints";
 
 // Getting Authorization Token
@@ -123,10 +122,4 @@ export const getUploadLicenseApi = (uploadId, agent) => {
   });
 };
 
-createUploadApi.propTypes = {
-  folderId: PropTypes.number,
-  uploadDescription: PropTypes.string,
-  accessLevel: PropTypes.string,
-  ignoreScm: PropTypes.bool,
-  fileInput: PropTypes.string,
-};
+

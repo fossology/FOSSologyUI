@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -81,9 +81,6 @@ import {
 } from "@/constants/constants";
 
 const UploadFileClient = () => {
-  // Upload Id required for scheduling Analysis
-  let uploadId;
-
   // Data required for creating the upload
   const [uploadFileData, setUploadFileData] = useState(initialStateFile);
 
@@ -111,23 +108,26 @@ const UploadFileClient = () => {
       .then((res) => {
         window.scrollTo({ top: 0 });
         setMessage({ type: "success", text: messages.uploadSuccess });
-        uploadId = res.message;
+        return res.message;
+      })
+      .then((uploadId) => {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            scheduleAnalysis(uploadFileData.folderId, uploadId, scanFileData)
+              .then(resolve)
+              .catch(reject);
+          }, 1200);
+        });
       })
       .then(() => {
-        setTimeout(() => {
-          scheduleAnalysis(uploadFileData.folderId, uploadId, scanFileData)
-            .then(() => {
-              window.scrollTo({ top: 0 });
-              setMessage({
-                type: "success",
-                text: messages.scheduledAnalysis,
-              });
-              setUploadFileData(initialStateFile);
-              setScanFileData(initialScanFileDataFile);
-              setFileSelected(false);
-            })
-            .catch((error) => handleError(error, setMessage));
-        }, 1200);
+        window.scrollTo({ top: 0 });
+        setMessage({
+          type: "success",
+          text: messages.scheduledAnalysis,
+        });
+        setUploadFileData(initialStateFile);
+        setScanFileData(initialScanFileDataFile);
+        setFileSelected(false);
       })
       .catch((error) => handleError(error, setMessage))
       .finally(() => {
@@ -143,11 +143,17 @@ const UploadFileClient = () => {
         [e.target.name]: e.target.checked,
       });
     } else if (e.target.type === "file") {
-      setUploadFileData({
-        ...uploadFileData,
-        [e.target.name]: e.target.files[0],
-      });
-      setFileSelected(!!e.target.files.length);
+      const newFiles = Array.from(e.target.files);
+
+      setUploadFileData((prev) => ({
+        ...prev,
+        [e.target.name]: [
+          ...(prev[e.target.name] || []),
+          ...newFiles,
+        ],
+      }));
+
+      setFileSelected(true);
     } else {
       setUploadFileData({
         ...uploadFileData,
@@ -182,15 +188,36 @@ const UploadFileClient = () => {
         },
       });
     }  else {
-      setScanFileData({
-        ...scanFileData,
-        reuse: {
-          ...scanFileData.reuse,
-          [name]:
-            type === "checkbox"
-              ? checked
-              : parseInt(value, 10) || value,
-        },
+      setScanFileData((prev) => {
+        if (name === "reuseUpload" && type === "checkbox") {
+          const current = Array.isArray(prev.reuse.reuseUpload)
+            ? prev.reuse.reuseUpload
+            : [];
+
+          const exists = value
+            ? current.find((item) => item.id === value.id)
+            : false;
+
+          return {
+            ...prev,
+            reuse: {
+              ...prev.reuse,
+              reuseUpload: checked
+                ? exists
+                  ? current
+                  : [...current, value]
+                : current.filter((item) => item.id !== value?.id),
+            },
+          };
+        }
+
+        return {
+          ...prev,
+          reuse: {
+            ...prev.reuse,
+            [name]: type === "checkbox" ? checked : value,
+          },
+        };
       });
     }
   };
@@ -206,7 +233,11 @@ const UploadFileClient = () => {
     const onFileChange = (e) => {
       handleChange(e);
       if (e.target.files.length > 0) {
-        setFileName(e.target.files[0].name);
+        setFileName(
+          Array.from(e.target.files)
+            .map((file) => file.name)
+            .join(", ")
+        );
       } else {
         setFileName("");
       }
@@ -228,18 +259,16 @@ const UploadFileClient = () => {
         <Alert
           variant={message.type}
           message={message.text}
-          className="relative flex items-start gap-2 rounded border-0 bg-[#E1F5FE] px-4 py-2 text-sm text-[#00669D] pr-10 "
+          className="relative flex items-start gap-2 rounded border-0 bg-info-100 px-4 py-2 text-sm text-info-500 pr-10 "
         >
         {/* Close Button */}
         <button
           onClick={() => setShowMessage(false)}
           className="absolute top-2 right-2 p-1 rounded hover:bg-black/10"
+          aria-label="Close"
         >
-          <img
-            src="/assets/icons/Close/Close_24px.svg"
-            alt="Close"
-            width={24}
-            height={24}
+          <span
+            className="block w-5 h-5 bg-info-500 [mask-image:url('/assets/icons/Close/Close_20px.svg')] [mask-size:contain] [mask-repeat:no-repeat]"
           />
         </button>
         {/* Icon */}
@@ -252,7 +281,7 @@ const UploadFileClient = () => {
         />
         {/* Top Info Alert */}
         <div>
-          <AlertDescription className="text-sm text-[#00669D]">
+          <AlertDescription className="text-sm text-info-500">
             <span>To manage your own group permissions go into <strong>Admin &gt; Groups &gt; Manage Group Users</strong> To manage permissions for this one upload, go to <strong>Admin &gt; Upload Permissions</strong>.</span>
           </AlertDescription>
         </div>
@@ -299,12 +328,13 @@ const UploadFileClient = () => {
             2. Select the file(s) to upload:
           </label>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-end gap-3">
             {/* Hidden native file input */}
             <input
               ref={fileInputRef}
               type="file"
               name="fileInput"
+              multiple
               className="hidden"
               onChange={onFileChange}
             />
@@ -313,71 +343,98 @@ const UploadFileClient = () => {
             <Button
               type="button"
               variant="outline"
-              className="font-medium text-[#004494] rounded border-[#004494] hover:bg-[#DEE7F2] hover:text-[#000B54]"
+              className="font-medium text-primary rounded border-primary hover:bg-accent hover:text-accent-foreground"
               onClick={triggerFileInput}
             >
               Choose Files
             </Button>
 
-            {/* File name / default text */}
-            <span
-              className={`text-sm ${
-                fileName ? "text-gray-800" : "text-red-600"
-              }`}
-            >
-              {fileName || "No file chosen"}
-            </span>
+            {/* File names */}
+            {uploadFileData.fileInput?.length > 0 ? (
+              <div className="flex items-end gap-2">
+                {uploadFileData.fileInput.map((file, index) => (
+                  <span key={index} className="text-sm text-info-500">
+                    {file.name}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <span className="text-sm text-error-600">
+                No file chosen
+              </span>
+            )}
           </div>
         </div>
 
-        {/* 3. Description */}
+        {/* 3. Description(s) */}
         <div>
-          {/* Main label */}
-          <label className="block font-normal mb-1">3. Description(s)</label>
+          <label className="block font-normal mb-3">
+            3. Description(s)
+          </label>
 
-          {/* File name or No file chosen */}
-          <p
-            className={`text-sm mb-2 ${
-              fileSelected ? "text-gray-800" : "text-red-600"
-            }`}
-          >
-            {fileSelected && uploadFileData.fileInput
-              ? uploadFileData.fileInput.name
-              : "No file chosen"}
-          </p>
+          {!fileSelected ? (
+            <>
+              <p className="text-sm mb-2 text-error-600">
+                No file chosen
+              </p>
 
-          {/* Sub-label */}
-          <p
-            className={`text-sm mb-1 ${
-              fileSelected ? "text-[#101010]" : "text-gray-600"
-            }`}
-          >
-            Enter a description of this file (Optional):
-          </p>
+              <p className="text-sm mb-1 text-gray-600">
+                Enter a description of this file (Optional):
+              </p>
 
-          {/* Textarea */}
-          <Textarea
-            name="uploadDescription"
-            rows={3}
-            value={uploadFileData.uploadDescription}
-            onChange={handleChange}
-            placeholder="Type your description here"
-            className={`w-full rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 
-              ${fileSelected ? "border border-[#101010]" : "border border-gray-300"}`}
-          />
+              <Textarea
+                disabled
+                placeholder="Type your description here"
+                className={
+                  !fileName
+                    ? "border-border text-neutral-600 cursor-not-allowed resize"
+                    : "resize"
+                }
+              />
+            </>
+          ) : (
+            <div className="flex flex-wrap gap-6">
+              {uploadFileData.fileInput.map((file, index) => (
+                <div key={index}>
+                  {/* File name */}
+                  <p className="text-sm mb-2 text-info-500">
+                    {file.name}
+                  </p>
+
+                  {/* Sub-label */}
+                  <p className="text-sm mb-1 text-foreground">
+                    Enter a description for this file (Optional):
+                  </p>
+
+                  {/* Textarea */}
+                  <Textarea
+                    name={`description-${index}`}
+                    placeholder="Type your description here"
+                    className="resize"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
+        {/* 4. Ignore SCM */}
         <div className="flex items-center gap-2 mb-3">
-          <span className="text-base font-normal text-[#101010]">4.</span>
-          <CommonFields
-            ignoreScm={uploadFileData.ignoreScm}
-            handleChange={handleChange}
-            handleScanChange={handleScanChange}
-          />
+          <span className="text-base font-normal text-foreground">
+            4.
+          </span>
+
+          <div className="flex-1">
+            <CommonFields
+              ignoreScm={uploadFileData.ignoreScm}
+              handleChange={handleChange}
+              handleScanChange={handleScanChange}
+            />
+          </div>
         </div>
 
-        <div className="flex items-baseline gap-2 mb-3">
-          <span className="text-base font-normal text-[#101010]">5.</span>
+        <div className="flex gap-2 mb-3">
+          <span className="text-base font-normal text-foreground">5.</span>
           <div className="flex-1">
             <CommonFields
               accessLevel={uploadFileData.accessLevel}
@@ -388,7 +445,7 @@ const UploadFileClient = () => {
         </div>
 
         <div className="flex items-baseline gap-2 mb-3">
-        <span className="text-base font-medium text-[#101010] mb-3">6.</span>
+        <span className="text-base font-medium text-foreground mb-3">6.</span>
           <div className="flex-1">
             <CommonFields
               analysis={scanFileData.analysis}
@@ -399,7 +456,7 @@ const UploadFileClient = () => {
         </div>
 
         <div className="flex items-baseline gap-2 mb-3">
-          <span className="text-base font-medium text-[#101010]">7.</span>
+          <span className="text-base font-medium text-foreground">7.</span>
           <div className="flex-1">
             <CommonFields
               decider={scanFileData.decider}
@@ -410,7 +467,7 @@ const UploadFileClient = () => {
         </div>
 
         <div className="flex items-baseline gap-2 mb-3">
-          <span className="text-base font-medium text-[#101010] inline-flex items-center gap-1">
+          <span className="text-base font-medium text-foreground inline-flex items-center gap-1">
             8. (Optional) Reuse
             <Tooltip title="Copy clearing decisions if there is the same file hash between two files" />
           </span>
@@ -422,7 +479,7 @@ const UploadFileClient = () => {
         <Button
           type="button"
           variant="outline"
-          className="font-medium text-[#004494] rounded border-[#004494] hover:bg-[#DEE7F2] hover:text-[#000B54]"
+          className="font-medium text-primary rounded border-primary hover:bg-accent hover:text-accent-foreground"
         >
           Set the Reuse Information
         </Button>
@@ -438,13 +495,13 @@ const UploadFileClient = () => {
 
         {/* Tabs */}
         <Tabs defaultValue="file1" className="w-full p-6">
-          <TabsList className="flex bg-[#EEEFFF] rounded-t h-10">
+          <TabsList className="flex bg-tertiary2-200 rounded-t h-10">
             <TabsTrigger
               value="file1"
               className="flex-1 text-sm font-medium py-2 px-4
-                        data-[state=active]:bg-[#513DA8]
+                        data-[state=active]:bg-tertiary2-900
                         data-[state=active]:text-white
-                        data-[state=inactive]:text-[#101010]
+                        data-[state=inactive]:text-foreground
                         rounded
                         transition-colors"
             >
@@ -453,9 +510,9 @@ const UploadFileClient = () => {
             <TabsTrigger
               value="file2"
               className="flex-1 text-sm font-medium py-2 px-4
-                        data-[state=active]:bg-[#513DA8]
+                        data-[state=active]:bg-tertiary2-900
                         data-[state=active]:text-white
-                        data-[state=inactive]:text-[#101010]
+                        data-[state=inactive]:text-foreground
                         rounded
                         transition-colors"
             >
@@ -464,9 +521,9 @@ const UploadFileClient = () => {
             <TabsTrigger
               value="file3"
               className="flex-1 text-sm font-medium py-2 px-4
-                        data-[state=active]:bg-[#513DA8]
+                        data-[state=active]:bg-tertiary2-900
                         data-[state=active]:text-white
-                        data-[state=inactive]:text-[#101010]
+                        data-[state=inactive]:text-foreground
                         rounded
                         transition-colors"
             >
@@ -502,10 +559,10 @@ const UploadFileClient = () => {
         <div className="mt-6 flex justify-center gap-2">
           <SheetClose asChild>
             <Button variant="outline"
-            className="px-28 font-medium text-[#004494] rounded border-[#004494] hover:bg-[#DEE7F2] hover:text-[#000B54]">Cancel</Button>
+            className="px-28 font-medium text-primary rounded border-primary hover:bg-accent hover:text-accent-foreground">Cancel</Button>
           </SheetClose>
           <Button variant="default" 
-          className="px-28 bg-[#004494] text-white rounded hover:bg-[#00095C]">
+          className="px-28 bg-primary text-white rounded hover:bg-tertiary1-900">
             Apply
           </Button>
         </div>
@@ -534,7 +591,7 @@ const UploadFileClient = () => {
           <Button
             type="submit"
             disabled={loading || isButtonDisabled}
-            className="bg-[#004494] text-white h-10 px-8 py-2 rounded text-base font-medium hover:bg-[#00095C] disabled:bg-[#9EB9D3] disabled:text-white"
+            className="bg-primary text-white h-10 px-8 py-2 rounded text-base font-medium hover:bg-tertiary1-900 disabled:bg-tertiary1-400 disabled:text-white"
           >
             {loading ? "Uploading..." : "Upload"}
           </Button>

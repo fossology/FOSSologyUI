@@ -1,5 +1,5 @@
 /*
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -39,7 +39,7 @@ function RadioGroupItem({ className, ...props }) {
     <RadioGroupPrimitive.Item
       data-slot="radio-group-item"
       className={cn(
-        "border-[#004494] text-[#004494] cursor-pointer aspect-square size-4 shrink-0 rounded-full border-2 shadow-xs transition-colors outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:border-ring disabled:cursor-not-allowed disabled:opacity-50",
+        "border-primary text-primary cursor-pointer aspect-square size-4 shrink-0 rounded-full border-2 shadow-xs transition-colors outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:border-ring disabled:cursor-not-allowed disabled:opacity-50",
         className
       )}
       {...props}
@@ -49,7 +49,7 @@ function RadioGroupItem({ className, ...props }) {
         className="relative flex items-center justify-center"
       >
         <CircleIcon
-          className="fill-[#004494] absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2"
+          className="fill-primary absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2"
         />
       </RadioGroupPrimitive.Indicator>
     </RadioGroupPrimitive.Item>

@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -18,7 +19,8 @@
 
 'use client';
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { getUploadsFolderId } from "@/services/organizeUploads";
 import search from "@/services/search";
 import { initialState, initialMessageSearch, entriesOptions } from "../../constants/constants";
 import { Alert } from "@/components/Widgets";
@@ -78,16 +80,23 @@ const SearchClient = () => {
     }));
   };
 
-  const uploadOptions = [
-    { id: "all", name: "All uploads" },
-    { id: "123", name: "Project1_Upload" },
-    { id: "456", name: "Log_Analysis_2023" },
-    { id: "457", name: "Log_Analysis_2023" },
-    { id: "458", name: "Log_Analysis_2023" },
-    { id: "459", name: "Log_Analysis_2023" },
-    { id: "451", name: "Log_Analysis_2023" },
-    { id: "450", name: "Log_Analysis_2023" },
-  ]
+  const [uploadOptions, setUploadOptions] = useState([
+    { id: "all", name: "All uploads" }
+  ]);
+
+  useEffect(() => {
+    getUploadsFolderId(1, null, true)
+      .then((uploads) => {
+        const options = [{ id: "all", name: "All uploads" }];
+        uploads.forEach((upload) => {
+          options.push({ id: upload.id, name: upload.uploadname });
+        });
+        setUploadOptions(options);
+      })
+      .catch(() => {
+        // keep the default "All uploads" option on failure
+      });
+  }, []);
 
   return (
     <div className="min-h-screen mx-40 py-8">
@@ -95,12 +104,12 @@ const SearchClient = () => {
         <Alert type={message.type} setShow={setShowMessage} message={message.text} />
       )}
 
-      <h1 className="text-3xl font-semibold text-[#101010] mb-4">Search</h1>
+      <h1 className="text-3xl font-semibold text-foreground mb-4">Search</h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Upload type */}
         <div className="space-y-4">
-          <p className="text-lg font-medium text-[#101010]">Limit search to:</p>
+          <p className="text-lg font-medium text-foreground">Limit search to:</p>
           <RadioGroup
             value={searchData.searchType}
             onValueChange={(val) => setSearchData(prev => ({ ...prev, searchType: val }))}
@@ -112,7 +121,7 @@ const SearchClient = () => {
                 id="directory"
                 className="w-4 h-4 mt-1"
               />
-              <Label htmlFor="directory" className="text-base text-[#101010]">
+              <Label htmlFor="directory" className="text-base text-foreground">
                 Containers only (rpms, tars, isos, etc), including directories.
               </Label>
             </div>
@@ -123,7 +132,7 @@ const SearchClient = () => {
                   id="containers"
                   className="w-4 h-4 mt-1"
                 />
-                <Label htmlFor="containers" className="text-base text-[#101010]">
+                <Label htmlFor="containers" className="text-base text-foreground">
                   Containers only (rpms, tars, isos, etc), excluding directories. The filtering for license or copyright is not supported in this case.
                 </Label>
               </div>
@@ -134,7 +143,7 @@ const SearchClient = () => {
                 id="allfiles"
                 className="w-4 h-4 mt-1"
               />
-              <Label htmlFor="allfiles" className="text-base text-[#101010]">
+              <Label htmlFor="allfiles" className="text-base text-foreground">
                 All Files
               </Label>
             </div>
@@ -184,7 +193,7 @@ const SearchClient = () => {
                   onChange={handleChange}
                   placeholder="Enter filename"
                 />
-                <p className="text-sm text-[#00669D] mt-1">
+                <p className="text-sm text-info-500 mt-1">
                   You can use '%' as a wild-card. For example: '%v3.war', or 'mypkg%.tar'.
                 </p>
               </div>
@@ -239,7 +248,7 @@ const SearchClient = () => {
                   onChange={handleChange}
                   placeholder="Enter license"
                 />
-                <p className="text-sm text-[#00669D] mt-1">For example, '^AGPL$'.</p>
+                <p className="text-sm text-info-500 mt-1">For example, '^AGPL$'.</p>
               </div>
 
               <div>
@@ -251,7 +260,7 @@ const SearchClient = () => {
                   onChange={handleChange}
                   placeholder="Enter copyright"
                 />
-                <p className="text-sm text-[#00669D] mt-1">
+                <p className="text-sm text-info-500 mt-1">
                   For example, 'Copyright 2014-2020 fossology'.
                 </p>
               </div>
@@ -288,7 +297,7 @@ const SearchClient = () => {
         <Button
           type="submit"
           disabled={loading || !searchData.searchType || !searchData.uploadId?.trim() && !searchData.filename?.trim() && !searchData.filesizemin?.trim() && !searchData.filesizemax?.trim()}
-          className="bg-[#004494] text-white h-10 px-8 py-2 rounded text-base font-medium hover:bg-[#00095C] disabled:bg-[#9EB9D3] disabled:text-white"
+          className="bg-primary text-white h-10 px-8 py-2 rounded text-base font-medium hover:bg-tertiary1-900 disabled:bg-tertiary1-400 disabled:text-white"
         >
           {loading ? "Searching..." : "Search"}
         </Button>
