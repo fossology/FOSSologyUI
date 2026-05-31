@@ -46,6 +46,8 @@ import { getLocalStorage, setLocalStorage } from "@/shared/storageHelper";
 
 export default function Header() {
   const [currentGroup, setCurrentGroup] = useState(null);
+  const [authenticated, setAuthenticated] = useState(false);
+  const [groups, setGroups] = useState(null);
   const pathname = usePathname();
   const router = useRouter();
 
@@ -78,6 +80,8 @@ export default function Header() {
       getLocalStorage("currentGroup") ||
       getLocalStorage("user")?.default_group;
     setCurrentGroup(defaultGroup);
+    setAuthenticated(isAuth());
+    setGroups(getAllGroups());
   }, []);
 
   const handleGroupChange = (groupName) => {
@@ -94,7 +98,7 @@ export default function Header() {
         {/* Navigation Menu */}
         <nav className="hidden md:flex">
           <Link href={routes.home} className={clsx("flex items-center h-13 p-4 justify-between", !isHomeActive ? "hover:border-b-2 hover:border-[#C31730] hover:font-medium" : "border-b-2 border-[#C31730] font-medium")}>Home</Link>
-          {isAuth() && (
+          {authenticated && (
             <>
               <Link href={routes.search} className={clsx("flex items-center h-13 p-4 justify-between", !isSearchActive ? "hover:border-b-2 hover:border-[#C31730] hover:font-medium" : "border-b-2 border-[#C31730] font-medium")}>Search</Link>
               <Link href={routes.browse} className={clsx("flex items-center h-13 p-4 justify-between", !isBrowseActive ? "hover:border-b-2 hover:border-[#C31730] hover:font-medium" : "border-b-2 border-[#C31730] font-medium")}>Browse</Link>
@@ -473,7 +477,7 @@ export default function Header() {
       {/* Right Side Icons */}
       <div className="flex items-center gap-6 text-sm text-gray-800">
         {/* Group Dropdown */}
-        {getAllGroups() && (
+        {groups && (
           <DropdownMenu open={isGroupOpen} onOpenChange={setIsGroupOpen}>
             <DropdownMenuTrigger
               onClick={(e) => {
@@ -537,7 +541,7 @@ export default function Header() {
 
                     {isGroupSelectOpen && (
                       <div className="mt-1 border rounded-[4px] border-[#CECECE] shadow bg-white overflow-hidden">
-                        {getAllGroups().map((group) => (
+                        {groups.map((group) => (
                           <div
                             key={group.id}
                             onClick={() => {

@@ -57,7 +57,9 @@ export const setLocalStorage = (key, value) => {
 // Get from localstorage
 export const getLocalStorage = (key) => {
   if (typeof window !== "undefined") {
-    return JSON.parse(localStorage.getItem(key));
+    const item = localStorage.getItem(key);
+    if (item === null || item === "undefined") return null;
+    return JSON.parse(item);
   }
   return null;
 };
@@ -98,7 +100,9 @@ export const defaultAgentsList = () => {
 // Get from session storage
 export const getSessionStorage = (key) => {
   if (typeof window !== "undefined") {
-    return JSON.parse(sessionStorage.getItem(key));
+    const item = sessionStorage.getItem(key);
+    if (item === null || item === "undefined") return null;
+    return JSON.parse(item);
   }
   return null;
 };
