@@ -117,7 +117,7 @@ const OneShotMonk = () => {
           <Button
             type="submit"
             disabled={isButtonDisabled}
-            className="bg-primary text-white h-10 px-8 py-2 rounded text-base font-medium hover:bg-tertiary1-900 disabled:bg-tertiary1-400 disabled:text-white"
+            variant="default" size="default"
           >
             Analyze
           </Button>
@@ -128,4 +128,3 @@ const OneShotMonk = () => {
 };
 
 export default OneShotMonk;
-

@@ -79,11 +79,15 @@ const UploadReuse = ({ reuse, handleScanChange }) => {
     if (separatorIndex === -1) return;
     const folderId = parseInt(value.slice(0, separatorIndex), 10);
     const groupName = value.slice(separatorIndex + 1);
+    // Persist both the reuse group and the selected folder into scanData.reuse
     handleScanChange(null, "reuseGroup", "text", groupName);
+    handleScanChange(null, "reuseFolder", "text", folderId);
     setReuseData((prev) => ({ ...prev, reuseFolder: folderId }));
   };
 
   const handleSelectUpload = (item) => {
+    // Ensure the selected folder is stored alongside the selected upload
+    handleScanChange(null, "reuseFolder", "text", reuseData.reuseFolder);
     handleScanChange(true, "reuseUpload", "checkbox", item);
     setSearchTerm("");
   };

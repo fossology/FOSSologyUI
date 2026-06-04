@@ -136,6 +136,7 @@ export const initialScanFileDataFile = {
     reuseEnhanced: false,
     reuseReport: false,
     reuseCopyright: false,
+    reuseApplied: false,
   },
   scancode: {
     license: false,

@@ -44,10 +44,15 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "@/components/ui/tabs";
 
 import {
-  Alert,
-  AlertDescription,
+  AlertBanner,
 } from "@/components/ui/alert";
 
 import {
@@ -63,6 +68,11 @@ import { Tooltip } from "@/components/Widgets";
 
 // APIs
 import { getAllFolders } from "@/services/folders";
+import { createUploadServer, getUploadById } from "@/services/upload";
+import { scheduleAnalysis } from "@/services/jobs";
+
+// Helper
+import { handleError } from "@/shared/helper";
 
 // Constants
 import {
@@ -96,11 +106,113 @@ const UploadFromServerPage = () => {
 
     setLoading(true);
 
-    // TODO: Add API Integration
+    const header = {
+      folderId: uploadServerData.folderId,
+      uploadDescription: uploadServerData.uploadDescription,
+      public: uploadServerData.accessLevel,
+      ignoreScm: uploadServerData.ignoreScm,
+      uploadType: "server",
+    };
 
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
+    const body = {
+      location: {
+        path: uploadServerData.filePath,
+        name: uploadServerData.viewableName,
+      },
+    };
+
+    const validateReuseFolder = () => {
+      const reuseForFile = scanFileData.reuse || {};
+      const hasReuseSelection =
+        reuseForFile.reuseUpload &&
+        (!Array.isArray(reuseForFile.reuseUpload) ||
+          reuseForFile.reuseUpload.length > 0);
+
+      if (!hasReuseSelection) {
+        return Promise.resolve();
+      }
+
+      let candidateId = null;
+      if (Array.isArray(reuseForFile.reuseUpload)) {
+        const first = reuseForFile.reuseUpload[0];
+        candidateId = first && typeof first === "object" ? first.id : first;
+      } else if (typeof reuseForFile.reuseUpload === "object") {
+        candidateId = reuseForFile.reuseUpload.id;
+      } else {
+        candidateId = reuseForFile.reuseUpload;
+      }
+
+      candidateId = candidateId ? Number(candidateId) : null;
+
+      if (!candidateId) {
+        return Promise.resolve();
+      }
+
+      return getUploadById(candidateId).then((uploadRes) => {
+        const folderKeys = ["folderId", "folder", "folder_id", "parent"];
+        let uploadFolder = null;
+        for (const k of folderKeys) {
+          if (Object.prototype.hasOwnProperty.call(uploadRes, k)) {
+            uploadFolder = uploadRes[k];
+            break;
+          }
+        }
+
+        if (
+          uploadFolder != null &&
+          Number(uploadFolder) !== Number(uploadServerData.folderId)
+        ) {
+          throw new Error(
+            `Selected reuse upload (id ${candidateId}) is in folder ${uploadFolder}; change target folder to match or choose a reuse upload from target folder.`
+          );
+        }
+      });
+    };
+
+    validateReuseFolder()
+      .then(() => createUploadServer(header, body))
+      .then((res) => {
+        window.scrollTo({ top: 0 });
+        setMessage({
+          type: "success",
+          text: `${messages.queuedUpload} #${res.message}`,
+        });
+        return res.message;
+      })
+      .then((uploadId) => getUploadById(uploadId, 10).then(() => uploadId))
+      .then((uploadId) =>
+        new Promise((resolve, reject) => {
+          const scheduleData = structuredClone(scanFileData);
+          if (
+            scheduleData.reuse &&
+            Array.isArray(scheduleData.reuse.reuseUpload)
+          ) {
+            scheduleData.reuse.reuseUpload = scheduleData.reuse.reuseUpload.map((it) =>
+              it && typeof it === "object" ? Number(it.id) : Number(it)
+            );
+          }
+
+          setTimeout(() => {
+            scheduleAnalysis(uploadServerData.folderId, uploadId, scheduleData)
+              .then(resolve)
+              .catch(reject);
+          }, 1500);
+        })
+      )
+      .then(() => {
+        window.scrollTo({ top: 0 });
+        setMessage({
+          type: "success",
+          text: messages.scheduledAnalysis,
+        });
+        setUploadServerData(initialStateUploadFromServer);
+        setScanFileData(initialScanFileDataFile);
+      })
+      .catch((error) => handleError(error, setMessage))
+      .finally(() => {
+        setLoading(false);
+        setShowMessage(true);
+      });
   };
 
   const handleChange = (e) => {
@@ -190,17 +302,19 @@ const UploadFromServerPage = () => {
         setFolderList(res);
       })
       .catch((error) => {
-        setMessage({
-          type: "error",
-          text: error.message,
-        });
-
+        handleError(error, setMessage);
         setShowMessage(true);
       });
   }, []);
 
   const isButtonDisabled =
     !uploadServerData.folderId || !uploadServerData.filePath;
+  const alertType =
+    message.type === "danger" || message.type === "error"
+      ? "Error"
+      : message.type === "success"
+      ? "Success"
+      : "Info";
   
   const fileName =
     uploadServerData.filePath &&
@@ -210,46 +324,31 @@ const UploadFromServerPage = () => {
 
   return (
     <div className="max-w-4xl mx-40 my-6 px-4">
-      {/* Info Alert */}
+      {/* Alert */}
       {showMessage && (
         <div className="mb-4">
-          <Alert
-            className="relative flex items-start gap-2 rounded border-0 bg-info-100 px-4 py-2 text-sm text-info-500 pr-10"
-          >
-            {/* Close Button */}
-            <button
-              onClick={() => setShowMessage(false)}
-              className="absolute top-2 right-2 p-1 rounded hover:bg-black/10"
-              aria-label="Close"
-            >
-              <span
-                className="block w-5 h-5 bg-info-500 [mask-image:url('/assets/icons/Close/Close_20px.svg')] [mask-size:contain] [mask-repeat:no-repeat]"
-              />
-            </button>
-
-            {/* Icon */}
-            <img
-              src="/assets/icons/Alert/InfoFilled.svg"
-              alt="Info"
-              width={24}
-              height={24}
-              className="mt-1"
-            />
-
-            {/* Text */}
-            <div>
-              <AlertDescription className="text-sm text-info-500">
-                <span>
+          <AlertBanner
+            type={alertType}
+            description={
+              message.type === "info" ? (
+                <>
                   To manage your own group permissions go into{" "}
-                  <strong>
+                  <span className="font-semibold">
                     Admin &gt; Groups &gt; Manage Group Users
-                  </strong>{" "}
-                  To manage permissions for this one upload, go to{" "}
-                  <strong>Admin &gt; Upload Permissions</strong>.
-                </span>
-              </AlertDescription>
-            </div>
-          </Alert>
+                  </span>
+                  . To manage permissions for this one upload, go to{" "}
+                  <span className="font-semibold">
+                    Admin &gt; Upload Permissions
+                  </span>
+                  .
+                </>
+              ) : (
+                message.text
+              )
+            }
+            showClose
+            onClose={() => setShowMessage(false)}
+          />
         </div>
       )}
 
@@ -274,11 +373,11 @@ const UploadFromServerPage = () => {
             onValueChange={(value) =>
               setUploadServerData({
                 ...uploadServerData,
-                folderId: value,
+                folderId: Number(value),
               })
             }
           >
-            <SelectTrigger className="w-[282px]">
+            <SelectTrigger className="w-[320px]">
               <SelectValue placeholder="Select Folder" />
             </SelectTrigger>
 
@@ -308,7 +407,7 @@ const UploadFromServerPage = () => {
               value={uploadServerData.filePath}
               onChange={handleChange}
               placeholder="/home/fossology/files/example.zip"
-              className="w-[282px] border-foreground"
+              className="w-[320px] border-neutral-800"
             />
 
             {/* File path / default text */}
@@ -341,7 +440,7 @@ const UploadFromServerPage = () => {
             value={uploadServerData.viewableName}
             onChange={handleChange}
             placeholder="Enter viewable name"
-            className="w-[282px] border-foreground"
+            className="w-[320px] border-neutral-800"
           />
 
           <p className="text-sm text-gray-600 mt-2">
@@ -375,15 +474,15 @@ const UploadFromServerPage = () => {
           </p>
 
           <Textarea
-            name="description"
-            value={uploadServerData.description}
+            name="uploadDescription"
+            value={uploadServerData.uploadDescription}
             onChange={handleChange}
             placeholder="Type your description here"
             disabled={!fileName}
             className={
               !fileName
-                ? "border-border text-neutral-600 cursor-not-allowed resize"
-                : "resize"
+                ? "border-border text-neutral-600 cursor-not-allowed min-w-[320px] resize"
+                : "min-w-[320px] resize"
             }
           />
         </div>
@@ -460,6 +559,7 @@ const UploadFromServerPage = () => {
             <Button
               type="button"
               variant="outline"
+              disabled={!fileName}
               className="font-medium text-primary rounded border-primary hover:bg-accent hover:text-accent-foreground"
             >
               Set the Reuse Information
@@ -477,11 +577,21 @@ const UploadFromServerPage = () => {
             </SheetHeader>
 
             <div className="p-6">
-              <CommonFields
-                reuse={scanFileData.reuse}
-                handleChange={handleChange}
-                handleScanChange={handleScanChange}
-              />
+              <Tabs value={fileName || "file"} className="w-full p-0">
+                <TabsList>
+                  <TabsTrigger value={fileName || "file"}>
+                    {fileName || "No file chosen"}
+                  </TabsTrigger>
+                </TabsList>
+
+                <TabsContent value={fileName || "file"} className="pt-6">
+                  <CommonFields
+                    reuse={scanFileData.reuse}
+                    handleChange={handleChange}
+                    handleScanChange={handleScanChange}
+                  />
+                </TabsContent>
+              </Tabs>
             </div>
 
             <div className="mt-6 flex justify-center gap-2">
@@ -494,12 +604,13 @@ const UploadFromServerPage = () => {
                 </Button>
               </SheetClose>
 
-              <Button
-                variant="default"
-                className="px-28 bg-primary text-white rounded hover:bg-tertiary1-900"
-              >
-                Apply
-              </Button>
+              <SheetClose asChild>
+                <Button
+                  variant="default" size="default" className="px-28"
+                >
+                  Apply
+                </Button>
+              </SheetClose>
             </div>
           </SheetContent>
         </Sheet>
@@ -528,7 +639,7 @@ const UploadFromServerPage = () => {
           <Button
             type="submit"
             disabled={loading || isButtonDisabled}
-            className="bg-primary text-white h-10 px-8 py-2 rounded text-base font-medium hover:bg-tertiary1-900 disabled:bg-tertiary1-400 disabled:text-white"
+            variant="default" size="default"
           >
             {loading ? "Uploading..." : "Upload"}
           </Button>

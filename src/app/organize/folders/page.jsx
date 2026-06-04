@@ -16,12 +16,9 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import UnlinkFolderClient from "./UnlinkFolderClient";
+import { redirect } from "next/navigation";
+import routes from "@/constants/routes";
 
-export const metadata = {
-    title: "Unlink Folder | FOSSology",
-};
-
-export default function UnlinkFolderPage() {
-    return <UnlinkFolderClient />;
+export default function FoldersIndexPage() {
+  redirect(routes.organize.folders.create);
 }

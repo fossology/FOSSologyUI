@@ -42,6 +42,7 @@ const routes = {
   },
   organize: {
     folders: {
+      index: "/organize/folders",
       create: "/organize/folders/create",
       delete: "/organize/folders/delete",
       edit: "/organize/folders/edit",
@@ -68,8 +69,11 @@ const routes = {
   admin: {
     customize:"/admin/customize",
     group: {
+      index: "/admin/group",
       create: "/admin/group/create",
       delete: "/admin/group/delete",
+      edit: "/admin/group/edit",
+      manageUsers: "/admin/group/manageUsers",
     },
     users: {
       add: "/admin/users/add",
@@ -105,3 +109,4 @@ const routes = {
 };
 
 export default routes;
+

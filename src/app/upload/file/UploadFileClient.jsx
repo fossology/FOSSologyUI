@@ -42,9 +42,7 @@ import {
   AccordionContent,
 } from "@/components/ui/accordion";
 import {
-  Alert,
-  AlertTitle,
-  AlertDescription,
+  AlertBanner,
 } from '@/components/ui/alert';
 import {
   Tabs,
@@ -58,8 +56,6 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetDescription,
-  SheetFooter,
   SheetClose,
 } from "@/components/ui/sheet";
 
@@ -67,6 +63,7 @@ import {Tooltip} from "@/components/Widgets";
 
 // Required functions for calling APIs
 import { createUploadFile } from "@/services/upload";
+import { getUploadById } from "@/services/upload";
 import { scheduleAnalysis } from "@/services/jobs";
 import { getAllFolders } from "@/services/folders";
 
@@ -79,6 +76,9 @@ import {
   initialScanFileDataFile,
   initialFolderListFile,
 } from "@/constants/constants";
+
+const defaultReuseConfig =
+  structuredClone(initialScanFileDataFile.reuse);
 
 const UploadFileClient = () => {
   // Data required for creating the upload
@@ -98,27 +98,148 @@ const UploadFileClient = () => {
     text: "To manage your own group permissions go into Admin > Groups > Manage Group Users. To manage permissions for this one upload, go to Admin > Upload Permissions."
   });
   const [fileSelected, setFileSelected] = useState(false);
+  const [descriptions, setDescriptions] = useState({});
+
+  const [reuseConfigs, setReuseConfigs] = useState({});
+  const [tempReuseConfigs, setTempReuseConfigs] = useState({});
+  const [reuseSheetOpen, setReuseSheetOpen] = useState(false);
+
+  const [activeFileTab, setActiveFileTab] = useState("");
+
+  const handleReuseSheetOpenChange = (open) => {
+    setReuseSheetOpen(open);
+
+    if (open) {
+      setTempReuseConfigs(
+        structuredClone(reuseConfigs)
+      );
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!fileSelected) return;
 
     setLoading(true);
-    createUploadFile(uploadFileData)
-      .then((res) => {
-        window.scrollTo({ top: 0 });
-        setMessage({ type: "success", text: messages.uploadSuccess });
-        return res.message;
-      })
-      .then((uploadId) => {
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            scheduleAnalysis(uploadFileData.folderId, uploadId, scanFileData)
-              .then(resolve)
-              .catch(reject);
-          }, 1200);
-        });
-      })
+
+    const files = uploadFileData.fileInput || [];
+
+    const uploadChain = files.reduce(
+      (chain, file, index) =>
+        chain.then(() => {
+
+          const fileKey = `${file.name}-${index}`;
+
+          const scanDataForFile = {
+            ...scanFileData,
+            reuse:
+              reuseConfigs[fileKey] ||
+              structuredClone(defaultReuseConfig),
+          };
+          // Ensure reuse.reuseUpload is an array of numeric ids
+          if (
+            scanDataForFile.reuse &&
+            Array.isArray(scanDataForFile.reuse.reuseUpload)
+          ) {
+            scanDataForFile.reuse.reuseUpload = scanDataForFile.reuse.reuseUpload.map(
+              (it) => (it && typeof it === "object" ? Number(it.id) : Number(it))
+            );
+          }
+
+          // Validate reuse selection: if a reuse upload was chosen, ensure it actually belongs to the target folder
+          const reuseForFile = scanDataForFile.reuse || {};
+          if (reuseForFile.reuseUpload) {
+            // reuseUpload may be array of objects, array of numbers, or a single number
+            let candidateId = null;
+            if (Array.isArray(reuseForFile.reuseUpload)) {
+              const first = reuseForFile.reuseUpload[0];
+              candidateId = first && typeof first === "object" ? first.id : first;
+            } else if (typeof reuseForFile.reuseUpload === "object") {
+              candidateId = reuseForFile.reuseUpload.id;
+            } else {
+              candidateId = reuseForFile.reuseUpload;
+            }
+
+            candidateId = candidateId ? Number(candidateId) : null;
+
+            if (candidateId) {
+              return getUploadById(candidateId)
+                .then((uploadRes) => {
+                  // Try common folder keys on the returned object
+                  const folderKeys = ["folderId", "folder", "folder_id", "parent"];
+                  let uploadFolder = null;
+                  for (const k of folderKeys) {
+                    if (Object.prototype.hasOwnProperty.call(uploadRes, k)) {
+                      uploadFolder = uploadRes[k];
+                      break;
+                    }
+                  }
+
+                  // If upload folder is known, compare to target folder
+                  if (uploadFolder != null) {
+                    if (Number(uploadFolder) !== Number(uploadFileData.folderId)) {
+                      return Promise.reject(
+                        new Error(
+                          `Selected reuse upload (id ${candidateId}) is in folder ${uploadFolder}; change target folder to match or choose a reuse upload from target folder.`
+                        )
+                      );
+                    }
+                  }
+
+                  // Proceed to create upload and then schedule analysis (mirror normal path)
+                  return createUploadFile({
+                    ...uploadFileData,
+                    fileInput: file,
+                    uploadDescription: descriptions[index] || "",
+                  })
+                    .then((res) => res.message)
+                    .then(
+                      (uploadId) =>
+                        new Promise((resolve, reject) => {
+                          setTimeout(() => {
+                            scheduleAnalysis(
+                              uploadFileData.folderId,
+                              uploadId,
+                              scanDataForFile
+                            )
+                              .then(resolve)
+                              .catch(reject);
+                          }, 1200);
+                        })
+                    );
+                })
+                .catch((err) => {
+                  // Propagate error to outer chain
+                  return Promise.reject(err);
+                });
+            }
+          }
+
+          return createUploadFile({
+            ...uploadFileData,
+            fileInput: file,
+            uploadDescription: descriptions[index] || "",
+          })
+            .then((res) => res.message)
+            .then(
+              (uploadId) =>
+                new Promise((resolve, reject) => {
+                  setTimeout(() => {
+                    scheduleAnalysis(
+                      uploadFileData.folderId,
+                      uploadId,
+                      scanDataForFile
+                    )
+                      .then(resolve)
+                      .catch(reject);
+                  }, 1200);
+                })
+            );
+        }),
+      Promise.resolve()
+    );
+
+    uploadChain
       .then(() => {
         window.scrollTo({ top: 0 });
         setMessage({
@@ -128,6 +249,11 @@ const UploadFileClient = () => {
         setUploadFileData(initialStateFile);
         setScanFileData(initialScanFileDataFile);
         setFileSelected(false);
+        setDescriptions({});
+        setReuseConfigs({});
+        setActiveFileTab("");
+        setTempReuseConfigs({});
+        setReuseSheetOpen(false);
       })
       .catch((error) => handleError(error, setMessage))
       .finally(() => {
@@ -153,7 +279,9 @@ const UploadFileClient = () => {
         ],
       }));
 
-      setFileSelected(true);
+      if (newFiles.length > 0) {
+        setFileSelected(true);
+      }
     } else {
       setUploadFileData({
         ...uploadFileData,
@@ -222,72 +350,131 @@ const UploadFileClient = () => {
     }
   };
 
+  const handleFileReuseChange = (
+    fileKey,
+    checked,
+    name,
+    type,
+    value
+  ) => {
+    setTempReuseConfigs((prev) => {
+      const current =
+        prev[fileKey] || structuredClone(defaultReuseConfig);
+
+      const updated = {
+        ...current,
+      };
+
+      if (name === "reuseUpload" && type === "checkbox") {
+        const uploads = current.reuseUpload || [];
+
+        const exists = uploads.find(
+          (item) => item.id === value?.id
+        );
+
+        updated.reuseUpload = checked
+          ? exists
+            ? uploads
+            : [...uploads, value]
+          : uploads.filter(
+              (item) => item.id !== value?.id
+            );
+      } else {
+        updated[name] =
+          type === "checkbox"
+            ? checked
+            : value;
+      }
+
+      return {
+        ...prev,
+        [fileKey]: updated,
+      };
+    });
+  };
+
 
     const fileInputRef = useRef(null);
-    const [fileName, setFileName] = useState("");
 
     const triggerFileInput = () => {
       fileInputRef.current?.click();
     };
 
-    const onFileChange = (e) => {
-      handleChange(e);
-      if (e.target.files.length > 0) {
-        setFileName(
-          Array.from(e.target.files)
-            .map((file) => file.name)
-            .join(", ")
-        );
-      } else {
-        setFileName("");
-      }
-    };
+const onFileChange = (e) => {
+  handleChange(e);
 
+  const files = Array.from(e.target.files);
+
+    if (files.length > 0) {
+      setFileSelected(true);
+
+      setReuseConfigs((prev) => {
+        const next = { ...prev };
+
+        files.forEach((file, index) => {
+          const key = `${file.name}-${Date.now()}-${index}`;
+
+          if (!next[key]) {
+            next[key] = structuredClone(defaultReuseConfig);
+          }
+        });
+
+        return next;
+      });
+
+      if (!activeFileTab) {
+        setActiveFileTab(`${files[0].name}-0`);
+      }
+    }
+  };
 
   useEffect(() => {
-    getAllFolders().then((res) => {
-      setFolderList(res);
-    });
+    getAllFolders()
+      .then((res) => {
+        setFolderList(res);
+      })
+      .catch((error) => {
+        handleError(error, setMessage);
+        setShowMessage(true);
+      });
   }, []);
 
   const isButtonDisabled = !fileSelected;
+  const alertType =
+    message.type === "danger" || message.type === "error"
+      ? "Error"
+      : message.type === "success"
+      ? "Success"
+      : "Info";
 
   return (
     <div className="max-w-4xl mx-40 my-6 px-4">
       {showMessage && (
         <div className="mb-4">
-        <Alert
-          variant={message.type}
-          message={message.text}
-          className="relative flex items-start gap-2 rounded border-0 bg-info-100 px-4 py-2 text-sm text-info-500 pr-10 "
-        >
-        {/* Close Button */}
-        <button
-          onClick={() => setShowMessage(false)}
-          className="absolute top-2 right-2 p-1 rounded hover:bg-black/10"
-          aria-label="Close"
-        >
-          <span
-            className="block w-5 h-5 bg-info-500 [mask-image:url('/assets/icons/Close/Close_20px.svg')] [mask-size:contain] [mask-repeat:no-repeat]"
+          <AlertBanner
+            type={alertType}
+            description={
+              message.type === "info" ? (
+                <>
+                  To manage your own group permissions go into{" "}
+                  <span className="font-semibold">
+                    Admin &gt; Groups &gt; Manage Group Users
+                  </span>
+                  . To manage permissions for this one upload, go to{" "}
+                  <span className="font-semibold">
+                    Admin &gt; Upload Permissions
+                  </span>
+                  .
+                </>
+              ) : (
+                message.text
+              )
+            }
+            showClose
+            onClose={() => setShowMessage(false)}
           />
-        </button>
-        {/* Icon */}
-        <img
-          src="/assets/icons/Alert/InfoFilled.svg"
-          alt="Info"
-          width={24}
-          height={24}
-          className="mt-1"
-        />
-        {/* Top Info Alert */}
-        <div>
-          <AlertDescription className="text-sm text-info-500">
-            <span>To manage your own group permissions go into <strong>Admin &gt; Groups &gt; Manage Group Users</strong> To manage permissions for this one upload, go to <strong>Admin &gt; Upload Permissions</strong>.</span>
-          </AlertDescription>
         </div>
-      </Alert>
-    </div>
-    )}
+      )}
 
       <h1 className="text-2xl font-semibold text-gray-900 mb-4">
         Upload a New File
@@ -309,7 +496,7 @@ const UploadFileClient = () => {
               setUploadFileData({ ...uploadFileData, folderId: value })
             }
           >
-            <SelectTrigger className="w-[282px]">
+            <SelectTrigger className="w-[320px]">
               <SelectValue placeholder="Select Folder" />
             </SelectTrigger>
             <SelectContent>
@@ -372,50 +559,27 @@ const UploadFileClient = () => {
             3. Description(s)
           </label>
 
-          {!fileSelected ? (
-            <>
-              <p className="text-sm mb-2 text-error-600">
-                No file chosen
-              </p>
-
-              <p className="text-sm mb-1 text-gray-600">
-                Enter a description of this file (Optional):
-              </p>
-
-              <Textarea
-                disabled
-                placeholder="Type your description here"
-                className={
-                  !fileName
-                    ? "border-border text-neutral-600 cursor-not-allowed resize"
-                    : "resize"
-                }
-              />
-            </>
-          ) : (
-            <div className="flex flex-wrap gap-6">
-              {uploadFileData.fileInput.map((file, index) => (
-                <div key={index}>
-                  {/* File name */}
-                  <p className="text-sm mb-2 text-info-500">
-                    {file.name}
-                  </p>
-
-                  {/* Sub-label */}
-                  <p className="text-sm mb-1 text-foreground">
-                    Enter a description for this file (Optional):
-                  </p>
-
-                  {/* Textarea */}
-                  <Textarea
-                    name={`description-${index}`}
-                    placeholder="Type your description here"
-                    className="resize"
-                  />
-                </div>
-              ))}
-            </div>
-          )}
+          <div className="flex flex-wrap gap-6">
+            {(fileSelected ? uploadFileData.fileInput : [null]).map((file, index) => (
+              <div key={index}>
+                <p className={`text-sm mb-2 ${file ? "text-info-500" : "text-error-600"}`}>
+                  {file ? file.name : "No file chosen"}
+                </p>
+                <p className="text-sm mb-1 text-gray-600">
+                  Enter a description for this file (Optional):
+                </p>
+                <Textarea
+                  disabled={!file}
+                  placeholder="Type your description here"
+                  value={descriptions[index] || ""}
+                  onChange={(e) =>
+                    setDescriptions((prev) => ({ ...prev, [index]: e.target.value }))
+                  }
+                  className={!file ? "border-border text-neutral-600 cursor-not-allowed min-w-[320px] resize" : "min-w-[320px] resize"}
+                />
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* 4. Ignore SCM */}
@@ -473,101 +637,102 @@ const UploadFileClient = () => {
           </span>
         </div>
 
-    <Sheet>
-      {/* Trigger Button */}
-      <SheetTrigger asChild>
-        <Button
-          type="button"
-          variant="outline"
-          className="font-medium text-primary rounded border-primary hover:bg-accent hover:text-accent-foreground"
+        <Sheet
+          open={reuseSheetOpen}
+          onOpenChange={handleReuseSheetOpenChange}
         >
-          Set the Reuse Information
-        </Button>
-      </SheetTrigger>
-
-      {/* Right-side Overlay */}
-      <SheetContent side="right" className="w-[600px] sm:max-w-[700px] p-6">
-        <SheetHeader className="p-6 pb-2">
-          <SheetTitle className="font-semibold text-xl">
-            Reuse Configuration
-          </SheetTitle>
-        </SheetHeader>
-
-        {/* Tabs */}
-        <Tabs defaultValue="file1" className="w-full p-6">
-          <TabsList className="flex bg-tertiary2-200 rounded-t h-10">
-            <TabsTrigger
-              value="file1"
-              className="flex-1 text-sm font-medium py-2 px-4
-                        data-[state=active]:bg-tertiary2-900
-                        data-[state=active]:text-white
-                        data-[state=inactive]:text-foreground
-                        rounded
-                        transition-colors"
+          <SheetTrigger asChild>
+            <Button
+              type="button"
+              variant="outline"
+              disabled={isButtonDisabled}
+              className="font-medium text-primary rounded border-primary hover:bg-accent hover:text-accent-foreground"
             >
-              File Name
-            </TabsTrigger>
-            <TabsTrigger
-              value="file2"
-              className="flex-1 text-sm font-medium py-2 px-4
-                        data-[state=active]:bg-tertiary2-900
-                        data-[state=active]:text-white
-                        data-[state=inactive]:text-foreground
-                        rounded
-                        transition-colors"
-            >
-              File Name
-            </TabsTrigger>
-            <TabsTrigger
-              value="file3"
-              className="flex-1 text-sm font-medium py-2 px-4
-                        data-[state=active]:bg-tertiary2-900
-                        data-[state=active]:text-white
-                        data-[state=inactive]:text-foreground
-                        rounded
-                        transition-colors"
-            >
-              File Name
-            </TabsTrigger>
-          </TabsList>
+              Set the Reuse Information
+            </Button>
+          </SheetTrigger>
 
-          {/* Tab 1 Content */}
-          <TabsContent value="file1" className="space-y-6 pt-6">
-            {/* Section 1 */}
-            <div>
-                <CommonFields
-                  reuse={scanFileData.reuse}
-                  handleChange={handleChange}
-                  handleScanChange={handleScanChange}
-                />
+          <SheetContent
+            side="right"
+            className="w-[600px] sm:max-w-[700px] p-6"
+          >
+            <SheetHeader className="p-6 pb-2">
+              <SheetTitle className="font-semibold text-xl">
+                Reuse Configuration
+              </SheetTitle>
+            </SheetHeader>
+
+            {uploadFileData.fileInput?.length > 0 && (
+              <Tabs
+                value={activeFileTab}
+                onValueChange={setActiveFileTab}
+                className="w-full p-6"
+              >
+                <TabsList>
+                  {uploadFileData.fileInput.map((file, index) => (
+                    <TabsTrigger
+                      key={`${file.name}-${index}`}
+                      value={`${file.name}-${index}`}
+                    >
+                      {file.name}
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+
+                {uploadFileData.fileInput.map((file, index) => (
+                  <TabsContent
+                    key={`${file.name}-${index}`}
+                    value={`${file.name}-${index}`}
+                    className="pt-6"
+                  >
+                    <CommonFields
+                      reuse={
+                        tempReuseConfigs[`${file.name}-${index}`] ||
+                        defaultReuseConfig
+                      }
+                      handleChange={handleChange}
+                      handleScanChange={(checked, name, type, value) =>
+                        handleFileReuseChange(
+                          `${file.name}-${index}`,
+                          checked,
+                          name,
+                          type,
+                          value
+                        )
+                      }
+                    />
+                  </TabsContent>
+                ))}
+              </Tabs>
+            )}
+
+            <div className="mt-6 flex justify-center gap-2">
+              <SheetClose asChild>
+                <Button
+                  variant="outline"
+                  className="px-28 font-medium text-primary rounded border-primary hover:bg-accent hover:text-accent-foreground"
+                >
+                  Cancel
+                </Button>
+              </SheetClose>
+
+              <Button
+                variant="default"
+                size="default"
+                className="px-28"
+                onClick={() => {
+                  setReuseConfigs(
+                    structuredClone(tempReuseConfigs)
+                  );
+
+                  setReuseSheetOpen(false);
+                }}
+              >
+                Apply
+              </Button>
             </div>
-          </TabsContent>
-
-          {/* Tab 2 Content */}
-          <TabsContent value="file2" className="p-6">
-            {/* You can reuse the same structure or customize */}
-            <p className="text-sm text-gray-600">Content for File 2</p>
-          </TabsContent>
-
-          {/* Tab 3 Content */}
-          <TabsContent value="file3" className="p-6">
-            <p className="text-sm text-gray-600">Content for File 3</p>
-          </TabsContent>
-        </Tabs>
-
-        {/* Footer buttons */}
-        <div className="mt-6 flex justify-center gap-2">
-          <SheetClose asChild>
-            <Button variant="outline"
-            className="px-28 font-medium text-primary rounded border-primary hover:bg-accent hover:text-accent-foreground">Cancel</Button>
-          </SheetClose>
-          <Button variant="default" 
-          className="px-28 bg-primary text-white rounded hover:bg-tertiary1-900">
-            Apply
-          </Button>
-        </div>
-      </SheetContent>
-    </Sheet>
+          </SheetContent>
+        </Sheet>
 
         {/* Scancode Accordion */}
         <Accordion type="single" collapsible="w-full">
@@ -591,7 +756,7 @@ const UploadFileClient = () => {
           <Button
             type="submit"
             disabled={loading || isButtonDisabled}
-            className="bg-primary text-white h-10 px-8 py-2 rounded text-base font-medium hover:bg-tertiary1-900 disabled:bg-tertiary1-400 disabled:text-white"
+            variant="default" size="default"
           >
             {loading ? "Uploading..." : "Upload"}
           </Button>

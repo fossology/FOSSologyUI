@@ -80,6 +80,7 @@ const endpoints = {
       getAll: () => `${apiUrl}/groups`,
       getAllDeletable: () => `${apiUrl}/groups/deletable`,
       delete: (groupId) => `${apiUrl}/groups/${groupId}`,
+      edit: (groupId) => `${apiUrl}/groups/${groupId}`,
     },
     maintenance: {
       create: () => `${apiUrl}/maintenance`,

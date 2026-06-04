@@ -28,7 +28,6 @@ const config = {
         'gutter': '24px',
     },
     colors: {
-        // Brand (FOSSology red — renamed from "primary" to avoid conflict with ShadCN --color-primary CSS variable)
         brand: {
             900: "#C31730",
             800: "#EC4958",
@@ -62,7 +61,13 @@ const config = {
             200: "#EDEDED",
             100: "#F6F6F6",
         },
-        // Alerts
+
+        alert: {
+            DEFAULT: "#D02216",
+            hover:   "#A41411",
+            bg:      "#FFEBEE",
+        },
+
         error: {
             100: "#FFEBEE",
             500: "#E03C31",
@@ -71,7 +76,8 @@ const config = {
         },
         warning: {
             100: "#FFF3E0",
-            500: "#EF6C00",
+            500: "#AF4F00",
+            600: "#EF6C00",
             700: "#663C00",
         },
         info: {

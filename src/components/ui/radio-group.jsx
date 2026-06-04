@@ -21,8 +21,25 @@ SPDX-License-Identifier: GPL-2.0-only
 import * as React from "react"
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group"
 import { CircleIcon } from "lucide-react"
+import { cva } from "class-variance-authority";
 
 import { cn } from "@/lib/utils"
+import { Label } from "@/components/ui/label"
+
+const radioFieldVariants = cva("inline-flex", {
+  variants: {
+    labelPosition: {
+      right: "flex-row items-center gap-2",
+      left: "flex-row-reverse items-center gap-2",
+      top: "flex-col-reverse items-start gap-1",
+      bottom: "flex-col items-start gap-1",
+      none: "",
+    },
+  },
+  defaultVariants: {
+    labelPosition: "right",
+  },
+})
 
 function RadioGroup({ className, ...props }) {
   return (
@@ -56,4 +73,25 @@ function RadioGroupItem({ className, ...props }) {
   )
 }
 
-export { RadioGroup, RadioGroupItem }
+function RadioField({
+  id,
+  value,
+  label,
+  labelPosition = "right",
+  className,
+  labelClassName,
+  ...props
+}) {
+  return (
+    <div className={cn(radioFieldVariants({ labelPosition }), className)}>
+      <RadioGroupItem id={id} value={value} {...props} />
+      {labelPosition !== "none" && label && (
+        <Label htmlFor={id} className={cn("text-base font-normal", labelClassName)}>
+          {label}
+        </Label>
+      )}
+    </div>
+  )
+}
+
+export { RadioGroup, RadioGroupItem, RadioField }

@@ -1,7 +1,7 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
  Copyright (C) 2022 Samuel Dushimimana (dushsam100@gmail.com)
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
  This program is free software; you can redistribute it and/or
@@ -21,6 +21,7 @@ import {
   getAllGroupsApi,
   createGroupApi,
   deleteGroupApi,
+  editGroupApi,
   getAllDeletableGroupsApi,
 } from "@/api/groups";
 import { setLocalStorage, getLocalStorage } from "@/shared/storageHelper";
@@ -54,6 +55,13 @@ export const deleteGroup = (id) => {
 // Fetching all deletable groups
 export const fetchAllDeletableGroups = () => {
   return getAllDeletableGroupsApi().then((res) => {
+    return res;
+  });
+};
+
+// Edit a group
+export const editGroup = (id, name) => {
+  return editGroupApi(id, name).then((res) => {
     return res;
   });
 };

@@ -48,7 +48,7 @@ export const createUploadApi = (
       uploadDescription,
       public: accessLevel,
       ignoreScm,
-      uploadType: "",
+      uploadType: "file",
     },
     body: formdata,
   });
@@ -70,6 +70,20 @@ export const createUploadVcsApi = (header, body) => {
 
 // Create Uploads from URL
 export const createUploadUrlApi = (header, body) => {
+  const url = endpoints.upload.uploadCreate();
+  return sendRequest({
+    url,
+    method: "POST",
+    headers: {
+      ...header,
+      Authorization: getToken(),
+    },
+    body,
+  });
+};
+
+// Create Uploads from Server
+export const createUploadServerApi = (header, body) => {
   const url = endpoints.upload.uploadCreate();
   return sendRequest({
     url,

@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -23,20 +23,22 @@ import React, { useState } from "react";
 import messages from "@/constants/messages";
 
 // Widgets
-import { Alert, Button, InputContainer, Spinner } from "@/components/Widgets";
+import { Spinner } from "@/components/Widgets";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { AlertBanner } from "@/components/ui/alert";
 
-// Required function for calling APIs
+// API Services
 import { createGroup } from "@/services/groups";
 
-const GroupCreatePage = () => {
+// Helper
+import { handleError } from "@/shared/helper";
+
+const CreateGroupClient = () => {
   const [groupName, setGroupName] = useState("");
   const [loading, setLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState({ type: "success", text: "" });
-
-  const handleChange = (e) => {
-    setGroupName(e.target.value);
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -44,10 +46,10 @@ const GroupCreatePage = () => {
     createGroup(groupName)
       .then(() => {
         setMessage({ type: "success", text: messages.groupCreate });
-        setGroupName(""); // Clear input after success
+        setGroupName("");
       })
       .catch((error) => {
-        setMessage({ type: "danger", text: error.message });
+        handleError(error, setMessage);
       })
       .finally(() => {
         setLoading(false);
@@ -55,51 +57,62 @@ const GroupCreatePage = () => {
       });
   };
 
+  const alertType =
+    message.type === "danger" || message.type === "error"
+      ? "Error"
+      : message.type === "success"
+      ? "Success"
+      : "Info";
+
   return (
-    <div className="main-container my-3">
+    <div>
       {showMessage && (
-        <Alert
-          type={message.type}
-          setShow={setShowMessage}
-          message={message.text}
-        />
+        <div className="mb-4">
+          <AlertBanner
+            type={alertType}
+            description={message.text}
+            showClose
+            onClose={() => setShowMessage(false)}
+          />
+        </div>
       )}
 
-      <h1 className="font-size-main-heading">Add Group</h1>
-      <br />
+      <h1 className="text-2xl font-semibold text-gray-900 mb-6">
+        Add a Group
+      </h1>
 
-      <div className="row">
-        <div className="col-12 col-lg-8">
-          <form onSubmit={handleSubmit}>
-            <InputContainer
-              type="text"
-              name="name"
-              id="admin-group-add-name"
-              onChange={handleChange}
-              placeholder="Group name"
-              value={groupName}
-            >
-              Enter the group name:
-            </InputContainer>
-
-            <Button type="submit" className="mt-4">
-              {loading ? (
-                <Spinner
-                  as="span"
-                  animation="border"
-                  size="sm"
-                  role="status"
-                  aria-hidden="true"
-                />
-              ) : (
-                "Add"
-              )}
-            </Button>
-          </form>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div>
+          <label className="block font-normal mb-3">
+            Enter the group name:
+          </label>
+          <Input
+            type="text"
+            name="name"
+            id="admin-group-add-name"
+            value={groupName}
+            onChange={(e) => setGroupName(e.target.value)}
+            placeholder="Group name"
+            className="w-[320px]"
+          />
         </div>
-      </div>
+
+        <div className="pt-2">
+          <Button
+            type="submit"
+            disabled={loading || !groupName}
+            variant="default" size="default"
+          >
+            {loading ? (
+              <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+            ) : (
+              "Add"
+            )}
+          </Button>
+        </div>
+      </form>
     </div>
   );
 };
 
-export default GroupCreatePage;
+export default CreateGroupClient;

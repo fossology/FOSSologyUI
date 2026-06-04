@@ -16,27 +16,33 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import routes from "@/constants/routes";
-import { Button } from "@/components/ui/button";
 
-export const metadata = {
-  title: "404 - Page Not Found | FOSSology",
-};
+const folderTabs = [
+  { label: "Create", href: routes.organize.folders.create },
+  { label: "Delete", href: routes.organize.folders.delete },
+  { label: "Edit Properties", href: routes.organize.folders.edit },
+  { label: "Move or Copy", href: routes.organize.folders.move },
+  { label: "Unlink Content", href: routes.organize.folders.unlinkContent },
+];
 
-export default function NotFound() {
+export default function FolderTabsNav() {
+  const pathname = usePathname();
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4">
-      <h1 className="text-6xl font-bold text-gray-800 mb-4">404</h1>
-      <h2 className="text-2xl font-semibold text-gray-600 mb-4">
-        Page Not Found
-      </h2>
-      <p className="text-base text-gray-500 mb-8 max-w-md">
-        The page you are looking for does not exist or has been moved.
-      </p>
-      <Button asChild variant="default" size="default">
-        <Link href={routes.home}>Go to Home</Link>
-      </Button>
-    </div>
+    <Tabs value={pathname}>
+      <TabsList>
+        {folderTabs.map((tab) => (
+          <TabsTrigger key={tab.href} value={tab.href} asChild>
+            <Link href={tab.href}>{tab.label}</Link>
+          </TabsTrigger>
+        ))}
+      </TabsList>
+    </Tabs>
   );
 }

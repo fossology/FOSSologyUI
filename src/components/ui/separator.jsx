@@ -16,12 +16,30 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import UnlinkFolderClient from "./UnlinkFolderClient";
+"use client"
 
-export const metadata = {
-    title: "Unlink Folder | FOSSology",
-};
+import * as React from "react"
+import { Separator as SeparatorPrimitive } from "radix-ui"
 
-export default function UnlinkFolderPage() {
-    return <UnlinkFolderClient />;
+import { cn } from "@/lib/utils"
+
+function Separator({
+  className,
+  orientation = "horizontal",
+  decorative = true,
+  ...props
+}) {
+  return (
+    <SeparatorPrimitive.Root
+      data-slot="separator"
+      decorative={decorative}
+      orientation={orientation}
+      className={cn(
+        "shrink-0 bg-border data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px",
+        className
+      )}
+      {...props} />
+  );
 }
+
+export { Separator }

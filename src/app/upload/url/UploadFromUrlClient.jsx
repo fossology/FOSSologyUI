@@ -19,7 +19,7 @@
 
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useReducer } from "react";
 import messages from "@/constants/messages";
 
 // Common Fields
@@ -44,10 +44,15 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "@/components/ui/tabs";
 
 import {
-  Alert,
-  AlertDescription,
+  AlertBanner,
 } from "@/components/ui/alert";
 
 import {
@@ -66,6 +71,9 @@ import { getAllFolders } from "@/services/folders";
 import { createUploadUrl, getUploadById } from "@/services/upload";
 import { scheduleAnalysis } from "@/services/jobs";
 
+// Helper
+import { handleError } from "@/shared/helper";
+
 // Constants
 import {
   initialScanFileDataFile,
@@ -73,6 +81,49 @@ import {
   initialStateUrl,
   initialUrlData,
 } from "@/constants/constants";
+
+const scanReducer = (state, action) => {
+  switch (action.type) {
+    case "RESET": {
+      return action.payload;
+    }
+
+    case "UPDATE_SECTION": {
+      return {
+        ...state,
+        [action.section]: {
+          ...state[action.section],
+          [action.name]: action.value,
+        },
+      };
+    }
+
+    case "TOGGLE_REUSE": {
+      const current = state.reuse?.reuseUpload || [];
+
+      const exists = current.find(
+        (item) => item.id === action.value?.id
+      );
+
+      return {
+        ...state,
+        reuse: {
+          ...state.reuse,
+          reuseUpload: action.checked
+            ? exists
+              ? current
+              : [...current, action.value]
+            : current.filter((i) => i.id !== action.value?.id),
+        },
+      };
+    }
+
+    default:
+      return state;
+  }
+};
+
+const deepClone = (obj) => JSON.parse(JSON.stringify(obj));
 
 const UploadFromUrlPage = () => {
   const [uploadUrlData, setUploadUrlData] =
@@ -83,8 +134,10 @@ const UploadFromUrlPage = () => {
   const [folderList, setFolderList] =
     useState(initialFolderList);
 
-  const [scanFileData, setScanFileData] =
-    useState(initialScanFileDataFile);
+  const [scanFileData, dispatchScan] = useReducer(
+    scanReducer,
+    initialScanFileDataFile
+  );
 
   const [loading, setLoading] = useState(false);
 
@@ -96,6 +149,12 @@ const UploadFromUrlPage = () => {
       "To manage your own group permissions go into Admin > Groups > Manage Group Users. To manage permissions for this one upload, go to Admin > Upload Permissions.",
   });
 
+  const isUrlValid = Boolean(urlData.url?.trim());
+  const TAB_REUSE = "reuse";
+
+  const UPLOAD_READY_MAX_ATTEMPTS = 10;
+  const UPLOAD_READY_POLL_INTERVAL_MS = 1500;
+
   const getFileNameFromUrl = (url) => {
     if (!url || url === "/") return "";
 
@@ -104,13 +163,107 @@ const UploadFromUrlPage = () => {
   };
 
   const fileName = getFileNameFromUrl(urlData.url);
+  const displayName = fileName || "No file chosen";
+
+  const folderOptions = useMemo(
+    () =>
+      folderList.map((folder) => (
+        <SelectItem key={folder.id} value={folder.id.toString()}>
+          {folder.name}
+        </SelectItem>
+      )),
+    [folderList]
+  );
+
+  const waitForUploadReady = async (uploadId) => {
+    let lastError = null;
+
+    for (let attempt = 0; attempt < UPLOAD_READY_MAX_ATTEMPTS; attempt += 1) {
+      try {
+        await getUploadById(uploadId);
+        return uploadId;
+      } catch (error) {
+        lastError = error;
+
+        if (attempt < UPLOAD_READY_MAX_ATTEMPTS - 1) {
+          await new Promise((resolve) => {
+            setTimeout(resolve, UPLOAD_READY_POLL_INTERVAL_MS);
+          });
+        }
+      }
+    }
+
+    throw lastError || new Error("Upload is not ready yet.");
+  };
+
+  const normalizeReuseUploads = (reuseUpload) => {
+    if (!reuseUpload) return [];
+
+    return Array.isArray(reuseUpload)
+      ? reuseUpload.map((it) =>
+          it && typeof it === "object" ? Number(it.id) : Number(it)
+        )
+      : [];
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     setLoading(true);
 
-    createUploadUrl(uploadUrlData, urlData)
+    const body = { location: { url: urlData.url, name: urlData.name } };
+    const folderId = uploadUrlData.folderId;
+
+    const validateReuseFolder = () => {
+      const reuseForFile = scanFileData.reuse || {};
+      const hasReuseSelection =
+        reuseForFile.reuseUpload &&
+        (!Array.isArray(reuseForFile.reuseUpload) ||
+          reuseForFile.reuseUpload.length > 0);
+
+      if (!hasReuseSelection) {
+        return Promise.resolve();
+      }
+
+      let candidateId = null;
+      if (Array.isArray(reuseForFile.reuseUpload)) {
+        const first = reuseForFile.reuseUpload[0];
+        candidateId = first && typeof first === "object" ? first.id : first;
+      } else if (typeof reuseForFile.reuseUpload === "object") {
+        candidateId = reuseForFile.reuseUpload.id;
+      } else {
+        candidateId = reuseForFile.reuseUpload;
+      }
+
+      candidateId = candidateId ? Number(candidateId) : null;
+
+      if (!candidateId) {
+        return Promise.resolve();
+      }
+
+      return getUploadById(candidateId).then((uploadRes) => {
+        const folderKeys = ["folderId", "folder", "folder_id", "parent"];
+        let uploadFolder = null;
+        for (const k of folderKeys) {
+          if (Object.prototype.hasOwnProperty.call(uploadRes, k)) {
+            uploadFolder = uploadRes[k];
+            break;
+          }
+        }
+
+        if (
+          uploadFolder != null &&
+          Number(uploadFolder) !== Number(folderId)
+        ) {
+          throw new Error(
+            "The selected reuse upload belongs to a different folder. Please choose a matching folder or a different upload."
+          );
+        }
+      });
+    };
+
+    validateReuseFolder()
+      .then(() => createUploadUrl(uploadUrlData, body))
       .then((res) => {
         window.scrollTo({ top: 0 });
 
@@ -121,19 +274,14 @@ const UploadFromUrlPage = () => {
 
         return res.message;
       })
-      .then((uploadId) => getUploadById(uploadId, 10).then(() => uploadId))
+      .then((uploadId) => waitForUploadReady(uploadId))
       .then((uploadId) => {
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            scheduleAnalysis(
-              uploadUrlData.folderId,
-              uploadId,
-              scanFileData
-            )
-              .then(resolve)
-              .catch(reject);
-          }, 150000);
-        });
+        const scheduleData = deepClone(scanFileData);
+        scheduleData.reuse = scheduleData.reuse || {};
+        scheduleData.reuse.reuseUpload =
+          normalizeReuseUploads(scheduleData.reuse.reuseUpload);
+
+        return scheduleAnalysis(folderId, uploadId, scheduleData);
       })
       .then(() => {
         window.scrollTo({ top: 0 });
@@ -145,14 +293,12 @@ const UploadFromUrlPage = () => {
 
         setUploadUrlData(initialStateUrl);
         setUrlData(initialUrlData);
-        setScanFileData(initialScanFileDataFile);
-      })
-      .catch((error) => {
-        setMessage({
-          type: "error",
-          text: error.message,
+        dispatchScan({
+          type: "RESET",
+          payload: initialScanFileDataFile,
         });
       })
+      .catch((error) => handleError(error, setMessage))
       .finally(() => {
         setLoading(false);
         setShowMessage(true);
@@ -188,70 +334,27 @@ const UploadFromUrlPage = () => {
     type,
     value
   ) => {
-    if (Object.keys(scanFileData.analysis).includes(name)) {
-      setScanFileData({
-        ...scanFileData,
-        analysis: {
-          ...scanFileData.analysis,
-          [name]: checked,
-        },
-      });
-    } else if (
-      Object.keys(scanFileData.decider).includes(name)
-    ) {
-      setScanFileData({
-        ...scanFileData,
-        decider: {
-          ...scanFileData.decider,
-          [name]: checked,
-        },
-      });
-    } else if (
-      Object.keys(scanFileData.scancode).includes(name)
-    ) {
-      setScanFileData({
-        ...scanFileData,
-        scancode: {
-          ...scanFileData.scancode,
-          [name]: checked,
-        },
-      });
-    } else {
-      setScanFileData((prev) => {
-        if (name === "reuseUpload" && type === "checkbox") {
-          const current = Array.isArray(
-            prev.reuse.reuseUpload
-          )
-            ? prev.reuse.reuseUpload
-            : [];
+    const scanSections = ["analysis", "decider", "scancode"];
 
-          const exists = value
-            ? current.find((item) => item.id === value.id)
-            : false;
+    const section = scanSections.find(
+      (key) => name in scanFileData[key]
+    );
 
-          return {
-            ...prev,
-            reuse: {
-              ...prev.reuse,
-              reuseUpload: checked
-                ? exists
-                  ? current
-                  : [...current, value]
-                : current.filter(
-                    (item) => item.id !== value?.id
-                  ),
-            },
-          };
-        }
+    if (section) {
+      dispatchScan({
+        type: "UPDATE_SECTION",
+        section,
+        name,
+        value: checked,
+      });
+      return;
+    }
 
-        return {
-          ...prev,
-          reuse: {
-            ...prev.reuse,
-            [name]:
-              type === "checkbox" ? checked : value,
-          },
-        };
+    if (name === "reuseUpload" && type === "checkbox") {
+      dispatchScan({
+        type: "TOGGLE_REUSE",
+        value,
+        checked,
       });
     }
   };
@@ -262,62 +365,46 @@ const UploadFromUrlPage = () => {
         setFolderList(res);
       })
       .catch((error) => {
-        setMessage({
-          type: "error",
-          text: error.message,
-        });
-
+        handleError(error, setMessage);
         setShowMessage(true);
       });
   }, []);
 
-  const isButtonDisabled = !urlData.url;
+  const isButtonDisabled = !isUrlValid;
+  const alertType =
+    message.type === "danger" || message.type === "error"
+      ? "Error"
+      : message.type === "success"
+      ? "Success"
+      : "Info";
 
   return (
     <div className="max-w-4xl mx-40 my-6 px-4">
-      {/* Info Alert */}
+      {/* Alert */}
       {showMessage && (
         <div className="mb-4">
-          <Alert className="relative flex items-start gap-2 rounded border-0 bg-info-100 px-4 py-2 text-sm text-info-500 pr-10">
-            {/* Close Button */}
-            <button
-              onClick={() => setShowMessage(false)}
-              className="absolute top-2 right-2 p-1 rounded hover:bg-black/10"
-              aria-label="Close"
-            >
-              <span
-                className="block w-5 h-5 bg-info-500 [mask-image:url('/assets/icons/Close/Close_20px.svg')] [mask-size:contain] [mask-repeat:no-repeat]"
-              />
-            </button>
-
-            {/* Icon */}
-            <img
-              src="/assets/icons/Alert/InfoFilled.svg"
-              alt="Info"
-              width={24}
-              height={24}
-              className="mt-1"
-            />
-
-            <div>
-              <AlertDescription className="text-sm text-info-500">
-                <span>
-                  To manage your own group permissions go
-                  into{" "}
-                  <strong>
-                    Admin &gt; Groups &gt; Manage Group
-                    Users
-                  </strong>{" "}
-                  To manage permissions for this one
-                  upload, go to{" "}
-                  <strong>
+          <AlertBanner
+            type={alertType}
+            description={
+              message.type === "info" ? (
+                <>
+                  To manage your own group permissions go into{" "}
+                  <span className="font-semibold">
+                    Admin &gt; Groups &gt; Manage Group Users
+                  </span>
+                  . To manage permissions for this one upload, go to{" "}
+                  <span className="font-semibold">
                     Admin &gt; Upload Permissions
-                  </strong>
+                  </span>
                   .
-                </span>
-              </AlertDescription>
-            </div>
-          </Alert>
+                </>
+              ) : (
+                message.text
+              )
+            }
+            showClose
+            onClose={() => setShowMessage(false)}
+          />
         </div>
       )}
 
@@ -346,24 +433,15 @@ const UploadFromUrlPage = () => {
             onValueChange={(value) =>
               setUploadUrlData({
                 ...uploadUrlData,
-                folderId: value,
+                folderId: Number(value),
               })
             }
           >
-            <SelectTrigger className="w-[282px]">
+            <SelectTrigger className="w-[320px]">
               <SelectValue placeholder="Select Folder" />
             </SelectTrigger>
 
-            <SelectContent>
-              {folderList.map((folder) => (
-                <SelectItem
-                  key={folder.id}
-                  value={folder.id.toString()}
-                >
-                  {folder.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
+            <SelectContent>{folderOptions}</SelectContent>
           </Select>
         </div>
 
@@ -380,17 +458,17 @@ const UploadFromUrlPage = () => {
               value={urlData.url}
               onChange={handleUrlChange}
               placeholder="https://example.com/file.zip"
-              className="w-[282px] border-foreground"
+              className="w-[320px] border-neutral-800"
             />
 
             <span
               className={`self-end text-sm ${
-                fileName
+                isUrlValid
                   ? "text-info-500"
                   : "text-error-600"
               }`}
             >
-              {fileName || "No file chosen"}
+              {isUrlValid ? "URL valid" : "No file chosen"}
             </span>
           </div>
         </div>
@@ -408,7 +486,7 @@ const UploadFromUrlPage = () => {
             value={urlData.name}
             onChange={handleUrlChange}
             placeholder="Enter viewable name"
-            className="w-[282px] border-foreground"
+            className="w-[320px] border-neutral-800"
           />
 
           <p className="text-sm text-gray-600 mt-2">
@@ -425,17 +503,17 @@ const UploadFromUrlPage = () => {
 
           <p
             className={`text-sm mb-2 ${
-              fileName
+              isUrlValid
                 ? "text-info-500"
                 : "text-error-600"
             }`}
           >
-            {fileName || "No file chosen"}
+            {displayName}
           </p>
 
           <p
             className={`text-sm mb-1 ${
-              fileName
+              isUrlValid
                 ? "text-foreground"
                 : "text-gray-600"
             }`}
@@ -448,7 +526,8 @@ const UploadFromUrlPage = () => {
             value={uploadUrlData.uploadDescription}
             onChange={handleChange}
             placeholder="Type your description here"
-            disabled={!fileName}
+            disabled={!isUrlValid}
+            className="min-w-[320px] resize"
           />
         </div>
 
@@ -525,6 +604,7 @@ const UploadFromUrlPage = () => {
             <Button
               type="button"
               variant="outline"
+              disabled={!isUrlValid}
               className="font-medium text-primary rounded border-primary hover:bg-accent hover:text-accent-foreground"
             >
               Set the Reuse Information
@@ -541,11 +621,21 @@ const UploadFromUrlPage = () => {
               </SheetTitle>
             </SheetHeader>
 
-            <CommonFields
-              reuse={scanFileData.reuse}
-              handleChange={handleChange}
-              handleScanChange={handleScanChange}
-            />
+            <Tabs value={TAB_REUSE} className="w-full p-0">
+              <TabsList>
+                <TabsTrigger value={TAB_REUSE}>
+                  {displayName}
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value={TAB_REUSE} className="pt-6">
+                <CommonFields
+                  reuse={scanFileData.reuse}
+                  handleChange={handleChange}
+                  handleScanChange={handleScanChange}
+                />
+              </TabsContent>
+            </Tabs>
 
             <div className="mt-6 flex justify-center gap-2">
               <SheetClose asChild>
@@ -557,12 +647,13 @@ const UploadFromUrlPage = () => {
                 </Button>
               </SheetClose>
 
-              <Button
-                variant="default"
-                className="px-28 bg-primary text-white rounded hover:bg-tertiary1-900"
-              >
-                Apply
-              </Button>
+              <SheetClose asChild>
+                <Button
+                  variant="default" size="default" className="px-28"
+                >
+                  Apply
+                </Button>
+              </SheetClose>
             </div>
           </SheetContent>
         </Sheet>
@@ -595,7 +686,7 @@ const UploadFromUrlPage = () => {
           <Button
             type="submit"
             disabled={loading || isButtonDisabled}
-            className="bg-primary text-white h-10 px-8 py-2 rounded text-base font-medium hover:bg-tertiary1-900 disabled:bg-tertiary1-400 disabled:text-white"
+            variant="default" size="default"
           >
             {loading ? "Uploading..." : "Upload"}
           </Button>

@@ -22,6 +22,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import clsx from "clsx";
+import { cva } from "class-variance-authority";
 
 import { DropdownMenu, 
   DropdownMenuTrigger, 
@@ -43,8 +44,22 @@ import externalLinks from "@/constants/externalLinks";
 import { logout, isAuth, getUserName, isAdmin } from "@/shared/authHelper";
 import { getLocalStorage, setLocalStorage } from "@/shared/storageHelper";
 
+const topNavigationVariants = cva(
+  "sticky top-0 z-50 text-sm border-b flex items-center justify-between px-6",
+  {
+    variants: {
+      variant: {
+        default: "bg-neutral-300 border-neutral-300",
+        compact: "bg-neutral-100 border-neutral-200",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  }
+)
 
-export default function Header() {
+export default function Header({ variant = "default" }) {
   const [currentGroup, setCurrentGroup] = useState(null);
   const [groups, setGroups] = useState([]);
   const [authenticated, setAuthenticated] = useState(false);
@@ -104,7 +119,7 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-neutral-300 text-sm border-b border-neutral-300 flex items-center justify-between px-6">
+    <header className={topNavigationVariants({ variant })}>
       {/* Logo */}
       <div className="flex items-center gap-4">
         <img src="/assets/images/logo.svg" alt="FOSSology Logo" className="h-13" />
@@ -208,23 +223,7 @@ export default function Header() {
                       />}
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" sideOffset={4} className="p-0 m-0 min-w-[220px] bg-white shadow-lg border border-gray-200 z-50">
-                  <DropdownMenuSub>
-                    <DropdownMenuSubTrigger   
-                    className={clsx(
-                        "flex items-center justify-between w-full px-2 py-2 text-sm rounded-md cursor-pointer",
-                        "hover:bg-secondary hover:text-gray-900 hover:font-bold",
-                        "focus:bg-secondary focus:text-gray-900 focus:font-bold",
-                        "data-[state=open]:bg-secondary data-[state=open]:text-gray-900 data-[state=open]:font-bold"
-                    )}>Folders
-                    </DropdownMenuSubTrigger>
-                    <DropdownMenuSubContent className="p-0 m-0 bg-white border border-gray-200">
-                      <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={routes.organize.folders.create}>Create</Link></DropdownMenuItem>
-                      <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={routes.organize.folders.delete}>Delete Folder</Link></DropdownMenuItem>
-                      <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={routes.organize.folders.edit}>Edit Properties</Link></DropdownMenuItem>
-                      <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={routes.organize.folders.move}>Move or Copy</Link></DropdownMenuItem>
-                      <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={routes.organize.folders.unlinkContent}>Unlink Content</Link></DropdownMenuItem>
-                    </DropdownMenuSubContent>
-                  </DropdownMenuSub>
+                  <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={routes.organize.folders.index}>Folders</Link></DropdownMenuItem>
 
                   <DropdownMenuSub>
                     <DropdownMenuSubTrigger
@@ -328,21 +327,9 @@ export default function Header() {
                     <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold">
                     <Link href={""}>Fossdash</Link>
                     </DropdownMenuItem>
-                    <DropdownMenuSub>
-                      <DropdownMenuSubTrigger 
-                      className={clsx(
-                        "flex items-center justify-between w-full px-2 py-2 text-sm rounded-md cursor-pointer",
-                        "hover:bg-secondary hover:text-gray-900 hover:font-bold",
-                        "focus:bg-secondary focus:text-gray-900 focus:font-bold",
-                        "data-[state=open]:bg-secondary data-[state=open]:text-gray-900 data-[state=open]:font-bold"
-                      )}>Groups
-                      </DropdownMenuSubTrigger>
-                      <DropdownMenuSubContent className="p-0 m-0 bg-white border border-gray-200">
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={routes.admin.group.create}>Add Group</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={routes.admin.group.delete}>Delete Group</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={""}>Manage Group Users</Link></DropdownMenuItem>
-                      </DropdownMenuSubContent>
-                    </DropdownMenuSub>
+                    <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold">
+                      <Link href={routes.admin.group.index}>Groups</Link>
+                    </DropdownMenuItem>
                     <DropdownMenuSub>
                       <DropdownMenuSubTrigger 
                       className={clsx(

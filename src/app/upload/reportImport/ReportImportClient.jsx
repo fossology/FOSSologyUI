@@ -28,8 +28,7 @@ import { Button } from "@/components/ui/button";
 import { InputContainer } from "@/components/Widgets";
 import { RadioGroup } from "@/components/ui/radio-group";
 import {
-  Alert,
-  AlertDescription,
+  AlertBanner,
 } from "@/components/ui/alert";
 import {
   Select,
@@ -212,37 +211,23 @@ const ImportReportPage = () => {
   };
 
   const isButtonDisabled = !importReportData.report;
+  const alertType =
+    message.type === "danger" || message.type === "error"
+      ? "Error"
+      : message.type === "success"
+      ? "Success"
+      : "Info";
 
   return (
     <div className="max-w-4xl mx-40 my-6 px-4">
       {showMessage && (
         <div className="mb-4">
-          <Alert
-            variant={message.type}
-            className="relative flex items-start gap-2 rounded border-0 bg-info-100 px-4 py-2 text-sm text-info-500 pr-10"
-          >
-            <button
-              onClick={() => setShowMessage(false)}
-              className="absolute top-2 right-2 p-1 rounded hover:bg-black/10"
-              aria-label="Close"
-            >
-              <span
-                className="block w-5 h-5 bg-info-500 [mask-image:url('/assets/icons/Close/Close_20px.svg')] [mask-size:contain] [mask-repeat:no-repeat]"
-              />
-            </button>
-
-            <img
-              src="/assets/icons/Alert/InfoFilled.svg"
-              alt="Info"
-              width={24}
-              height={24}
-              className="mt-1"
-            />
-
-            <AlertDescription className="text-sm text-info-500">
-              {message.text}
-            </AlertDescription>
-          </Alert>
+          <AlertBanner
+            type={alertType}
+            description={message.text}
+            showClose
+            onClose={() => setShowMessage(false)}
+          />
         </div>
       )}
 
@@ -270,7 +255,7 @@ const ImportReportPage = () => {
               }))
             }
           >
-            <SelectTrigger className="w-[282px]">
+            <SelectTrigger className="w-[320px]">
               <SelectValue placeholder="Select Folder" />
             </SelectTrigger>
 
@@ -306,7 +291,7 @@ const ImportReportPage = () => {
               }))
             }
           >
-            <SelectTrigger className="w-[400px]">
+            <SelectTrigger className="w-[320px]">
               <SelectValue placeholder="Select Upload" />
             </SelectTrigger>
 
@@ -554,7 +539,7 @@ const ImportReportPage = () => {
             type="submit"
             onClick={handleSubmit}
             disabled={isButtonDisabled}
-            className="bg-primary text-white h-10 px-8 py-2 rounded text-base font-medium hover:bg-tertiary1-900 disabled:bg-tertiary1-400 disabled:text-white"
+            variant="default" size="default"
           >
             Upload and Import
           </Button>

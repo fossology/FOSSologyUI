@@ -20,7 +20,23 @@ SPDX-License-Identifier: GPL-2.0-only
 
 import * as React from "react"
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
+import { cva } from "class-variance-authority";
 import { cn } from "@/lib/utils"
+
+const accordionTriggerVariants = cva(
+  "focus-visible:border-ring focus-visible:ring-ring/50 flex flex-1 items-start justify-between gap-4 rounded-md text-left font-medium transition-all outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 hover:no-underline focus:no-underline cursor-pointer [&[data-state=open]_.chevron-down]:hidden [&[data-state=closed]_.chevron-up]:hidden",
+  {
+    variants: {
+      size: {
+        default: "py-4 text-sm",
+        sm: "py-2.5 text-xs",
+      },
+    },
+    defaultVariants: {
+      size: "default",
+    },
+  }
+)
 
 function Accordion({ ...props }) {
   return <AccordionPrimitive.Root data-slot="accordion" {...props} />
@@ -36,18 +52,12 @@ function AccordionItem({ className, ...props }) {
   )
 }
 
-function AccordionTrigger({ className, children, ...props }) {
+function AccordionTrigger({ className, children, size = "default", ...props }) {
   return (
     <AccordionPrimitive.Header className="flex">
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
-        className={cn(
-          "focus-visible:border-ring focus-visible:ring-ring/50 flex flex-1 items-start justify-between gap-4 rounded-md py-4 text-left text-sm font-medium transition-all outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50",
-          "hover:no-underline focus:no-underline",
-          "cursor-pointer",
-          "[&[data-state=open]_.chevron-down]:hidden [&[data-state=closed]_.chevron-up]:hidden",
-          className
-        )}
+        className={cn(accordionTriggerVariants({ size }), className)}
         {...props}
       >
         {children}

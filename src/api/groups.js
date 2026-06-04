@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -73,6 +73,20 @@ export const deleteGroupApi = (id) => {
     method: "DELETE",
     headers: {
       Authorization: getToken(),
+    },
+    addGroupName: false,
+  });
+};
+
+// Edit a group
+export const editGroupApi = (id, name) => {
+  const url = endpoints.admin.groups.edit(id);
+  return sendRequest({
+    url,
+    method: "PATCH",
+    headers: {
+      Authorization: getToken(),
+      name,
     },
     addGroupName: false,
   });

@@ -19,7 +19,7 @@
 
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer, useMemo, useRef } from "react";
 import messages from "@/constants/messages";
 
 // Common Fields
@@ -44,10 +44,15 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "@/components/ui/tabs";
 
 import {
-  Alert,
-  AlertDescription,
+  AlertBanner,
 } from "@/components/ui/alert";
 
 import {
@@ -78,6 +83,147 @@ import {
 // Helpers
 import { handleError } from "@/shared/helper";
 
+const UPLOAD_READY_MAX_ATTEMPTS = 10;
+const UPLOAD_READY_POLL_INTERVAL_MS = 1500;
+const UPLOAD_PENDING_STATES = [
+  "processing",
+  "queued",
+  "pending",
+  "running",
+  "started",
+  "in progress",
+];
+const UPLOAD_READY_STATES = [
+  "ready",
+  "completed",
+  "finished",
+  "done",
+  "success",
+];
+
+const extractReuseId = (reuseUpload) => {
+  if (Array.isArray(reuseUpload)) {
+    const first = reuseUpload[0];
+    return first && typeof first === "object" ? first.id : first;
+  }
+
+  if (reuseUpload && typeof reuseUpload === "object") {
+    return reuseUpload.id;
+  }
+
+  return reuseUpload;
+};
+
+const normalizeReuse = (data) => {
+  const reuse = data?.reuse || {};
+
+  return {
+    ...data,
+    reuse: {
+      ...reuse,
+      reuseUpload: Array.isArray(reuse.reuseUpload)
+        ? reuse.reuseUpload.map((it) => Number(it.id ?? it))
+        : [],
+    },
+  };
+};
+
+const getUploadFolderId = (uploadRes) => {
+  return (
+    uploadRes?.folderId ??
+    uploadRes?.folder ??
+    uploadRes?.folder_id ??
+    uploadRes?.parent ??
+    null
+  );
+};
+
+const getUploadState = (uploadRes) => {
+  return (
+    uploadRes?.status ??
+    uploadRes?.uploadStatus ??
+    uploadRes?.upload_status ??
+    uploadRes?.jobStatus ??
+    uploadRes?.job_status ??
+    ""
+  )
+    .toString()
+    .toLowerCase()
+    .trim();
+};
+
+const isUploadReadyResponse = (uploadRes) => {
+  const state = getUploadState(uploadRes);
+
+  if (!state) return false;
+
+  if (UPLOAD_PENDING_STATES.some((value) => state.includes(value))) {
+    return false;
+  }
+
+  if (UPLOAD_READY_STATES.some((value) => state.includes(value))) {
+    return true;
+  }
+
+  return false;
+};
+
+const scanReducer = (state, action) => {
+  switch (action.type) {
+    case "RESET": {
+      return action.payload;
+    }
+
+    case "UPDATE_SECTION": {
+      return {
+        ...state,
+        [action.section]: {
+          ...state[action.section],
+          [action.name]: action.value,
+        },
+      };
+    }
+
+    case "TOGGLE_REUSE_UPLOAD": {
+      const current = Array.isArray(state.reuse?.reuseUpload)
+        ? state.reuse.reuseUpload
+        : [];
+
+      const id = Number(
+        action.value?.id ?? action.value
+      );
+
+      const normalizedCurrent = current.map((item) => Number(item)).filter(Boolean);
+      const exists = normalizedCurrent.includes(id);
+
+      return {
+        ...state,
+        reuse: {
+          ...state.reuse,
+          reuseUpload: action.checked
+            ? exists
+              ? current
+              : [...current, id]
+            : current.filter((item) => Number(item) !== id),
+        },
+      };
+    }
+
+    case "UPDATE_REUSE_FIELD": {
+      return {
+        ...state,
+        reuse: {
+          ...state.reuse,
+          [action.name]: action.value,
+        },
+      };
+    }
+
+    default:
+      return state;
+  }
+};
+
 const UploadFromVcsPage = () => {
   const [uploadVcsData, setUploadVcsData] =
     useState(initialStateVcs);
@@ -88,8 +234,10 @@ const UploadFromVcsPage = () => {
   const [folderList, setFolderList] =
     useState(initialFolderList);
 
-  const [scanFileData, setScanFileData] =
-    useState(initialScanFileDataFile);
+  const [scanFileData, dispatchScan] = useReducer(
+    scanReducer,
+    initialScanFileDataFile
+  );
 
   const [loading, setLoading] = useState(false);
 
@@ -102,66 +250,162 @@ const UploadFromVcsPage = () => {
       "To manage your own group permissions go into Admin > Groups > Manage Group Users. To manage permissions for this one upload, go to Admin > Upload Permissions.",
   });
 
+  const isCancelledRef = useRef(false);
+
+  const TAB_REUSE = "repo";
+
   const getRepoName = (url) => {
     if (!url) return "";
 
     const cleanedUrl = url.replace(/\/$/, "");
     const parts = cleanedUrl.split("/");
 
-    return parts[parts.length - 1];
+    return parts[parts.length - 1]?.replace(/\.git$/, "") || "";
   };
 
-  const repoName = getRepoName(vcsData.vcsUrl);
+  const repoName = useMemo(
+    () => getRepoName(vcsData.vcsUrl),
+    [vcsData.vcsUrl]
+  );
+  const vcsUrl = vcsData.vcsUrl?.trim() || "";
+  const isRepoValid = /^((https?:\/\/)|(git@)).+/.test(vcsUrl.trim());
 
-  const handleSubmit = (e) => {
+  const folderOptions = useMemo(
+    () =>
+      folderList.map((folder) => (
+        <SelectItem
+          key={folder.id}
+          value={folder.id.toString()}
+        >
+          {folder.name}
+        </SelectItem>
+      )),
+    [folderList]
+  );
+
+  const waitForUploadReady = async (uploadId) => {
+    for (let attempt = 0; attempt < UPLOAD_READY_MAX_ATTEMPTS; attempt++) {
+      if (isCancelledRef.current) {
+        throw new Error("Component unmounted");
+      }
+
+      try {
+        const uploadRes = await getUploadById(uploadId);
+
+        if (isUploadReadyResponse(uploadRes)) {
+          return uploadId;
+        }
+      } catch (error) {
+        if (attempt === UPLOAD_READY_MAX_ATTEMPTS - 1) {
+          throw error;
+        }
+      }
+
+      if (attempt < UPLOAD_READY_MAX_ATTEMPTS - 1) {
+        await new Promise((r) =>
+          setTimeout(r, UPLOAD_READY_POLL_INTERVAL_MS)
+        );
+      }
+    }
+
+    throw new Error("Upload is not ready yet.");
+  };
+
+  const validateReuseFolder = async (folderId) => {
+    const reuseForFile = scanFileData?.reuse ?? {};
+    const hasReuseSelection =
+      reuseForFile.reuseUpload &&
+      (!Array.isArray(reuseForFile.reuseUpload) ||
+        reuseForFile.reuseUpload.length > 0);
+
+    if (!hasReuseSelection) {
+      return;
+    }
+
+    const candidateId = Number(extractReuseId(reuseForFile.reuseUpload));
+    if (!candidateId) {
+      return;
+    }
+
+    const uploadRes = await getUploadById(candidateId);
+    const uploadFolder = getUploadFolderId(uploadRes);
+
+    if (
+      uploadFolder != null &&
+      Number(uploadFolder) !== Number(folderId)
+    ) {
+      throw new Error(
+        `Selected reuse upload (id ${candidateId}) is in folder ${uploadFolder}; change target folder to match or choose a reuse upload from target folder.`
+      );
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const folderId = uploadVcsData.folderId;
+    const vcsType = vcsData.vcsType?.trim() || "";
+
+    if (!folderId && folderId !== 0 || !vcsType || !vcsUrl?.trim()) {
+      setMessage({
+        type: "error",
+        text: "Please select a folder, choose a VCS type, and provide a repository URL.",
+      });
+      setShowMessage(true);
+      return;
+    }
 
     setLoading(true);
 
-    createUploadVcs(uploadVcsData, vcsData)
-      .then((res) => {
-        window.scrollTo({ top: 0 });
+    const location = {
+      vcsType,
+      vcsUrl,
+      vcsBranch: vcsData.vcsBranch?.trim(),
+      vcsName: vcsData.vcsName?.trim(),
+      ...(vcsData.vcsUsername?.trim()
+        ? { vcsUsername: vcsData.vcsUsername.trim() }
+        : {}),
+      ...(vcsData.vcsPassword
+        ? { vcsPassword: vcsData.vcsPassword }
+        : {}),
+    };
+    const body = { location };
 
-        setMessage({
-          type: "success",
-          text: `${messages.queuedUpload} #${res.message}`,
-        });
+    try {
+      await validateReuseFolder(folderId);
 
-        return res.message;
-      })
-      .then((uploadId) => getUploadById(uploadId, 10).then(() => uploadId))
-      .then((uploadId) =>
-        new Promise((resolve, reject) => {
-          setTimeout(() => {
-            scheduleAnalysis(
-              uploadVcsData.folderId,
-              uploadId,
-              scanFileData
-            )
-              .then(resolve)
-              .catch(reject);
-          }, 200000);
-        })
-      )
-      .then(() => {
-        window.scrollTo({ top: 0 });
+      const res = await createUploadVcs(uploadVcsData, body);
+      const uploadId = res.message;
 
-        setMessage({
-          type: "success",
-          text: messages.scheduledAnalysis,
-        });
-
-        setUploadVcsData(initialStateVcs);
-        setVcsData(initialVcsData);
-        setScanFileData(initialScanFileDataFile);
-      })
-      .catch((error) =>
-        handleError(error, setMessage)
-      )
-      .finally(() => {
-        setLoading(false);
-        setShowMessage(true);
+      window.scrollTo({ top: 0 });
+      setMessage({
+        type: "success",
+        text: `${messages.queuedUpload} #${uploadId}`,
       });
+
+      await waitForUploadReady(uploadId);
+
+      const scheduleData = normalizeReuse(scanFileData);
+      await scheduleAnalysis(folderId, uploadId, scheduleData);
+
+      window.scrollTo({ top: 0 });
+      setMessage({
+        type: "success",
+        text: messages.scheduledAnalysis,
+      });
+
+      setUploadVcsData(initialStateVcs);
+      setVcsData(initialVcsData);
+      dispatchScan({
+        type: "RESET",
+        payload: initialScanFileDataFile,
+      });
+    } catch (error) {
+      handleError(error, setMessage);
+    } finally {
+      setLoading(false);
+      setShowMessage(true);
+    }
   };
 
   const handleChange = (e) => {
@@ -194,72 +438,35 @@ const UploadFromVcsPage = () => {
     type,
     value
   ) => {
-    if (Object.keys(scanFileData.analysis).includes(name)) {
-      setScanFileData({
-        ...scanFileData,
-        analysis: {
-          ...scanFileData.analysis,
-          [name]: checked,
-        },
-      });
-    } else if (
-      Object.keys(scanFileData.decider).includes(name)
-    ) {
-      setScanFileData({
-        ...scanFileData,
-        decider: {
-          ...scanFileData.decider,
-          [name]: checked,
-        },
-      });
-    } else if (
-      Object.keys(scanFileData.scancode).includes(name)
-    ) {
-      setScanFileData({
-        ...scanFileData,
-        scancode: {
-          ...scanFileData.scancode,
-          [name]: checked,
-        },
-      });
-    } else {
-      setScanFileData((prev) => {
-        if (name === "reuseUpload" && type === "checkbox") {
-          const current = Array.isArray(
-            prev.reuse.reuseUpload
-          )
-            ? prev.reuse.reuseUpload
-            : [];
+    const scanSections = ["analysis", "decider", "scancode"];
+    const section = scanSections.find(
+      (key) => name in scanFileData[key]
+    );
 
-          const exists = value
-            ? current.find((item) => item.id === value.id)
-            : false;
-
-          return {
-            ...prev,
-            reuse: {
-              ...prev.reuse,
-              reuseUpload: checked
-                ? exists
-                  ? current
-                  : [...current, value]
-                : current.filter(
-                    (item) => item.id !== value?.id
-                  ),
-            },
-          };
-        }
-
-        return {
-          ...prev,
-          reuse: {
-            ...prev.reuse,
-            [name]:
-              type === "checkbox" ? checked : value,
-          },
-        };
+    if (section) {
+      dispatchScan({
+        type: "UPDATE_SECTION",
+        section,
+        name,
+        value: type === "checkbox" ? checked : value,
       });
+      return;
     }
+
+    if (name === "reuseUpload" && type === "checkbox") {
+      dispatchScan({
+        type: "TOGGLE_REUSE_UPLOAD",
+        value,
+        checked,
+      });
+      return;
+    }
+
+    dispatchScan({
+      type: "UPDATE_REUSE_FIELD",
+      name,
+      value: type === "checkbox" ? checked : value,
+    });
   };
 
   useEffect(() => {
@@ -273,51 +480,47 @@ const UploadFromVcsPage = () => {
       });
   }, []);
 
-  const isButtonDisabled = !vcsData.vcsUrl;
+  useEffect(() => {
+    return () => {
+      isCancelledRef.current = true;
+    };
+  }, []);
+
+  const isButtonDisabled = !uploadVcsData.folderId || !isRepoValid;
+  const alertType =
+    message.type === "danger" || message.type === "error"
+      ? "Error"
+      : message.type === "success"
+      ? "Success"
+      : "Info";
 
   return (
     <div className="max-w-4xl mx-40 my-6 px-4">
-      {/* Info Alert */}
+      {/* Alert */}
       {showMessage && (
         <div className="mb-4">
-          <Alert className="relative flex items-start gap-2 rounded border-0 bg-info-100 px-4 py-2 text-sm text-info-500 pr-10">
-            <button
-              onClick={() => setShowMessage(false)}
-              className="absolute top-2 right-2 p-1 rounded hover:bg-black/10"
-              aria-label="Close"
-            >
-              <span
-                className="block w-5 h-5 bg-info-500 [mask-image:url('/assets/icons/Close/Close_20px.svg')] [mask-size:contain] [mask-repeat:no-repeat]"
-              />
-            </button>
-
-            <img
-              src="/assets/icons/Alert/InfoFilled.svg"
-              alt="Info"
-              width={24}
-              height={24}
-              className="mt-1"
-            />
-
-            <div>
-              <AlertDescription className="text-sm text-info-500">
-                <span>
-                  To manage your own group permissions go
-                  into{" "}
-                  <strong>
-                    Admin &gt; Groups &gt; Manage Group
-                    Users
-                  </strong>{" "}
-                  To manage permissions for this one
-                  upload, go to{" "}
-                  <strong>
+          <AlertBanner
+            type={alertType}
+            description={
+              message.type === "info" ? (
+                <>
+                  To manage your own group permissions go into{" "}
+                  <span className="font-semibold">
+                    Admin &gt; Groups &gt; Manage Group Users
+                  </span>
+                  . To manage permissions for this one upload, go to{" "}
+                  <span className="font-semibold">
                     Admin &gt; Upload Permissions
-                  </strong>
+                  </span>
                   .
-                </span>
-              </AlertDescription>
-            </div>
-          </Alert>
+                </>
+              ) : (
+                message.text
+              )
+            }
+            showClose
+            onClose={() => setShowMessage(false)}
+          />
         </div>
       )}
 
@@ -353,24 +556,15 @@ const UploadFromVcsPage = () => {
             onValueChange={(value) =>
               setUploadVcsData({
                 ...uploadVcsData,
-                folderId: value,
+                folderId: Number(value),
               })
             }
           >
-            <SelectTrigger className="w-[282px]">
+            <SelectTrigger className="w-[320px]">
               <SelectValue placeholder="Select Folder" />
             </SelectTrigger>
 
-            <SelectContent>
-              {folderList.map((folder) => (
-                <SelectItem
-                  key={folder.id}
-                  value={folder.id.toString()}
-                >
-                  {folder.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
+            <SelectContent>{folderOptions}</SelectContent>
           </Select>
         </div>
 
@@ -389,7 +583,7 @@ const UploadFromVcsPage = () => {
               })
             }
           >
-            <SelectTrigger className="w-[282px]">
+            <SelectTrigger className="w-[320px]">
               <SelectValue placeholder="Select VCS Type" />
             </SelectTrigger>
 
@@ -419,12 +613,12 @@ const UploadFromVcsPage = () => {
               value={vcsData.vcsUrl}
               onChange={handleVcsChange}
               placeholder="https://github.com/example/repo.git"
-              className="w-[282px] border-foreground"
+              className="w-[320px] border-neutral-800"
             />
 
             <span
               className={`self-end text-sm ${
-                repoName
+                isRepoValid
                   ? "text-info-500"
                   : "text-error-600"
               }`}
@@ -451,7 +645,7 @@ const UploadFromVcsPage = () => {
             value={vcsData.vcsBranch}
             onChange={handleVcsChange}
             placeholder="main"
-            className="w-[282px] border-foreground"
+            className="w-[320px] border-neutral-800"
           />
         </div>
 
@@ -467,7 +661,7 @@ const UploadFromVcsPage = () => {
             value={vcsData.vcsUsername}
             onChange={handleVcsChange}
             placeholder="Enter username"
-            className="w-[282px] border-foreground"
+            className="w-[320px] border-neutral-800"
           />
         </div>
 
@@ -483,7 +677,7 @@ const UploadFromVcsPage = () => {
             value={vcsData.vcsPassword}
             onChange={handleVcsChange}
             placeholder="Enter password"
-            className="w-[282px] border-foreground"
+            className="w-[320px] border-neutral-800"
           />
         </div>
 
@@ -500,7 +694,7 @@ const UploadFromVcsPage = () => {
             value={vcsData.vcsName}
             onChange={handleVcsChange}
             placeholder="Enter viewable name"
-            className="w-[282px] border-foreground"
+            className="w-[320px] border-neutral-800"
           />
 
           <p className="text-sm text-gray-600 mt-2">
@@ -517,7 +711,7 @@ const UploadFromVcsPage = () => {
 
           <p
             className={`text-sm mb-2 ${
-              repoName
+              isRepoValid
                 ? "text-info-500"
                 : "text-error-600"
             }`}
@@ -527,7 +721,7 @@ const UploadFromVcsPage = () => {
 
           <p
             className={`text-sm mb-1 ${
-              repoName
+              isRepoValid
                 ? "text-foreground"
                 : "text-gray-600"
             }`}
@@ -540,7 +734,8 @@ const UploadFromVcsPage = () => {
             value={uploadVcsData.uploadDescription}
             onChange={handleChange}
             placeholder="Type your description here"
-            disabled={!repoName}
+            disabled={!isRepoValid}
+            className="min-w-[320px] resize"
           />
         </div>
 
@@ -617,6 +812,7 @@ const UploadFromVcsPage = () => {
             <Button
               type="button"
               variant="outline"
+              disabled={!isRepoValid}
               className="font-medium text-primary rounded border-primary hover:bg-accent hover:text-accent-foreground"
             >
               Set the Reuse Information
@@ -633,11 +829,21 @@ const UploadFromVcsPage = () => {
               </SheetTitle>
             </SheetHeader>
 
-            <CommonFields
-              reuse={scanFileData.reuse}
-              handleChange={handleChange}
-              handleScanChange={handleScanChange}
-            />
+            <Tabs value={TAB_REUSE} className="w-full p-0">
+              <TabsList>
+                <TabsTrigger value={TAB_REUSE}>
+                  {repoName || "No repository chosen"}
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value={TAB_REUSE} className="pt-6">
+                <CommonFields
+                  reuse={scanFileData.reuse}
+                  handleChange={handleChange}
+                  handleScanChange={handleScanChange}
+                />
+              </TabsContent>
+            </Tabs>
 
             <div className="mt-6 flex justify-center gap-2">
               <SheetClose asChild>
@@ -649,12 +855,29 @@ const UploadFromVcsPage = () => {
                 </Button>
               </SheetClose>
 
-              <Button
-                variant="default"
-                className="px-28 bg-primary text-white rounded hover:bg-tertiary1-900"
-              >
-                Apply
-              </Button>
+              <SheetClose asChild>
+                <Button
+                  variant="default"
+                  size="default"
+                  className="px-28"
+                  onClick={() => {
+                    dispatchScan({
+                      type: "UPDATE_REUSE_FIELD",
+                      name: "reuseApplied",
+                      value: true,
+                    });
+
+                    setMessage({
+                      type: "success",
+                      text: "Reuse configuration saved.",
+                    });
+
+                    setShowMessage(true);
+                  }}
+                >
+                  Apply
+                </Button>
+              </SheetClose>
             </div>
           </SheetContent>
         </Sheet>
@@ -687,7 +910,7 @@ const UploadFromVcsPage = () => {
           <Button
             type="submit"
             disabled={loading || isButtonDisabled}
-            className="bg-primary text-white h-10 px-8 py-2 rounded text-base font-medium hover:bg-tertiary1-900 disabled:bg-tertiary1-400 disabled:text-white"
+            variant="default" size="default"
           >
             {loading ? "Uploading..." : "Upload"}
           </Button>

@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
-  SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+  SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
   SPDX-License-Identifier: GPL-2.0-only
  This program is free software; you can redistribute it and/or
@@ -20,6 +20,7 @@ import {
   getUploadByIdApi,
   createUploadVcsApi,
   createUploadUrlApi,
+  createUploadServerApi,
   getUploadSummaryApi,
   getUploadLicenseApi,
 } from "@/api/upload";
@@ -53,6 +54,13 @@ export const createUploadVcs = (header, body) => {
 // Create Uploads from URL
 export const createUploadUrl = (header, body) => {
   return createUploadUrlApi(header, body).then((res) => {
+    return res;
+  });
+};
+
+// Create Uploads from Server
+export const createUploadServer = (header, body) => {
+  return createUploadServerApi(header, body).then((res) => {
     return res;
   });
 };

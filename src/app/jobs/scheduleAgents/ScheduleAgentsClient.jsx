@@ -43,9 +43,7 @@ import {
 } from "@/components/ui/accordion";
 
 import {
-  Alert,
-  AlertTitle,
-  AlertDescription,
+  AlertBanner,
 } from '@/components/ui/alert';
 
 import { Button } from "@/components/ui/button";
@@ -114,7 +112,7 @@ const ScheduleAgentsPage = () => {
   }, []);
   const [loading, setLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
-  const [message, setMessage] = useState(null);
+  const [message, setMessage] = useState({ type: "", text: "" });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -221,6 +219,7 @@ const ScheduleAgentsPage = () => {
 
   const isButtonDisabled =
     !scheduleAnalysisData.folderId || !scheduleAnalysisData.uploadId;
+  const alertType = message?.type === "success" ? "Success" : "Error";
 
   return (
     <div className="max-w-4xl mx-40 px-4 py-8">
@@ -228,58 +227,15 @@ const ScheduleAgentsPage = () => {
       <p className="text-lg font-semibold text-foreground mb-4">
         Select an uploaded file for additional analysis.
       </p>
-      {showMessage && (
+      {showMessage && message && (
       <div className="mb-4">
-        <Alert
-          variant={message.type === "success" ? "default" : "destructive"}
-          className={`relative flex items-start gap-3 rounded-[4px] border-0 pr-10 ${
-            message.type === "success" ? "bg-green-100" : "bg-error-100"
-          }`}
-        >
-          {/* Close Button */}
-          <button
-            onClick={() => setShowMessage(false)}
-            className="absolute top-2 right-2 p-1 rounded hover:bg-black/10"
-          >
-            <img
-              src="/assets/icons/Close/Close_24px.svg"
-              alt="Close"
-              width={24}
-              height={24}
-            />
-          </button>
-
-          {/* Icon */}
-          <img
-            src={
-              message.type === "success"
-                ? "/assets/icons/Alert/SuccessFilled.svg"
-                : "/assets/icons/Alert/ErrorFilled.svg"
-            }
-            alt={message.type === "success" ? "Success" : "Error"}
-            width={24}
-            height={24}
-            className="mt-1"
-          />
-
-          {/* Text */}
-          <div>
-            <AlertTitle
-              className={`text-base font-semibold ${
-                message.type === "success" ? "text-green-700" : "text-error-700"
-              }`}
-            >
-              {message.type === "success" ? "Success" : "Error"}
-            </AlertTitle>
-            <AlertDescription
-              className={`text-sm ${
-                message.type === "success" ? "text-green-700" : "text-error-700"
-              }`}
-            >
-              {message.text}
-            </AlertDescription>
-          </div>
-        </Alert>
+        <AlertBanner
+          type={alertType}
+          title={message?.type === "success" ? "Success" : "Error"}
+          description={message?.text}
+          showClose
+          onClose={() => setShowMessage(false)}
+        />
       </div>
       )}
 
@@ -412,7 +368,7 @@ const ScheduleAgentsPage = () => {
           <Button
             type="submit"
             disabled={loading || isButtonDisabled}
-            className="bg-primary text-white h-10 px-8 py-2 rounded text-base font-medium hover:bg-tertiary1-900 disabled:bg-tertiary1-400 disabled:text-white"
+            variant="default" size="default"
           >
             {loading ? "Analyzing..." : "Analyze"}
           </Button>

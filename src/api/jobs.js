@@ -75,6 +75,19 @@ export const scheduleAnalysisApi = (folderId, uploadId, scanData) => {
     reuseReport,
     reuseCopyright,
   } = scanData?.reuse;
+
+  // Ensure reuseUpload is an array of integers (backend expects upload IDs)
+  const reuseUploadIds = Array.isArray(reuseUpload)
+    ? reuseUpload
+        .map((item) => (item && typeof item === "object" && Object.prototype.hasOwnProperty.call(item, "id") ? Number(item.id) : Number(item)))
+        .filter((n) => Number.isInteger(n))
+    : reuseUpload;
+
+  const reuseUploadValue = Array.isArray(reuseUploadIds)
+    ? reuseUploadIds.length > 0
+      ? reuseUploadIds[0]
+      : null
+    : reuseUploadIds;
   return sendRequest({
     url,
     method: "POST",
@@ -104,7 +117,7 @@ export const scheduleAnalysisApi = (folderId, uploadId, scanData) => {
         auto_conclude_type: autoConcludeType,
       },
       reuse: {
-        reuse_upload: reuseUpload,
+        reuse_upload: reuseUploadValue,
         reuse_group: reuseGroup,
         reuse_main: reuseMain,
         reuse_enhanced: reuseEnhanced,

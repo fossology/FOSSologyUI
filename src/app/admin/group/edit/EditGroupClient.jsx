@@ -1,6 +1,5 @@
 /*
- Copyright (C) 2022 Samuel Dushimimana
- SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -25,6 +24,7 @@ import messages from "@/constants/messages";
 // Widgets
 import { Spinner } from "@/components/Widgets";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { AlertBanner } from "@/components/ui/alert";
 import {
   Select,
@@ -35,21 +35,22 @@ import {
 } from "@/components/ui/select";
 
 // API Services
-import { deleteGroup, fetchAllDeletableGroups } from "@/services/groups";
+import { fetchAllGroups, editGroup } from "@/services/groups";
 
 // Helper
 import { handleError } from "@/shared/helper";
 
-const DeleteGroupClient = () => {
+const EditGroupClient = () => {
   const [groups, setGroups] = useState([]);
   const [selectedGroupId, setSelectedGroupId] = useState("");
+  const [groupName, setGroupName] = useState("");
   const [initialLoading, setInitialLoading] = useState(true);
   const [loading, setLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState({ type: "success", text: "" });
 
   useEffect(() => {
-    fetchAllDeletableGroups()
+    fetchAllGroups()
       .then((res) => {
         setGroups(Array.isArray(res) ? res : []);
       })
@@ -60,17 +61,22 @@ const DeleteGroupClient = () => {
       .finally(() => setInitialLoading(false));
   }, []);
 
+  // Pre-fill name when a group is selected
+  useEffect(() => {
+    if (!selectedGroupId) {
+      setGroupName("");
+      return;
+    }
+    const found = groups.find((g) => g.id.toString() === selectedGroupId.toString());
+    if (found) setGroupName(found.name);
+  }, [selectedGroupId, groups]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    deleteGroup(selectedGroupId)
+    editGroup(selectedGroupId, groupName)
       .then(() => {
-        setMessage({ type: "success", text: messages.deletedGroup });
-        setSelectedGroupId("");
-        return fetchAllDeletableGroups();
-      })
-      .then((res) => {
-        setGroups(Array.isArray(res) ? res : []);
+        setMessage({ type: "success", text: messages.groupEdit ?? "Successfully updated the group" });
       })
       .catch((error) => {
         handleError(error, setMessage);
@@ -102,14 +108,17 @@ const DeleteGroupClient = () => {
       )}
 
       <h1 className="text-2xl font-semibold text-gray-900 mb-6">
-        Delete Group
+        Edit Group
       </h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
+          <p className="mb-3 text-sm">
+            Select a group and enter the new name to rename it.
+          </p>
 
-          <label className={`block font-normal mb-3 ${!initialLoading && groups.length === 0 ? "text-neutral-600" : ""}`}>
-            Select group to delete:
+          <label className="block font-normal mb-3">
+            1. Select the group to edit:
           </label>
 
           {initialLoading ? (
@@ -117,14 +126,15 @@ const DeleteGroupClient = () => {
               <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
               Loading groups…
             </div>
+          ) : groups.length === 0 ? (
+            <p className="text-sm text-gray-500">No groups available.</p>
           ) : (
             <Select
               value={selectedGroupId?.toString()}
               onValueChange={(value) => setSelectedGroupId(value)}
-              disabled={groups.length === 0}
             >
-              <SelectTrigger className="w-[320px]" disabled={groups.length === 0}>
-                <SelectValue placeholder={groups.length === 0 ? "No groups available for deletion" : "Select group"} />
+              <SelectTrigger className="w-[320px]">
+                <SelectValue placeholder="Select group" />
               </SelectTrigger>
               <SelectContent>
                 {groups.map((group) => (
@@ -135,25 +145,33 @@ const DeleteGroupClient = () => {
               </SelectContent>
             </Select>
           )}
+        </div>
 
-          <AlertBanner
-            type="Warning"
-            description="Note: After deleting group, you will loose access to uploads that are associated with deleted group."
-            showClose={false}
-            className="mt-4"
+        <div>
+          <label className="block font-normal mb-3">
+            2. Enter the new group name:
+          </label>
+          <Input
+            type="text"
+            name="groupName"
+            value={groupName}
+            onChange={(e) => setGroupName(e.target.value)}
+            placeholder="New group name"
+            className="w-[320px]"
+            disabled={!selectedGroupId}
           />
         </div>
 
         <div className="pt-2">
           <Button
             type="submit"
-            disabled={loading || !selectedGroupId}
-            variant="alert" size="default"
+            disabled={loading || !selectedGroupId || !groupName}
+            variant="default" size="default"
           >
             {loading ? (
               <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
             ) : (
-              "Delete"
+              "Update"
             )}
           </Button>
         </div>
@@ -162,5 +180,4 @@ const DeleteGroupClient = () => {
   );
 };
 
-export default DeleteGroupClient;
-
+export default EditGroupClient;

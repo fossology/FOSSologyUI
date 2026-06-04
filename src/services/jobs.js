@@ -18,9 +18,11 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+import endpoints from "@/constants/endpoints";
+import { getToken } from "@/shared/authHelper";
+import sendRequest from "@/api/sendRequest";
 import {
   getJobApi,
-  scheduleAnalysisApi,
   scheduleReportApi,
   downloadReportApi,
   getAllJobApi,
@@ -60,9 +62,98 @@ export const getAllAdminJob = (jobsDatalist) => {
 
 // Scheduling the analysis for the uploads
 export const scheduleAnalysis = (folderId, uploadId, scanData) => {
-  return scheduleAnalysisApi(folderId, uploadId, scanData).then((res) => {
-    return res;
-  });
+  const url = endpoints.jobs.scheduleAnalysis();
+
+  const { bucket, copyrightEmailAuthor, ecc, keyword, mime, monk, nomos, ojo } =
+    scanData?.analysis || {};
+  const { nomosMonk, bulkReused, newScanner, ojoDecider, autoConclude, autoConcludeType } = scanData?.decider || {};
+  const {
+    reuseUpload,
+    reuseGroup,
+    reuseMain,
+    reuseEnhanced,
+    reuseReport,
+    reuseCopyright,
+  } = scanData?.reuse || {};
+
+  const reuseUploadIds = Array.isArray(reuseUpload)
+    ? reuseUpload
+        .map((item) => (item && typeof item === "object" && Object.prototype.hasOwnProperty.call(item, "id") ? Number(item.id) : Number(item)))
+        .filter((n) => Number.isInteger(n))
+    : reuseUpload;
+  // If reuseUploadIds is an array, send a single integer (first id) as backend expects an integer
+  const reuseUploadValue = Array.isArray(reuseUploadIds)
+    ? reuseUploadIds.length > 0
+      ? reuseUploadIds[0]
+      : null
+    : reuseUploadIds;
+
+  const body = {
+    analysis: {
+      bucket,
+      copyright_email_author: copyrightEmailAuthor,
+      ecc,
+      keyword,
+      mime,
+      monk,
+      nomos,
+      ojo,
+      package: scanData.analysis?.package,
+    },
+    decider: {
+      nomos_monk: nomosMonk,
+      bulk_reused: bulkReused,
+      new_scanner: newScanner,
+      ojo_decider: ojoDecider,
+      auto_conclude: autoConclude,
+      auto_conclude_type: autoConcludeType,
+    },
+      reuse: {
+      reuse_upload: reuseUploadValue,
+      reuse_group: reuseGroup,
+      reuse_main: reuseMain,
+      reuse_enhanced: reuseEnhanced,
+      reuse_report: reuseReport,
+      reuse_copyright: reuseCopyright,
+    },
+  };
+
+  // Log the outgoing payload for debugging (temporary)
+  try {
+    // Use console.log so it's visible in browser devtools by default
+    console.log("[debug] scheduleAnalysis payload:", body);
+  } catch (e) {}
+
+  return sendRequest({
+    url,
+    method: "POST",
+    headers: {
+      Authorization: getToken(),
+      folderId,
+      uploadId,
+    },
+    body,
+  }).then((res) => res);
+};
+
+// DEBUG: temporary helper to inspect payloads when needed
+export const _debug_schedulePayload = (folderId, uploadId, scanData) => {
+  const { reuseUpload } = scanData?.reuse || {};
+  const reuseUploadIds = Array.isArray(reuseUpload)
+    ? reuseUpload.map((item) => (item && typeof item === "object" && Object.prototype.hasOwnProperty.call(item, "id") ? Number(item.id) : Number(item)))
+    : reuseUpload;
+  const body = {
+    analysis: scanData.analysis || {},
+    decider: scanData.decider || {},
+    reuse: {
+      reuse_upload: reuseUploadIds,
+      reuse_group: scanData.reuse?.reuseGroup,
+    },
+  };
+  // Log to console so the browser devtools will capture it
+  // (intended for temporary debugging by developer)
+  console.debug("scheduleAnalysis payload", { folderId, uploadId, body });
+  return body;
 };
 
 export const scheduleReport = (uploadId, reportFormat) => {
