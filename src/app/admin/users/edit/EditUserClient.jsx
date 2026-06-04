@@ -70,25 +70,26 @@ const EditUserPage = () => {
   const [showMessage, setShowMessage] = useState(false);
 
   const handleChange = (e) => {
+    // CASE 1: safe guard
+    if (!e) return;
+
+    // CASE 2: InputContainer / Select / RadioGroup sends raw value
+    if (!e.target) {
+      return;
+    }
+
     const { name, value, type, checked } = e.target;
 
     if (name === "accessLevel") {
-      setEditUserData({ ...editUserData, defaultVisibility: value });
-    } else if (name === "permission") {
-      setEditUserData({ ...editUserData, accessLevel: value });
-    } else if (name === "pass1" || name === "pass2") {
-      setRePass({ ...rePass, [name]: value });
-    } else if (type === "checkbox") {
-      if (name === "emailNotification" || name === "noPass") {
-        setEditUserData({ ...editUserData, [name]: checked });
-      } else {
-        setEditUserData({
-          ...editUserData,
-          agents: { ...editUserData.agents, [name]: checked },
-        });
-      }
+      setEditUserData({
+        ...editUserData,
+        defaultVisibility: value,
+      });
     } else {
-      setEditUserData({ ...editUserData, [name]: value });
+      setEditUserData({
+        ...editUserData,
+        [name]: type === "checkbox" ? checked : value,
+      });
     }
   };
 

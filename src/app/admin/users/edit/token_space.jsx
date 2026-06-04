@@ -25,6 +25,7 @@ import React, { useState, useEffect } from "react";
 import { Button, InputContainer, Spinner } from "@/components/Widgets";
 import Modal from "@/components/Widgets/Modal";
 import PropTypes from "prop-types";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 // utils
 import formatDate from "@/utils";
@@ -182,26 +183,30 @@ const TokenSpace = ({ setMessage, setShowMessage }) => {
           </div>
 
           <p className="font-demi mt-1">Access scope</p>
-          <InputContainer
-            type="radio"
-            value="read"
-            name="accessScope"
-            id="read_only_scope"
-            checked={newTokenInfo.accessScope === "read"}
-            onChange={handleChange}
+
+          <RadioGroup
+            value={newTokenInfo.accessScope}
+            onValueChange={(value) =>
+              setNewTokenInfo((prev) => ({
+                ...prev,
+                accessScope: value,
+              }))
+            }
           >
-            Read only access (Limited only to "GET" calls)
-          </InputContainer>
-          <InputContainer
-            type="radio"
-            value="write"
-            name="accessScope"
-            id="read_write_scope"
-            checked={newTokenInfo.accessScope === "write"}
-            onChange={handleChange}
-          >
-            Read/Write access Required for calls other than "GET"
-          </InputContainer>
+            <div className="flex items-center gap-2">
+              <RadioGroupItem value="read" id="read_only_scope" />
+              <label htmlFor="read_only_scope">
+                Read only access (Limited only to "GET" calls)
+              </label>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <RadioGroupItem value="write" id="read_write_scope" />
+              <label htmlFor="read_write_scope">
+                Read/Write access Required for calls other than "GET"
+              </label>
+            </div>
+          </RadioGroup>
 
           <Button
             type="submit"
