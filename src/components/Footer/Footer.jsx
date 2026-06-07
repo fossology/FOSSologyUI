@@ -21,9 +21,7 @@ import { getFossologyVersion } from "@/services/info";
 import { getSessionStorage, setSessionStorage } from "@/shared/storageHelper";
 
 const Footer = () => {
-  const [version, setVersion] = useState(
-    getSessionStorage("fossologyVersion") || null
-  );
+  const [version, setVersion] = useState(null);
 
   const fetchVersion = () => {
     return getFossologyVersion()
@@ -36,7 +34,10 @@ const Footer = () => {
   };
 
   useEffect(() => {
-    if (!version) {
+    const storedVersion = getSessionStorage("fossologyVersion");
+    if (storedVersion) {
+      setVersion(storedVersion);
+    } else {
       fetchVersion();
     }
   }, []);

@@ -56,6 +56,10 @@ export default function Header() {
   const [isHelpOpen, setIsHelpOpen] = useState(false);
   const [isGroupOpen, setIsGroupOpen] = useState(false);
   const [isGroupSelectOpen, setIsGroupSelectOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userIsAdmin, setUserIsAdmin] = useState(false);
+  const [userName, setUserName] = useState("");
+  const [groups, setGroups] = useState([]);
 
   const isHomeActive = pathname === routes.home;
 
@@ -74,6 +78,21 @@ export default function Header() {
   const isHelpActive = (isHelpOpen || pathname.startsWith("/help"));
 
   useEffect(() => {
+    const authStatus = isAuth();
+    setIsAuthenticated(authStatus);
+    setUserIsAdmin(isAdmin());
+    if (authStatus) {
+      try {
+        setUserName(getUserName());
+        const groupsData = getAllGroups();
+        if (groupsData) {
+          setGroups(groupsData);
+        }
+      } catch (error) {
+        console.error("Failed to get user name:", error);
+      }
+    }
+
     const defaultGroup =
       getLocalStorage("currentGroup") ||
       getLocalStorage("user")?.default_group;
@@ -94,7 +113,7 @@ export default function Header() {
         {/* Navigation Menu */}
         <nav className="hidden md:flex">
           <Link href={routes.home} className={clsx("flex items-center h-13 p-4 justify-between", !isHomeActive ? "hover:border-b-2 hover:border-[#C31730] hover:font-medium" : "border-b-2 border-[#C31730] font-medium")}>Home</Link>
-          {isAuth() && (
+          {isAuthenticated && (
             <>
               <Link href={routes.search} className={clsx("flex items-center h-13 p-4 justify-between", !isSearchActive ? "hover:border-b-2 hover:border-[#C31730] hover:font-medium" : "border-b-2 border-[#C31730] font-medium")}>Search</Link>
               <Link href={routes.browse} className={clsx("flex items-center h-13 p-4 justify-between", !isBrowseActive ? "hover:border-b-2 hover:border-[#C31730] hover:font-medium" : "border-b-2 border-[#C31730] font-medium")}>Browse</Link>
@@ -158,7 +177,7 @@ export default function Header() {
                   <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold">
                     <Link href={routes.jobs.myRecentJobs}>My Recent Jobs</Link>
                   </DropdownMenuItem>
-                  {isAdmin() && (
+                  {userIsAdmin && (
                     <DropdownMenuItem asChild className="focus:bg-[#EDEDED] focus:text-gray-900 focus:font-bold">
                       <Link href={routes.jobs.allRecentJobs}>All Recent Jobs</Link>
                     </DropdownMenuItem>
@@ -241,7 +260,7 @@ export default function Header() {
               </DropdownMenu>
 
               {/* Admin Dropdown */}
-              {isAdmin() && (
+              {userIsAdmin && (
                 <DropdownMenu open={isAdminOpen} onOpenChange={setIsAdminOpen}>
                   <DropdownMenuTrigger
                     onClick={(e) => {
@@ -473,7 +492,7 @@ export default function Header() {
       {/* Right Side Icons */}
       <div className="flex items-center gap-6 text-sm text-gray-800">
         {/* Group Dropdown */}
-        {getAllGroups() && (
+        {groups.length > 0 && (
           <DropdownMenu open={isGroupOpen} onOpenChange={setIsGroupOpen}>
             <DropdownMenuTrigger
               onClick={(e) => {
@@ -537,7 +556,7 @@ export default function Header() {
 
                     {isGroupSelectOpen && (
                       <div className="mt-1 border rounded-[4px] border-[#CECECE] shadow bg-white overflow-hidden">
-                        {getAllGroups().map((group) => (
+                        {groups.map((group) => (
                           <div
                             key={group.id}
                             onClick={() => {
@@ -558,7 +577,7 @@ export default function Header() {
 
                 {/* User Info */}
                 <div className="text-sm mt-2">
-                  <span className="font-semibold">User:</span> {getUserName()}
+                  <span className="font-semibold">User:</span> {userName}
                 </div>
 
                 {/* Logout Button */}
