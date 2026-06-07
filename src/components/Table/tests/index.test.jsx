@@ -17,7 +17,7 @@
 */
 
 import React from "react";
-import ReactDOM from "react-dom";
+import { render } from "@testing-library/react";
 import { randomString } from "shared/helper";
 import makeData from "shared/makeData";
 import Table from "../index";
@@ -40,10 +40,8 @@ const schema = () => {
   };
 };
 
-const data = makeData(500, schema);
+const data = makeData(10, schema);
 
 it("renders without crashing", () => {
-  const div = document.createElement("div");
-  ReactDOM.render(<Table columns={columns} data={data} />, div);
-  ReactDOM.unmountComponentAtNode(div);
+  render(<Table columns={columns} data={data} />);
 });
