@@ -30,6 +30,7 @@ import {
   getUploadsFolderId,
   deleteUploadsbyId,
 } from "@/services/organizeUploads";
+import { handleError } from "@/shared/helper";
 
 const UploadDeletePage = () => {
   const initialState = {
@@ -104,13 +105,19 @@ const UploadDeletePage = () => {
   useEffect(() => {
     getAllFolders()
       .then(setFolderList)
-      .catch((err) => console.error("Error fetching folders", err));
+      .catch((error) => {
+        handleError(error, setMessage);
+        setShowMessage(true);
+      });
   }, []);
 
   useEffect(() => {
     getUploadsFolderId(deleteUploadFolderData.folderId)
       .then(setUploadFolderList)
-      .catch((err) => console.error("Error fetching uploads", err));
+      .catch((error) => {
+        handleError(error, setMessage);
+        setShowMessage(true);
+      });
   }, [deleteUploadFolderData.folderId]);
 
   return (

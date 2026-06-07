@@ -20,9 +20,10 @@
 
 import React, { useState, useEffect } from "react";
 import { Alert, Button, InputContainer } from "@/components/Widgets";
+import messages from "@/constants/messages";
 import { getAllFolders } from "@/services/folders";
 import { getUploadsFolderId } from "@/services/organizeUploads";
-import { getUploadById } from "@/services/upload";
+import { getUploadById, updateUpload } from "@/services/upload";
 import { handleError } from "@/shared/helper";
 
 const UploadEditPage = () => {
@@ -53,14 +54,21 @@ const UploadEditPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!editUploadFolderData.uploadId) return;
 
-    // Submit API logic here (e.g., updateUploadInfo)
-    // For now, simulate success message:
-    setMessage({
-      type: "success",
-      text: "Upload properties updated (not implemented)",
-    });
-    setShowMessage(true);
+    updateUpload(
+      editUploadFolderData.uploadId,
+      editUploadFolderData.uploadName,
+      editUploadFolderData.uploadDescription
+    )
+      .then(() => {
+        setMessage({ type: "success", text: messages.updatedUploadProps });
+        setShowMessage(true);
+      })
+      .catch((error) => {
+        handleError(error, setMessage);
+        setShowMessage(true);
+      });
   };
 
   useEffect(() => {
