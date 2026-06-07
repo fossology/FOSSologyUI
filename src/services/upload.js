@@ -18,6 +18,7 @@
 import {
   createUploadApi,
   getUploadByIdApi,
+  updateUploadApi,
   createUploadVcsApi,
   createUploadUrlApi,
   getUploadSummaryApi,
@@ -60,6 +61,13 @@ export const createUploadUrl = (header, body) => {
 // Getting a Upload by id
 export const getUploadById = (uploadId, retries) => {
   return getUploadByIdApi(uploadId, retries).then((res) => {
+    return res;
+  });
+};
+
+// Updating an Upload's name and description
+export const updateUpload = (uploadId, uploadName, uploadDescription) => {
+  return updateUploadApi(uploadId, uploadName, uploadDescription).then((res) => {
     return res;
   });
 };
