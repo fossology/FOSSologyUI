@@ -21,7 +21,24 @@ SPDX-License-Identifier: GPL-2.0-only
 import * as React from "react"
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
 import { CheckIcon } from "lucide-react"
+import { cva } from "class-variance-authority";
 import { cn } from "@/lib/utils"
+import { Label } from "@/components/ui/label"
+
+const checkboxFieldVariants = cva("inline-flex", {
+  variants: {
+    labelPosition: {
+      right: "flex-row items-center gap-3",
+      left: "flex-row-reverse items-center gap-3",
+      top: "flex-col-reverse items-start gap-2",
+      bottom: "flex-col items-start gap-2",
+      none: "",
+    },
+  },
+  defaultVariants: {
+    labelPosition: "right",
+  },
+})
 
 function Checkbox({ className, ...props }) {
   return (
@@ -48,4 +65,24 @@ function Checkbox({ className, ...props }) {
   )
 }
 
-export { Checkbox }
+function CheckboxField({
+  id,
+  label,
+  labelPosition = "right",
+  className,
+  labelClassName,
+  ...props
+}) {
+  return (
+    <div className={cn(checkboxFieldVariants({ labelPosition }), className)}>
+      <Checkbox id={id} {...props} />
+      {labelPosition !== "none" && label && (
+        <Label htmlFor={id} className={cn("text-base font-normal", labelClassName)}>
+          {label}
+        </Label>
+      )}
+    </div>
+  )
+}
+
+export { Checkbox, CheckboxField }

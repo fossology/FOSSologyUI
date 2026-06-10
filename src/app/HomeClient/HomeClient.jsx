@@ -26,9 +26,7 @@ import { Eye, EyeOff } from "lucide-react"
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
-  Alert,
-  AlertTitle,
-  AlertDescription,
+  AlertBanner,
 } from '@/components/ui/alert';
 import {
   Card,
@@ -144,26 +142,12 @@ export default function HomeClient() {
             <CardContent className="p-0 pt-2 space-y-6">
             {showError && (
               <div className="mb-4">
-                <Alert
-                  variant="destructive"
-                  className="flex items-start gap-3 bg-error-100 rounded-[4px] border-0"
-                >
-                  <img
-                    src="/assets/icons/Alert/ErrorFilled.svg"
-                    alt="Error"
-                    width={24}
-                    height={24}
-                    className="mt-1"
-                  />
-                  <div>
-                    <AlertTitle className="text-base font-semibold text-error-700">
-                      An error occurred
-                    </AlertTitle>
-                    <AlertDescription className="text-sm text-error-700">
-                      {errorMessage}
-                    </AlertDescription>
-                  </div>
-                </Alert>
+                <AlertBanner
+                  type="Error"
+                  title="An error occurred"
+                  description={errorMessage}
+                  showClose={false}
+                />
               </div>
             )}
             <form onSubmit={handleSubmit} className="space-y-4">

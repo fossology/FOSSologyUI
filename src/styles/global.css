@@ -57,8 +57,8 @@ SPDX-License-Identifier: GPL-2.0-only
   --accent: #E2EFFF;
   --accent-foreground: #000B54;
 
-  /* Destructive — FOSSology brand red */
-  --destructive: #C31730;
+  /* Destructive — Alert button red */
+  --destructive: #D02216;
 
   /* Border / Input / Ring */
   --border: #CECECE;

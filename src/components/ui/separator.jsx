@@ -1,5 +1,5 @@
 /*
- SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -16,24 +16,30 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+"use client"
+
 import * as React from "react"
+import { Separator as SeparatorPrimitive } from "radix-ui"
 
 import { cn } from "@/lib/utils"
 
-function Input({ className, type, ...props }) {
+function Separator({
+  className,
+  orientation = "horizontal",
+  decorative = true,
+  ...props
+}) {
   return (
-    <input
-      type={type}
-      data-slot="input"
+    <SeparatorPrimitive.Root
+      data-slot="separator"
+      decorative={decorative}
+      orientation={orientation}
       className={cn(
-        "w-full px-3 py-2 bg-white border border-neutral-800 placeholder:text-neutral-800 rounded text-sm transition-colors caret-primary",
-        "focus:border-primary focus:shadow-[0px_0px_3px_2px_#00449440] focus:outline-none",
-        "disabled:pointer-events-none disabled:cursor-not-allowed disabled:border-border disabled:text-neutral-600 disabled:placeholder:text-neutral-600",
+        "shrink-0 bg-border data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px",
         className
       )}
-      {...props}
-    />
+      {...props} />
   );
 }
 
-export { Input }
+export { Separator }

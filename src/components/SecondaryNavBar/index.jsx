@@ -27,6 +27,7 @@ import { isAuth } from "@/shared/authHelper";
 import Image from "next/image"
 import { cn } from "@/lib/utils";
 import { ACTION_800, BODY_TEXT } from "@/constants/colors";
+import { cva } from "class-variance-authority";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -78,8 +79,19 @@ const moreItems = [
   { name: "Info", href: routes.browseUploads.more.info },
 ];
 
+const secondaryNavVariants = cva("w-full px-4 flex items-end justify-between", {
+  variants: {
+    variant: {
+      default: "bg-gray-100 h-18",
+      compact: "bg-gray-50 h-16",
+    },
+  },
+  defaultVariants: {
+    variant: "default",
+  },
+});
 
-const BrowseHeader = ({ title }) => {
+const BrowseHeader = ({ title, variant = "default", maxVisible = 5 }) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const uploadID = searchParams.get("uploadID");
@@ -92,6 +104,7 @@ const BrowseHeader = ({ title }) => {
   }, [pathname]);
 
   const isActive = moreItems.some((item) => pathname === item.href)
+  const visibleNavLinks = navLinks.slice(0, maxVisible)
 
   const chevronIcon = open
     ? "/assets/icons/chevron_up/chevron_up_16px.svg"
@@ -102,14 +115,14 @@ const BrowseHeader = ({ title }) => {
   if (!authenticated) return null;
 
   return (
-    <div className="w-full bg-gray-100 h-18 px-4 flex items-end justify-between">
+    <div className={secondaryNavVariants({ variant })}>
       {/* <div className="flex items-end justify-between"> */}
         {/* Dynamic Page Title */}
         <h1 className="text-3xl font-bold text-gray-900 mb-2 ml-8">{title}</h1>
 
         {/* Tabs */}
         <div className="flex h-full items-end">
-        {navLinks.map((item) => {
+        {visibleNavLinks.map((item) => {
           const href = typeof item.href === "function" ? item.href(uploadID) : item.href;
           const isActive = pathname.startsWith(item.href);
           return (
@@ -172,4 +185,3 @@ const BrowseHeader = ({ title }) => {
 };
 
 export default BrowseHeader;
-

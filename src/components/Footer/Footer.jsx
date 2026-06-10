@@ -21,8 +21,24 @@ SPDX-License-Identifier: GPL-2.0-only
 import { useState, useEffect } from "react";
 import { getFossologyVersion } from "@/services/info";
 import { getSessionStorage, setSessionStorage } from "@/shared/storageHelper";
+import { cva } from "class-variance-authority";
 
-const Footer = () => {
+import { cn } from "@/lib/utils";
+
+const footerVariants = cva("w-full text-xs px-4", {
+  variants: {
+    variant: {
+      default: "bg-neutral-300 text-gray-900 py-3",
+      subtle: "bg-neutral-100 text-neutral-800 py-2",
+      dark: "bg-neutral-900 text-neutral-100 py-3",
+    },
+  },
+  defaultVariants: {
+    variant: "default",
+  },
+});
+
+const Footer = ({ variant = "default", showBuildInfo = true, className }) => {
   const [version, setVersion] = useState(null);
 
   const fetchVersion = () => {
@@ -45,10 +61,15 @@ const Footer = () => {
   }, []);
 
   return (
-    <footer className="w-full bg-neutral-300 text-gray-900 text-xs px-4 py-3">
+    <footer className={cn(footerVariants({ variant }), className)}>
       <div className="max-w-screen-xl mx-auto text-center">
-        Version: [{version?.version}], Branch: [{version?.branchName}], Commit: [#{version?.commitHash}]{" "}
-        {version?.commitDate} built @ {version?.buildDate}
+        Version: [{version?.version}]
+        {showBuildInfo ? (
+          <>
+            , Branch: [{version?.branchName}], Commit: [#{version?.commitHash}] {" "}
+            {version?.commitDate} built @ {version?.buildDate}
+          </>
+        ) : null}
       </div>
     </footer>
   );

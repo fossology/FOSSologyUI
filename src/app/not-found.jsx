@@ -18,6 +18,7 @@ SPDX-License-Identifier: GPL-2.0-only
 
 import Link from "next/link";
 import routes from "@/constants/routes";
+import { Button } from "@/components/ui/button";
 
 export const metadata = {
   title: "404 - Page Not Found | FOSSology",
@@ -33,12 +34,9 @@ export default function NotFound() {
       <p className="text-base text-gray-500 mb-8 max-w-md">
         The page you are looking for does not exist or has been moved.
       </p>
-      <Link
-        href={routes.home}
-        className="px-6 py-2 bg-tertiary1-800 text-white rounded font-medium hover:bg-tertiary1-900 transition-colors"
-      >
-        Go to Home
-      </Link>
+      <Button asChild variant="default" size="default">
+        <Link href={routes.home}>Go to Home</Link>
+      </Button>
     </div>
   );
 }

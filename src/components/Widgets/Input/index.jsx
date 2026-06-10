@@ -46,6 +46,12 @@ const InputContainer = ({
   property,
   valueProperty,
   noDataMessage = "No Data Found",
+  helperText,
+  cta = false,
+  ctaLabel = "Action",
+  onCtaClick,
+  fullWidth = false,
+  labelPosition = "left",
 }) => {
 if (type === "radio") {
   return (
@@ -85,9 +91,9 @@ if (type === "radio") {
   if (type === "select") {
     return (
       <div className="my-1">
-        <div className="flex items-center gap-3">
+        <div className={`flex items-center gap-3 ${fullWidth ? "w-full" : ""} ${labelPosition === "top" ? "flex-col items-start" : ""}`}>
           {children && (
-            <label htmlFor={id} className="font-base whitespace-nowrap">
+            <label htmlFor={id} className={`font-base whitespace-nowrap ${disabled ? "text-neutral-600" : ""}`}>
               {children}
             </label>
           )}
@@ -98,7 +104,7 @@ if (type === "radio") {
             id={id}
             disabled={disabled}
           >
-            <SelectTrigger className="h-8 text-sm flex items-center" disabled={disabled}>
+            <SelectTrigger className={`h-8 text-sm flex items-center ${fullWidth ? "w-full" : ""}`} disabled={disabled}>
               <SelectValue placeholder={placeholder ?? "Select..."} />
             </SelectTrigger>
             <SelectContent className="max-h-48 overflow-y-auto">
@@ -120,27 +126,50 @@ if (type === "radio") {
             </SelectContent>
           </Select>
         </div>
+        {helperText ? (
+          <p className={`mt-1 text-xs ${disabled ? "text-neutral-600" : "text-neutral-700"}`}>{helperText}</p>
+        ) : null}
       </div>
     );
   }
 
   return (
     <div className="my-2">
-      <label htmlFor={id} className="font-demi">
-        {children}
-      </label>
-      <input
-        type={type}
-        name={name}
-        value={value}
-        className={
-          type === "file" ? `ml-3 ${className}` : `form-control ${className}`
-        }
-        onChange={onChange}
-        checked={checked}
-        placeholder={placeholder}
-        id={id}
-      />
+      <div className={`flex items-center gap-3 ${fullWidth ? "w-full" : ""} ${labelPosition === "top" ? "flex-col items-start" : ""}`}>
+        <label htmlFor={id} className={`font-demi ${disabled ? "text-neutral-600" : ""}`}>
+          {children}
+        </label>
+        <div className={`flex items-center gap-2 ${fullWidth ? "w-full" : ""}`}>
+          <input
+            type={type}
+            name={name}
+            value={value}
+            className={
+              type === "file"
+                ? `ml-3 ${className}`
+                : `form-control ${fullWidth ? "w-full" : ""} ${className}`
+            }
+            onChange={onChange}
+            checked={checked}
+            placeholder={placeholder}
+            id={id}
+            disabled={disabled}
+          />
+          {cta ? (
+            <button
+              type="button"
+              onClick={onCtaClick}
+              disabled={disabled}
+              className="h-8 rounded border border-tertiary1-800 px-3 text-sm text-tertiary1-800 hover:bg-tertiary1-200 disabled:pointer-events-none disabled:opacity-50"
+            >
+              {ctaLabel}
+            </button>
+          ) : null}
+        </div>
+      </div>
+      {helperText ? (
+        <p className={`mt-1 text-xs ${disabled ? "text-neutral-600" : "text-neutral-700"}`}>{helperText}</p>
+      ) : null}
     </div>
   );
 };
@@ -169,6 +198,12 @@ InputContainer.propTypes = {
   property: PropTypes.string,
   valueProperty: PropTypes.string,
   noDataMessage: PropTypes.string,
+  helperText: PropTypes.string,
+  cta: PropTypes.bool,
+  ctaLabel: PropTypes.string,
+  onCtaClick: PropTypes.func,
+  fullWidth: PropTypes.bool,
+  labelPosition: PropTypes.oneOf(["left", "top"]),
 };
 
 export default InputContainer;

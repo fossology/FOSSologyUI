@@ -20,6 +20,7 @@ SPDX-License-Identifier: GPL-2.0-only
 
 import Link from "next/link";
 import routes from "@/constants/routes";
+import { Button } from "@/components/ui/button";
 
 export default function Error({ error, reset }) {
   return (
@@ -32,18 +33,20 @@ export default function Error({ error, reset }) {
         {error?.message || "An unexpected error occurred. Please try again."}
       </p>
       <div className="flex gap-4">
-        <button
+        <Button
           onClick={reset}
-          className="px-6 py-2 bg-tertiary1-800 text-white rounded font-medium hover:bg-tertiary1-900 transition-colors"
+          variant="default"
+          size="default"
         >
           Try Again
-        </button>
-        <Link
-          href={routes.home}
-          className="px-6 py-2 border border-gray-400 text-gray-700 rounded font-medium hover:bg-gray-100 transition-colors"
+        </Button>
+        <Button
+          asChild
+          variant="outline"
+          size="default"
         >
-          Go to Home
-        </Link>
+          <Link href={routes.home}>Go to Home</Link>
+        </Button>
       </div>
     </div>
   );
