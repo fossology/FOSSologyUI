@@ -21,21 +21,22 @@ import searchApi from "@/api/search";
 import { getLocalStorage } from "@/shared/storageHelper";
 
 // Fetching all the uploads on the basis of search criteria
-const search = (searchData) => {
-  return searchApi(searchData).then((res) => {
-    // Sending the required data to the search page
-    const modifiedSearchData = [];
-    res.forEach((data) => {
-      modifiedSearchData.push({
-        uploadTreeId: data.upload.uploadTreeId,
-        uploadName: data.upload.uploadname,
-        folderName: data.upload.foldername,
-        description: data.upload.description,
-        fileName: data.filename,
-      });
-    });
-    return { search: modifiedSearchData, pages: getLocalStorage("pages") };
-  });
+const search = async (searchData) => {
+  const res = await searchApi(searchData);
+
+  const safeRes = Array.isArray(res) ? res : [];
+
+  const modifiedSearchData = safeRes.map((data) => ({
+    uploadTreeId: data?.uploadTreeId,
+    uploadName: data?.uploadName || data?.uploadname,
+    folderName: data?.folderName || data?.foldername,
+    fileName: data?.fileName || data?.filename,
+  }));
+
+  return {
+    search: modifiedSearchData,
+    pages: getLocalStorage("pages"),
+  };
 };
 
 export default search;

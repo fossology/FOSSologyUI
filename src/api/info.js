@@ -15,25 +15,29 @@ SPDX-License-Identifier: GPL-2.0-only
  You should have received a copy of the GNU General Public License along
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ 
 */
-
+// api/info.js
+// ─────────────────────────────────────────────────────────────────────────────
+// CHANGES v1 → v2
+// • Endpoint keys changed from nested admin.info.* to flat info.*:
+//     endpoints.admin.info.info()   → endpoints.info.apiInfo()
+//     endpoints.admin.info.health() → endpoints.info.health()
+// • No change in HTTP method or behaviour.
+// ─────────────────────────────────────────────────────────────────────────────
 import endpoints from "@/constants/endpoints";
-
-// Function for calling the fetch function for the APIs
 import sendRequest from "./sendRequest";
 
 export const getInfoApi = () => {
-  const url = endpoints.admin.info.info();
   return sendRequest({
-    url,
+    url: endpoints.info.apiInfo(), // v1: endpoints.admin.info.info()
     method: "GET",
   });
 };
 
 export const getHealthApi = () => {
-  const url = endpoints.admin.info.health();
   return sendRequest({
-    url,
+    url: endpoints.info.health(),  // v1: endpoints.admin.info.health()
     method: "GET",
   });
 };

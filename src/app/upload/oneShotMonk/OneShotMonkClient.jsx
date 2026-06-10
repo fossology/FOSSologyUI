@@ -24,13 +24,55 @@ import React, { useRef, useState } from "react";
 // Widgets
 import { Button } from "@/components/ui/button";
 
+import { AlertBanner } from "@/components/ui/alert";
+
+import { oneShotMonk } from "@/services/jobs";
+
 const OneShotMonk = () => {
   const fileInputRef = useRef(null);
 
   const [selectedFile, setSelectedFile] = useState(null);
 
-  const handleSubmit = (e) => {
+  const [result, setResult] = useState(null);
+  const [message, setMessage] = useState(null);
+  const [showMessage, setShowMessage] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!selectedFile) {
+      setMessage({
+        type: "error",
+        text: "Please select a file first",
+      });
+      setShowMessage(true);
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+
+      formData.append("fileInput", selectedFile);
+
+      const res = await oneShotMonk(formData);
+
+      setResult({
+        licenses: res?.licenses || [],
+        highlights: res?.highlights || [],
+      });
+
+      setMessage({
+        type: "success",
+        text: "Analysis completed successfully",
+      });
+      setShowMessage(true);
+    } catch (error) {
+        setMessage({
+          type: "error",
+          text: error.message || "Analysis failed",
+        });
+        setShowMessage(true);
+      }
   };
 
   const handleChange = (e) => {
@@ -39,11 +81,29 @@ const OneShotMonk = () => {
 
   const isButtonDisabled = !selectedFile;
 
+  const alertType =
+    message?.type === "danger" || message?.type === "error"
+      ? "Error"
+      : message?.type === "success"
+      ? "Success"
+      : "Info";
+
   return (
-    <div className="max-w-4xl mx-40 my-6 px-4">
-      <h1 className="text-2xl font-semibold text-gray-900 mb-6">
-        One-Shot Monk
-      </h1>
+  <div className="max-w-4xl mx-40 my-6 px-4">
+    {showMessage && message && (
+      <div className="mb-4">
+        <AlertBanner
+          type={alertType}
+          description={message.text}
+          showClose
+          onClose={() => setShowMessage(false)}
+        />
+      </div>
+    )}
+
+    <h1 className="text-2xl font-semibold text-gray-900 mb-6">
+      One-Shot Monk Analysis
+    </h1>
 
       <div className="text-base text-foreground space-y-2 mb-8">
         <p>
@@ -117,15 +177,54 @@ const OneShotMonk = () => {
           <Button
             type="submit"
             disabled={isButtonDisabled}
-            className="bg-primary text-white h-10 px-8 py-2 rounded text-base font-medium hover:bg-tertiary1-900 disabled:bg-tertiary1-400 disabled:text-white"
+            variant="default" size="default"
           >
             Analyze
           </Button>
         </div>
       </form>
+
+      {result && (
+        <div className="mt-8">
+          <div className="mb-6">
+            <h3 className="font-normal text-foreground mb-4">
+              Analysis Result
+            </h3>
+
+            <h4 className="font-medium mb-2">
+              Possible Licenses
+            </h4>
+
+            {result?.licenses?.length > 0 ? (
+              <ul className="list-disc text-foreground pl-6 text-sm space-y-1">
+                {result.licenses.map((license, idx) => (
+                  <li key={idx}>{license}</li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-sm text-gray-500">
+                No match found
+              </p>
+            )}
+          </div>
+
+          {result?.highlights?.length > 0 && (
+            <div>
+              <h4 className="font-medium mb-2">
+                Highlights
+              </h4>
+
+              <ul className="list-disc text-foreground pl-6 text-sm space-y-2">
+                {result.highlights.map((h, idx) => (
+                  <li key={idx}>{h.infoText}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
 
 export default OneShotMonk;
-

@@ -104,9 +104,9 @@ const TokenSpace = ({ setMessage, setShowMessage }) => {
     setLoading(true);
     try {
       const finalTokenDetails = {
-        token_name: newTokenInfo.tokenName,
-        token_scope: newTokenInfo.accessScope,
-        token_expire: newTokenInfo.tokenExpDate,
+        tokenName: newTokenInfo.tokenName,
+        tokenScope: newTokenInfo.accessScope,
+        tokenExpire: newTokenInfo.tokenExpDate,
         username: newTokenInfo.username,
         password: newTokenInfo.password,
       };

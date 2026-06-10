@@ -26,27 +26,29 @@ import { getToken } from "@/shared/authHelper";
 import sendRequest from "./sendRequest";
 
 // Getting uploads with folder id
-export const getUploadsByFolderIdApi = (id, groupName, recursive) => {
-  const url = endpoints.organize.uploads.get();
+export const getUploadsByFolderIdApi = ({
+  folderId,
+  groupName,
+  recursive = false,
+}) => {
   return sendRequest({
-    url,
+    url: endpoints.uploads.getAll(),
     method: "GET",
     headers: {
       Authorization: getToken(),
     },
-    groupName,
-    queryParams: {
+    params: {
+      folderId,
+      groupName,
       recursive,
-      folderId: id,
     },
   });
 };
 
 // Deleting a upload with its id
-export const deleteUploadsApi = (id) => {
-  const url = endpoints.organize.uploads.delete(id);
+export const deleteUploadsApi = (uploadId) => {
   return sendRequest({
-    url,
+    url: endpoints.organize.uploads.delete(uploadId),
     method: "DELETE",
     headers: {
       Authorization: getToken(),
@@ -55,34 +57,30 @@ export const deleteUploadsApi = (id) => {
 };
 
 // Moving the upload into another folder
-export const moveUploadApi = (folderId, id) => {
-  const url = endpoints.organize.uploads.move(id);
+export const moveUploadApi = ({ folderId, uploadId }) => {
   return sendRequest({
-    url,
+    url: endpoints.organize.uploads.move(uploadId),
     method: "PATCH",
     headers: {
       Authorization: getToken(),
-      folderId,
     },
-    queryParams: {
-      // Set the recursive false to reduce amount of data in response
+    params: {
+      folderId,
       recursive: false,
     },
   });
 };
 
 // Copying the upload into another folder
-export const copyUploadApi = (folderId, id) => {
-  const url = endpoints.organize.uploads.copy(id);
+export const copyUploadApi = ({ folderId, uploadId }) => {
   return sendRequest({
-    url,
+    url: endpoints.organize.uploads.copy(uploadId),
     method: "PUT",
     headers: {
       Authorization: getToken(),
-      folderId,
     },
-    queryParams: {
-      // Set the recursive false to reduce amount of data in response
+    params: {
+      folderId,
       recursive: false,
     },
   });

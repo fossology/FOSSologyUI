@@ -104,7 +104,7 @@ const ScheduleAgentsPage = () => {
   const [scanFileData, setScanFileData] = useState(initialScanFileData);
 
   useEffect(() => {
-    const defaultGroup = getLocalStorage("user")?.default_group;
+    const defaultGroup = getLocalStorage("user")?.defaultGroup;
     if (defaultGroup) {
       setScanFileData((prev) => ({
         ...prev,
@@ -114,7 +114,7 @@ const ScheduleAgentsPage = () => {
   }, []);
   const [loading, setLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
-  const [message, setMessage] = useState(null);
+  const [message, setMessage] = useState({ type: "", text: "" });
 
   const handleSubmit = async (e) => {
     e.preventDefault();

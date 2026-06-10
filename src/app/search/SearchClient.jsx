@@ -47,7 +47,7 @@ import {
 
 const SearchClient = () => {
   const [searchData, setSearchData] = useState(initialState);
-  const [searchResult, setSearchResult] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
   const [pagesOptions, setPagesOptions] = useState();
   const [loading, setLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
@@ -56,6 +56,23 @@ const SearchClient = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
+    const isEmpty =
+      !searchData.uploadId &&
+      !searchData.filename &&
+      !searchData.filesizemin &&
+      !searchData.filesizemax &&
+      !searchData.license &&
+      !searchData.copyright;
+
+    if (isEmpty) {
+      setMessage({
+        type: "danger",
+        text: "Please enter at least one search filter.",
+      });
+      setShowMessage(true);
+      setLoading(false);
+      return;
+    }
     search(searchData)
       .then((result) => {
         setSearchResult(result.search);
@@ -89,7 +106,7 @@ const SearchClient = () => {
       .then((uploads) => {
         const options = [{ id: "all", name: "All uploads" }];
         uploads.forEach((upload) => {
-          options.push({ id: upload.id, name: upload.uploadname });
+          options.push({ id: upload.id, name: upload.uploadName });
         });
         setUploadOptions(options);
       })
@@ -297,7 +314,7 @@ const SearchClient = () => {
         <Button
           type="submit"
           disabled={loading || !searchData.searchType || !searchData.uploadId?.trim() && !searchData.filename?.trim() && !searchData.filesizemin?.trim() && !searchData.filesizemax?.trim()}
-          className="bg-primary text-white h-10 px-8 py-2 rounded text-base font-medium hover:bg-tertiary1-900 disabled:bg-tertiary1-400 disabled:text-white"
+          variant="default" size="default"
         >
           {loading ? "Searching..." : "Search"}
         </Button>
@@ -305,7 +322,7 @@ const SearchClient = () => {
       </form>
 
       {/* Search results */}
-      {searchResult && (
+      {searchResult?.length > 0 && (
         <div className="mt-8">
           <h3 className="text-lg font-semibold mb-2">
             {searchResult.length} files matching your search result.

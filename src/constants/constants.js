@@ -130,12 +130,13 @@ export const initialScanFileDataFile = {
   },
   reuse: {
     reuseUpload: [],
-    reuseGroup: getLocalStorage("user")?.default_group,
+    reuseGroup: getLocalStorage("user")?.defaultGroup,
     reuseChecked: false,
     reuseMain: false,
     reuseEnhanced: false,
     reuseReport: false,
     reuseCopyright: false,
+    reuseApplied: false,
   },
   scancode: {
     license: false,
@@ -157,6 +158,7 @@ export const initialStateImportReport = {
   folder: 1,
   upload: "",
   report: null,
+  reportFormat: "spdx",
   addNewLicensesAs: "candidate",
   matchLicenseUsing: "spdxid",
   addConcludedAsDecisions: true,
@@ -247,7 +249,7 @@ export const initialScanFileData = {
   },
   reuse: {
     reuseUpload: [],
-    reuseGroup: getLocalStorage("user")?.default_group,
+    reuseGroup: getLocalStorage("user")?.defaultGroup,
     reuseChecked: false,
     reuseMain: false,
     reuseEnhanced: false,
@@ -335,7 +337,7 @@ export const userStatus = [
 
 export const initialAddUserData = {
   name: "",
-  user_pass: null,
+  userPass: null,
   description: "",
   accessLevel: "",
   rootFolderId: 0,
@@ -348,14 +350,15 @@ export const initialAddUserData = {
     monk: false,
     ojo: false,
     bucket: false,
-    copyright_email_author: false,
+    copyrightEmailAuthor: false,
     ecc: false,
+    ipra: false,
     keyword: false,
     nomos: false,
-    package: false,
+    pkgagent: false,
     reso: false,
-    heritage: false,
-  },
+    softwareHeritage: false,
+  }
 };
 
 export const bucketPool = [

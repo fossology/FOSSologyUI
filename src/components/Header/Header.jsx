@@ -84,7 +84,7 @@ export default function Header() {
     setUserName(getUserName() || "");
     const defaultGroup =
       getLocalStorage("currentGroup") ||
-      getLocalStorage("user")?.default_group;
+      getLocalStorage("user")?.defaultGroup;
     setCurrentGroup(defaultGroup);
   }, [pathname]);
 

@@ -18,88 +18,138 @@ SPDX-License-Identifier: GPL-2.0-only
 */
 
 import endpoints from "@/constants/endpoints";
-
-// Getting Authorization Token
 import { getToken } from "@/shared/authHelper";
-
-// Function for calling the fetch function for the APIs
 import sendRequest from "./sendRequest";
 
 // Create Uploads from File
-export const createUploadApi = (
+export const createUploadApi = ({
   folderId,
   uploadDescription,
   accessLevel,
   ignoreScm,
-  fileInput
-) => {
-  const url = endpoints.upload.uploadCreate();
+  fileInput,
+}) => {
+  const url = endpoints.uploads.create();
+
   const formdata = new FormData();
+
   if (fileInput) {
-    formdata.append("fileInput", fileInput, fileInput?.name);
+    formdata.append("fileInput", fileInput, fileInput.name);
   }
+
+  formdata.append("uploadType", "file");
+  formdata.append("folderId", folderId);
+  formdata.append("uploadDescription", uploadDescription || "");
+  formdata.append("public", accessLevel);
+  formdata.append("ignoreScm", ignoreScm);
+
   return sendRequest({
     url,
     method: "POST",
     isMultipart: true,
     headers: {
       Authorization: getToken(),
-      folderId,
-      uploadDescription,
-      public: accessLevel,
-      ignoreScm,
-      uploadType: "",
     },
     body: formdata,
   });
 };
 
 // Create Uploads from Version Control System
-export const createUploadVcsApi = (header, body) => {
-  const url = endpoints.upload.uploadCreate();
+export const createUploadVcsApi = ({ header = {}, body = {} }) => {
   return sendRequest({
-    url,
+    url: endpoints.uploads.create(),
     method: "POST",
     headers: {
-      ...header,
       Authorization: getToken(),
     },
-    body,
+    body: {
+      uploadType: "vcs",
+      folderId: Number(header.folderId),
+      public: header.public,
+      ignoreScm: header.ignoreScm,
+      location: body.location,
+    },
   });
 };
 
 // Create Uploads from URL
-export const createUploadUrlApi = (header, body) => {
-  const url = endpoints.upload.uploadCreate();
+export const createUploadUrlApi = ({ header, body }) => {
   return sendRequest({
-    url,
+    url: endpoints.uploads.create(),
     method: "POST",
     headers: {
-      ...header,
       Authorization: getToken(),
     },
-    body,
+    body: {
+      uploadType: "url",
+      folderId: Number(header.folderId),
+      public: header.public,
+      ignoreScm: header.ignoreScm,
+      location: {
+        url: body?.location?.url?.trim() || "",
+        name: body?.location?.name?.trim() || "",
+      },
+    },
   });
 };
 
-// Getting a Upload by id
-export const getUploadByIdApi = (uploadId, retries) => {
-  const url = endpoints.upload.getId(uploadId);
+// Create Uploads from Server
+export const createUploadServerApi = ({ header, body }) => {
   return sendRequest({
-    url,
-    method: "GET",
-    retries,
+    url: endpoints.uploads.create(),
+    method: "POST",
     headers: {
       Authorization: getToken(),
     },
+    body: {
+      uploadType: "server",
+      folderId: Number(header.folderId),
+      public: header.public,
+      ignoreScm: header.ignoreScm,
+      location: {
+        path: body?.location?.path?.trim() || "",
+        name: body?.location?.name?.trim() || "",
+      },
+    },
+  });
+};
+
+export const getUploadByIdApi = async ({ uploadId, retries }) => {
+  const url = endpoints.uploads.getById(uploadId);
+
+  const headers = new Headers({
+    "content-type": "application/json",
+    accept: "application/json",
+    Authorization: getToken(),
+  });
+
+  const res = await fetch(url, { method: "GET", headers });
+
+  // 200 → normal success
+  if (res.ok) {
+    return res.json();
+  }
+
+  if (res.status === 503) {
+    const body = await res.json().catch(() => ({}));
+
+    return { _status503: true, ...body };
+  }
+
+
+  const errorBody = await res.json().catch(() => ({}));
+  return Promise.reject({
+    status: res.status,
+    ok: false,
+    message: errorBody.message || `HTTP ${res.status}`,
+    body: errorBody,
   });
 };
 
 // Getting a Upload Summary
-export const getUploadSummaryApi = (uploadId) => {
-  const url = endpoints.upload.getSummary(uploadId);
+export const getUploadSummaryApi = ({ uploadId }) => {
   return sendRequest({
-    url,
+    url: endpoints.uploads.summary(uploadId),
     method: "GET",
     headers: {
       Authorization: getToken(),
@@ -108,18 +158,15 @@ export const getUploadSummaryApi = (uploadId) => {
 };
 
 // Getting a Upload License
-export const getUploadLicenseApi = (uploadId, agent) => {
-  const url = endpoints.upload.getLicense(uploadId);
+export const getUploadLicenseApi = ({ uploadId, agent }) => {
   return sendRequest({
-    url,
+    url: endpoints.uploads.licenses(uploadId),
     method: "GET",
     headers: {
       Authorization: getToken(),
     },
-    queryParams: {
+    params: {
       agent,
     },
   });
 };
-
-

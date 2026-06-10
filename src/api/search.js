@@ -35,17 +35,18 @@ const searchApi = ({
   filesizemax,
   license,
   copyright,
-  page,
-  limit,
+  page = 1,
+  limit = 10,
 }) => {
-  const url = endpoints.search.search();
   return sendRequest({
-    url,
+    url: endpoints.search.search(),
     method: "GET",
     headers: {
       Authorization: getToken(),
+    },
+    params: {
       searchType,
-      uploadId,
+      uploadId: uploadId === "all" ? null : uploadId,
       filename,
       tag,
       filesizemin,

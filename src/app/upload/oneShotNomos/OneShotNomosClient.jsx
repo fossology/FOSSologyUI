@@ -24,29 +24,88 @@ import React, { useRef, useState } from "react";
 // Widgets
 import { Button } from "@/components/ui/button";
 
+import { AlertBanner } from "@/components/ui/alert";
+import { oneShotNomos } from "@/services/jobs";
+
 const OneShotNomosPage = () => {
   const fileInputRef = useRef(null);
 
   const [selectedFile, setSelectedFile] = useState(null);
 
-  const handleSubmit = (e) => {
+  const [result, setResult] = useState(null);
+  const [message, setMessage] = useState(null);
+  const [showMessage, setShowMessage] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // TODO: Add file handling and real-time license analysis logic here
-    console.log("Analyze button clicked");
+    if (!selectedFile) {
+      setMessage({
+        type: "error",
+        text: "Please select a file first",
+      });
+      setShowMessage(true);
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+
+      formData.append("fileInput", selectedFile);
+
+      const res = await oneShotNomos(formData);
+      setResult({
+        licenses: res?.licenses
+          ? res.licenses
+              .split(",")
+              .map((license) => license.trim())
+              .filter(Boolean)
+          : [],
+        highlights: res?.highlights || [],
+      });
+
+      setMessage({
+        type: "success",
+        text: "Analysis completed successfully",
+      });
+
+      setShowMessage(true);
+    } catch (error) {
+      setMessage({
+        type: "error",
+        text: error.message || "Analysis failed",
+      });
+
+      setShowMessage(true);
+    }
   };
 
   const handleChange = (e) => {
-    // TODO: Handle file input change here
-    console.log("Selected file:", e.target.files[0]);
 
     setSelectedFile(e.target.files?.[0] || null);
   };
 
   const isButtonDisabled = !selectedFile;
 
+  const alertType =
+    message?.type === "danger" || message?.type === "error"
+      ? "Error"
+      : message?.type === "success"
+      ? "Success"
+      : "Info";
+
   return (
     <div className="max-w-4xl mx-40 my-6 px-4">
+      {showMessage && message && (
+        <div className="mb-4">
+          <AlertBanner
+            type={alertType}
+            description={message.text}
+            showClose
+            onClose={() => setShowMessage(false)}
+          />
+        </div>
+      )}
       <h1 className="text-2xl font-semibold text-gray-900 mb-6">
         One-Shot License Analysis
       </h1>
@@ -123,12 +182,43 @@ const OneShotNomosPage = () => {
           <Button
             type="submit"
             disabled={isButtonDisabled}
-            className="bg-primary text-white h-10 px-8 py-2 rounded text-base font-medium hover:bg-tertiary1-900 disabled:bg-tertiary1-400 disabled:text-white"
+            variant="default" size="default"
           >
             Analyze
           </Button>
         </div>
       </form>
+        {result && (
+          <div className="mt-8">
+            <h3 className="font-normal text-foreground mb-4">
+              Analysis Result
+            </h3>
+
+            <div className="mb-4">
+              <h4 className="font-medium mb-2">
+                Possible Licenses
+              </h4>
+
+              {result.licenses.length > 0 ? (
+                <ul className="list-disc pl-6 text-sm space-y-1">
+                  {result.licenses.map((license, idx) => (
+                    <li key={idx}>{license}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-sm text-gray-500">
+                  No match found
+                </p>
+              )}
+            </div>
+
+            {result.highlights?.length > 0 && (
+              <p className="text-sm text-gray-500">
+                {result.highlights.length} license matches found in the file.
+              </p>
+            )}
+          </div>
+        )}
     </div>
   );
 };

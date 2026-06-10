@@ -20,7 +20,6 @@ SPDX-License-Identifier: GPL-2.0-only
 
 import {
   getJobApi,
-  scheduleAnalysisApi,
   scheduleReportApi,
   downloadReportApi,
   getAllJobApi,
@@ -29,62 +28,116 @@ import {
 } from "@/api/jobs";
 import { getReportIdFromUrl } from "@/shared/helper";
 import { getLocalStorage } from "@/shared/storageHelper";
+import { scheduleAnalysisApi } from "@/api/jobs";
+import { oneShotCEUApi } from "@/api/jobs";
+import { oneShotMonkApi } from "@/api/jobs";
+import { oneShotNomosApi } from "@/api/jobs";
 
-// Fetching the jobs
-export const getJob = (jobId) => {
-  return getJobApi({ jobId }).then((res) => {
-    if (!res) return null;
-    return res;
-  });
-};
+// Fetching single job
+export const getJob = (jobId) =>
+  getJobApi({ jobId }).then(res => res || null);
 
 // Fetching all jobs
-export const getAllJob = (jobsDatalist) => {
-  return getAllJobApi(jobsDatalist).then((res) => {
-    return {
-      res,
-      pages: getLocalStorage("pages"),
-    };
-  });
-};
+export const getAllJob = (filters) =>
+  getAllJobApi(filters).then(res => ({
+    res,
+    pages: getLocalStorage("pages"),
+  }));
 
 // Fetching all jobs for the Admin
-export const getAllAdminJob = (jobsDatalist) => {
-  return getAllAdminJobApi(jobsDatalist).then((res) => {
-    return {
-      res,
-      pages: getLocalStorage("pages"),
-    };
-  });
-};
+export const getAllAdminJob = (filters) =>
+  getAllAdminJobApi(filters).then(res => ({
+    res,
+    pages: getLocalStorage("pages"),
+  }));
 
 // Scheduling the analysis for the uploads
 export const scheduleAnalysis = (folderId, uploadId, scanData) => {
-  return scheduleAnalysisApi(folderId, uploadId, scanData).then((res) => {
-    return res;
+  const analysis = scanData?.analysis || {};
+  const decider = scanData?.decider || {};
+  const reuse = scanData?.reuse || {};
+  const scancode = scanData?.scancode || {};
+
+  // Normalize reuse properly
+  const reuseUploadIds = Array.isArray(reuse.reuseUpload)
+    ? reuse.reuseUpload
+        .map((item) =>
+          typeof item === "object" ? Number(item.id) : Number(item)
+        )
+        .filter((n) => Number.isFinite(n))
+    : [];
+
+  const body = {
+    analysis: {
+      bucket: Number(analysis.bucket || 0),
+      copyrightEmailAuthor: !!analysis.copyrightEmailAuthor,
+      ecc: !!analysis.ecc,
+      ipra: !!analysis.ipra,
+      keyword: !!analysis.keyword,
+      mime: !!analysis.mime,
+      monk: !!analysis.monk,
+      nomos: !!analysis.nomos,
+      ojo: !!analysis.ojo,
+      pkgagent: !!analysis.pkgagent,
+      reso: !!analysis.reso,
+      softwareHeritage: !!analysis.softwareHeritage,
+    },
+
+    decider: {
+      nomosMonk: !!decider.nomosMonk,
+      bulkReused: !!decider.bulkReused,
+      newScanner: !!decider.newScanner,
+      ojoDecider: !!decider.ojoDecider,
+      concludeLicenseType: !!decider.concludeLicenseType,
+      copyrightDeactivation: !!decider.copyrightDeactivation,
+      copyrightClutterRemoval: !!decider.copyrightClutterRemoval,
+    },
+
+    reuse: {
+      reuse_upload: reuseUploadIds[0] ?? null,
+      reuse_group: reuse.reuseGroup ?? null,
+      reuse_main: reuse.reuseMain ?? null,
+      reuse_enhanced: reuse.reuseEnhanced ?? null,
+      reuse_report: reuse.reuseReport ?? null,
+      reuse_copyright: reuse.reuseCopyright ?? null,
+    },
+
+    scancode: {
+      license: !!scancode.license,
+      copyright: !!scancode.copyright,
+      email: !!scancode.email,
+      url: !!scancode.url,
+    },
+  };
+
+  return scheduleAnalysisApi({
+    folderId: Number(folderId),
+    uploadId: Number(uploadId),
+    body,
   });
 };
 
-export const scheduleReport = (uploadId, reportFormat) => {
-  return scheduleReportApi(uploadId, reportFormat).then((res) => {
-    return res;
-  });
-};
+export const scheduleReport = (uploadId, reportFormat) =>
+  scheduleReportApi({ uploadId, reportFormat });
 
 export const downloadReport = (url) => {
   const reportId = getReportIdFromUrl(url);
-  if (reportId === null) {
+  if (!reportId) {
     return Promise.reject(new Error("Invalid or missing report URL"));
   }
-  return downloadReportApi(reportId).then((res) => {
-    return res;
-  });
+  return downloadReportApi(reportId);
 };
 
-export const importReport = (uploadId, reqBody) => {
-  return importReportApi(uploadId, reqBody).then((res) => {
-    return res;
-  });
-};
+export const importReport = (uploadId, reportFormat, reqBody) =>
+  importReportApi({ uploadId, reportFormat, reqBody });
 
 export default getJob;
+
+export const oneShotCEU = (reqBody) =>
+  oneShotCEUApi({ reqBody });
+
+export const oneShotMonk = (reqBody) =>
+  oneShotMonkApi({ reqBody });
+
+export const oneShotNomos = (reqBody) =>
+  oneShotNomosApi({ reqBody });

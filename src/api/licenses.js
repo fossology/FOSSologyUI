@@ -26,17 +26,16 @@ import { getToken } from "@/shared/authHelper";
 import sendRequest from "./sendRequest";
 
 // Fetching the licenses with their kind i.e (candidate, main, all)
-export const getAllLicenseApi = ({ page, limit, kind }) => {
-  const url = endpoints.admin.license.get();
+export const getAllLicenseApi = ({ page = 1, limit = 10, kind }) => {
   return sendRequest({
-    url,
+    url: endpoints.admin.license.get(),
     method: "GET",
     headers: {
       Authorization: getToken(),
+    },
+    params: {
       page,
       limit,
-    },
-    queryParams: {
       kind,
     },
   });
@@ -50,9 +49,8 @@ export const createCandidateLicenseApi = ({
   licenseUrl,
   mergeRequest,
 }) => {
-  const url = endpoints.admin.license.createCandidateLicense();
   return sendRequest({
-    url,
+    url: endpoints.admin.license.createCandidateLicense(),
     method: "POST",
     headers: {
       Authorization: getToken(),

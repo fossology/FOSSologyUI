@@ -150,7 +150,7 @@ const EditUserPage = () => {
         ...editUserData,
         _blank_pass: editUserData.noPass,
       };
-      if (rePass.pass1) payload.user_pass = rePass.pass1;
+      if (rePass.pass1) payload.userPass = rePass.pass1;
       delete payload.noPass;
 
       const response = await editUserById(selectedUserId, payload);

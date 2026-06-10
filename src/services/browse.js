@@ -20,14 +20,24 @@ SPDX-License-Identifier: GPL-2.0-only
 import getBrowseDataApi from "@/api/browse";
 import { getLocalStorage } from "@/shared/storageHelper";
 
-// Fetching all the Uploads
-const getBrowseData = (browseData) => {
-  return getBrowseDataApi(browseData).then((res) => {
-    return {
-      res,
-      pages: getLocalStorage("pages"),
-    };
-  });
+const normalizeUpload = (u) => ({
+  id: u.id,
+  uploadName: u.uploadName || u.uploadname || "",
+  description: u.description || "",
+  uploadDate: u.uploadDate || null,
+  assignee: u.assignee ?? null,
+  folderId: u.folderId,
+});
+
+const getBrowseData = async (browseData) => {
+  const res = await getBrowseDataApi(browseData);
+
+  const uploads = Array.isArray(res) ? res : res?.uploads ?? [];
+
+  return {
+    uploads,
+    pages: getLocalStorage("pages") || 1,
+  };
 };
 
 export default getBrowseData;

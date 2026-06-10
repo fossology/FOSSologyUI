@@ -27,9 +27,8 @@ import sendRequest from "./sendRequest";
 
 // Creating a maintenance
 export const createMaintenanceApi = (data) => {
-  const url = endpoints.admin.maintenance.create();
   return sendRequest({
-    url,
+    url: endpoints.admin.maintenance.create(),
     method: "POST",
     headers: {
       Authorization: getToken(),
@@ -37,4 +36,3 @@ export const createMaintenanceApi = (data) => {
     body: data,
   });
 };
-export default createMaintenanceApi;

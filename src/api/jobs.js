@@ -17,121 +17,120 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+// api/jobs.js
+// ─────────────────────────────────────────────────────────────────────────────
+// CHANGES v1 → v2
+//
+// 1. scheduleAnalysis  — POST /jobs (unchanged path, unchanged body shape)
+//    params: folderId + uploadId as query params (unchanged)
+//
+// 2. scheduleReport    — was GET /jobs/schedule?uploadId=…&reportFormat=…
+//    → now GET /report?uploadId=…&reportFormat=…
+//    Uses endpoints.report.schedule() instead of endpoints.jobs.scheduleReport()
+//
+// 3. downloadReport    — was GET /jobs/{reportId}/download  (or similar)
+//    → now GET /report/{id}
+//    Uses endpoints.report.download(id)
+//
+// 4. importReport      — was POST /jobs/import/{uploadId}
+//    → now POST /report/import?upload={uploadId}&reportFormat=…
+//    Uses endpoints.report.import()
+//    The uploadId is now a query param named "upload" (not a path segment).
+//    reportFormat is also a required query param in v2.
+//
+// 5. getAllJobApi / getAllAdminJobApi endpoint keys:
+//    jobs.allJobs() → jobs.getAll()  and  jobs.getAllAdmin()
+//    (URL /jobs and /jobs/all are unchanged)
+//
+// 6. getJobApi: jobs.details(jobId) → jobs.getById(jobId)
+// ─────────────────────────────────────────────────────────────────────────────
 import endpoints from "@/constants/endpoints";
-
-// Getting Authorization Token
 import { getToken } from "@/shared/authHelper";
-
-// Function for calling the fetch function for the APIs
 import sendRequest from "./sendRequest";
 
-export const getAllJobApi = ({ page, limit }) => {
-  const url = endpoints.jobs.scheduleAnalysis();
+// GET /jobs — jobs for the current user
+export const getAllJobApi = ({ page = 1, limit = 10, status, sort, upload }) => {
   return sendRequest({
-    url,
+    url: endpoints.jobs.getAll(),   // v1: jobs.allJobs()
     method: "GET",
     headers: {
       Authorization: getToken(),
+    },
+    params: {
       page,
       limit,
+      status,
+      sort,
+      upload,
     },
   });
 };
 
-// Fetch all the jobs for admin
-export const getAllAdminJobApi = ({ page, limit }) => {
-  const url = endpoints.jobs.allJobs();
+// GET /jobs/all — all jobs (admin only)
+export const getAllAdminJobApi = ({ page = 1, limit = 10, status, sort }) => {
   return sendRequest({
-    url,
+    url: endpoints.jobs.getAllAdmin(), // v1: jobs.allJobs() (same path, now split)
     method: "GET",
     headers: {
       Authorization: getToken(),
+    },
+    params: {
       page,
       limit,
+      status,
+      sort,
     },
   });
 };
 
-// Fetching the jobs
+// GET /jobs/{id}
 export const getJobApi = ({ jobId }) => {
-  const url = endpoints.jobs.details(jobId);
   return sendRequest({
-    url,
+    url: endpoints.jobs.getById(jobId), // v1: jobs.details(jobId)
     method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
   });
 };
 
-// Scheduling the analysis for the uploads
-export const scheduleAnalysisApi = (folderId, uploadId, scanData) => {
-  const url = endpoints.jobs.scheduleAnalysis();
-  const { bucket, copyrightEmailAuthor, ecc, keyword, mime, monk, nomos, ojo } =
-    scanData?.analysis;
-  const { nomosMonk, bulkReused, newScanner, ojoDecider, autoConclude, autoConcludeType } = scanData?.decider;
-  const {
-    reuseUpload,
-    reuseGroup,
-    reuseMain,
-    reuseEnhanced,
-    reuseReport,
-    reuseCopyright,
-  } = scanData?.reuse;
+// POST /jobs?folderId=…&uploadId=…  body: ScanOptions JSON
+export const scheduleAnalysisApi = ({ folderId, uploadId, body }) => {
   return sendRequest({
-    url,
+    url: endpoints.jobs.create(),
     method: "POST",
     headers: {
       Authorization: getToken(),
+    },
+    queryParams: {
       folderId,
       uploadId,
     },
-    body: {
-      analysis: {
-        bucket,
-        copyright_email_author: copyrightEmailAuthor,
-        ecc,
-        keyword,
-        mime,
-        monk,
-        nomos,
-        ojo,
-        package: scanData.analysis.package,
-      },
-      decider: {
-        nomos_monk: nomosMonk,
-        bulk_reused: bulkReused,
-        new_scanner: newScanner,
-        ojo_decider: ojoDecider,
-        auto_conclude: autoConclude,
-        auto_conclude_type: autoConcludeType,
-      },
-      reuse: {
-        reuse_upload: reuseUpload,
-        reuse_group: reuseGroup,
-        reuse_main: reuseMain,
-        reuse_enhanced: reuseEnhanced,
-        reuse_report: reuseReport,
-        reuse_copyright: reuseCopyright,
-      },
-    },
+    body,
   });
 };
 
-export const scheduleReportApi = (uploadId, reportFormat) => {
-  const url = endpoints.jobs.scheduleReport();
+// GET /report?uploadId=…&reportFormat=…
+// v1 was: GET /jobs/schedule?uploadId=…&reportFormat=…
+export const scheduleReportApi = ({ uploadId, reportFormat }) => {
   return sendRequest({
-    url,
+    url: endpoints.report.schedule(), // v1: jobs.scheduleReport()
     method: "GET",
     headers: {
       Authorization: getToken(),
+    },
+    queryParams: {
       uploadId,
       reportFormat,
     },
   });
 };
 
+// GET /report/{id}
+// v1 was: GET /jobs/{reportId}/download (or similar)
 export const downloadReportApi = (reportId) => {
-  const url = endpoints.jobs.downloadReport(reportId);
   return sendRequest({
-    url,
+    url: endpoints.report.download(reportId), // v1: jobs.downloadReport(reportId)
     method: "GET",
     headers: {
       Authorization: getToken(),
@@ -140,10 +139,49 @@ export const downloadReportApi = (reportId) => {
   });
 };
 
-export const importReportApi = (uploadId, reqBody) => {
-  const url = endpoints.jobs.importReport(uploadId);
+export const importReportApi = ({ uploadId, reportFormat, reqBody }) => {
   return sendRequest({
-    url,
+    url: endpoints.report.import(),
+    method: "POST",
+    headers: {
+      Authorization: getToken(),
+    },
+    queryParams: {
+      upload: uploadId,
+      reportFormat: "spdxrdf",
+    },
+    isMultipart: true,
+    body: reqBody,
+  });
+};
+
+export const oneShotCEUApi = ({ reqBody }) => {
+  return sendRequest({
+    url: endpoints.uploads.oneshotCEU(),
+    method: "POST",
+    headers: {
+      Authorization: getToken(),
+    },
+    isMultipart: true,
+    body: reqBody,
+  });
+};
+
+export const oneShotMonkApi = ({ reqBody }) => {
+  return sendRequest({
+    url: endpoints.uploads.oneShotMonk(),
+    method: "POST",
+    headers: {
+      Authorization: getToken(),
+    },
+    isMultipart: true,
+    body: reqBody,
+  });
+};
+
+export const oneShotNomosApi = ({ reqBody }) => {
+  return sendRequest({
+    url: endpoints.uploads.oneShotNomos(),
     method: "POST",
     headers: {
       Authorization: getToken(),

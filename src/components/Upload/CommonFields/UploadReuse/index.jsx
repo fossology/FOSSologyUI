@@ -41,7 +41,7 @@ const UploadReuse = ({ reuse, handleScanChange }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredUploads = reuseData.uploadList.filter((item) =>
-    item.uploadname?.toLowerCase().includes((searchTerm || "").toLowerCase())
+    item.uploadName?.toLowerCase().includes((searchTerm || "").toLowerCase())
   );
 
   // Load folders for the current group and build combined "Folder (group:id)" options
@@ -79,11 +79,15 @@ const UploadReuse = ({ reuse, handleScanChange }) => {
     if (separatorIndex === -1) return;
     const folderId = parseInt(value.slice(0, separatorIndex), 10);
     const groupName = value.slice(separatorIndex + 1);
+    // Persist both the reuse group and the selected folder into scanData.reuse
     handleScanChange(null, "reuseGroup", "text", groupName);
+    handleScanChange(null, "reuseFolder", "text", folderId);
     setReuseData((prev) => ({ ...prev, reuseFolder: folderId }));
   };
 
   const handleSelectUpload = (item) => {
+    // Ensure the selected folder is stored alongside the selected upload
+    handleScanChange(null, "reuseFolder", "text", reuseData.reuseFolder);
     handleScanChange(true, "reuseUpload", "checkbox", item);
     setSearchTerm("");
   };
@@ -197,7 +201,7 @@ const UploadReuse = ({ reuse, handleScanChange }) => {
                     onClick={() => handleSelectUpload(item)}
                     className="px-3 py-2 text-sm cursor-pointer hover:bg-gray-100"
                   >
-                    {item.uploadname} ({item.uploadDate})
+                    {item.uploadName} ({item.uploadDate})
                   </div>
                 ))}
               </div>
@@ -209,7 +213,7 @@ const UploadReuse = ({ reuse, handleScanChange }) => {
                 reuse.reuseUpload.map((item) => (
                   <Chip
                     key={item.id}
-                    label={`${item.uploadname} (${item.uploadDate})`}
+                    label={`${item.uploadName} (${item.uploadDate})`}
                     onRemove={() => handleRemoveUpload(item)}
                   />
                 ))}
@@ -220,37 +224,7 @@ const UploadReuse = ({ reuse, handleScanChange }) => {
             No repository chosen
           </p>
           )}
-        {/* {reuseData.uploadList && reuseData.uploadList.length > 0 ? (
-          reuseData.uploadList.map((item, index) => (
-            <InputContainer
-              key={`${item.id ?? "no-id"}-${index}`}
-              type="checkbox"
-              name="reuseUpload"
-              value={item.id}
-              checked={Array.isArray(reuse.reuseUpload) ? reuse.reuseUpload.includes(item.id) : false}
-              onChange={(checked) => handleChange(checked, "reuseUpload", "checkbox", item.id)}
-            >
-              {item.uploadname} ({item.uploadDate})
-            </InputContainer>
-          ))
-        ) : (
-          <p>{messages.noUploads}</p>
-        )} */}
       </div>
-
-            {/* <InputContainer
-        type="select"
-        name="reuseUpload"
-        id="upload-file-reuse-upload"
-        onChange={handleChange}
-        options={reuseData.uploadList}
-        value={parseInt(reuse.reuseUpload, 10)}
-        property="uploadname"
-        valueProperty="id"
-        noDataMessage={messages.noUploads}
-      >
-        Select the reuse upload:
-      </InputContainer> */}
     </div>
   );
 };

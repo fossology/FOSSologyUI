@@ -17,28 +17,34 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+// api/browse.js
+// ─────────────────────────────────────────────────────────────────────────────
+// CHANGES v1 → v2
+// • Endpoint: was endpoints.browse.get() → now endpoints.uploads.getAll()
+//   The dedicated "browse" group is gone in v2; the same /uploads endpoint
+//   serves both the "Browse" view and the "Organize uploads" view.
+// • page and limit are now query params (not request headers) in v2.
+//   The v2 spec places them under the `parameters` array (in: query).
+//   They are moved from `headers` to `queryParams`.
+// ─────────────────────────────────────────────────────────────────────────────
 import endpoints from "@/constants/endpoints";
-
-// Getting Authorization Token
 import { getToken } from "@/shared/authHelper";
-
-// Function for calling the fetch function for the APIs
 import sendRequest from "./sendRequest";
 
-// Fetching all the Uploads with the give parameters of page, limit
 const getBrowseDataApi = ({ folderId, page, limit, recursive }) => {
-  const url = endpoints.browse.get();
+  // v2: /uploads — page & limit are query params, not headers
+  const url = endpoints.uploads.getAll();
   return sendRequest({
     url,
     method: "GET",
     headers: {
       Authorization: getToken(),
-      page,
-      limit,
     },
     queryParams: {
       folderId,
       recursive,
+      page,
+      limit,
     },
   });
 };

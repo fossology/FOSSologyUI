@@ -1,7 +1,7 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
  Copyright (C) 2022 Samuel Dushimimana (dushsam100@gmail.com)
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
  This program is free software; you can redistribute it and/or
@@ -17,6 +17,12 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+// services/groups.js
+// ─────────────────────────────────────────────────────────────────────────────
+// CHANGES v1 → v2
+// • deleteGroup(id)  → deleteGroup(name)  — now passes group name, not integer id
+// • editGroup        → REMOVED            — no v2 endpoint exists for renaming
+// ─────────────────────────────────────────────────────────────────────────────
 import {
   getAllGroupsApi,
   createGroupApi,
@@ -25,7 +31,6 @@ import {
 } from "@/api/groups";
 import { setLocalStorage, getLocalStorage } from "@/shared/storageHelper";
 
-// Fetching all the groups
 export const getAllGroups = () => {
   return getLocalStorage("groups");
 };
@@ -37,23 +42,17 @@ export const fetchAllGroups = () => {
   });
 };
 
-// Creating a group
 export const createGroup = (name) => {
-  return createGroupApi(name).then((res) => {
-    return res;
-  });
+  return createGroupApi(name).then((res) => res);
 };
 
-// Delete a group
-export const deleteGroup = (id) => {
-  return deleteGroupApi(id).then((res) => {
-    return res;
-  });
+// v2: accepts group name (string) instead of id (integer)
+export const deleteGroup = (name) => {
+  return deleteGroupApi(name).then((res) => res);
 };
 
-// Fetching all deletable groups
 export const fetchAllDeletableGroups = () => {
-  return getAllDeletableGroupsApi().then((res) => {
-    return res;
-  });
+  return getAllDeletableGroupsApi().then((res) => res);
 };
+
+// editGroup is REMOVED — v2 has no group-rename REST endpoint.

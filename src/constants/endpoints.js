@@ -17,81 +17,182 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-// Api Url set in the env file
-const apiUrl = `${
-  process.env.NEXT_PUBLIC_HTTPS === "true" ? "https" : "http"
-}://${process.env.NEXT_PUBLIC_SERVER_URL}`;
+// constants/endpoints.js — FOSSology API v2
 
-// Endpoints for all the REST APIs
+const getApiBase = () => {
+  const protocol =
+    process.env.NEXT_PUBLIC_HTTPS === "true" ? "https" : "http";
+  return `${protocol}://${process.env.NEXT_PUBLIC_SERVER_URL}`;
+};
+
+const base = getApiBase();
+
+const withBase = (path) => `${base}${path}`;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// WHAT CHANGED in v2
+// ─────────────────────────────────────────────────────────────────────────────
+// • Base path changes from /api/v1 to /api/v2  (set at the server/proxy level;
+//   these helpers just build the path suffix, so no change needed here, but
+//   your NEXT_PUBLIC_SERVER_URL must now point to the v2 base.)
+//
+// • /users/{id}    → /users/{name}        (integer id ➜ username string)
+// • /users/add     → /users               (POST, same path as GET-all)
+// • /users/edit    → /users/{name}        (PUT, keyed by name not id)
+// • /users/delete  → /users/{name}        (DELETE, keyed by name not id)
+// • /users/tokens  kept; /users/tokens/{type} kept (GET only, no POST change)
+//
+// • /groups  keyed by {name} (string) instead of {id} (integer)
+//   - DELETE /groups/{id}   → DELETE /groups/{name}
+//   - PATCH  /groups/{id}   → removed; v2 has no rename endpoint
+//   - /groups/deletable     → kept as GET /groups/deletable
+//
+// • /jobs/scheduleReport  was GET /jobs/schedule?reportFormat=…
+//   → now GET /report?uploadId=…&reportFormat=…
+// • /jobs/downloadReport  was GET /jobs/{reportId}/download
+//   → now GET /report/{id}
+// • /jobs/importReport    was POST /jobs/import/{uploadId}
+//   → now POST /report/import?upload={uploadId}&reportFormat=…
+//
+// • /organize/uploads.get  was its own endpoint group
+//   → now unified under /uploads (same path as browse)
+// • /organize/uploads.move → PUT  /uploads/{id}?folderId=…&action=move
+// • /organize/uploads.copy → PUT  /uploads/{id}?folderId=…&action=copy
+// • /organize/uploads.delete → DELETE /uploads/{id}  (same path as before)
+//
+// • /admin/license → /license   (flat, not nested under admin)
+// • /admin/maintenance → /maintenance
+// • /admin/info → /info  /health (flat)
+// ─────────────────────────────────────────────────────────────────────────────
+
 const endpoints = {
-  jobs: {
-    details: (jobId) => `${apiUrl}/jobs/${jobId}`,
-    scheduleAnalysis: () => `${apiUrl}/jobs`,
-    allJobs: () => `${apiUrl}/jobs/all`,
-    scheduleReport: () => `${apiUrl}/report`,
-    downloadReport: (reportId) => `${apiUrl}/report/${reportId}`,
-    importReport: (uploadId) => `${apiUrl}/report/import?upload=${uploadId}`,
-  },
+  // ── Auth ─────────────────────────────────────────────────────────────────
   auth: {
-    tokens: () => `${apiUrl}/tokens`,
+    // POST /tokens  — unchanged path, unchanged behaviour
+    tokens: () => withBase("/tokens"),
   },
-  search: {
-    search: () => `${apiUrl}/search`,
+
+  // ── Info / Health ─────────────────────────────────────────────────────────
+  // v1: nested under endpoints.admin.info.*
+  // v2: flat top-level
+  info: {
+    apiInfo:  () => withBase("/info"),
+    openapi:  () => withBase("/openapi"),
+    health:   () => withBase("/health"),
   },
+
+  // ── Users ─────────────────────────────────────────────────────────────────
+  // v2 key change: users are addressed by {name} (string), not {id} (integer)
   users: {
-    self: () => `${apiUrl}/users/self`,
-    getAll: () => `${apiUrl}/users`,
-    getSingle: (userId) => `${apiUrl}/users/${userId}`,
-    delete: (userId) => `${apiUrl}/users/${userId}`,
-    add: () => `${apiUrl}/users`,
-    edit: (userId) => `${apiUrl}/users/${userId}`,
-    createToken: () => `${apiUrl}/users/tokens`,
-    getTokens: (type) => `${apiUrl}/users/tokens/${type}`,
+    create:         ()      => withBase("/users"),          // POST
+    getAll:         ()      => withBase("/users"),          // GET
+    getSelf:        ()      => withBase("/users/self"),     // GET
+    getByName:      (name)  => withBase(`/users/${name}`), // GET  (was getSingle by id)
+    updateByName:   (name)  => withBase(`/users/${name}`), // PUT  (was edit by id)
+    deleteByName:   (name)  => withBase(`/users/${name}`), // DELETE (was delete by id)
+    tokens:         ()      => withBase("/users/tokens"),   // POST (create token for self)
+    tokensByType:   (type)  => withBase(`/users/tokens/${type}`), // GET active|expired
   },
+
+  // ── Uploads ───────────────────────────────────────────────────────────────
+  // Core browse + upload + organize endpoints are all /uploads in v2.
+  // The separate /organize subtree is gone.
+  uploads: {
+    getAll:   ()    => withBase("/uploads"),              // GET  (browse + organize list)
+    create:   ()    => withBase("/uploads"),              // POST
+    getById:  (id)  => withBase(`/uploads/${id}`),       // GET
+    moveOrCopy: (id) => withBase(`/uploads/${id}`),      // PUT
+    delete:     (id) => withBase(`/uploads/${id}`),      // DELETE
+    summary:    (id) => withBase(`/uploads/${id}/summary`),   // GET
+    licenses:   (id) => withBase(`/uploads/${id}/licenses`),  // GET
+    download:   (id) => withBase(`/uploads/${id}/download`),  // GET
+    oneshotCEU: () => withBase("/uploads/oneshot/ceu"),
+    oneShotMonk: () => withBase("/uploads/oneshot/monk"),
+    oneShotNomos: () => withBase("/uploads/oneshot/nomos"),
+  },
+
+  // ── Search ────────────────────────────────────────────────────────────────
+  search: {
+    files: () => withBase("/search"), // unchanged
+  },
+
+  // ── Jobs ──────────────────────────────────────────────────────────────────
+  // scheduleReport / downloadReport / importReport paths moved to /report
+  jobs: {
+    getAll:      ()      => withBase("/jobs"),           // GET (user's own jobs)
+    create:      ()      => withBase("/jobs"),           // POST (schedule analysis)
+    getAllAdmin:  ()      => withBase("/jobs/all"),       // GET (admin)
+    getById:     (id)    => withBase(`/jobs/${id}`),     // GET
+    deleteJob:   (id, queue) => withBase(`/jobs/${id}/${queue}`), // DELETE
+    statistics:  ()      => withBase("/jobs/dashboard/statistics"),
+    dashboard:   ()      => withBase("/jobs/dashboard"),
+    schedulerOperation: (operation) =>
+      withBase(`/jobs/scheduler/operation/${operation}`),
+    schedulerRun: () =>
+      withBase("/jobs/scheduler/operation/run"),
+  },
+
+  // ── Report ────────────────────────────────────────────────────────────────
+  // v1 had report endpoints scattered under /jobs; v2 has a dedicated /report group
+  report: {
+    schedule:  ()   => withBase("/report"),          // GET ?uploadId=…&reportFormat=…
+    download:  (id) => withBase(`/report/${id}`),    // GET
+    import:    ()   => withBase("/report/import"),   // POST ?upload=…&reportFormat=…
+  },
+
+  // ── Folders ───────────────────────────────────────────────────────────────
+  // Paths unchanged; the old endpoints.folders.move(id) used PUT which is now
+  // correct — no breaking change here, just renamed key for clarity.
   folders: {
-    getAll: () => `${apiUrl}/folders`,
-    getSingle: (folderId) => `${apiUrl}/folders/${folderId}`,
-    create: () => `${apiUrl}/folders`,
-    read: (folderId) => `${apiUrl}/folders/${folderId}`,
-    edit: (folderId) => `${apiUrl}/folders/${folderId}`,
-    delete: (folderId) => `${apiUrl}/folders/${folderId}`,
-    move: (folderId) => `${apiUrl}/folders/${folderId}`,
+    getAll:          ()    => withBase("/folders"),
+    create:          ()    => withBase("/folders"),
+    getById:         (id)  => withBase(`/folders/${id}`),
+    updateById:      (id)  => withBase(`/folders/${id}`),  // PATCH
+    moveOrCopy:      (id)  => withBase(`/folders/${id}`),  // PUT ?parent=…&action=…
+    deleteById:      (id)  => withBase(`/folders/${id}`),
+    contents:        (id)  => withBase(`/folders/${id}/contents`),
+    unlinkContent:   (contentId) =>
+      withBase(`/folders/contents/${contentId}/unlink`),
   },
-  upload: {
-    uploadCreate: () => `${apiUrl}/uploads`,
-    getId: (uploadId) => `${apiUrl}/uploads/${uploadId}`,
-    getSummary: (uploadId) => `${apiUrl}/uploads/${uploadId}/summary`,
-    getLicense: (uploadId) => `${apiUrl}/uploads/${uploadId}/licenses`,
+
+  // ── Groups ────────────────────────────────────────────────────────────────
+  // v2 key change: groups addressed by {name} string, not {id} integer
+  // PATCH /groups/{id} (rename) is REMOVED from v2 — no equivalent
+  groups: {
+    getAll:               ()            => withBase("/groups"),
+    create:               ()            => withBase("/groups"),            // POST ?name=…
+    deleteByName:         (name)        => withBase(`/groups/${name}`),    // DELETE
+    members:              (name)        => withBase(`/groups/${name}/members`),
+    addUser:              (name, userName) =>
+      withBase(`/groups/${name}/user/${userName}`),                        // POST
+    deleteUser:           (name, userName) =>
+      withBase(`/groups/${name}/user/${userName}`),                        // DELETE
+    updateUserPermission: (name, userName) =>
+      withBase(`/groups/${name}/user/${userName}`),                        // PUT
+    deletable:            ()            => withBase("/groups/deletable"),
   },
-  browse: {
-    get: () => `${apiUrl}/uploads`,
+
+  // ── License ───────────────────────────────────────────────────────────────
+  // v1: nested under endpoints.admin.license.*
+  // v2: flat /license
+  license: {
+    get:                () => withBase("/license"),
+    create:             () => withBase("/license"),          // POST (replaces createCandidateLicense)
+    getByShortName:     (shortName) => withBase(`/license/${shortName}`),
+    importCsv:          () => withBase("/license/import-csv"),
+    exportCsv:          () => withBase("/license/export-csv"),
+    adminCandidates:    () => withBase("/license/admincandidates"),
+    adminAcknowledgements: () => withBase("/license/adminacknowledgements"),
+    suggest:            () => withBase("/license/suggest"),
+    verify:             (shortName) => withBase(`/license/verify/${shortName}`),
+    merge:              (shortName) => withBase(`/license/merge/${shortName}`),
   },
-  organize: {
-    uploads: {
-      get: () => `${apiUrl}/uploads`,
-      delete: (deleteId) => `${apiUrl}/uploads/${deleteId}`,
-      move: (moveId) => `${apiUrl}/uploads/${moveId}`,
-      copy: (copyId) => `${apiUrl}/uploads/${copyId}`,
-    },
-  },
-  admin: {
-    groups: {
-      create: () => `${apiUrl}/groups`,
-      getAll: () => `${apiUrl}/groups`,
-      getAllDeletable: () => `${apiUrl}/groups/deletable`,
-      delete: (groupId) => `${apiUrl}/groups/${groupId}`,
-    },
-    maintenance: {
-      create: () => `${apiUrl}/maintenance`,
-    },
-    license: {
-      get: () => `${apiUrl}/license`,
-      createCandidateLicense: () => `${apiUrl}/license`,
-    },
-    info: {
-      info: () => `${apiUrl}/info`,
-      health: () => `${apiUrl}/health`,
-    },
+
+  // ── Maintenance ───────────────────────────────────────────────────────────
+  // v1: nested under endpoints.admin.maintenance.create()
+  // v2: flat /maintenance
+  maintenance: {
+    run: () => withBase("/maintenance"),
   },
 };
 

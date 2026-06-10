@@ -21,86 +21,116 @@ import fetchTokenApi from "@/api/auth";
 import {
   getUserSelfApi,
   getAllUsersApi,
-  deleteUserApi,
+  getUserByIdApi,
   addUserApi,
-  getUserByIdAapi,
   editUserByIdApi,
+  deleteUserApi,
   getTokensApi,
 } from "@/api/users";
 import { setLocalStorage } from "@/shared/storageHelper";
 
-// Fetching the self information
+
+// SELF USER
+
 export const getUserSelf = () => {
   return getUserSelfApi().then((res) => {
-    setLocalStorage("user", res);
-    setLocalStorage("currentGroup", res.default_group);
+    if (!res || typeof res !== "object") return res;
+
+    const safeUser = {
+      id: res.id,
+      name: res.name,
+      email: res.email,
+      defaultGroup: res.defaultGroup,
+      accessLevel: res.accessLevel,
+      agents: res.agents,
+    };
+
+    setLocalStorage("user", safeUser);
+    setLocalStorage("currentGroup", res.defaultGroup);
+
     return res;
   });
 };
 
-// Fetching all the users and returning their complete info
+// ALL USERS
+
 export const getAllUsers = () => {
-  return getAllUsersApi().then((res) => {
-    return res;
-  });
+  return getAllUsersApi().then((res) => res);
 };
 
-// sending user data payload to the API module for creating a new user
-export const addUser = (userData) => {
-  return addUserApi(userData).then((res) => {
-    return res;
-  });
-};
 
-// Fetching all the users and returning their names
-export const getAllUsersName = () => {
-  return getAllUsersApi().then((res) => {
-    const modifiedUser = [];
-    res.forEach((user) => {
-      modifiedUser.push({
-        id: user?.id,
-        name: user?.name,
-      });
-    });
-    return modifiedUser;
-  });
-};
+// USER BY ID
 
-// fetching a single user by id
 export const getUserById = (id) => {
-  return getUserByIdAapi(id).then((res) => {
-    return res;
-  });
+  return getUserByIdApi(id).then((res) => res);
 };
 
-// modifying user details by id
-export const editUserById = (id, editedUserDetails) => {
-  return editUserByIdApi(id, editedUserDetails).then((res) => {
-    return res;
-  });
+
+// CREATE USER (DTO SAFE)
+
+export const addUser = (data) => {
+  const payload = {
+    name: data.name,
+    description: data.description,
+    email: data.email,
+    accessLevel: data.accessLevel,
+    rootFolderId: data.rootFolderId,
+    emailNotification: data.emailNotification,
+    defaultGroup: data.defaultGroup,
+    defaultBucketpool: data.defaultBucketpool ?? null,
+
+    agents: {
+      bucket: data.agents?.bucket ?? false,
+      copyrightEmailAuthor: data.agents?.copyrightEmailAuthor ?? false,
+      ecc: data.agents?.ecc ?? false,
+      ipra: data.agents?.ipra ?? false,
+      keyword: data.agents?.keyword ?? false,
+      mime: data.agents?.mime ?? false,
+      monk: data.agents?.monk ?? false,
+      nomos: data.agents?.nomos ?? false,
+      ojo: data.agents?.ojo ?? false,
+      pkgagent: data.agents?.pkgagent ?? false,
+      reso: data.agents?.reso ?? false,
+      softwareHeritage: data.agents?.softwareHeritage ?? false,
+    },
+  };
+
+  return addUserApi(payload).then((res) => res);
 };
 
-// Deleting the user info
+
+// UPDATE USER (DTO SAFE)
+
+export const editUserById = (id, data) => {
+  const payload = {
+    ...data,
+    defaultBucketpool: data.defaultBucketpool ?? null,
+  };
+
+  return editUserByIdApi(id, payload).then((res) => res);
+};
+
+
+// DELETE USER
+
 export const deleteUser = (id) => {
-  return deleteUserApi(id).then((res) => {
-    return res;
-  });
+  return deleteUserApi(id).then((res) => res);
 };
 
-// Getting REST API Tokens based on token type (active | expired)
+
+// TOKENS
+
 export const getTokens = (type) => {
-  return getTokensApi(type).then((res) => {
-    return res;
-  });
+  return getTokensApi(type).then((res) => res);
 };
 
-// Creating a customized rest API token
+
+// CREATE TOKEN
+
 export const createToken = (tokenDetails) => {
   return fetchTokenApi(
     tokenDetails.username,
     tokenDetails.password,
     tokenDetails
-  ).then((res) => {
-    return res;
-  });
+  ).then((res) => res);
 };
