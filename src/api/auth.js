@@ -17,21 +17,15 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-// api/auth.js
-// ─────────────────────────────────────────────────────────────────────────────
-// CHANGES v1 → v2
-// • Endpoint path /tokens is unchanged.
-// • The request body is sent as application/x-www-form-urlencoded in v2
-//   (the v2 OpenAPI spec specifies the content-type as
-//   `application/x-www-form-urlencoded` for POST /tokens).
-//   In v1 the body was JSON; sendRequest must now serialise it as form-data.
-//   We pass isFormUrlEncoded: true so sendRequest can handle it.
-// • Field names are unchanged: username, password, tokenName, tokenScope,
-//   tokenExpire.
-// ─────────────────────────────────────────────────────────────────────────────
 import endpoints from "@/constants/endpoints";
+
+// Constants for the user login
 import { tokenNameLength, tokenScope, tokenExpiryDays } from "@/constants/auth";
+
+// Helper functions for generating random string and getting date in the requied format
 import { randomString, getDate } from "@/shared/helper";
+
+// Function for calling the fetch function for the APIs
 import sendRequest from "./sendRequest";
 
 const fetchTokenApi = (username, password, tokenDetails = null) => {

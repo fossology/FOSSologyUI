@@ -95,6 +95,48 @@ const LicenseDecider = ({ decider, handleChange }) => {
           />
         </div>
       </div>
+      <InputContainer
+        type="checkbox"
+        checked={decider.nomosMonk}
+        name="nomosMonk"
+        id="upload-decider-fp-copyright"
+        onChange={(checked) => handleChange(checked, "nomosMonk")}
+      >
+        <span className="inline-flex items-center gap-1">
+          False Positive Copyright Deactivation
+
+          <span className="text-warning-500 font-bold">
+            (experimental)
+          </span>
+
+          <img
+            src="/assets/icons/Alert/WarningNotFilled.svg"
+            alt=""
+            className="h-6 w-6"
+          />
+        </span>
+      </InputContainer>
+      <InputContainer
+        type="checkbox"
+        checked={decider.nomosMonk}
+        name="nomosMonk"
+        id="upload-decider-fp-copyright-clutter"
+        onChange={(checked) => handleChange(checked, "nomosMonk")}
+      >
+        <span className="inline-flex items-center gap-1">
+          False Positive Copyright Deactivation and clutter removal
+
+          <span className="text-warning-500 font-bold">
+            (experimental)
+          </span>
+
+          <img
+            src="/assets/icons/Alert/WarningNotFilled.svg"
+            alt=""
+            className="h-6 w-6"
+          />
+        </span>
+      </InputContainer>
     </div>
   );
 }

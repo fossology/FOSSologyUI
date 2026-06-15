@@ -17,8 +17,13 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+import PropTypes from "prop-types";
 import endpoints from "@/constants/endpoints";
+
+// Getting Authorization Token
 import { getToken } from "@/shared/authHelper";
+
+// Function for calling the fetch function for the APIs
 import sendRequest from "./sendRequest";
 
 // Create Uploads from File
@@ -27,6 +32,7 @@ export const createUploadApi = ({
   uploadDescription,
   accessLevel,
   ignoreScm,
+  applyGlobal,
   fileInput,
 }) => {
   const url = endpoints.uploads.create();
@@ -42,6 +48,7 @@ export const createUploadApi = ({
   formdata.append("uploadDescription", uploadDescription || "");
   formdata.append("public", accessLevel);
   formdata.append("ignoreScm", ignoreScm);
+  formdata.append("applyGlobal", applyGlobal);
 
   return sendRequest({
     url,
@@ -67,6 +74,7 @@ export const createUploadVcsApi = ({ header = {}, body = {} }) => {
       folderId: Number(header.folderId),
       public: header.public,
       ignoreScm: header.ignoreScm,
+      applyGlobal: header.applyGlobal,
       location: body.location,
     },
   });
@@ -85,6 +93,7 @@ export const createUploadUrlApi = ({ header, body }) => {
       folderId: Number(header.folderId),
       public: header.public,
       ignoreScm: header.ignoreScm,
+      applyGlobal: header.applyGlobal,
       location: {
         url: body?.location?.url?.trim() || "",
         name: body?.location?.name?.trim() || "",
@@ -106,6 +115,7 @@ export const createUploadServerApi = ({ header, body }) => {
       folderId: Number(header.folderId),
       public: header.public,
       ignoreScm: header.ignoreScm,
+      applyGlobal: header.applyGlobal,
       location: {
         path: body?.location?.path?.trim() || "",
         name: body?.location?.name?.trim() || "",
@@ -169,4 +179,13 @@ export const getUploadLicenseApi = ({ uploadId, agent }) => {
       agent,
     },
   });
+};
+
+createUploadApi.propTypes = {
+  folderId: PropTypes.number,
+  uploadDescription: PropTypes.string,
+  accessLevel: PropTypes.string,
+  ignoreScm: PropTypes.bool,
+  applyGlobal: PropTypes.bool,
+  fileInput: PropTypes.string,
 };

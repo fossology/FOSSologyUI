@@ -40,21 +40,12 @@ import {
 
 import {
   Accordion,
- AccordionItem,
+  AccordionItem,
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
-import {
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
-} from "@/components/ui/tabs";
-
-import {
-  AlertBanner,
-} from "@/components/ui/alert";
-
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { AlertBanner } from "@/components/ui/alert";
 import {
   Sheet,
   SheetTrigger,
@@ -63,18 +54,14 @@ import {
   SheetTitle,
   SheetClose,
 } from "@/components/ui/sheet";
-
 import { Tooltip } from "@/components/Widgets";
 
-// APIs
 import { getAllFolders } from "@/services/folders";
 import { createUploadUrl, getUploadById } from "@/services/upload";
 import { scheduleAnalysis } from "@/services/jobs";
 
-// Helper
 import { handleError } from "@/shared/helper";
 
-// Constants
 import {
   initialScanFileDataFile,
   initialFolderList,
@@ -82,13 +69,16 @@ import {
   initialUrlData,
 } from "@/constants/constants";
 
+// ─── Polling constants
+const POLL_INTERVAL_MS  = 5_000;
+const POLL_MAX_ATTEMPTS = 60;
+
 const scanReducer = (state, action) => {
   switch (action.type) {
-    case "RESET": {
+    case "RESET":
       return action.payload;
-    }
 
-    case "UPDATE_SECTION": {
+    case "UPDATE_SECTION":
       return {
         ...state,
         [action.section]: {
@@ -96,23 +86,16 @@ const scanReducer = (state, action) => {
           [action.name]: action.value,
         },
       };
-    }
 
     case "TOGGLE_REUSE": {
       const current = state.reuse?.reuseUpload || [];
-
-      const exists = current.find(
-        (item) => item.id === action.value?.id
-      );
-
+      const exists = current.find((item) => item.id === action.value?.id);
       return {
         ...state,
         reuse: {
           ...state.reuse,
           reuseUpload: action.checked
-            ? exists
-              ? current
-              : [...current, action.value]
+            ? exists ? current : [...current, action.value]
             : current.filter((i) => i.id !== action.value?.id),
         },
       };
@@ -123,54 +106,62 @@ const scanReducer = (state, action) => {
   }
 };
 
-const deepClone = (obj) => JSON.parse(JSON.stringify(obj));
+// Wait for upload to leave the 503 "processing" state
+const waitForUploadReady = async (uploadId) => {
+  for (let attempt = 0; attempt < POLL_MAX_ATTEMPTS; attempt++) {
+    const res = await getUploadById(uploadId);
+
+    // Still processing — keep waiting
+    if (res?._status503) {
+      await new Promise((r) => setTimeout(r, POLL_INTERVAL_MS));
+      continue;
+    }
+
+    // Got a real upload object
+    return res;
+  }
+
+  throw new Error(
+    `Upload #${uploadId} was not ready after ${
+      (POLL_MAX_ATTEMPTS * POLL_INTERVAL_MS) / 60_000
+    } minutes. Check the Jobs panel for status.`
+  );
+};
+
+const normalizeReuseUploads = (reuseUpload) => {
+  if (!reuseUpload) return [];
+  return Array.isArray(reuseUpload)
+    ? reuseUpload.map((it) =>
+        it && typeof it === "object" ? Number(it.id) : Number(it)
+      )
+    : [];
+};
 
 const UploadFromUrlPage = () => {
-  const [uploadUrlData, setUploadUrlData] =
-    useState(initialStateUrl);
-
-  const [urlData, setUrlData] = useState(initialUrlData);
-
-  const [folderList, setFolderList] =
-    useState(initialFolderList);
-
-  const [scanFileData, dispatchScan] = useReducer(
-    scanReducer,
-    initialScanFileDataFile
-  );
-
-  const [loading, setLoading] = useState(false);
-
-  const [showMessage, setShowMessage] = useState(true);
-
-  const [message, setMessage] = useState({
+  const [uploadUrlData, setUploadUrlData] = useState(initialStateUrl);
+  const [urlData, setUrlData]             = useState(initialUrlData);
+  const [folderList, setFolderList]       = useState(initialFolderList);
+  const [scanFileData, dispatchScan]      = useReducer(scanReducer, initialScanFileDataFile);
+  const [loading, setLoading]             = useState(false);
+  const [showMessage, setShowMessage]     = useState(true);
+  const [message, setMessage]             = useState({
     type: "info",
-    text:
-      "To manage your own group permissions go into Admin > Groups > Manage Group Users. To manage permissions for this one upload, go to Admin > Upload Permissions.",
+    text: "To manage your own group permissions go into Admin > Groups > Manage Group Users. To manage permissions for this one upload, go to Admin > Upload Permissions.",
   });
 
-  const [reuseConfig, setReuseConfig] = useState(
-    structuredClone(initialScanFileDataFile.reuse)
-  );
-
-  const [tempReuseConfig, setTempReuseConfig] = useState(
-    structuredClone(initialScanFileDataFile.reuse)
-  );
+  const [reuseConfig, setReuseConfig]         = useState(structuredClone(initialScanFileDataFile.reuse));
+  const [tempReuseConfig, setTempReuseConfig] = useState(structuredClone(initialScanFileDataFile.reuse));
 
   const isUrlValid = Boolean(urlData.url?.trim());
-  const TAB_REUSE = "reuse";
-
-  const UPLOAD_READY_MAX_ATTEMPTS = 10;
-  const UPLOAD_READY_POLL_INTERVAL_MS = 1500;
+  const TAB_REUSE  = "reuse";
 
   const getFileNameFromUrl = (url) => {
     if (!url || url === "/") return "";
-
     const parts = url.split("/");
     return parts[parts.length - 1];
   };
 
-  const fileName = getFileNameFromUrl(urlData.url);
+  const fileName    = getFileNameFromUrl(urlData.url);
   const displayName = fileName || "No file chosen";
 
   const folderOptions = useMemo(
@@ -183,197 +174,129 @@ const UploadFromUrlPage = () => {
     [folderList]
   );
 
-  const waitForUploadReady = async (uploadId) => {
-    let lastError = null;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
 
-    for (let attempt = 0; attempt < UPLOAD_READY_MAX_ATTEMPTS; attempt += 1) {
-      try {
-        await getUploadById(uploadId);
-        return uploadId;
-      } catch (error) {
-        lastError = error;
+    const folderId = Number(uploadUrlData.folderId);
+    const url      = urlData.url?.trim();
+    const name     = urlData.name?.trim();
 
-        if (attempt < UPLOAD_READY_MAX_ATTEMPTS - 1) {
-          await new Promise((resolve) => {
-            setTimeout(resolve, UPLOAD_READY_POLL_INTERVAL_MS);
-          });
-        }
+    if (!Number.isInteger(folderId) || folderId <= 0) {
+      setMessage({ type: "error", text: "Please select a valid folder before uploading." });
+      setShowMessage(true);
+      setLoading(false);
+      return;
+    }
+
+    if (!url) {
+      setMessage({ type: "error", text: "Please enter a URL." });
+      setShowMessage(true);
+      setLoading(false);
+      return;
+    }
+
+    try {
+      // 1. Create the upload
+      const res = await createUploadUrl({
+        header: {
+          folderId,
+          public: uploadUrlData.accessLevel,
+          ignoreScm: uploadUrlData.ignoreScm,
+          uploadDescription: uploadUrlData.uploadDescription,
+        },
+        body: {
+          location: {
+            url,
+            name: name || url,
+          },
+        },
+      });
+
+      // 2. Extract upload id
+      const rawMessage = res?.message ?? res?.uploadId ?? res?.upload_id ?? res;
+      const uploadId   = Number(String(rawMessage).match(/\d+/)?.[0]);
+
+      if (!Number.isInteger(uploadId) || uploadId <= 0) {
+        throw new Error("Could not determine upload ID from server response.");
       }
-    }
 
-    throw lastError || new Error("Upload is not ready yet.");
-  };
+      setMessage({ type: "info", text: `${messages.queuedUpload} #${uploadId} — waiting for server to process...` });
+      setShowMessage(true);
 
-  const normalizeReuseUploads = (reuseUpload) => {
-    if (!reuseUpload) return [];
+      // 3. Poll until ununpack finishes
+      await waitForUploadReady(uploadId);
 
-    return Array.isArray(reuseUpload)
-      ? reuseUpload.map((it) =>
-          it && typeof it === "object" ? Number(it.id) : Number(it)
-        )
-      : [];
-  };
+      // 4. Schedule analysis
+      try {
+        const scheduleData = {
+          ...scanFileData,
+          reuse: {
+            ...reuseConfig,
+            reuseUpload: normalizeReuseUploads(reuseConfig.reuseUpload),
+          },
+        };
 
-const handleSubmit = (e) => {
-  e.preventDefault();
-  setLoading(true);
+        await scheduleAnalysis(folderId, uploadId, scheduleData);
 
-  const folderId = Number(uploadUrlData.folderId);
+        setMessage({ type: "success", text: messages.scheduledAnalysis || "Analysis scheduled successfully." });
+      } catch (scheduleErr) {
+        console.warn("Schedule analysis failed:", scheduleErr);
+        setMessage({
+          type: "warning",
+          text: scheduleErr?.message
+            ? `Upload queued but analysis failed: ${scheduleErr.message}`
+            : "Upload queued but analysis scheduling failed.",
+        });
+      }
 
-  const url = urlData.url?.trim();
-  const name = urlData.name?.trim();
-
-  const body = {
-    location: {
-      url: url || "",
-      name: name || url || "",
-    },
-  };
-
-  const validateReuseFolder = async () => {
-    const reuseForFile = scanFileData.reuse || {};
-
-    const reuseList = Array.isArray(reuseForFile.reuseUpload)
-      ? reuseForFile.reuseUpload
-      : reuseForFile.reuseUpload
-      ? [reuseForFile.reuseUpload]
-      : [];
-
-    if (!reuseList.length) return;
-
-    const first = reuseList[0];
-    const candidateId =
-      typeof first === "object" ? first.id : first;
-
-    if (!candidateId) return;
-
-    const uploadRes = await getUploadById(Number(candidateId));
-
-    const uploadFolder =
-      uploadRes.folderId ||
-      uploadRes.folder ||
-      uploadRes.parent;
-
-    if (
-      uploadFolder != null &&
-      Number(uploadFolder) !== folderId
-    ) {
-      throw new Error(
-        "Reuse upload must belong to the same folder as selected folder."
-      );
-    }
-  };
-
-  validateReuseFolder()
-    .then(() => createUploadUrl({ header: uploadUrlData, body }))
-    .then((res) => {
-      window.scrollTo({ top: 0 });
-
-      setMessage({
-        type: "success",
-        text: `${messages.queuedUpload} #${res.message}`,
-      });
-
-      return res.message;
-    })
-    .then((uploadId) => waitForUploadReady(uploadId))
-    .then((uploadId) => {
-      const scheduleData = deepClone(scanFileData);
-
-      scheduleData.reuse = reuseConfig;
-
-      scheduleData.reuse.reuseUpload = normalizeReuseUploads(
-        scheduleData.reuse.reuseUpload
-      );
-
-      return scheduleAnalysis(folderId, uploadId, scheduleData);
-    })
-    .then(() => {
-      window.scrollTo({ top: 0 });
-
-      setMessage({
-        type: "success",
-        text: messages.scheduledAnalysis,
-      });
-
+      // 5. Reset form
       setUploadUrlData(initialStateUrl);
       setUrlData(initialUrlData);
+      dispatchScan({ type: "RESET", payload: initialScanFileDataFile });
+      setReuseConfig(structuredClone(initialScanFileDataFile.reuse));
+      setTempReuseConfig(structuredClone(initialScanFileDataFile.reuse));
 
-      dispatchScan({
-        type: "RESET",
-        payload: initialScanFileDataFile,
-      });
-    })
-    .catch((error) => handleError(error, setMessage))
-    .finally(() => {
+    } catch (err) {
+      console.error("Upload from URL error:", err);
+      handleError(err, setMessage);
+    } finally {
       setLoading(false);
       setShowMessage(true);
-    });
-};
+    }
+  };
 
   const handleChange = (e) => {
     const { name, type, value, files, checked } = e.target;
-
     setUploadUrlData((prev) => ({
       ...prev,
-      [name]:
-        type === "checkbox"
-          ? checked
-          : type === "file"
-          ? files[0]
-          : value,
+      [name]: type === "checkbox" ? checked : type === "file" ? files[0] : value,
     }));
   };
 
   const handleUrlChange = (e) => {
     const { name, value } = e.target;
-
-    setUrlData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setUrlData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleScanChange = (
-    checked,
-    name,
-    type,
-    value
-  ) => {
+  const handleScanChange = (checked, name, type, value) => {
     const scanSections = ["analysis", "decider", "scancode"];
-
-    const section = scanSections.find(
-      (key) => name in scanFileData[key]
-    );
+    const section = scanSections.find((key) => name in scanFileData[key]);
 
     if (section) {
-      dispatchScan({
-        type: "UPDATE_SECTION",
-        section,
-        name,
-        value: checked,
-      });
+      dispatchScan({ type: "UPDATE_SECTION", section, name, value: checked });
       return;
     }
 
     if (name === "reuseUpload" && type === "checkbox") {
-      dispatchScan({
-        type: "TOGGLE_REUSE",
-        value,
-        checked,
-      });
+      dispatchScan({ type: "TOGGLE_REUSE", value, checked });
     }
   };
 
   useEffect(() => {
     getAllFolders()
-      .then((res) => {
-        setFolderList(res);
-      })
-      .catch((error) => {
-        handleError(error, setMessage);
-        setShowMessage(true);
-      });
+      .then((res) => setFolderList(res))
+      .catch((error) => { handleError(error, setMessage); setShowMessage(true); });
   }, []);
 
   const isButtonDisabled = !isUrlValid;
@@ -385,8 +308,7 @@ const handleSubmit = (e) => {
       : "Info";
 
   return (
-    <div className="max-w-4xl mx-40 my-6 px-4">
-      {/* Alert */}
+    <div className="max-w-5xl mx-40 my-6 px-4">
       {showMessage && (
         <div className="mb-4">
           <AlertBanner
@@ -395,14 +317,9 @@ const handleSubmit = (e) => {
               message.type === "info" ? (
                 <>
                   To manage your own group permissions go into{" "}
-                  <span className="font-semibold">
-                    Admin &gt; Groups &gt; Manage Group Users
-                  </span>
-                  . To manage permissions for this one upload, go to{" "}
-                  <span className="font-semibold">
-                    Admin &gt; Upload Permissions
-                  </span>
-                  .
+                  <span className="font-semibold">Admin &gt; Groups &gt; Manage Group Users</span>. To
+                  manage permissions for this one upload, go to{" "}
+                  <span className="font-semibold">Admin &gt; Upload Permissions</span>.
                 </>
               ) : (
                 message.text
@@ -414,39 +331,27 @@ const handleSubmit = (e) => {
         </div>
       )}
 
-      {/* Heading */}
-      <h1 className="text-2xl font-semibold text-gray-900 mb-4">
-        Upload from URL
-      </h1>
+      <h1 className="text-2xl font-semibold text-gray-900 mb-4">Upload from URL</h1>
 
       <p className="text-base font-semibold mb-6">
         This option permits uploading files from a URL.
       </p>
 
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-6"
-      >
-        {/* 1. Folder Selection */}
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* 1. Folder */}
         <div>
           <label className="block font-normal mb-3">
-            1. Select the folder for storing the uploaded
-            files:
+            1. Select the folder for storing the uploaded files:
           </label>
-
           <Select
             value={uploadUrlData.folderId?.toString()}
             onValueChange={(value) =>
-              setUploadUrlData({
-                ...uploadUrlData,
-                folderId: Number(value),
-              })
+              setUploadUrlData({ ...uploadUrlData, folderId: Number(value) })
             }
           >
             <SelectTrigger className="w-[320px]">
               <SelectValue placeholder="Select Folder" />
             </SelectTrigger>
-
             <SelectContent>{folderOptions}</SelectContent>
           </Select>
         </div>
@@ -456,24 +361,14 @@ const handleSubmit = (e) => {
           <label className="block font-normal mb-3">
             2. Enter the URL to the file or directory:
           </label>
-
           <div className="flex items-baseline gap-3">
             <Input
-              type="text"
-              name="url"
-              value={urlData.url}
+              type="text" name="url" value={urlData.url}
               onChange={handleUrlChange}
               placeholder="https://example.com/file.zip"
               className="w-[320px] border-neutral-800"
             />
-
-            <span
-              className={`self-end text-sm ${
-                isUrlValid
-                  ? "text-info-500"
-                  : "text-error-600"
-              }`}
-            >
+            <span className={`self-end text-sm ${isUrlValid ? "text-info-500" : "text-error-600"}`}>
               {isUrlValid ? displayName : "No file chosen"}
             </span>
           </div>
@@ -482,67 +377,49 @@ const handleSubmit = (e) => {
         {/* 3. Viewable Name */}
         <div>
           <label className="block font-normal mb-3">
-            3. (Optional) Enter a viewable name for this
-            file or directory:
+            3. (Optional) Enter a viewable name for this file or directory:
           </label>
-
           <Input
-            type="text"
-            name="name"
-            value={urlData.name}
-            onChange={handleUrlChange}
-            placeholder="Enter viewable name"
+            type="text" name="name" value={urlData.name}
+            onChange={handleUrlChange} placeholder="Enter viewable name"
             className="w-[320px] border-neutral-800"
           />
-
           <p className="text-sm text-gray-600 mt-2">
-            Note: If no name is provided, then the uploaded
-            file (directory) name will be used.
+            Note: If no name is provided, then the uploaded file (directory) name will be used.
           </p>
         </div>
 
         {/* 4. Description */}
         <div>
-          <label className="block font-normal mb-1">
-            4. Description
-          </label>
-
-          <p
-            className={`text-sm mb-2 ${
-              isUrlValid
-                ? "text-info-500"
-                : "text-error-600"
-            }`}
-          >
+          <label className="block font-normal mb-1">4. Description</label>
+          <p className={`text-sm mb-2 ${isUrlValid ? "text-info-500" : "text-error-600"}`}>
             {displayName}
           </p>
-
-          <p
-            className={`text-sm mb-1 ${
-              isUrlValid
-                ? "text-foreground"
-                : "text-gray-600"
-            }`}
-          >
+          <p className={`text-sm mb-1 ${isUrlValid ? "text-foreground" : "text-gray-600"}`}>
             (Optional) Enter a description of this file:
           </p>
-
           <Textarea
-            name="uploadDescription"
-            value={uploadUrlData.uploadDescription}
-            onChange={handleChange}
-            placeholder="Type your description here"
-            disabled={!isUrlValid}
-            className="min-w-[320px] resize"
+            name="uploadDescription" value={uploadUrlData.uploadDescription}
+            onChange={handleChange} placeholder="Type your description here"
+            disabled={!isUrlValid} className="min-w-[320px] resize"
           />
         </div>
 
-        {/* 5. Ignore SCM */}
+        {/*5. Apply Global Decisions*/}
         <div className="flex items-end gap-2 mb-3">
-          <span className="text-base font-normal text-foreground pt-4">
-            5.
-          </span>
+          <span className="text-base font-normal text-foreground pt-4">5.</span>
+          <div className="flex-1">
+            <CommonFields
+              applyGlobal={uploadUrlData.applyGlobal}
+              handleChange={handleChange}
+              handleScanChange={handleScanChange}
+            />
+          </div>
+        </div>
 
+        {/* 6. Ignore SCM */}
+        <div className="flex items-end gap-2 mb-3">
+          <span className="text-base font-normal text-foreground pt-4">6.</span>
           <div className="flex-1">
             <CommonFields
               ignoreScm={uploadUrlData.ignoreScm}
@@ -552,12 +429,9 @@ const handleSubmit = (e) => {
           </div>
         </div>
 
-        {/* 6. Access */}
+        {/* 7. Access */}
         <div className="flex gap-2 mb-3">
-          <span className="text-base font-normal text-foreground">
-            6.
-          </span>
-
+          <span className="text-base font-normal text-foreground">7.</span>
           <div className="flex-1">
             <CommonFields
               accessLevel={uploadUrlData.accessLevel}
@@ -567,12 +441,9 @@ const handleSubmit = (e) => {
           </div>
         </div>
 
-        {/* 7. Analysis */}
+        {/* 8. Analysis */}
         <div className="flex items-baseline gap-2 mb-3">
-          <span className="text-base font-medium text-foreground">
-            7.
-          </span>
-
+          <span className="text-base font-medium text-foreground">8.</span>
           <div className="flex-1">
             <CommonFields
               analysis={scanFileData.analysis}
@@ -582,12 +453,9 @@ const handleSubmit = (e) => {
           </div>
         </div>
 
-        {/* 8. Decider */}
+        {/* 9. Decider */}
         <div className="flex items-baseline gap-2 mb-3">
-          <span className="text-base font-medium text-foreground">
-            8.
-          </span>
-
+          <span className="text-base font-medium text-foreground">9.</span>
           <div className="flex-1">
             <CommonFields
               decider={scanFileData.decider}
@@ -597,10 +465,10 @@ const handleSubmit = (e) => {
           </div>
         </div>
 
-        {/* 9. Reuse */}
+        {/* 10. Reuse */}
         <div className="flex items-baseline gap-2 mb-3">
           <span className="text-base font-medium text-foreground inline-flex items-center gap-1">
-            9. (Optional) Reuse
+            10. (Optional) Reuse
             <Tooltip title="Copy clearing decisions if there is the same file hash between two files" />
           </span>
         </div>
@@ -608,55 +476,37 @@ const handleSubmit = (e) => {
         <Sheet>
           <SheetTrigger asChild>
             <Button
-              type="button"
-              variant="outline"
-              disabled={!isUrlValid}
+              type="button" variant="outline" disabled={!isUrlValid}
               className="font-medium text-primary rounded border-primary hover:bg-accent hover:text-accent-foreground"
             >
               Set the Reuse Information
             </Button>
           </SheetTrigger>
 
-          <SheetContent
-            side="right"
-            className="w-[600px] sm:max-w-[700px] p-6"
-          >
+          <SheetContent side="right" className="w-[600px] sm:max-w-[700px] p-6">
             <SheetHeader className="pb-6">
-              <SheetTitle className="text-xl font-semibold">
-                Reuse Configuration
-              </SheetTitle>
+              <SheetTitle className="text-xl font-semibold">Reuse Configuration</SheetTitle>
             </SheetHeader>
 
             <Tabs value={TAB_REUSE} className="w-full p-0">
               <TabsList>
-                <TabsTrigger value={TAB_REUSE}>
-                  {displayName}
-                </TabsTrigger>
+                <TabsTrigger value={TAB_REUSE}>{displayName}</TabsTrigger>
               </TabsList>
-
               <TabsContent value={TAB_REUSE} className="pt-6">
                 <CommonFields
                   reuse={tempReuseConfig}
                   handleScanChange={(checked, name, type, value) => {
                     setTempReuseConfig((prev) => {
                       const updated = { ...prev };
-
                       if (name === "reuseUpload" && type === "checkbox") {
                         const current = updated.reuseUpload || [];
-
-                        const exists = current.find(
-                          (item) => item.id === value?.id
-                        );
-
+                        const exists = current.find((item) => item.id === value?.id);
                         updated.reuseUpload = checked
-                          ? exists
-                            ? current
-                            : [...current, value]
+                          ? exists ? current : [...current, value]
                           : current.filter((item) => item.id !== value?.id);
                       } else {
                         updated[name] = type === "checkbox" ? checked : value;
                       }
-
                       return updated;
                     });
                   }}
@@ -673,15 +523,10 @@ const handleSubmit = (e) => {
                   Cancel
                 </Button>
               </SheetClose>
-
               <SheetClose asChild>
                 <Button
-                  variant="default"
-                  size="default"
-                  className="px-28"
-                  onClick={() => {
-                    setReuseConfig(structuredClone(tempReuseConfig));
-                  }}
+                  variant="default" size="default" className="px-28"
+                  onClick={() => setReuseConfig(structuredClone(tempReuseConfig))}
                 >
                   Apply
                 </Button>
@@ -691,16 +536,11 @@ const handleSubmit = (e) => {
         </Sheet>
 
         {/* Scancode */}
-        <Accordion
-          type="single"
-          collapsible
-          className="w-full"
-        >
+        <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="scancode">
             <AccordionTrigger className="flex w-full items-center justify-between text-lg font-semibold transition-all">
               Scancode:
             </AccordionTrigger>
-
             <AccordionContent className="space-y-4 pb-2">
               <CommonFields
                 scancode={scanFileData.scancode}
@@ -711,16 +551,15 @@ const handleSubmit = (e) => {
           </AccordionItem>
         </Accordion>
 
-        <div className="border-t border-gray-300 my-4"></div>
+        <div className="border-t border-gray-300 my-4" />
 
-        {/* Upload Button */}
         <div className="pt-2">
           <Button
             type="submit"
             disabled={loading || isButtonDisabled}
             variant="default" size="default"
           >
-            {loading ? "Uploading..." : "Upload"}
+            {loading ? "Uploading…" : "Upload"}
           </Button>
         </div>
       </form>

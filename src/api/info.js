@@ -17,27 +17,22 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  
 */
-// api/info.js
-// ─────────────────────────────────────────────────────────────────────────────
-// CHANGES v1 → v2
-// • Endpoint keys changed from nested admin.info.* to flat info.*:
-//     endpoints.admin.info.info()   → endpoints.info.apiInfo()
-//     endpoints.admin.info.health() → endpoints.info.health()
-// • No change in HTTP method or behaviour.
-// ─────────────────────────────────────────────────────────────────────────────
+
 import endpoints from "@/constants/endpoints";
+
+// Function for calling the fetch function for the APIs
 import sendRequest from "./sendRequest";
 
 export const getInfoApi = () => {
   return sendRequest({
-    url: endpoints.info.apiInfo(), // v1: endpoints.admin.info.info()
+    url: endpoints.info.apiInfo(),
     method: "GET",
   });
 };
 
 export const getHealthApi = () => {
   return sendRequest({
-    url: endpoints.info.health(),  // v1: endpoints.admin.info.health()
+    url: endpoints.info.health(),
     method: "GET",
   });
 };

@@ -18,6 +18,7 @@
 */
 
 import React from "react";
+import PropTypes from "prop-types";
 import {
   Alert as ShadcnAlert,
   AlertDescription,
@@ -90,6 +91,12 @@ const Alert = ({ message, type, setShow }) => {
       </ShadcnAlert>
     </div>
   );
+};
+
+Alert.propTypes = {
+  type: PropTypes.string.isRequired,
+  message: PropTypes.string.isRequired,
+  setShow: PropTypes.func.isRequired,
 };
 
 export default Alert;

@@ -20,6 +20,7 @@ SPDX-License-Identifier: GPL-2.0-only
 import React from "react";
 import PropTypes from "prop-types";
 import IgnoreScm from "./IgnoreScm";
+import ApplyGlobal from "./ApplyGlobal";
 import AccessLevel from "./AccessLevel";
 import OptionalAnalysis from "./OptionalAnalysis";
 import LicenseDecider from "./LicenseDecider";
@@ -29,6 +30,7 @@ import Scancode from "./Scancode";
 function CommonFields({
   accessLevel,
   ignoreScm,
+  applyGlobal,
   analysis,
   decider,
   reuse,
@@ -41,6 +43,12 @@ function CommonFields({
       {typeof ignoreScm === "boolean" && (
         <IgnoreScm
           ignoreScm={ignoreScm}
+          handleChange={handleChange}
+        />
+      )}
+      {typeof applyGlobal === "boolean" && (
+        <ApplyGlobal
+          applyGlobal={applyGlobal}
           handleChange={handleChange}
         />
       )}
@@ -64,6 +72,7 @@ function CommonFields({
 CommonFields.propTypes = {
   accessLevel: PropTypes.string,
   ignoreScm: PropTypes.bool,
+  applyGlobal: PropTypes.bool,
   analysis: PropTypes.shape({
     compatibility: PropTypes.bool.isRequired,
     copyrightEmailAuthor: PropTypes.bool.isRequired,

@@ -33,7 +33,7 @@ import { Button } from "@/components/ui/button";
 
 const InstructionsPage = () => {
   return (
-    <div className="max-w-4xl mx-40 my-6 px-4">
+    <div className="max-w-5xl mx-40 my-6 px-4">
       <div className="max-w-5xl">
         <h1 className="text-2xl font-semibold mb-6 text-gray-900">
           Upload Instructions

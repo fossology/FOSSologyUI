@@ -58,6 +58,7 @@ const ImportReportPage = () => {
 
   const [message, setMessage] = useState(initialMessage);
   const [showMessage, setShowMessage] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -158,68 +159,87 @@ const ImportReportPage = () => {
     }));
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  if (!importReportData.report || !importReportData.upload) {
-    setMessage({
-      type: "danger",
-      text: "Select upload and report",
-    });
-    setShowMessage(true);
-    return;
-  }
+    if (!importReportData.report || !importReportData.upload) {
+      setMessage({
+        type: "danger",
+        text: "Select upload and report",
+      });
+      setShowMessage(true);
+      return;
+    }
 
-  try {
-    const formData = new FormData();
+    setLoading(true);
 
-    formData.append("report", importReportData.report);
+    try {
+      const formData = new FormData();
 
-    formData.append("addNewLicensesAs", importReportData.addNewLicensesAs);
+      formData.append("report", importReportData.report);
 
-    formData.append(
-      "addLicenseInfoFromInfoInFile",
-      importReportData.addLicenseInfoFromInfoInFile
-    );
+      formData.append(
+        "addNewLicensesAs",
+        importReportData.addNewLicensesAs
+      );
 
-    formData.append(
-      "addLicenseInfoFromConcluded",
-      importReportData.addLicenseInfoFromConcluded
-    );
+      formData.append(
+        "addLicenseInfoFromInfoInFile",
+        importReportData.addLicenseInfoFromInfoInFile
+      );
 
-    formData.append(
-      "addConcludedAsDecisions",
-      importReportData.addConcludedAsDecisions
-    );
+      formData.append(
+        "addLicenseInfoFromConcluded",
+        importReportData.addLicenseInfoFromConcluded
+      );
 
-    formData.append(
-      "addConcludedAsDecisionsTBD",
-      importReportData.addConcludedAsDecisionsTBD
-    );
+      formData.append(
+        "addConcludedAsDecisions",
+        importReportData.addConcludedAsDecisions
+      );
 
-    formData.append(
-      "addCopyrights",
-      importReportData.addCopyrights
-    );
+      formData.append(
+        "addConcludedAsDecisionsTBD",
+        importReportData.addConcludedAsDecisionsTBD
+      );
 
-    const res = await importReport(
-      importReportData.upload,
-      "spdxrdf",
-      formData
-    );
+      formData.append(
+        "addCopyrights",
+        importReportData.addCopyrights
+      );
 
-    setMessage({ type: "success", text: res.message });
-    setShowMessage(true);
+      const res = await importReport(
+        importReportData.upload,
+        "spdxrdf",
+        formData
+      );
 
-    setTimeout(() => router.push("/jobs/myRecentJobs"), 2000);
-  } catch (error) {
-    console.error(error);
-    setMessage({ type: "danger", text: error.message });
-    setShowMessage(true);
-  }
-};
+      setMessage({
+        type: "success",
+        text: res.message,
+      });
 
-  const isButtonDisabled = !importReportData.report;
+      setShowMessage(true);
+
+      setTimeout(() => router.push("/jobs/myRecentJobs"), 2000);
+    } catch (error) {
+      console.error(error);
+
+      setMessage({
+        type: "danger",
+        text: error.message,
+      });
+
+      setShowMessage(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const isButtonDisabled =
+  !importReportData.report ||
+  !importReportData.upload ||
+  loading;
   const alertType =
     message.type === "danger" || message.type === "error"
       ? "Error"
@@ -228,7 +248,7 @@ const handleSubmit = async (e) => {
       : "Info";
 
   return (
-    <div className="max-w-4xl mx-40 my-6 px-4">
+    <div className="max-w-5xl mx-40 my-6 px-4">
       {showMessage && (
         <div className="mb-4">
           <AlertBanner
@@ -546,11 +566,11 @@ const handleSubmit = async (e) => {
         <div className="pt-2">
           <Button
             type="submit"
-            onClick={handleSubmit}
             disabled={isButtonDisabled}
-            variant="default" size="default"
+            variant="default"
+            size="default"
           >
-            Upload and Import
+            {loading ? "Importing..." : "Upload and Import"}
           </Button>
         </div>
       </form>

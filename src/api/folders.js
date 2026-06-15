@@ -17,21 +17,12 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-// api/folders.js
-// ─────────────────────────────────────────────────────────────────────────────
-// CHANGES v1 → v2
-// • Endpoint keys renamed to match the new endpoints.js structure:
-//     folders.getAll()   → folders.getAll()      (unchanged URL, same key)
-//     folders.getSingle  → folders.getById       (renamed key, same URL)
-//     folders.delete     → folders.deleteById    (renamed key, same URL)
-//     folders.create()   → folders.create()      (unchanged)
-//     folders.edit       → folders.updateById    (renamed key, same URL, PATCH)
-//     folders.move       → folders.moveOrCopy    (renamed key, same URL, PUT)
-// • No breaking URL changes for folders — paths remain /folders and
-//   /folders/{id}. The rename is only in the local endpoint-key names.
-// ─────────────────────────────────────────────────────────────────────────────
 import endpoints from "@/constants/endpoints";
+
+// Getting Authorization Token
 import { getToken } from "@/shared/authHelper";
+
+// Function for calling the fetch function for the APIs
 import sendRequest from "./sendRequest";
 
 // GET /folders

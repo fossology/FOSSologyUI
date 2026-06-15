@@ -17,6 +17,7 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+import PropTypes from "prop-types";
 import endpoints from "@/constants/endpoints";
 
 // Getting Authorization Token
@@ -57,6 +58,18 @@ const searchApi = ({
       limit,
     },
   });
+};
+
+searchApi.propTypes = {
+
+  searchType: PropTypes.string,
+  uploadId: PropTypes.number,
+  filename: PropTypes.string,
+  tag: PropTypes.string,
+  filesizemin: PropTypes.number,
+  filesizemax: PropTypes.number,
+  license: PropTypes.string,
+  copyright: PropTypes.string,
 };
 
 export default searchApi;

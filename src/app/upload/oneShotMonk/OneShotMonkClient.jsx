@@ -36,6 +36,7 @@ const OneShotMonk = () => {
   const [result, setResult] = useState(null);
   const [message, setMessage] = useState(null);
   const [showMessage, setShowMessage] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,6 +49,8 @@ const OneShotMonk = () => {
       setShowMessage(true);
       return;
     }
+
+    setLoading(true);
 
     try {
       const formData = new FormData();
@@ -67,12 +70,14 @@ const OneShotMonk = () => {
       });
       setShowMessage(true);
     } catch (error) {
-        setMessage({
-          type: "error",
-          text: error.message || "Analysis failed",
-        });
-        setShowMessage(true);
-      }
+      setMessage({
+        type: "error",
+        text: error.message || "Analysis failed",
+      });
+      setShowMessage(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -89,7 +94,7 @@ const OneShotMonk = () => {
       : "Info";
 
   return (
-  <div className="max-w-4xl mx-40 my-6 px-4">
+  <div className="max-w-5xl mx-40 my-6 px-4">
     {showMessage && message && (
       <div className="mb-4">
         <AlertBanner
@@ -145,10 +150,12 @@ const OneShotMonk = () => {
               name="file"
               className="hidden"
               onChange={handleChange}
+              disabled={loading}
             />
 
             <Button
               type="button"
+              disabled={loading}
               variant="outline"
               className="font-medium text-primary rounded border-primary hover:bg-accent hover:text-accent-foreground"
               onClick={() => fileInputRef.current?.click()}
@@ -176,10 +183,11 @@ const OneShotMonk = () => {
         <div className="pt-2">
           <Button
             type="submit"
-            disabled={isButtonDisabled}
-            variant="default" size="default"
+            disabled={isButtonDisabled || loading}
+            variant="default"
+            size="default"
           >
-            Analyze
+            {loading ? "Analyzing..." : "Analyze"}
           </Button>
         </div>
       </form>

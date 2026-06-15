@@ -55,12 +55,9 @@ import {
 
 import { handleError } from "@/shared/helper";
 
-// ─── Polling constants ────────────────────────────────────────────────────────
-// FOSSology returns 503 while the ununpack agent hasn't started yet.
-// We keep polling until the upload object has a non-503 response.
-const POLL_INTERVAL_MS       = 5_000;   // 5 s between polls
-const POLL_MAX_ATTEMPTS      = 60;      // 5 min total before giving up
-// ─────────────────────────────────────────────────────────────────────────────
+// Polling constants
+const POLL_INTERVAL_MS       = 5_000;   
+const POLL_MAX_ATTEMPTS      = 60;      
 
 const extractReuseId = (reuseUpload) => {
   if (Array.isArray(reuseUpload)) {
@@ -123,15 +120,6 @@ const scanReducer = (state, action) => {
   }
 };
 
-// ─── Poll until upload is ready ───────────────────────────────────────────────
-// FOSSology lifecycle for a VCS upload:
-//   POST /uploads → 201  { message: "Upload #67 created." }
-//   GET  /uploads/67     → 503 while ununpack is running  (_status503 === true)
-//   GET  /uploads/67     → 200 once ununpack is done
-//
-// Our api.upload.js getUploadByIdApi() already swallows the 503 and returns
-// { _status503: true, ...body } instead of throwing, so we just keep looping.
-// ─────────────────────────────────────────────────────────────────────────────
 const waitForUploadReady = async (uploadId) => {
   for (let attempt = 0; attempt < POLL_MAX_ATTEMPTS; attempt++) {
     const res = await getUploadById(uploadId);
@@ -142,7 +130,6 @@ const waitForUploadReady = async (uploadId) => {
       continue;
     }
 
-    // Got a real upload object back — we're ready
     return res;
   }
 
@@ -151,7 +138,6 @@ const waitForUploadReady = async (uploadId) => {
     "Please check the job status in the Jobs panel."
   );
 };
-// ─────────────────────────────────────────────────────────────────────────────
 
 const UploadFromVcsPage = () => {
   const [uploadVcsData, setUploadVcsData] = useState(initialStateVcs);
@@ -200,8 +186,6 @@ const UploadFromVcsPage = () => {
     const candidateId = Number(extractReuseId(reuseForFile.reuseUpload));
     if (!candidateId) return;
 
-    // getUploadById also handles 503 gracefully — if the reuse upload is still
-    // processing we just skip the folder-match check rather than blocking.
     const uploadRes = await getUploadById(candidateId);
     if (uploadRes?._status503) return;
 
@@ -237,7 +221,7 @@ const UploadFromVcsPage = () => {
     try {
       await validateReuseFolder(folderId);
 
-      // ── 1. Create the upload ──────────────────────────────────────────────
+      // 1. Create the upload
       const res = await createUploadVcs({
         header: {
           folderId,
@@ -256,26 +240,26 @@ const UploadFromVcsPage = () => {
         },
       });
 
-      // Extract upload id from the response message, e.g. "Upload #67 created."
+      // Extract upload id from the response message
       const uploadId = Number(String(res?.message || "").match(/\d+/)?.[0]);
       if (!Number.isInteger(uploadId) || uploadId <= 0) {
         throw new Error("Invalid uploadId received from backend");
       }
 
-      setMessage({ type: "info", text: `Upload #${uploadId} queued — waiting for server to process...` });
+      setMessage({ type: "info", text: `${messages.queuedUpload} #${uploadId} — waiting for server to process...` });
       setShowMessage(true);
 
-      // ── 2. Poll until ununpack finishes (handles 503 gracefully) ──────────
+      // 2. Poll until ununpack finishes
       await waitForUploadReady(uploadId);
 
       if (isCancelledRef.current) return;
 
-      // ── 3. Schedule analysis ──────────────────────────────────────────────
+      // 3. Schedule analysis
       try {
         const scheduleData = normalizeReuse(scanFileData);
         await scheduleAnalysis(folderId, uploadId, scheduleData);
 
-        setMessage({ type: "success", text: "Upload queued and analysis scheduled successfully." });
+        setMessage({ type: "success", text: messages.scheduledAnalysis });
       } catch (scheduleErr) {
         console.warn("Schedule analysis failed:", scheduleErr);
         setMessage({
@@ -355,7 +339,7 @@ const UploadFromVcsPage = () => {
       : "Info";
 
   return (
-    <div className="max-w-4xl mx-40 my-6 px-4">
+    <div className="max-w-5xl mx-40 my-6 px-4">
       {showMessage && (
         <div className="mb-4">
           <AlertBanner
@@ -514,9 +498,21 @@ const UploadFromVcsPage = () => {
           />
         </div>
 
-        {/* 9. Ignore SCM */}
+        {/*9. Apply Global Decisions*/}
         <div className="flex items-end gap-2 mb-3">
           <span className="text-base font-normal text-foreground pt-4">9.</span>
+          <div className="flex-1">
+            <CommonFields
+              applyGlobal={uploadVcsData.applyGlobal}
+              handleChange={handleChange}
+              handleScanChange={handleScanChange}
+            />
+          </div>
+        </div>
+
+        {/* 10. Ignore SCM */}
+        <div className="flex items-end gap-2 mb-3">
+          <span className="text-base font-normal text-foreground pt-4">10.</span>
           <div className="flex-1">
             <CommonFields
               ignoreScm={uploadVcsData.ignoreScm}
@@ -526,9 +522,9 @@ const UploadFromVcsPage = () => {
           </div>
         </div>
 
-        {/* 10. Access */}
+        {/* 11. Access */}
         <div className="flex gap-2 mb-3">
-          <span className="text-base font-normal text-foreground">10.</span>
+          <span className="text-base font-normal text-foreground">11.</span>
           <div className="flex-1">
             <CommonFields
               accessLevel={uploadVcsData.accessLevel}
@@ -538,9 +534,9 @@ const UploadFromVcsPage = () => {
           </div>
         </div>
 
-        {/* 11. Analysis */}
+        {/* 12. Analysis */}
         <div className="flex items-baseline gap-2 mb-3">
-          <span className="text-base font-medium text-foreground">11.</span>
+          <span className="text-base font-medium text-foreground">12.</span>
           <div className="flex-1">
             <CommonFields
               analysis={scanFileData.analysis}
@@ -550,9 +546,9 @@ const UploadFromVcsPage = () => {
           </div>
         </div>
 
-        {/* 12. Decider */}
+        {/* 13. Decider */}
         <div className="flex items-baseline gap-2 mb-3">
-          <span className="text-base font-medium text-foreground">12.</span>
+          <span className="text-base font-medium text-foreground">13.</span>
           <div className="flex-1">
             <CommonFields
               decider={scanFileData.decider}
@@ -562,10 +558,10 @@ const UploadFromVcsPage = () => {
           </div>
         </div>
 
-        {/* 13. Reuse */}
+        {/* 14. Reuse */}
         <div className="flex items-baseline gap-2 mb-3">
           <span className="text-base font-medium text-foreground inline-flex items-center gap-1">
-            13. (Optional) Reuse
+            14. (Optional) Reuse
             <Tooltip title="Copy clearing decisions if there is the same file hash between two files" />
           </span>
         </div>

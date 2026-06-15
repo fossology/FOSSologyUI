@@ -19,37 +19,38 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import { Button as UIButton } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
-const Button = ({
-  type = "button",
-  onClick,
-  className,
-  children,
-  disabled = false,
-}) => {
+// Widgets
+import { InputContainer, Tooltip } from "@/components/Widgets";
+
+function ApplyGlobal({ applyGlobal, handleChange }) {
   return (
-    <UIButton
-      type={type}
-      onClick={onClick}
-      className={cn(className)}
-      disabled={disabled}
-    >
-      {children}
-    </UIButton>
+    <div id="upload-apply-global" className="mt-1">
+      <InputContainer
+        type="checkbox"
+        checked={applyGlobal}
+        name="applyGlobal"
+        id="upload-apply-global"
+        onChange={(checked) =>
+          handleChange({
+            target: {
+              type: "checkbox",
+              name: "applyGlobal",
+              checked,
+            },
+          })
+        }
+      >
+        Apply global decisions for current upload
+        <Tooltip title="Apply existing global decisions to this upload during analysis." />
+      </InputContainer>
+    </div>
   );
+}
+
+ApplyGlobal.propTypes = {
+  applyGlobal: PropTypes.bool.isRequired,
+  handleChange: PropTypes.func,
 };
 
-Button.propTypes = {
-  type: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
-  children: PropTypes.node.isRequired,
-  className: PropTypes.string,
-  dataTarget: PropTypes.string,
-  disabled: PropTypes.bool,
-  dataToggle: PropTypes.string,
-  dataDismiss: PropTypes.string,
-};
-
-export default Button;
+export default ApplyGlobal;

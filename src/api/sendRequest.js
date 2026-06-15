@@ -20,6 +20,8 @@ SPDX-License-Identifier: GPL-2.0-only
 import queryString from "query-string";
 import { logout } from "@/shared/authHelper";
 import messages from "@/constants/messages";
+
+// Helper function for setting the item in Localstorage
 import { getLocalStorage, setLocalStorage } from "@/shared/storageHelper";
 
 const sendRequest = ({
@@ -35,9 +37,9 @@ const sendRequest = ({
   retries = 0,
   isFile = false,
 }) => {
-  // -----------------------------
+  
   // 1. Build headers safely
-  // -----------------------------
+  
   let mergedHeaders;
 
   if (noHeaders) {
@@ -57,9 +59,9 @@ const sendRequest = ({
     });
   }
 
-  // -----------------------------
+  
   // 2. Inject groupName header
-  // -----------------------------
+  
   if (addGroupName && mergedHeaders instanceof Headers) {
     mergedHeaders.append(
       "groupName",
@@ -69,9 +71,9 @@ const sendRequest = ({
     );
   }
 
-  // -----------------------------
+  
   // 3. Build final URL safely
-  // -----------------------------
+  
   let finalURL = url;
 
   if (queryParams && Object.keys(queryParams).length > 0) {
@@ -87,9 +89,9 @@ const sendRequest = ({
     }
   }
 
-  // -----------------------------
+  
   // 4. Build fetch options
-  // -----------------------------
+  
   const options = {
     method,
     headers: mergedHeaders,
@@ -101,9 +103,9 @@ const sendRequest = ({
       : JSON.stringify(body);
   }
 
-  // -----------------------------
+  
   // 5. Fetch request
-  // -----------------------------
+  
   return fetch(finalURL, options).then((res) => {
     // SUCCESS
     if (res.ok) {
@@ -115,9 +117,9 @@ const sendRequest = ({
       return isFile ? res : res.json();
     }
 
-    // -----------------------------
+    
     // RETRY LOGIC
-    // -----------------------------
+    
     if (retries > 0) {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -140,9 +142,9 @@ const sendRequest = ({
       });
     }
 
-    // -----------------------------
+    
     // ERROR HANDLING
-    // -----------------------------
+    
     return res.json().then((json) => {
       if (json.code === 403) {
         logout({

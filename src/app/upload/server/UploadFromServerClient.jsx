@@ -22,14 +22,11 @@
 import React, { useState, useEffect } from "react";
 import messages from "@/constants/messages";
 
-// Common Fields
 import CommonFields from "@/components/Upload/CommonFields";
 
-// ShadCN Components
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-
 import {
   Select,
   SelectTrigger,
@@ -37,24 +34,14 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select";
-
 import {
   Accordion,
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
-import {
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
-} from "@/components/ui/tabs";
-
-import {
-  AlertBanner,
-} from "@/components/ui/alert";
-
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { AlertBanner } from "@/components/ui/alert";
 import {
   Sheet,
   SheetTrigger,
@@ -63,45 +50,51 @@ import {
   SheetTitle,
   SheetClose,
 } from "@/components/ui/sheet";
-
 import { Tooltip } from "@/components/Widgets";
 
-// APIs
 import { getAllFolders } from "@/services/folders";
 import { createUploadServer, getUploadById } from "@/services/upload";
 import { scheduleAnalysis } from "@/services/jobs";
-
-// Helper
 import { handleError } from "@/shared/helper";
 
-// Constants
 import {
   initialStateUploadFromServer,
   initialScanFileDataFile,
   initialFolderList,
 } from "@/constants/constants";
 
-const UploadFromServerPage = () => {
-  const [uploadServerData, setUploadServerData] = useState(
-    initialStateUploadFromServer
+// Polling
+const POLL_INTERVAL_MS  = 5_000;
+const POLL_MAX_ATTEMPTS = 60;
+
+const waitForUploadReady = async (uploadId) => {
+  for (let attempt = 0; attempt < POLL_MAX_ATTEMPTS; attempt++) {
+    const res = await getUploadById(uploadId);
+    if (res?._status503) {
+      await new Promise((r) => setTimeout(r, POLL_INTERVAL_MS));
+      continue;
+    }
+    return res;
+  }
+  throw new Error(
+    `Upload #${uploadId} was not ready after ${
+      (POLL_MAX_ATTEMPTS * POLL_INTERVAL_MS) / 60_000
+    } minutes. Check the Jobs panel for status.`
   );
+};
 
-  const [folderList, setFolderList] = useState(initialFolderList);
-
-  const [scanFileData, setScanFileData] =
-    useState(initialScanFileDataFile);
-
-  const [loading, setLoading] = useState(false);
-
-  const [showMessage, setShowMessage] = useState(true);
-
-  const [message, setMessage] = useState({
+const UploadFromServerPage = () => {
+  const [uploadServerData, setUploadServerData] = useState(initialStateUploadFromServer);
+  const [folderList, setFolderList]             = useState(initialFolderList);
+  const [scanFileData, setScanFileData]         = useState(initialScanFileDataFile);
+  const [loading, setLoading]                   = useState(false);
+  const [showMessage, setShowMessage]           = useState(true);
+  const [message, setMessage]                   = useState({
     type: "info",
-    text:
-      "To manage your own group permissions go into Admin > Groups > Manage Group Users. To manage permissions for this one upload, go to Admin > Upload Permissions.",
+    text: "To manage your own group permissions go into Admin > Groups > Manage Group Users. To manage permissions for this one upload, go to Admin > Upload Permissions.",
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
@@ -109,10 +102,7 @@ const UploadFromServerPage = () => {
     const name = uploadServerData.viewableName?.trim();
 
     if (!path) {
-      setMessage({
-        type: "error",
-        text: "File path is required",
-      });
+      setMessage({ type: "error", text: "File path is required." });
       setLoading(false);
       return;
     }
@@ -120,206 +110,144 @@ const UploadFromServerPage = () => {
     if (path.includes("*") && !name) {
       setMessage({
         type: "error",
-        text: "You must provide a viewable name when using wildcard (*) paths",
+        text: "You must provide a viewable name when using wildcard (*) paths.",
       });
       setLoading(false);
       return;
     }
 
-    const header = {
-      folderId: uploadServerData.folderId,
-      uploadDescription: uploadServerData.uploadDescription,
-      public: uploadServerData.accessLevel,
-      ignoreScm: uploadServerData.ignoreScm,
-    };
-
-    const body = {
-      uploadType: "server",
-      location: {
-        path,
-        name,
-      },
-    };
-
-    const validateReuseFolder = () => {
+    try {
+      // 0. Validate reuse folder match
       const reuseForFile = scanFileData.reuse || {};
-      const hasReuseSelection =
+      const hasReuse =
         reuseForFile.reuseUpload &&
-        (!Array.isArray(reuseForFile.reuseUpload) ||
-          reuseForFile.reuseUpload.length > 0);
+        (!Array.isArray(reuseForFile.reuseUpload) || reuseForFile.reuseUpload.length > 0);
 
-      if (!hasReuseSelection) {
-        return Promise.resolve();
-      }
+      if (hasReuse) {
+        const first       = Array.isArray(reuseForFile.reuseUpload)
+          ? reuseForFile.reuseUpload[0]
+          : reuseForFile.reuseUpload;
+        const candidateId = Number(first && typeof first === "object" ? first.id : first);
 
-      let candidateId = null;
-      if (Array.isArray(reuseForFile.reuseUpload)) {
-        const first = reuseForFile.reuseUpload[0];
-        candidateId = first && typeof first === "object" ? first.id : first;
-      } else if (typeof reuseForFile.reuseUpload === "object") {
-        candidateId = reuseForFile.reuseUpload.id;
-      } else {
-        candidateId = reuseForFile.reuseUpload;
-      }
+        if (candidateId) {
+          const uploadRes = await getUploadById(candidateId);
 
-      candidateId = candidateId ? Number(candidateId) : null;
+          if (!uploadRes?._status503) {
+            const uploadFolder =
+              uploadRes?.folderId ?? uploadRes?.folder ??
+              uploadRes?.folder_id ?? uploadRes?.parent ?? null;
 
-      if (!candidateId) {
-        return Promise.resolve();
-      }
-
-      return getUploadById(candidateId).then((uploadRes) => {
-        const folderKeys = ["folderId", "folder", "folder_id", "parent"];
-        let uploadFolder = null;
-        for (const k of folderKeys) {
-          if (Object.prototype.hasOwnProperty.call(uploadRes, k)) {
-            uploadFolder = uploadRes[k];
-            break;
+            if (
+              uploadFolder != null &&
+              Number(uploadFolder) !== Number(uploadServerData.folderId)
+            ) {
+              throw new Error(
+                `Selected reuse upload (id ${candidateId}) is in folder ${uploadFolder}; ` +
+                "change target folder to match or choose a reuse upload from the target folder."
+              );
+            }
           }
         }
+      }
 
-        if (
-          uploadFolder != null &&
-          Number(uploadFolder) !== Number(uploadServerData.folderId)
-        ) {
-          throw new Error(
-            `Selected reuse upload (id ${candidateId}) is in folder ${uploadFolder}; change target folder to match or choose a reuse upload from target folder.`
-          );
-        }
+      // 1. Create the upload
+      const res = await createUploadServer({
+        header: {
+          folderId:          uploadServerData.folderId,
+          uploadDescription: uploadServerData.uploadDescription,
+          public:            uploadServerData.accessLevel,
+          ignoreScm:         uploadServerData.ignoreScm,
+          applyGlobal:       uploadServerData.applyGlobal,
+        },
+        body: {
+          uploadType: "server",
+          location: { path, name },
+        },
       });
-    };
 
-    validateReuseFolder()
-      validateReuseFolder()
-        .then(() =>
-          createUploadServer({
-            header,
-            body,
-          })
-        )
-      .then((res) => {
+      // 2. Extract upload id
+      const rawMessage = res?.message ?? res?.uploadId ?? res?.id;
+      const uploadId   = Number(String(rawMessage).match(/\d+/)?.[0]);
 
-        window.scrollTo({ top: 0 });
+      if (!Number.isInteger(uploadId) || uploadId <= 0) {
+        throw new Error("Could not determine upload ID from server response.");
+      }
 
+      setMessage({ type: "info", text: `${messages.queuedUpload} #${uploadId} — waiting for server to process...` });
+      setShowMessage(true);
+
+      // 3. Poll until ununpack finishes
+      await waitForUploadReady(uploadId);
+
+      // 4. Schedule analysis
+      const scheduleData = structuredClone(scanFileData);
+      if (Array.isArray(scheduleData.reuse?.reuseUpload)) {
+        scheduleData.reuse.reuseUpload = scheduleData.reuse.reuseUpload.map((it) =>
+          it && typeof it === "object" ? Number(it.id) : Number(it)
+        );
+      }
+
+      try {
+        await scheduleAnalysis(uploadServerData.folderId, uploadId, scheduleData);
+        setMessage({ type: "success", text: messages.scheduledAnalysis });
+      } catch (scheduleErr) {
+        console.warn("Schedule analysis failed:", scheduleErr);
         setMessage({
-          type: "success",
-          text: `${messages.queuedUpload} #${res?.message}`,
+          type: "warning",
+          text: scheduleErr?.message
+            ? `Upload queued but analysis failed: ${scheduleErr.message}`
+            : "Upload queued but analysis scheduling failed.",
         });
+      }
 
-        return res?.message;
-      })
-      .then((uploadId) => getUploadById(uploadId, 10).then(() => uploadId))
-      .then((uploadId) =>
-        new Promise((resolve, reject) => {
-          const scheduleData = structuredClone(scanFileData);
-          if (
-            scheduleData.reuse &&
-            Array.isArray(scheduleData.reuse.reuseUpload)
-          ) {
-            scheduleData.reuse.reuseUpload = scheduleData.reuse.reuseUpload.map((it) =>
-              it && typeof it === "object" ? Number(it.id) : Number(it)
-            );
-          }
+      // Reset form
+      setUploadServerData(initialStateUploadFromServer);
+      setScanFileData(initialScanFileDataFile);
 
-          setTimeout(() => {
-            scheduleAnalysis(uploadServerData.folderId, uploadId, scheduleData)
-              .then(resolve)
-              .catch(reject);
-          }, 1500);
-        })
-      )
-      .then(() => {
-        window.scrollTo({ top: 0 });
-        setMessage({
-          type: "success",
-          text: messages.scheduledAnalysis,
-        });
-        setUploadServerData(initialStateUploadFromServer);
-        setScanFileData(initialScanFileDataFile);
-      })
-      .catch((error) => handleError(error, setMessage))
-      .finally(() => {
-        setLoading(false);
-        setShowMessage(true);
-      });
+    } catch (error) {
+      handleError(error, setMessage);
+    } finally {
+      setLoading(false);
+      setShowMessage(true);
+    }
   };
 
   const handleChange = (e) => {
     const { name, type, value, files, checked } = e.target;
-
     if (type === "checkbox") {
-      setUploadServerData({
-        ...uploadServerData,
-        [name]: checked,
-      });
+      setUploadServerData({ ...uploadServerData, [name]: checked });
     } else if (type === "file") {
-      setUploadServerData({
-        ...uploadServerData,
-        [name]: files[0],
-      });
+      setUploadServerData({ ...uploadServerData, [name]: files[0] });
     } else {
-      setUploadServerData({
-        ...uploadServerData,
-        [name]: value,
-      });
+      setUploadServerData({ ...uploadServerData, [name]: value });
     }
   };
 
   const handleScanChange = (checked, name, type, value) => {
     if (Object.keys(scanFileData.analysis).includes(name)) {
-      setScanFileData({
-        ...scanFileData,
-        analysis: {
-          ...scanFileData.analysis,
-          [name]: checked,
-        },
-      });
+      setScanFileData({ ...scanFileData, analysis: { ...scanFileData.analysis, [name]: checked } });
     } else if (Object.keys(scanFileData.decider).includes(name)) {
-      setScanFileData({
-        ...scanFileData,
-        decider: {
-          ...scanFileData.decider,
-          [name]: checked,
-        },
-      });
+      setScanFileData({ ...scanFileData, decider: { ...scanFileData.decider, [name]: checked } });
     } else if (Object.keys(scanFileData.scancode).includes(name)) {
-      setScanFileData({
-        ...scanFileData,
-        scancode: {
-          ...scanFileData.scancode,
-          [name]: checked,
-        },
-      });
+      setScanFileData({ ...scanFileData, scancode: { ...scanFileData.scancode, [name]: checked } });
     } else {
       setScanFileData((prev) => {
         if (name === "reuseUpload" && type === "checkbox") {
-          const current = Array.isArray(prev.reuse.reuseUpload)
-            ? prev.reuse.reuseUpload
-            : [];
-
-          const exists = value
-            ? current.find((item) => item.id === value.id)
-            : false;
-
+          const current = Array.isArray(prev.reuse.reuseUpload) ? prev.reuse.reuseUpload : [];
+          const exists  = value ? current.find((item) => item.id === value.id) : false;
           return {
             ...prev,
             reuse: {
               ...prev.reuse,
               reuseUpload: checked
-                ? exists
-                  ? current
-                  : [...current, value]
+                ? exists ? current : [...current, value]
                 : current.filter((item) => item.id !== value?.id),
             },
           };
         }
-
         return {
           ...prev,
-          reuse: {
-            ...prev.reuse,
-            [name]: type === "checkbox" ? checked : value,
-          },
+          reuse: { ...prev.reuse, [name]: type === "checkbox" ? checked : value },
         };
       });
     }
@@ -327,13 +255,8 @@ const UploadFromServerPage = () => {
 
   useEffect(() => {
     getAllFolders()
-      .then((res) => {
-        setFolderList(res);
-      })
-      .catch((error) => {
-        handleError(error, setMessage);
-        setShowMessage(true);
-      });
+      .then((res) => setFolderList(res))
+      .catch((error) => { handleError(error, setMessage); setShowMessage(true); });
   }, []);
 
   const isButtonDisabled =
@@ -344,16 +267,14 @@ const UploadFromServerPage = () => {
       : message.type === "success"
       ? "Success"
       : "Info";
-  
+
   const fileName =
-    uploadServerData.filePath &&
-    uploadServerData.filePath !== "/"
+    uploadServerData.filePath && uploadServerData.filePath !== "/"
       ? uploadServerData.filePath.split("/").pop()
       : "";
 
   return (
-    <div className="max-w-4xl mx-40 my-6 px-4">
-      {/* Alert */}
+    <div className="max-w-5xl mx-40 my-6 px-4">
       {showMessage && (
         <div className="mb-4">
           <AlertBanner
@@ -362,14 +283,9 @@ const UploadFromServerPage = () => {
               message.type === "info" ? (
                 <>
                   To manage your own group permissions go into{" "}
-                  <span className="font-semibold">
-                    Admin &gt; Groups &gt; Manage Group Users
-                  </span>
-                  . To manage permissions for this one upload, go to{" "}
-                  <span className="font-semibold">
-                    Admin &gt; Upload Permissions
-                  </span>
-                  .
+                  <span className="font-semibold">Admin &gt; Groups &gt; Manage Group Users</span>. To
+                  manage permissions for this one upload, go to{" "}
+                  <span className="font-semibold">Admin &gt; Upload Permissions</span>.
                 </>
               ) : (
                 message.text
@@ -381,41 +297,29 @@ const UploadFromServerPage = () => {
         </div>
       )}
 
-      {/* Heading */}
-      <h1 className="text-2xl font-semibold text-gray-900 mb-4">
-        Upload from Server
-      </h1>
-
+      <h1 className="text-2xl font-semibold text-gray-900 mb-4">Upload from Server</h1>
       <p className="text-base font-semibold mb-6">
         This option permits uploading files from the server.
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* 1. Folder Selection */}
+        {/* 1. Folder */}
         <div>
           <label className="block font-normal mb-3">
             1. Select the folder for storing the uploaded files:
           </label>
-
           <Select
             value={uploadServerData.folderId?.toString()}
             onValueChange={(value) =>
-              setUploadServerData({
-                ...uploadServerData,
-                folderId: Number(value),
-              })
+              setUploadServerData({ ...uploadServerData, folderId: Number(value) })
             }
           >
             <SelectTrigger className="w-[320px]">
               <SelectValue placeholder="Select Folder" />
             </SelectTrigger>
-
             <SelectContent>
               {folderList.map((folder) => (
-                <SelectItem
-                  key={folder.id}
-                  value={folder.id.toString()}
-                >
+                <SelectItem key={folder.id} value={folder.id.toString()}>
                   {folder.name}
                 </SelectItem>
               ))}
@@ -425,10 +329,7 @@ const UploadFromServerPage = () => {
 
         {/* 2. File Path */}
         <div>
-          <label className="block font-normal mb-3">
-            2. Enter the file path:
-          </label>
-
+          <label className="block font-normal mb-3">2. Enter the file path:</label>
           <div className="flex items-center gap-3">
             <Input
               type="text"
@@ -438,31 +339,21 @@ const UploadFromServerPage = () => {
               placeholder="/home/fossology/files/example.zip"
               className="w-[320px] border-neutral-800"
             />
-
-            {/* File path / default text */}
-            <span
-              className={`self-end text-sm ${
-                fileName ? "text-info-500" : "text-error-600"
-              }`}
-            >
+            <span className={`self-end text-sm ${fileName ? "text-info-500" : "text-error-600"}`}>
               {fileName || "No file chosen"}
             </span>
           </div>
-
           <p className="text-sm text-gray-600 mt-2">
-            NOTE: Contents under a directory will be recursively
-            included. "*" is supported to select multiple files
-            (e.g. *.txt).
+            NOTE: Contents under a directory will be recursively included. "*" is supported to
+            select multiple files (e.g. *.txt).
           </p>
         </div>
 
         {/* 3. Viewable Name */}
         <div>
           <label className="block font-normal mb-3">
-            3. (Optional) Enter a viewable name for this file or
-            directory:
+            3. (Optional) Enter a viewable name for this file or directory:
           </label>
-
           <Input
             type="text"
             name="viewableName"
@@ -471,37 +362,20 @@ const UploadFromServerPage = () => {
             placeholder="Enter viewable name"
             className="w-[320px] border-neutral-800"
           />
-
           <p className="text-sm text-gray-600 mt-2">
-            Note: If no name is provided, then the uploaded file
-            (directory) name will be used.
+            Note: If no name is provided, then the uploaded file (directory) name will be used.
           </p>
         </div>
 
         {/* 4. Description */}
         <div>
-          <label className="block font-normal mb-1">
-            4. Description
-          </label>
-
-          {/* File path or No file chosen */}
-          <p
-            className={`text-sm mb-2 ${
-              fileName ? "text-info-500" : "text-error-600"
-            }`}
-          >
+          <label className="block font-normal mb-1">4. Description</label>
+          <p className={`text-sm mb-2 ${fileName ? "text-info-500" : "text-error-600"}`}>
             {fileName || "No file chosen"}
           </p>
-
-          {/* Sub-label */}
-          <p
-            className={`text-sm mb-1 ${
-              fileName ? "text-foreground" : "text-neutral-600"
-            }`}
-          >
+          <p className={`text-sm mb-1 ${fileName ? "text-foreground" : "text-neutral-600"}`}>
             (Optional) Enter a description of this file:
           </p>
-
           <Textarea
             name="uploadDescription"
             value={uploadServerData.uploadDescription}
@@ -516,11 +390,21 @@ const UploadFromServerPage = () => {
           />
         </div>
 
-        {/* 5. Ignore SCM */}
+        {/*5. Apply Global Decisions*/}
         <div className="flex items-end gap-2 mb-3">
-          <span className="text-base font-normal text-foreground pt-4">
-            5.
-          </span>
+          <span className="text-base font-normal text-foreground pt-4">5.</span>
+          <div className="flex-1">
+            <CommonFields
+              applyGlobal={uploadServerData.applyGlobal}
+              handleChange={handleChange}
+              handleScanChange={handleScanChange}
+            />
+          </div>
+        </div>
+
+        {/* 6. Ignore SCM */}
+        <div className="flex items-end gap-2 mb-3">
+          <span className="text-base font-normal text-foreground pt-4">6.</span>
           <div className="flex-1">
             <CommonFields
               ignoreScm={uploadServerData.ignoreScm}
@@ -530,12 +414,9 @@ const UploadFromServerPage = () => {
           </div>
         </div>
 
-        {/* 6. Access Level */}
+        {/* 7. Access Level */}
         <div className="flex gap-2 mb-3">
-          <span className="text-base font-normal text-foreground">
-            6.
-          </span>
-
+          <span className="text-base font-normal text-foreground">7.</span>
           <div className="flex-1">
             <CommonFields
               accessLevel={uploadServerData.accessLevel}
@@ -545,12 +426,9 @@ const UploadFromServerPage = () => {
           </div>
         </div>
 
-        {/* 7. Analysis */}
+        {/* 8. Analysis */}
         <div className="flex items-baseline gap-2 mb-3">
-          <span className="text-base font-medium text-foreground">
-            7.
-          </span>
-
+          <span className="text-base font-medium text-foreground">8.</span>
           <div className="flex-1">
             <CommonFields
               analysis={scanFileData.analysis}
@@ -560,12 +438,9 @@ const UploadFromServerPage = () => {
           </div>
         </div>
 
-        {/* 8. Decider */}
+        {/* 9. Decider */}
         <div className="flex items-baseline gap-2 mb-3">
-          <span className="text-base font-medium text-foreground">
-            8.
-          </span>
-
+          <span className="text-base font-medium text-foreground">9.</span>
           <div className="flex-1">
             <CommonFields
               decider={scanFileData.decider}
@@ -575,10 +450,10 @@ const UploadFromServerPage = () => {
           </div>
         </div>
 
-        {/* 9. Reuse */}
+        {/* 10. Reuse */}
         <div className="flex items-baseline gap-2 mb-3">
           <span className="text-base font-medium text-foreground inline-flex items-center gap-1">
-            9. (Optional) Reuse
+            10. (Optional) Reuse
             <Tooltip title="Copy clearing decisions if there is the same file hash between two files" />
           </span>
         </div>
@@ -595,14 +470,9 @@ const UploadFromServerPage = () => {
             </Button>
           </SheetTrigger>
 
-          <SheetContent
-            side="right"
-            className="w-[600px] sm:max-w-[700px] p-6"
-          >
+          <SheetContent side="right" className="w-[600px] sm:max-w-[700px] p-6">
             <SheetHeader className="p-6 pb-2">
-              <SheetTitle className="text-xl font-semibold">
-                Reuse Configuration
-              </SheetTitle>
+              <SheetTitle className="text-xl font-semibold">Reuse Configuration</SheetTitle>
             </SheetHeader>
 
             <div className="p-6">
@@ -612,7 +482,6 @@ const UploadFromServerPage = () => {
                     {fileName || "No file chosen"}
                   </TabsTrigger>
                 </TabsList>
-
                 <TabsContent value={fileName || "file"} className="pt-6">
                   <CommonFields
                     reuse={scanFileData.reuse}
@@ -632,11 +501,8 @@ const UploadFromServerPage = () => {
                   Cancel
                 </Button>
               </SheetClose>
-
               <SheetClose asChild>
-                <Button
-                  variant="default" size="default" className="px-28"
-                >
+                <Button variant="default" size="default" className="px-28">
                   Apply
                 </Button>
               </SheetClose>
@@ -644,13 +510,12 @@ const UploadFromServerPage = () => {
           </SheetContent>
         </Sheet>
 
-        {/* Scancode Accordion */}
+        {/* Scancode */}
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="scancode">
             <AccordionTrigger className="flex w-full items-center justify-between text-lg font-semibold transition-all">
               Scancode:
             </AccordionTrigger>
-
             <AccordionContent className="space-y-4 pb-2">
               <CommonFields
                 scancode={scanFileData.scancode}
@@ -661,14 +526,14 @@ const UploadFromServerPage = () => {
           </AccordionItem>
         </Accordion>
 
-        <div className="border-t border-gray-300 my-4"></div>
+        <div className="border-t border-gray-300 my-4" />
 
-        {/* Upload Button */}
         <div className="pt-2">
           <Button
             type="submit"
             disabled={loading || isButtonDisabled}
-            variant="default" size="default"
+            variant="default"
+            size="default"
           >
             {loading ? "Uploading..." : "Upload"}
           </Button>

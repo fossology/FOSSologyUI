@@ -116,6 +116,7 @@ export const initialStateFile = {
   uploadDescription: "",
   accessLevel: "protected",
   ignoreScm: false,
+  applyGlobal: false,
   fileInput: [],
 };
 export const initialScanFileDataFile = {
@@ -175,6 +176,7 @@ export const initialStateUploadFromServer = {
   uploadDescription: "",
   accessLevel: "protected",
   ignoreScm: false,
+  applyGlobal: false,
   uploadType: "server",
   groupName: "",
   filePath: "",
@@ -188,6 +190,7 @@ export const initialStateUrl = {
   uploadDescription: "",
   accessLevel: "protected",
   ignoreScm: false,
+  applyGlobal: false,
   uploadType: "url",
 };
 
@@ -202,6 +205,7 @@ export const initialStateVcs = {
   uploadDescription: "",
   accessLevel: "protected",
   ignoreScm: false,
+  applyGlobal: false,
   uploadType: "vcs",
 };
 

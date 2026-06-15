@@ -222,7 +222,7 @@ const ScheduleAgentsPage = () => {
   const alertType = message?.type === "success" ? "Success" : "Error";
 
   return (
-    <div className="max-w-4xl mx-40 px-4 py-8">
+    <div className="max-w-5xl mx-40 px-4 py-8">
       <h1 className="text-3xl font-bold text-foreground mb-6">Schedule an Analysis</h1>
       <p className="text-lg font-semibold text-foreground mb-4">
         Select an uploaded file for additional analysis.
