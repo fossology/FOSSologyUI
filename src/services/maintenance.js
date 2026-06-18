@@ -21,9 +21,6 @@ SPDX-License-Identifier: GPL-2.0-only
 import { createMaintenanceApi } from "@/api/maintenance";
 
 // Creating a group
-const createMaintenance = (data) => {
-  return createMaintenanceApi(data).then((res) => {
-    return res;
-  });
+export const createMaintenance = (data) => {
+  return createMaintenanceApi(data).then((res) => res);
 };
-export default createMaintenance;

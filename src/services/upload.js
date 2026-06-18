@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
-  SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+  SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
   SPDX-License-Identifier: GPL-2.0-only
  This program is free software; you can redistribute it and/or
@@ -20,60 +20,42 @@ import {
   getUploadByIdApi,
   createUploadVcsApi,
   createUploadUrlApi,
+  createUploadServerApi,
   getUploadSummaryApi,
   getUploadLicenseApi,
 } from "@/api/upload";
 
 // Create Uploads from File
-export const createUploadFile = ({
-  folderId,
-  uploadDescription,
-  accessLevel,
-  ignoreScm,
-  fileInput,
-}) => {
-  return createUploadApi(
-    folderId,
-    uploadDescription,
-    accessLevel,
-    ignoreScm,
-    fileInput
-  ).then((res) => {
-    return res;
-  });
+export const createUploadFile = (data) => {
+  return createUploadApi(data).then((res) => res);
 };
 
 // Create Uploads from Version Control System
-export const createUploadVcs = (header, body) => {
-  return createUploadVcsApi(header, body).then((res) => {
-    return res;
-  });
+export const createUploadVcs = (data) => {
+  return createUploadVcsApi(data).then((res) => res);
 };
 
 // Create Uploads from URL
-export const createUploadUrl = (header, body) => {
-  return createUploadUrlApi(header, body).then((res) => {
-    return res;
-  });
+export const createUploadUrl = (data) => {
+  return createUploadUrlApi(data).then((res) => res);
+};
+
+// Create Uploads from Server
+export const createUploadServer = (data) => {
+  return createUploadServerApi(data).then((res) => res);
 };
 
 // Getting a Upload by id
 export const getUploadById = (uploadId, retries) => {
-  return getUploadByIdApi(uploadId, retries).then((res) => {
-    return res;
-  });
+  return getUploadByIdApi({ uploadId, retries }).then((res) => res);
 };
 
 // Getting a Upload Summary
 export const getUploadSummary = (uploadId) => {
-  return getUploadSummaryApi(uploadId).then((res) => {
-    return res;
-  });
+  return getUploadSummaryApi({ uploadId }).then((res) => res);
 };
 
 // Getting a Upload License
 export const getUploadLicense = (uploadId, agent) => {
-  return getUploadLicenseApi(uploadId, agent).then((res) => {
-    return res;
-  });
+  return getUploadLicenseApi({ uploadId, agent }).then((res) => res);
 };

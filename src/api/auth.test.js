@@ -39,9 +39,9 @@ describe("auth", () => {
         body: {
           username,
           password,
-          token_name: randomString,
-          token_scope: tokenScope,
-          token_expire: getDate(tokenExpiryDays),
+          tokenName: randomString,
+          tokenScope: tokenScope,
+          tokenExpire: getDate(tokenExpiryDays),
         },
         addGroupName: false,
       })

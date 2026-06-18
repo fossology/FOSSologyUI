@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2022 Soham Banerjee(sohambanerjee4abc@hotmail.com), Krishna Mahato (krishhtrishh9304@gmail.com)
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -116,7 +116,8 @@ export const initialStateFile = {
   uploadDescription: "",
   accessLevel: "protected",
   ignoreScm: false,
-  fileInput: null,
+  applyGlobal: false,
+  fileInput: [],
 };
 export const initialScanFileDataFile = {
   analysis: defaultAgentsList(),
@@ -125,14 +126,18 @@ export const initialScanFileDataFile = {
     bulkReused: false,
     newScanner: false,
     ojoDecider: false,
+    autoConclude: false,
+    autoConcludeType: "permissive",
   },
   reuse: {
-    reuseUpload: 0,
-    reuseGroup: getLocalStorage("user")?.default_group,
+    reuseUpload: [],
+    reuseGroup: getLocalStorage("user")?.defaultGroup,
+    reuseChecked: false,
     reuseMain: false,
     reuseEnhanced: false,
     reuseReport: false,
     reuseCopyright: false,
+    reuseApplied: false,
   },
   scancode: {
     license: false,
@@ -154,7 +159,9 @@ export const initialStateImportReport = {
   folder: 1,
   upload: "",
   report: null,
+  reportFormat: "spdx",
   addNewLicensesAs: "candidate",
+  matchLicenseUsing: "spdxid",
   addConcludedAsDecisions: true,
   addLicenseInfoFromInfoInFile: true,
   addLicenseInfoFromConcluded: false,
@@ -165,20 +172,25 @@ export const initialStateImportReport = {
 
 // constants for upload/UploadFromServer
 export const initialStateUploadFromServer = {
-  folderId: 1,
+  folderId: "",
   uploadDescription: "",
   accessLevel: "protected",
   ignoreScm: false,
+  applyGlobal: false,
   uploadType: "server",
   groupName: "",
+  filePath: "",
+  viewableName: "",
+  description: "",
 };
 
 // constants for upload/url
 export const initialStateUrl = {
-  folderId: 1,
+  folderId: "",
   uploadDescription: "",
   accessLevel: "protected",
   ignoreScm: false,
+  applyGlobal: false,
   uploadType: "url",
 };
 
@@ -189,10 +201,11 @@ export const initialUrlData = {
 
 // constants from upload/vcs
 export const initialStateVcs = {
-  folderId: 1,
+  folderId: "",
   uploadDescription: "",
   accessLevel: "protected",
   ignoreScm: false,
+  applyGlobal: false,
   uploadType: "vcs",
 };
 
@@ -235,10 +248,13 @@ export const initialScanFileData = {
     bulkReused: false,
     newScanner: false,
     ojoDecider: false,
+    autoConclude: false,
+    autoConcludeType: "permissive",
   },
   reuse: {
-    reuseUpload: 0,
-    reuseGroup: getLocalStorage("user")?.default_group,
+    reuseUpload: [],
+    reuseGroup: getLocalStorage("user")?.defaultGroup,
+    reuseChecked: false,
     reuseMain: false,
     reuseEnhanced: false,
     reuseReport: false,
@@ -325,7 +341,7 @@ export const userStatus = [
 
 export const initialAddUserData = {
   name: "",
-  user_pass: null,
+  userPass: null,
   description: "",
   accessLevel: "",
   rootFolderId: 0,
@@ -338,14 +354,15 @@ export const initialAddUserData = {
     monk: false,
     ojo: false,
     bucket: false,
-    copyright_email_author: false,
+    copyrightEmailAuthor: false,
     ecc: false,
+    ipra: false,
     keyword: false,
     nomos: false,
-    package: false,
+    pkgagent: false,
     reso: false,
-    heritage: false,
-  },
+    softwareHeritage: false,
+  }
 };
 
 export const bucketPool = [

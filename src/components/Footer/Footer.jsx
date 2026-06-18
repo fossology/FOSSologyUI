@@ -1,5 +1,5 @@
 /*
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -16,14 +16,30 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+"use client";
+
 import { useState, useEffect } from "react";
 import { getFossologyVersion } from "@/services/info";
 import { getSessionStorage, setSessionStorage } from "@/shared/storageHelper";
+import { cva } from "class-variance-authority";
 
-const Footer = () => {
-  const [version, setVersion] = useState(
-    getSessionStorage("fossologyVersion") || null
-  );
+import { cn } from "@/lib/utils";
+
+const footerVariants = cva("w-full text-xs px-4", {
+  variants: {
+    variant: {
+      default: "bg-neutral-300 text-gray-900 py-3",
+      subtle: "bg-neutral-100 text-neutral-800 py-2",
+      dark: "bg-neutral-900 text-neutral-100 py-3",
+    },
+  },
+  defaultVariants: {
+    variant: "default",
+  },
+});
+
+const Footer = ({ variant = "default", showBuildInfo = true, className }) => {
+  const [version, setVersion] = useState(null);
 
   const fetchVersion = () => {
     return getFossologyVersion()
@@ -36,16 +52,24 @@ const Footer = () => {
   };
 
   useEffect(() => {
-    if (!version) {
+    const cached = getSessionStorage("fossologyVersion");
+    if (cached) {
+      setVersion(cached);
+    } else {
       fetchVersion();
     }
   }, []);
 
   return (
-    <footer className="w-full bg-neutral-300 text-gray-900 text-xs px-4 py-3">
+    <footer className={cn(footerVariants({ variant }), className)}>
       <div className="max-w-screen-xl mx-auto text-center">
-        Version: [{version?.version}], Branch: [{version?.branchName}], Commit: [#{version?.commitHash}]{" "}
-        {version?.commitDate} built @ {version?.buildDate}
+        Version: [{version?.version}]
+        {showBuildInfo ? (
+          <>
+            , Branch: [{version?.branchName}], Commit: [#{version?.commitHash}] {" "}
+            {version?.commitDate} built @ {version?.buildDate}
+          </>
+        ) : null}
       </div>
     </footer>
   );

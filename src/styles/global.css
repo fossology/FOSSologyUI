@@ -1,5 +1,5 @@
 /*
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -19,6 +19,7 @@ SPDX-License-Identifier: GPL-2.0-only
 /*
 * This file contains all styling which is common for all theme (which defines basic layout)
 */
+@config "../../tailwind.config.js";
 @import 'tailwindcss' important; 
 /* @import "tailwindcss/preflight"; */
 /* @tailwind components; */
@@ -30,14 +31,80 @@ SPDX-License-Identifier: GPL-2.0-only
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  /* Base */
   --background: #FFFFFF;
   --foreground: #101010;
+
+  /* Card / Popover */
+  --card: #FFFFFF;
+  --card-foreground: #101010;
+  --popover: #FFFFFF;
+  --popover-foreground: #101010;
+
+  /* Primary action — FOSSology blue */
+  --primary: #004494;
+  --primary-foreground: #ffffff;
+
+  /* Secondary — neutral surface */
+  --secondary: #EDEDED;
+  --secondary-foreground: #101010;
+
+  /* Muted — subtle background */
+  --muted: #F6F6F6;
+  --muted-foreground: #888888;
+
+  /* Accent — outline button hover */
+  --accent: #E2EFFF;
+  --accent-foreground: #000B54;
+
+  /* Destructive — Alert button red */
+  --destructive: #D02216;
+
+  /* Border / Input / Ring */
+  --border: #CECECE;
+  --input: #CECECE;
+  --ring: #004494;
+
+  /* Radius */
+  --radius: 0.375rem;
+
+  /* Sidebar */
+  --sidebar: #F6F6F6;
+  --sidebar-foreground: #101010;
+  --sidebar-primary: #004494;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #DEE7F2;
+  --sidebar-accent-foreground: #000B54;
+  --sidebar-border: #CECECE;
 }
 
 /* Dark theme override */
 [data-theme="dark"] {
   --background: #212121;
   --foreground: #ffffff;
+  --card: #2C2C2C;
+  --card-foreground: #ffffff;
+  --popover: #2C2C2C;
+  --popover-foreground: #ffffff;
+  --primary: #4D7CB7;
+  --primary-foreground: #ffffff;
+  --secondary: #3A3A3A;
+  --secondary-foreground: #ffffff;
+  --muted: #303030;
+  --muted-foreground: #A9A9A9;
+  --accent: #1a3a5c;
+  --accent-foreground: #B0C4DE;
+  --destructive: #EC4958;
+  --border: #616161;
+  --input: #616161;
+  --ring: #4D7CB7;
+  --sidebar: #1a1a1a;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #4D7CB7;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1a3a5c;
+  --sidebar-accent-foreground: #B0C4DE;
+  --sidebar-border: #616161;
 }
 
 

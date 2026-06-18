@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -46,27 +46,30 @@ const InputContainer = ({
   property,
   valueProperty,
   noDataMessage = "No Data Found",
+  helperText,
+  cta = false,
+  ctaLabel = "Action",
+  onCtaClick,
+  fullWidth = false,
+  labelPosition = "left",
 }) => {
 if (type === "radio") {
   return (
-    <RadioGroup
-      value={value}
-      onValueChange={onChange}
-      className="space-y-2"
-    >
-      <div className="flex items-start gap-2">
-        <RadioGroupItem
-          value={value}
-          id={id}
-          checked={checked}
-          disabled={disabled}
-          className="w-4 h-4 mt-1"
-        />
-        <Label htmlFor={id} className="text-base font-normal">
-          {children}
-        </Label>
-      </div>
-    </RadioGroup>
+    <div className="flex items-start gap-2">
+      <RadioGroupItem
+        value={value}
+        id={id}
+        disabled={disabled}
+        className="w-4 h-4 mt-[2px]"
+      />
+
+      <Label
+        htmlFor={id}
+        className="text-base font-normal leading-none cursor-pointer"
+      >
+        {children}
+      </Label>
+    </div>
   );
 }
   if (type === "checkbox") {
@@ -88,9 +91,9 @@ if (type === "radio") {
   if (type === "select") {
     return (
       <div className="my-1">
-        <div className="flex items-center gap-3">
+        <div className={`flex items-center gap-3 ${fullWidth ? "w-full" : ""} ${labelPosition === "top" ? "flex-col items-start" : ""}`}>
           {children && (
-            <label htmlFor={id} className="font-base whitespace-nowrap">
+            <label htmlFor={id} className={`font-base whitespace-nowrap ${disabled ? "text-neutral-600" : ""}`}>
               {children}
             </label>
           )}
@@ -99,9 +102,10 @@ if (type === "radio") {
             value={value === null ? "" : value}
             onValueChange={(val) => onChange(val)}
             id={id}
+            disabled={disabled}
           >
-            <SelectTrigger className="h-8 text-sm flex items-center">
-              <SelectValue placeholder="All uploads" />
+            <SelectTrigger className={`h-8 text-sm flex items-center ${fullWidth ? "w-full" : ""}`} disabled={disabled}>
+              <SelectValue placeholder={placeholder ?? "Select..."} />
             </SelectTrigger>
             <SelectContent className="max-h-48 overflow-y-auto">
               {options.length > 0 ? (
@@ -115,34 +119,57 @@ if (type === "radio") {
                   </SelectItem>
                 ))
               ) : (
-                <SelectItem className="font-demi" disabled>
+                <SelectItem key="__no_data__" value="__no_data__" className="font-demi" disabled>
                   {noDataMessage}
                 </SelectItem>
               )}
             </SelectContent>
           </Select>
         </div>
+        {helperText ? (
+          <p className={`mt-1 text-xs ${disabled ? "text-neutral-600" : "text-neutral-700"}`}>{helperText}</p>
+        ) : null}
       </div>
     );
   }
 
   return (
     <div className="my-2">
-      <label htmlFor={id} className="font-demi">
-        {children}
-      </label>
-      <input
-        type={type}
-        name={name}
-        value={value}
-        className={
-          type === "file" ? `ml-3 ${className}` : `form-control ${className}`
-        }
-        onChange={onChange}
-        checked={checked}
-        placeholder={placeholder}
-        id={id}
-      />
+      <div className={`flex items-center gap-3 ${fullWidth ? "w-full" : ""} ${labelPosition === "top" ? "flex-col items-start" : ""}`}>
+        <label htmlFor={id} className={`font-demi ${disabled ? "text-neutral-600" : ""}`}>
+          {children}
+        </label>
+        <div className={`flex items-center gap-2 ${fullWidth ? "w-full" : ""}`}>
+          <input
+            type={type}
+            name={name}
+            value={value}
+            className={
+              type === "file"
+                ? `ml-3 ${className}`
+                : `form-control ${fullWidth ? "w-full" : ""} ${className}`
+            }
+            onChange={onChange}
+            checked={checked}
+            placeholder={placeholder}
+            id={id}
+            disabled={disabled}
+          />
+          {cta ? (
+            <button
+              type="button"
+              onClick={onCtaClick}
+              disabled={disabled}
+              className="h-8 rounded border border-tertiary1-800 px-3 text-sm text-tertiary1-800 hover:bg-tertiary1-200 disabled:pointer-events-none disabled:opacity-50"
+            >
+              {ctaLabel}
+            </button>
+          ) : null}
+        </div>
+      </div>
+      {helperText ? (
+        <p className={`mt-1 text-xs ${disabled ? "text-neutral-600" : "text-neutral-700"}`}>{helperText}</p>
+      ) : null}
     </div>
   );
 };
@@ -171,6 +198,12 @@ InputContainer.propTypes = {
   property: PropTypes.string,
   valueProperty: PropTypes.string,
   noDataMessage: PropTypes.string,
+  helperText: PropTypes.string,
+  cta: PropTypes.bool,
+  ctaLabel: PropTypes.string,
+  onCtaClick: PropTypes.func,
+  fullWidth: PropTypes.bool,
+  labelPosition: PropTypes.oneOf(["left", "top"]),
 };
 
 export default InputContainer;

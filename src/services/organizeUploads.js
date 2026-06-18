@@ -25,29 +25,29 @@ import {
 } from "@/api/organizeUploads";
 
 // Getting uploads with folder id
-export const getUploadsFolderId = (folderId, groupName, recursive = false) => {
-  return getUploadsByFolderIdApi(folderId, groupName, recursive).then((res) => {
-    return res;
-  });
+export const getUploadsFolderId = ({
+  folderId,
+  groupName,
+  recursive = false,
+}) => {
+  return getUploadsByFolderIdApi({
+    folderId,
+    groupName,
+    recursive,
+  }).then((res) => res);
 };
 
 // Deleting a upload its upload id
-export const deleteUploadsbyId = (deleteId) => {
-  return deleteUploadsApi(deleteId).then((res) => {
-    return res;
-  });
+export const deleteUploadsbyId = (uploadId) => {
+  return deleteUploadsApi(uploadId).then((res) => res);
 };
 
 // Moving the upload into another folder
-export const moveUpload = (folderId, id) => {
-  return moveUploadApi(folderId, id).then((res) => {
-    return res;
-  });
+export const moveUpload = (folderId, uploadId) => {
+  return moveUploadApi({ folderId, uploadId }).then((res) => res);
 };
 
 // Copying the upload into another folder
-export const copyUpload = (folderId, id) => {
-  return copyUploadApi(folderId, id).then((res) => {
-    return res;
-  });
+export const copyUpload = (folderId, uploadId) => {
+  return copyUploadApi({ folderId, uploadId }).then((res) => res);
 };

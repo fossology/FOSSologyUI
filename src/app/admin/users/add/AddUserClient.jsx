@@ -92,7 +92,7 @@ const AddUserPage = () => {
 
     setLoading(true);
     try {
-      const finalUserData = { ...addUserData, user_pass: rePass.pass1 };
+      const finalUserData = { ...addUserData, userPass: rePass.pass1 };
       const res = await addUser(finalUserData);
       setMessage({ type: "success", text: res.message });
       setAddUserData(initialAddUserData);

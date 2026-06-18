@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
+ SPDX-FileCopyrightText: 2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -18,30 +19,25 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import styles from "styled-components";
+import { Button as UIButton } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const Button = ({
-  type,
+  type = "button",
   onClick,
   className,
   children,
-  dataDismiss,
-  dataToggle,
-  dataTarget,
   disabled = false,
 }) => {
   return (
-    <ButtonContainer
+    <UIButton
       type={type}
       onClick={onClick}
-      dataDismiss={dataDismiss}
-      dataToggle={dataToggle}
-      dataTarget={dataTarget}
-      className={`bg-primary-color text-secondary-color font-demi text-center hover-primary-color ${className}`}
+      className={cn(className)}
       disabled={disabled}
     >
       {children}
-    </ButtonContainer>
+    </UIButton>
   );
 };
 
@@ -55,12 +51,5 @@ Button.propTypes = {
   dataToggle: PropTypes.string,
   dataDismiss: PropTypes.string,
 };
-
-const ButtonContainer = styles.button`
-    border: none;
-    border-radius: 0.5rem;
-    padding: 0.5rem 3rem;
-    transition: all 0.5s ease-in;
-`;
 
 export default Button;

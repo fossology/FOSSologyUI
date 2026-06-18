@@ -21,13 +21,9 @@ import { getAllLicenseApi, createCandidateLicenseApi } from "@/api/licenses";
 
 // Fetching the licenses with their kind i.e (candidate, main, all)
 export const getAllLicense = (licenseData) => {
-  return getAllLicenseApi(licenseData).then((res) => {
-    return res;
-  });
+  return getAllLicenseApi(licenseData).then((res) => res);
 };
 
 export const createCandidateLicense = (licenseData) => {
-  return createCandidateLicenseApi(licenseData).then((res) => {
-    return res;
-  });
+  return createCandidateLicenseApi(licenseData).then((res) => res);
 };

@@ -15,6 +15,7 @@ SPDX-License-Identifier: GPL-2.0-only
  You should have received a copy of the GNU General Public License along
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ 
 */
 
 import endpoints from "@/constants/endpoints";
@@ -23,17 +24,15 @@ import endpoints from "@/constants/endpoints";
 import sendRequest from "./sendRequest";
 
 export const getInfoApi = () => {
-  const url = endpoints.admin.info.info();
   return sendRequest({
-    url,
+    url: endpoints.info.apiInfo(),
     method: "GET",
   });
 };
 
 export const getHealthApi = () => {
-  const url = endpoints.admin.info.health();
   return sendRequest({
-    url,
+    url: endpoints.info.health(),
     method: "GET",
   });
 };

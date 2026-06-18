@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -66,6 +66,77 @@ const LicenseDecider = ({ decider, handleChange }) => {
       >
         New scanner results, i.e., decisions were marked as work in progress if new scanner finds additional licenses
       </InputContainer>
+      <div className="flex items-center gap-3">
+        <InputContainer
+          type="checkbox"
+          checked={decider.autoConclude}
+          name="autoConclude"
+          id="upload-decider-auto-conclude"
+          onChange={(checked) => handleChange(checked, "autoConclude")}
+        >
+          Auto conclude license finding if they are of type
+        </InputContainer>
+        <div className="w-[200px]">
+          <InputContainer
+            type="select"
+            name="autoConcludeType"
+            id="upload-decider-auto-conclude-type"
+            onChange={(val) => handleChange(val, "autoConcludeType")}
+            options={[
+              { id: "permissive", name: "Permissive" },
+              { id: "strong_copyleft", name: "Strong Copyleft" },
+              { id: "weak_copyleft", name: "Weak Copyleft" },
+            ]}
+            value={decider.autoConcludeType}
+            property="name"
+            valueProperty="id"
+            disabled={!decider.autoConclude}
+            placeholder=""
+          />
+        </div>
+      </div>
+      <InputContainer
+        type="checkbox"
+        checked={decider.nomosMonk}
+        name="nomosMonk"
+        id="upload-decider-fp-copyright"
+        onChange={(checked) => handleChange(checked, "nomosMonk")}
+      >
+        <span className="inline-flex items-center gap-1">
+          False Positive Copyright Deactivation
+
+          <span className="text-warning-500 font-bold">
+            (experimental)
+          </span>
+
+          <img
+            src="/assets/icons/Alert/WarningNotFilled.svg"
+            alt=""
+            className="h-6 w-6"
+          />
+        </span>
+      </InputContainer>
+      <InputContainer
+        type="checkbox"
+        checked={decider.nomosMonk}
+        name="nomosMonk"
+        id="upload-decider-fp-copyright-clutter"
+        onChange={(checked) => handleChange(checked, "nomosMonk")}
+      >
+        <span className="inline-flex items-center gap-1">
+          False Positive Copyright Deactivation and clutter removal
+
+          <span className="text-warning-500 font-bold">
+            (experimental)
+          </span>
+
+          <img
+            src="/assets/icons/Alert/WarningNotFilled.svg"
+            alt=""
+            className="h-6 w-6"
+          />
+        </span>
+      </InputContainer>
     </div>
   );
 }
@@ -76,6 +147,8 @@ LicenseDecider.propTypes = {
     bulkReused: PropTypes.bool.isRequired,
     newScanner: PropTypes.bool.isRequired,
     ojoDecider: PropTypes.bool.isRequired,
+    autoConclude: PropTypes.bool.isRequired,
+    autoConcludeType: PropTypes.string.isRequired,
   }).isRequired,
   handleChange: PropTypes.func,
 };

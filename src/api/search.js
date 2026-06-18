@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -36,17 +36,18 @@ const searchApi = ({
   filesizemax,
   license,
   copyright,
-  page,
-  limit,
+  page = 1,
+  limit = 10,
 }) => {
-  const url = endpoints.search.search();
   return sendRequest({
-    url,
+    url: endpoints.search.search(),
     method: "GET",
     headers: {
       Authorization: getToken(),
+    },
+    params: {
       searchType,
-      uploadId,
+      uploadId: uploadId === "all" ? null : uploadId,
       filename,
       tag,
       filesizemin,
@@ -60,6 +61,7 @@ const searchApi = ({
 };
 
 searchApi.propTypes = {
+
   searchType: PropTypes.string,
   uploadId: PropTypes.number,
   filename: PropTypes.string,

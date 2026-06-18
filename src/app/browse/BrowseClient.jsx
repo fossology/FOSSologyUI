@@ -75,7 +75,7 @@ const BrowseClient = () => {
 
     getBrowseData(browseData)
       .then((res) => {
-        setBrowseDataList(res.res);
+        setBrowseDataList(res.uploads);
         setPages(res.pages);
         setPagesOptions(
           Array.from({ length: res.pages }, (_, i) => ({ id: i + 1, value: i + 1 }))
@@ -252,7 +252,7 @@ const BrowseClient = () => {
             <tbody>
               {browseDataList
                 ?.filter((item) =>
-                  query ? item?.uploadname.toLowerCase().includes(query.toLowerCase()) : true
+                  query ? item?.uploadName.toLowerCase().includes(query.toLowerCase()) : true
                 )
                 ?.map((data) => (
                   <tr key={data?.id} className="text-center">
@@ -261,7 +261,7 @@ const BrowseClient = () => {
                         href={`${routes.browseUploads.licenseBrowser}?uploadID=${data.id}`}
                       >
                         <div className="text-primary-color">
-                          <div className="font-demi">{data?.uploadname}</div>
+                          <div className="font-demi">{data?.uploadName}</div>
                           <div className="font-size-small">{data?.description}</div>
                         </div>
                       </a>
@@ -295,7 +295,11 @@ const BrowseClient = () => {
                         property="name"
                       />
                     </td>
-                    <td>{data?.uploaddate.split(".")[0]}</td>
+                    <td>
+                      {data?.uploadDate
+                        ? new Date(data.uploadDate).toLocaleString()
+                        : "-"}
+                    </td>
                   </tr>
                 ))}
               <tr>

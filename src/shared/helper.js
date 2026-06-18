@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
+ SPDX-FileCopyrightText: 2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -30,13 +31,9 @@ export const randomString = (length) => {
 
 // Get date in YYYY-MM-DD format
 export const getDate = (day) => {
-  Date.prototype.addDays = function (days) {
-    const currentDate = new Date(this.valueOf());
-    currentDate.setDate(currentDate.getDate() + days);
-    return currentDate;
-  };
   const date = new Date();
-  return date.addDays(day).toISOString().split("T")[0];
+  date.setDate(date.getDate() + day);
+  return date.toISOString().split("T")[0];
 };
 
 // Returns the initials of given name

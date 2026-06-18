@@ -33,12 +33,14 @@ const fetchTokenApi = (username, password, tokenDetails = null) => {
   return sendRequest({
     url,
     method: "POST",
+    // v2 requires form-encoded body for /tokens
+    isFormUrlEncoded: true,
     body: tokenDetails || {
       username,
       password,
-      token_name: randomString(tokenNameLength),
-      token_scope: tokenScope,
-      token_expire: getDate(tokenExpiryDays),
+      tokenName: randomString(tokenNameLength),
+      tokenScope: tokenScope,
+      tokenExpire: getDate(tokenExpiryDays),
     },
     addGroupName: false,
   });

@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -21,7 +21,7 @@ import cookie from "js-cookie";
 
 // Set in cookie
 export const setCookie = (key, value) => {
-  if (window !== "undefined") {
+  if (typeof window !== "undefined") {
     cookie.set(key, value, {
       expires: 1,
       sameSite: "strict",
@@ -32,7 +32,7 @@ export const setCookie = (key, value) => {
 
 // Remove from cookie
 export const removeCookie = (key) => {
-  if (window !== "undefined") {
+  if (typeof window !== "undefined") {
     cookie.remove(key, {
       expires: 1,
     });
@@ -41,7 +41,7 @@ export const removeCookie = (key) => {
 
 // Get from cookie
 export const getCookie = (key) => {
-  if (window !== "undefined") {
+  if (typeof window !== "undefined") {
     return cookie.get(key);
   }
   return null;
@@ -57,7 +57,14 @@ export const setLocalStorage = (key, value) => {
 // Get from localstorage
 export const getLocalStorage = (key) => {
   if (typeof window !== "undefined") {
-    return JSON.parse(localStorage.getItem(key));
+    try {
+      const value = localStorage.getItem(key);
+      if (!value || value === "undefined") return null;
+      return JSON.parse(value);
+    } catch (e) {
+      console.warn(`Corrupted localStorage key: ${key}`);
+      return null;
+    }
   }
   return null;
 };
@@ -70,14 +77,21 @@ export const removeLocalStorage = (key) => {
 };
 
 export const defaultAgentsList = () => {
-  if (getLocalStorage("user")?.agents) {
-    const agentsList = getLocalStorage("user")?.agents;
-    agentsList.copyrightEmailAuthor = agentsList.copyright_email_author;
-    delete agentsList.copyright_email_author;
-    agentsList.mime = agentsList.mimetype;
-    delete agentsList.mimetype;
-    return agentsList;
+  const user = getLocalStorage("user");
+  const agentsList = user?.agents;
+
+  if (agentsList) {
+    const normalized = { ...agentsList };
+
+    normalized.copyrightEmailAuthor = normalized.copyright_email_author;
+    delete normalized.copyright_email_author;
+
+    normalized.mime = normalized.mimetype;
+    delete normalized.mimetype;
+
+    return normalized;
   }
+
   return {
     compatibility: false,
     copyrightEmailAuthor: false,
@@ -98,7 +112,14 @@ export const defaultAgentsList = () => {
 // Get from session storage
 export const getSessionStorage = (key) => {
   if (typeof window !== "undefined") {
-    return JSON.parse(sessionStorage.getItem(key));
+    try {
+      const value = sessionStorage.getItem(key);
+      if (!value || value === "undefined") return null;
+      return JSON.parse(value);
+    } catch (e) {
+      console.warn(`Corrupted sessionStorage key: ${key}`);
+      return null;
+    }
   }
   return null;
 };

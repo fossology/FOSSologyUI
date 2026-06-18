@@ -25,11 +25,12 @@ import { getToken } from "@/shared/authHelper";
 // Function for calling the fetch function for the APIs
 import sendRequest from "./sendRequest";
 
-// Fetching the self information
+
+// GET current user
+
 export const getUserSelfApi = () => {
-  const url = endpoints.users.self();
   return sendRequest({
-    url,
+    url: endpoints.users.getSelf(),
     method: "GET",
     headers: {
       Authorization: getToken(),
@@ -38,11 +39,12 @@ export const getUserSelfApi = () => {
   });
 };
 
-// Fetching all the users and returning their complete info
+
+// GET all users
+
 export const getAllUsersApi = () => {
-  const url = endpoints.users.getAll();
   return sendRequest({
-    url,
+    url: endpoints.users.getAll(),
     method: "GET",
     headers: {
       Authorization: getToken(),
@@ -50,11 +52,25 @@ export const getAllUsersApi = () => {
   });
 };
 
-// Api call to create a new user
-export const addUserApi = (userData) => {
-  const url = endpoints.users.add();
+
+// GET user by ID
+
+export const getUserByIdApi = (id) => {
   return sendRequest({
-    url,
+    url: endpoints.users.getSingle(id),
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+};
+
+
+// CREATE user
+
+export const addUserApi = (userData) => {
+  return sendRequest({
+    url: endpoints.users.add(),
     method: "POST",
     headers: {
       Authorization: getToken(),
@@ -63,11 +79,26 @@ export const addUserApi = (userData) => {
   });
 };
 
-// Deleting the user info
-export const deleteUserApi = (id) => {
-  const url = endpoints.users.delete(id);
+
+// UPDATE user
+
+export const editUserByIdApi = (id, userData) => {
   return sendRequest({
-    url,
+    url: endpoints.users.edit(id),
+    method: "PUT",
+    headers: {
+      Authorization: getToken(),
+    },
+    body: userData,
+  });
+};
+
+
+// DELETE user
+
+export const deleteUserApi = (id) => {
+  return sendRequest({
+    url: endpoints.users.delete(id),
     method: "DELETE",
     headers: {
       Authorization: getToken(),
@@ -75,36 +106,12 @@ export const deleteUserApi = (id) => {
   });
 };
 
-// Modifying user PUT request
-export const editUserByIdApi = (id, editedUserDetails) => {
-  const url = endpoints.users.edit(id);
-  return sendRequest({
-    url,
-    method: "PUT",
-    body: editedUserDetails,
-    headers: {
-      Authorization: getToken(),
-    },
-  });
-};
 
-// Getting user by id
-export const getUserByIdAapi = (id) => {
-  const url = endpoints.users.getSingle(id);
-  return sendRequest({
-    url,
-    method: "GET",
-    headers: {
-      Authorization: getToken(),
-    },
-  });
-};
+// GET user tokens
 
-// Getting REST API Tokens based on token type (active | expired)
 export const getTokensApi = (type) => {
-  const url = endpoints.users.getTokens(type);
   return sendRequest({
-    url,
+    url: endpoints.users.getTokens(type),
     method: "GET",
     headers: {
       Authorization: getToken(),

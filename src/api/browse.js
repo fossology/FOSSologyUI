@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -16,8 +16,8 @@ SPDX-License-Identifier: GPL-2.0-only
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-
 import PropTypes from "prop-types";
+
 import endpoints from "@/constants/endpoints";
 
 // Getting Authorization Token
@@ -28,27 +28,29 @@ import sendRequest from "./sendRequest";
 
 // Fetching all the Uploads with the give parameters of page, limit
 const getBrowseDataApi = ({ folderId, page, limit, recursive }) => {
-  const url = endpoints.browse.get();
+
+  const url = endpoints.uploads.getAll();
   return sendRequest({
     url,
     method: "GET",
     headers: {
       Authorization: getToken(),
-      page,
-      limit,
     },
     queryParams: {
       folderId,
       recursive,
+      page,
+      limit,
     },
   });
 };
 
+
 getBrowseDataApi.propTypes = {
-  page: PropTypes.number,
-  limit: PropTypes.number,
-  folderId: PropTypes.number,
-  recursive: PropTypes.bool,
+    page: PropTypes.number,
+    limit: PropTypes.number,
+    folderId: PropTypes.number,
+    recursive: PropTypes.bool,
 };
 
 export default getBrowseDataApi;

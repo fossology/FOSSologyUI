@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -25,11 +25,10 @@ import { getToken } from "@/shared/authHelper";
 // Function for calling the fetch function for the APIs
 import sendRequest from "./sendRequest";
 
-// Fetching all the groups
+// GET /groups
 export const getAllGroupsApi = () => {
-  const url = endpoints.admin.groups.getAll();
   return sendRequest({
-    url,
+    url: endpoints.groups.getAll(),
     method: "GET",
     headers: {
       Authorization: getToken(),
@@ -38,11 +37,10 @@ export const getAllGroupsApi = () => {
   });
 };
 
-// Fetching all deletable groups
+// GET /groups/deletable
 export const getAllDeletableGroupsApi = () => {
-  const url = endpoints.admin.groups.getAllDeletable();
   return sendRequest({
-    url,
+    url: endpoints.groups.deletable(),
     method: "GET",
     headers: {
       Authorization: getToken(),
@@ -51,25 +49,24 @@ export const getAllDeletableGroupsApi = () => {
   });
 };
 
-// Creating a group
+// POST /groups?name=…
 export const createGroupApi = (name) => {
-  const url = endpoints.admin.groups.create();
   return sendRequest({
-    url,
+    url: endpoints.groups.create(),
     method: "POST",
     headers: {
       Authorization: getToken(),
+    },
+    queryParams: {
       name,
     },
-    addGroupName: false,
   });
 };
 
-// Delete a group
-export const deleteGroupApi = (id) => {
-  const url = endpoints.admin.groups.delete(id);
+// DELETE /groups/{name}
+export const deleteGroupApi = (name) => {
   return sendRequest({
-    url,
+    url: endpoints.groups.deleteByName(name),
     method: "DELETE",
     headers: {
       Authorization: getToken(),

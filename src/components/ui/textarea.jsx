@@ -1,5 +1,5 @@
 /*
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -16,23 +16,30 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
-function Textarea({
-  className,
-  ...props
-}) {
+function Textarea({ className, ...props }) {
   return (
     <textarea
       data-slot="textarea"
       className={cn(
-        "border-input placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 flex field-sizing-content min-h-16 w-full rounded-md border bg-transparent px-3 py-2 text-base shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+        "min-h-[56px] resize overflow-auto",
+        "px-3 py-2 bg-white border border-neutral-800",
+        "placeholder:text-neutral-800",
+        "rounded text-sm transition-colors caret-primary",
+        "focus:border-primary",
+        "focus:shadow-[0px_0px_3px_2px_#00449440]",
+        "focus:outline-none",
+        "disabled:pointer-events-none",
+        "disabled:cursor-not-allowed",
+        "disabled:border-border disabled:text-neutral-600 disabled:placeholder:text-neutral-600",
         className
       )}
-      {...props} />
+      {...props}
+    />
   );
 }
 
-export { Textarea }
+export { Textarea };
