@@ -63,6 +63,8 @@ const ScheduleAgentsPage = () => {
       ojoDecider: false,
       autoConclude: false,
       autoConcludeType: "permissive",
+      copyrightDeactivation: false,
+      copyrightClutterRemoval: false,
     },
     reuse: {
       reuseUpload: [],

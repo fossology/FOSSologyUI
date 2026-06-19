@@ -97,10 +97,10 @@ const LicenseDecider = ({ decider, handleChange }) => {
       </div>
       <InputContainer
         type="checkbox"
-        checked={decider.nomosMonk}
-        name="nomosMonk"
-        id="upload-decider-fp-copyright"
-        onChange={(checked) => handleChange(checked, "nomosMonk")}
+        checked={decider.copyrightDeactivation}
+        name="copyrightDeactivation"
+        id="upload-decider-fp-copyright-deactivation"
+        onChange={(checked) => handleChange(checked, "copyrightDeactivation")}
       >
         <span className="inline-flex items-center gap-1">
           False Positive Copyright Deactivation
@@ -118,10 +118,10 @@ const LicenseDecider = ({ decider, handleChange }) => {
       </InputContainer>
       <InputContainer
         type="checkbox"
-        checked={decider.nomosMonk}
-        name="nomosMonk"
+        checked={decider.copyrightClutterRemoval}
+        name="copyrightClutterRemoval"
         id="upload-decider-fp-copyright-clutter"
-        onChange={(checked) => handleChange(checked, "nomosMonk")}
+        onChange={(checked) => handleChange(checked, "copyrightClutterRemoval")}
       >
         <span className="inline-flex items-center gap-1">
           False Positive Copyright Deactivation and clutter removal
@@ -149,6 +149,8 @@ LicenseDecider.propTypes = {
     ojoDecider: PropTypes.bool.isRequired,
     autoConclude: PropTypes.bool.isRequired,
     autoConcludeType: PropTypes.string.isRequired,
+    copyrightDeactivation: PropTypes.string.isRequired,
+    copyrightClutterRemoval: PropTypes.string.isRequired,
   }).isRequired,
   handleChange: PropTypes.func,
 };

@@ -88,7 +88,7 @@ export const scheduleAnalysis = (folderId, uploadId, scanData) => {
       bulkReused: !!decider.bulkReused,
       newScanner: !!decider.newScanner,
       ojoDecider: !!decider.ojoDecider,
-      concludeLicenseType: !!decider.concludeLicenseType,
+      concludeLicenseType: decider.autoConclude ? decider.autoConcludeType : "",
       copyrightDeactivation: !!decider.copyrightDeactivation,
       copyrightClutterRemoval: !!decider.copyrightClutterRemoval,
     },

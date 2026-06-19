@@ -128,6 +128,8 @@ export const initialScanFileDataFile = {
     ojoDecider: false,
     autoConclude: false,
     autoConcludeType: "permissive",
+    copyrightDeactivation: false,
+    copyrightClutterRemoval: false,
   },
   reuse: {
     reuseUpload: [],
@@ -250,6 +252,8 @@ export const initialScanFileData = {
     ojoDecider: false,
     autoConclude: false,
     autoConcludeType: "permissive",
+    copyrightDeactivation: false,
+    copyrightClutterRemoval: false,
   },
   reuse: {
     reuseUpload: [],
