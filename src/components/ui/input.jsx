@@ -27,7 +27,7 @@ function Input({ className, type, ...props }) {
       data-slot="input"
       className={cn(
         "w-full px-3 py-2 bg-white border border-neutral-800 placeholder:text-neutral-800 rounded text-sm transition-colors caret-primary",
-        "focus:border-primary focus:shadow-[0px_0px_3px_2px_#00449440] focus:outline-none",
+        "focus:border-slate-500 focus:ring-1 focus:ring-slate-500 focus:outline-none",
         "disabled:pointer-events-none disabled:cursor-not-allowed disabled:border-border disabled:text-neutral-600 disabled:placeholder:text-neutral-600",
         className
       )}

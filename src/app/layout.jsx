@@ -36,7 +36,7 @@ const inter = Inter({
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={inter.variable}>
+   <html lang='en' className={inter.variable} suppressHydrationWarning>
       <body className="flex flex-col min-h-screen bg-white text-black font-inter">
         <GlobalProvider>
           <Header />
