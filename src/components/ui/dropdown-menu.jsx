@@ -26,12 +26,23 @@ import { cva } from "class-variance-authority";
 import { cn } from "@/lib/utils"
 
 const dropdownItemVariants = cva(
-  "relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  `
+  relative flex cursor-default items-center gap-2 rounded-sm
+  px-2 py-1.5 text-sm
+  outline-hidden select-none
+  data-[highlighted]:bg-secondary
+  data-[highlighted]:text-gray-900
+  data-[disabled]:pointer-events-none
+  data-[disabled]:opacity-50
+  [&_svg]:pointer-events-none
+  [&_svg]:shrink-0
+  [&_svg:not([class*='size-'])]:size-4
+  `,
   {
     variants: {
       variant: {
-        default: "hover:bg-primary hover:text-white focus:bg-primary focus:text-white",
-        standard: "hover:bg-secondary hover:text-gray-900 focus:bg-secondary focus:text-gray-900",
+        default: "hover:bg-secondary hover:text-gray-900 focus:bg-secondary focus:text-gray-900",
+        standard: "hover:bg-secondary hover:text-gray-900 data-[highlighted]:bg-secondary data-[highlighted]:text-gray-900 focus:bg-secondary focus:text-gray-900",
         panel: "hover:bg-neutral-100 focus:bg-neutral-100",
         input: "hover:bg-neutral-100 focus:bg-neutral-100 text-neutral-800",
         filter: "hover:bg-tertiary1-200 focus:bg-tertiary1-200 text-neutral-900",
@@ -221,7 +232,9 @@ function DropdownMenuSubTrigger({
       data-slot="dropdown-menu-sub-trigger"
       data-inset={inset}
       className={cn(
-        "focus:bg-accent focus:text-accent-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground flex cursor-default items-center rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-[inset]:pl-8",
+        "data-[highlighted]:bg-secondary data-[highlighted]:text-gray-900",
+        "data-[state=open]:bg-secondary data-[state=open]:text-gray-900",
+        "flex cursor-default items-center rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-[inset]:pl-8",
         className
       )}
       {...props}

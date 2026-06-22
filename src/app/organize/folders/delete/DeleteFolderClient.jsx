@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
+ SPDX-FileCopyrightText: 2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -22,7 +23,18 @@ import React, { useState, useEffect } from "react";
 import messages from "@/constants/messages";
 
 // Widgets
-import { Alert, Button, InputContainer, Spinner } from "@/components/Widgets";
+import { Spinner } from "@/components/Widgets";
+import { Button } from "@/components/ui/button";
+import {
+  AlertBanner,
+} from "@/components/ui/alert";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/select";
 
 // API Services
 import { getAllFolders, deleteFolder } from "@/services/folders";
@@ -32,9 +44,9 @@ import { handleError } from "@/shared/helper";
 
 const DeleteFolderPage = () => {
   const initialFolder = {
-    id: 1,
-    name: "Software Repository",
-    description: "Top Folder",
+    id: "",
+    name: "",
+    description: "",
     parent: null,
   };
 
@@ -44,18 +56,10 @@ const DeleteFolderPage = () => {
   };
 
   const [deleteFolderData, setDeleteFolderData] = useState(initialFolder);
-  const [folderList, setFolderList] = useState([initialFolder]);
+  const [folderList, setFolderList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState(initialMessage);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setDeleteFolderData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -93,60 +97,96 @@ const DeleteFolderPage = () => {
       });
   }, []);
 
+  const alertType =
+    message.type === "danger" || message.type === "error"
+      ? "Error"
+      : message.type === "success"
+      ? "Success"
+      : "Info";
+
   return (
-    <div className="main-container my-3">
+    <div>
       {showMessage && (
-        <Alert
-          type={message.type}
-          setShow={setShowMessage}
-          message={message.text}
-        />
+        <div className="mb-4">
+          <AlertBanner
+            type={alertType}
+            description={message.text}
+            showClose
+            onClose={() => setShowMessage(false)}
+          />
+        </div>
       )}
 
-      <h1 className="font-size-main-heading">Delete a Fossology Folder</h1>
-      <br />
-      <div className="row">
-        <div className="col-12 col-lg-8">
-          <p>Select the folder to delete.</p>
-          <ul>
+      <h1 className="text-2xl font-semibold text-gray-900 mb-6">
+        Delete a Fossology Folder
+      </h1>
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div>
+          <p className="mb-3">Select the folder to delete.</p>
+          <ul className="list-disc pl-5 space-y-1 mb-6 text-sm">
             <li>This will delete the folder, all subfolders, and all uploaded files stored within the folder!</li>
             <li>Be very careful with your selection since you can delete a lot of work!</li>
             <li>All analysis only associated with the deleted uploads will also be deleted.</li>
             <li>
-              <strong>THERE IS NO UNDELETE.</strong> When you select something to delete, it will be removed from the
+              THERE IS NO UNDELETE. When you select something to delete, it will be removed from the
               database and file repository.
             </li>
           </ul>
-
-          <form onSubmit={handleSubmit}>
-            <InputContainer
-              type="select"
-              name="id"
-              id="organize-folder-delete-id"
-              onChange={handleChange}
-              options={folderList}
-              property="name"
-              value={deleteFolderData.id}
-            >
-              Select the folder to delete:
-            </InputContainer>
-
-            <Button type="submit" className="mt-4">
-              {loading ? (
-                <Spinner
-                  as="span"
-                  animation="border"
-                  size="sm"
-                  role="status"
-                  aria-hidden="true"
-                />
-              ) : (
-                "Delete"
-              )}
-            </Button>
-          </form>
         </div>
-      </div>
+
+        <div>
+          <label className="block font-normal mb-3">
+            Select the folder to delete:
+          </label>
+
+          <Select
+            value={deleteFolderData.id?.toString()}
+            onValueChange={(value) =>
+              setDeleteFolderData((prev) => ({
+                ...prev,
+                id: value,
+              }))
+            }
+          >
+            <SelectTrigger className="w-[320px]">
+              <SelectValue placeholder="Select folder" />
+            </SelectTrigger>
+
+            <SelectContent>
+              {folderList.map((folder) => (
+                <SelectItem
+                  key={folder.id}
+                  value={folder.id.toString()}
+                >
+                  {folder.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Submit */}
+        <div className="pt-2">
+          <Button
+            type="submit"
+            disabled={loading || !deleteFolderData.id}
+            variant="alert" size="default"
+          >
+            {loading ? (
+              <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
+            ) : (
+              "Delete"
+            )}
+          </Button>
+        </div>
+      </form>
     </div>
   );
 };

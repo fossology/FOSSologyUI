@@ -42,7 +42,6 @@ const routes = {
   },
   organize: {
     folders: {
-      index: "/organize/folders",
       create: "/organize/folders/create",
       delete: "/organize/folders/delete",
       edit: "/organize/folders/edit",

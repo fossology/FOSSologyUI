@@ -19,7 +19,7 @@ SPDX-License-Identifier: GPL-2.0-only
 /*
 * This file contains all styling which is common for all theme (which defines basic layout)
 */
-@config "../../tailwind.config.js";
+@config "../../tailwind.config.mjs";
 @import 'tailwindcss' important; 
 /* @import "tailwindcss/preflight"; */
 /* @tailwind components; */
