@@ -20,5 +20,5 @@ import { redirect } from "next/navigation";
 import routes from "@/constants/routes";
 
 export default function AgentIndexPage() {
-  redirect(routes.admin.agent.monk);
+  redirect(routes.admin.monk);
 }

@@ -58,6 +58,9 @@ export const getAllUsers = () => {
   return getAllUsersApi().then((res) => res);
 };
 
+export const getAllUsersName = () => {
+  return getAllUsers();
+};
 
 // USER BY ID
 
