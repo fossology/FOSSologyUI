@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
+ SPDX-FileCopyrightText: 2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -22,7 +23,20 @@ import React, { useState, useEffect } from "react";
 import messages from "@/constants/messages";
 
 // Widgets
-import { Alert, Button, InputContainer, Spinner } from "@/components/Widgets";
+import { Spinner } from "@/components/Widgets";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  AlertBanner,
+} from "@/components/ui/alert";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/select";
 
 // API Services
 import { getAllFolders, createFolder } from "@/services/folders";
@@ -32,7 +46,7 @@ import { handleError } from "@/shared/helper";
 
 const CreateFolderPage = () => {
   const initialState = {
-    parentFolder: 1,
+    parentFolder: "",
     folderName: "",
     folderDescription: "",
   };
@@ -57,10 +71,12 @@ const CreateFolderPage = () => {
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState(initialMessage);
 
-  const { parentFolder, folderName, folderDescription } = createFolderData;
+  const { parentFolder, folderName, folderDescription } =
+    createFolderData;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     setCreateFolderData((prev) => ({
       ...prev,
       [name]: value,
@@ -69,6 +85,7 @@ const CreateFolderPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     setLoading(true);
 
     createFolder(createFolderData)
@@ -77,7 +94,8 @@ const CreateFolderPage = () => {
           type: "success",
           text: messages.createdFolder,
         });
-        setCreateFolderData(initialState); // Clear form on success
+
+        setCreateFolderData(initialState);
       })
       .catch((error) => {
         handleError(error, setMessage);
@@ -99,72 +117,123 @@ const CreateFolderPage = () => {
       });
   }, []);
 
+  const alertType =
+    message.type === "danger" || message.type === "error"
+      ? "Error"
+      : message.type === "success"
+      ? "Success"
+      : "Info";
+
   return (
-    <div className="main-container my-3">
+    <div>
       {showMessage && (
-        <Alert
-          type={message.type}
-          setShow={setShowMessage}
-          message={message.text}
-        />
+        <div className="mb-4">
+          <AlertBanner
+            type={alertType}
+            description={message.text}
+            showClose
+            onClose={() => setShowMessage(false)}
+          />
+        </div>
       )}
 
-      <h1 className="font-size-main-heading">Create a new Fossology Folder</h1>
-      <br />
+      <h1 className="text-2xl font-semibold text-gray-900 mb-6">
+        Create a new Fossology Folder
+      </h1>
 
-      <div className="row">
-        <div className="col-12 col-lg-8">
-          <form onSubmit={handleSubmit}>
-            <InputContainer
-              type="select"
-              name="parentFolder"
-              id="organize-folder-create-parent-folder"
-              onChange={handleChange}
-              options={folderList}
-              property="name"
-              value={parentFolder}
-            >
-              Select the parent folder:
-            </InputContainer>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Parent Folder */}
+        <div>
+          <label className="block font-normal mb-3">
+            1. Select the parent folder:
+          </label>
 
-            <InputContainer
-              type="text"
-              name="folderName"
-              id="organize-folder-create-folder-name"
-              onChange={handleChange}
-              placeholder="Folder name"
-              value={folderName}
-            >
-              Enter the new folder name:
-            </InputContainer>
+          <Select
+            value={parentFolder?.toString()}
+            onValueChange={(value) =>
+              setCreateFolderData((prev) => ({
+                ...prev,
+                parentFolder: value,
+              }))
+            }
+          >
+            <SelectTrigger className="w-[320px]">
+              <SelectValue placeholder="Select folder" />
+            </SelectTrigger>
 
-            <InputContainer
-              type="text"
-              name="folderDescription"
-              id="organize-folder-create-folder-description"
-              onChange={handleChange}
-              placeholder="Folder description"
-              value={folderDescription}
-            >
-              Enter a meaningful description:
-            </InputContainer>
-
-            <Button type="submit" className="mt-4">
-              {loading ? (
-                <Spinner
-                  as="span"
-                  animation="border"
-                  size="sm"
-                  role="status"
-                  aria-hidden="true"
-                />
-              ) : (
-                "Create"
-              )}
-            </Button>
-          </form>
+            <SelectContent>
+              {folderList.map((folder) => (
+                <SelectItem
+                  key={folder.id}
+                  value={folder.id.toString()}
+                >
+                  {folder.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
-      </div>
+
+        {/* Folder Name */}
+        <div>
+          <label
+            htmlFor="organize-folder-create-folder-name"
+            className="block font-normal mb-3"
+          >
+            2. Enter the new folder name:
+          </label>
+
+          <Input
+            id="organize-folder-create-folder-name"
+            name="folderName"
+            type="text"
+            placeholder="Folder name"
+            value={folderName}
+            onChange={handleChange}
+            className="w-[320px]"
+          />
+        </div>
+
+        {/* Folder Description */}
+        <div>
+          <label
+            htmlFor="organize-folder-create-folder-description"
+            className="block font-normal mb-3"
+          >
+            3. Enter a meaningful description:
+          </label>
+
+          <Textarea
+            id="organize-folder-create-folder-description"
+            name="folderDescription"
+            placeholder="Folder description"
+            value={folderDescription}
+            onChange={handleChange}
+            className="min-w-[320px] resize"
+          />
+        </div>
+
+        {/* Submit */}
+        <div className="pt-2">
+          <Button
+            type="submit"
+            disabled={loading || !folderName}
+            variant="default" size="default"
+          >
+            {loading ? (
+              <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
+            ) : (
+              "Create"
+            )}
+          </Button>
+        </div>
+      </form>
     </div>
   );
 };

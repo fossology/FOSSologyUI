@@ -153,16 +153,16 @@ export default function Header({ variant = "default" }) {
                   )}
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" sideOffset={4} className="p-0 m-0 min-w-[200px] bg-white shadow-lg border border-gray-200 z-50">
-                  <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={routes.upload.file}>From File</Link></DropdownMenuItem>
-                  <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={routes.upload.server}>From Server</Link></DropdownMenuItem>
-                  <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={routes.upload.url}>From URL</Link></DropdownMenuItem>
-                  <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={routes.upload.vcs}>From Version Control System</Link></DropdownMenuItem>
-                  <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={""}>Import FOSSology Dump</Link></DropdownMenuItem>
-                  <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={routes.upload.importReport}>Import Report</Link></DropdownMenuItem>
-                  <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={routes.upload.instructions}>Instructions</Link></DropdownMenuItem>
-                  <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={routes.upload.oneShotCopyright}>One-Shot Copyright/Email/URL</Link></DropdownMenuItem>
-                  <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={routes.upload.oneShotMonk}>One-Shot Monk Analysis</Link></DropdownMenuItem>
-                  <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={routes.upload.oneShotNomos}>One-Shot Nomos Analysis</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={routes.upload.file}>From File</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={routes.upload.server}>From Server</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={routes.upload.url}>From URL</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={routes.upload.vcs}>From Version Control System</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={""}>Import FOSSology Dump</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={routes.upload.importReport}>Import Report</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={routes.upload.instructions}>Instructions</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={routes.upload.oneShotCopyright}>One-Shot Copyright/Email/URL</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={routes.upload.oneShotMonk}>One-Shot Monk Analysis</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={routes.upload.oneShotNomos}>One-Shot Nomos Analysis</Link></DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
 
@@ -188,15 +188,15 @@ export default function Header({ variant = "default" }) {
                       />}
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" sideOffset={4} className="p-0 m-0 min-w-[200px] bg-white shadow-lg border border-gray-200 z-50">
-                  <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold">
+                  <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
                     <Link href={routes.jobs.myRecentJobs}>My Recent Jobs</Link>
                   </DropdownMenuItem>
                   {admin && (
-                    <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold">
+                    <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
                       <Link href={routes.jobs.allRecentJobs}>All Recent Jobs</Link>
                     </DropdownMenuItem>
                   )}
-                  <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold">
+                  <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
                     <Link href={routes.jobs.scheduleAgents}>Schedule Agents</Link>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -223,7 +223,7 @@ export default function Header({ variant = "default" }) {
                       />}
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" sideOffset={4} className="p-0 m-0 min-w-[220px] bg-white shadow-lg border border-gray-200 z-50">
-                  <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={routes.organize.folders.index}>Folders</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={routes.organize.folders.create}>Folders</Link></DropdownMenuItem>
 
                   <DropdownMenuSub>
                     <DropdownMenuSubTrigger
@@ -302,10 +302,10 @@ export default function Header({ variant = "default" }) {
                       )}>Buckets
                       </DropdownMenuSubTrigger>
                       <DropdownMenuSubContent className="p-0 m-0 bg-white border border-gray-200">
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={""}>Duplicate Bucketpool</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={""}>Duplicate Bucketpool</Link></DropdownMenuItem>
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
-                    <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold">
+                    <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
                     <Link href={""}>Customize</Link>
                     </DropdownMenuItem>
                     <DropdownMenuSub>
@@ -318,16 +318,16 @@ export default function Header({ variant = "default" }) {
                       )}>Dashboards
                       </DropdownMenuSubTrigger>
                       <DropdownMenuSubContent className="p-0 m-0 bg-white border border-gray-200">
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={""}>All Jobs</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={""}>Folder/Upload Proportions</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={""}>Overview</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={""}>Statistics</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={""}>All Jobs</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={""}>Folder/Upload Proportions</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={""}>Overview</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={""}>Statistics</Link></DropdownMenuItem>
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
-                    <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold">
+                    <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
                     <Link href={""}>Fossdash</Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold">
+                    <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
                       <Link href={routes.admin.group.index}>Groups</Link>
                     </DropdownMenuItem>
                     <DropdownMenuSub>
@@ -368,14 +368,14 @@ export default function Header({ variant = "default" }) {
                       )}>Obligation Administration
                       </DropdownMenuSubTrigger>
                       <DropdownMenuSubContent className="p-0 m-0 bg-white border border-gray-200">
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={""}>Add Obligation</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={""}>CSV Export</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={""}>JSON Export</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={""}>Obligation Import</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={""}>Select Obligation</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={""}>Add Obligation</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={""}>CSV Export</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={""}>JSON Export</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={""}>Obligation Import</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={""}>Select Obligation</Link></DropdownMenuItem>
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
-                    <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold">
+                    <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
                     <Link href={""}>Scheduler</Link>
                     </DropdownMenuItem>
                     <DropdownMenuSub>
@@ -388,11 +388,11 @@ export default function Header({ variant = "default" }) {
                       )}>Tag
                       </DropdownMenuSubTrigger>
                       <DropdownMenuSubContent className="p-0 m-0 bg-white border border-gray-200">
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={""}>Create Tag</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={""}>Enable/Disable Tag</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={""}>Create Tag</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={""}>Enable/Disable Tag</Link></DropdownMenuItem>
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
-                    <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold">
+                    <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
                     <Link href={""}>Upload Permissions</Link>
                     </DropdownMenuItem>
                     <DropdownMenuSub>
@@ -405,9 +405,9 @@ export default function Header({ variant = "default" }) {
                       )}>Users
                       </DropdownMenuSubTrigger>
                       <DropdownMenuSubContent className="p-0 m-0 bg-white border border-gray-200">
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={routes.admin.users.add}>Add User</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={routes.admin.users.edit}>Edit User Account</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={routes.admin.users.delete}>Delete User</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={routes.admin.users.add}>Add User</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={routes.admin.users.edit}>Edit User Account</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={routes.admin.users.delete}>Delete User</Link></DropdownMenuItem>
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
                   </DropdownMenuContent>
@@ -434,7 +434,7 @@ export default function Header({ variant = "default" }) {
                   )}
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="start" sideOffset={4} className="p-0 m-0 min-w-[200px] bg-white shadow-lg border border-gray-200 z-50">
-                    <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={routes.help.about}>About</Link></DropdownMenuItem>
+                    <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={routes.help.about}>About</Link></DropdownMenuItem>
                     <DropdownMenuSub>
                       <DropdownMenuSubTrigger 
                       className={clsx(
@@ -445,14 +445,14 @@ export default function Header({ variant = "default" }) {
                       )}>Debug
                       </DropdownMenuSubTrigger>
                       <DropdownMenuSubContent className="p-0 m-0 bg-white border border-gray-200">
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={""}>Debug Menus</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={""}>Debug Plugins</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={""}>Debug User</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={""}>Flush Cache</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={""}>Global Variables</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={""}>Debug Menus</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={""}>Debug Plugins</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={""}>Debug User</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={""}>Flush Cache</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={""}>Global Variables</Link></DropdownMenuItem>
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
-                    <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={externalLinks.fossologyWiki} target="_blank" rel="noreferrer">Documentation</Link></DropdownMenuItem>
+                    <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={externalLinks.fossologyWiki} target="_blank" rel="noreferrer">Documentation</Link></DropdownMenuItem>
                     <DropdownMenuSub>
                       <DropdownMenuSubTrigger 
                       className={clsx(
@@ -463,11 +463,11 @@ export default function Header({ variant = "default" }) {
                       )}>Getting Started
                       </DropdownMenuSubTrigger>
                       <DropdownMenuSubContent className="p-0 m-0 bg-white border border-gray-200">
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={routes.help.licenseBrowser}>License Browser</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={routes.help.overview}>Overview</Link></DropdownMenuItem>                        
+                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={routes.help.licenseBrowser}>License Browser</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={routes.help.overview}>Overview</Link></DropdownMenuItem>                        
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
-                    <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={routes.help.thirdPartyLicenses}>Third Party Licenses</Link></DropdownMenuItem>
+                    <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={routes.help.thirdPartyLicenses}>Third Party Licenses</Link></DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
             </>

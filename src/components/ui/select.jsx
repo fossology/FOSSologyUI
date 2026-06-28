@@ -73,19 +73,20 @@ function SelectContent({ className, children, position = "popper", ...props }) {
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
+        side="bottom"
+        align="start"
+        sideOffset={4}
         className={cn(
-          "w-[var(--radix-select-trigger-width)] overflow-hidden rounded-b bg-white text-foreground border-solid border-t-0 border-x border-b border-neutral-300 shadow-[0px_4px_6px_0px_#00000017] z-50",
-          position === "popper" && "data-[side=bottom]:translate-y-0",
+          "z-50 w-[var(--radix-select-trigger-width)] overflow-hidden rounded-b border-x border-b border-neutral-300 border-t-0 bg-white shadow-[0px_4px_6px_0px_#00000017]",
           className
         )}
         position={position}
+        avoidCollisions={false}
         {...props}
       >
-        <SelectScrollUpButton />
-        <SelectPrimitive.Viewport className="p-0">
+        <SelectPrimitive.Viewport className="max-h-64 overflow-y-auto p-0">
           {children}
         </SelectPrimitive.Viewport>
-        <SelectScrollDownButton />
       </SelectPrimitive.Content>
     </SelectPrimitive.Portal>
   )
