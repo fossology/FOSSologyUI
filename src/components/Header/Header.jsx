@@ -330,32 +330,19 @@ export default function Header({ variant = "default" }) {
                     <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
                       <Link href={routes.admin.group.index}>Groups</Link>
                     </DropdownMenuItem>
-                    <DropdownMenuSub>
-                      <DropdownMenuSubTrigger 
-                      className={clsx(
-                        "flex items-center justify-between w-full px-2 py-2 text-sm rounded-md cursor-pointer",
-                        "hover:bg-secondary hover:text-gray-900 hover:font-bold",
-                        "focus:bg-secondary focus:text-gray-900 focus:font-bold",
-                        "data-[state=open]:bg-secondary data-[state=open]:text-gray-900 data-[state=open]:font-bold"
-                      )}>License Administration
-                      </DropdownMenuSubTrigger>
-                      <DropdownMenuSubContent className="p-0 m-0 bg-white border border-gray-200">
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={""}>Acknowledgements</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={routes.admin.license.create}>Add License</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={routes.admin.license.licenseCSV}>CSV Export All</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={""}>CSV Export Marrydone</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={""}>Candidates</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={""}>Compatibility Rules</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={""}>JSON Export All</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={""}>JSON Export Marrydone</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={""}>License Import</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={""}>Rules Export</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={""}>Rules Import</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={routes.admin.license.selectLicense}>Select License</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={""}>Standard Comments</Link></DropdownMenuItem>
-                      </DropdownMenuSubContent>
-                    </DropdownMenuSub>
-                    <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold">
+                    <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
+                      <Link href={""}>Standard Comments</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
+                      <Link href={""}>Acknowledgements</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
+                      <Link href={routes.admin.compatibility.selectCompatibility}>Compatibility Rules</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
+                      <Link href={routes.admin.license.create}>License Administration</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
                     <Link href={routes.admin.maintenance}>Maintenance</Link>
                     </DropdownMenuItem>
                     <DropdownMenuSub>

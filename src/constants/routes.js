@@ -79,6 +79,11 @@ const routes = {
       delete: "/admin/users/delete",
       edit: "/admin/users/edit",
     },
+    compatibility:{
+      selectCompatibility: "/admin/compatibility/selectCompatibility",
+      operations: "/admin/compatibility/operations",
+      rulesImport: "/admin/compatibility/operations/rulesImport",
+    },
     license: {
       create: "/admin/license/create",
       selectLicense: "/admin/license/selectLicense",
