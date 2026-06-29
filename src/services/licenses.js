@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -17,7 +17,14 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import { getAllLicenseApi, createCandidateLicenseApi } from "@/api/licenses";
+import {
+  getAllLicenseApi,
+  createCandidateLicenseApi,
+  importLicenseCsvApi,
+  importLicenseJsonApi,
+  exportLicenseCsvApi,
+  exportLicenseJsonApi,
+} from "@/api/licenses";
 
 // Fetching the licenses with their kind i.e (candidate, main, all)
 export const getAllLicense = (licenseData) => {
@@ -26,4 +33,20 @@ export const getAllLicense = (licenseData) => {
 
 export const createCandidateLicense = (licenseData) => {
   return createCandidateLicenseApi(licenseData).then((res) => res);
+};
+
+export const importLicenseCsv = (formData) => {
+  return importLicenseCsvApi(formData).then((res) => res);
+};
+
+export const importLicenseJson = (formData) => {
+  return importLicenseJsonApi(formData).then((res) => res);
+};
+
+export const exportLicenseCsv = (id) => {
+  return exportLicenseCsvApi(id);
+};
+
+export const exportLicenseJson = (id) => {
+  return exportLicenseJsonApi(id);
 };
