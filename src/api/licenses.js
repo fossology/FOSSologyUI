@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -26,9 +26,14 @@ import { getToken } from "@/shared/authHelper";
 import sendRequest from "./sendRequest";
 
 // Fetching the licenses with their kind i.e (candidate, main, all)
-export const getAllLicenseApi = ({ page = 1, limit = 10, kind }) => {
+export const getAllLicenseApi = ({
+  page = 1,
+  limit = 100,
+  kind = "all",
+  active,
+}) => {
   return sendRequest({
-    url: endpoints.admin.license.get(),
+    url: endpoints.license.get(),
     method: "GET",
     headers: {
       Authorization: getToken(),
@@ -37,6 +42,7 @@ export const getAllLicenseApi = ({ page = 1, limit = 10, kind }) => {
       page,
       limit,
       kind,
+      active,
     },
   });
 };
@@ -64,5 +70,57 @@ export const createCandidateLicenseApi = ({
       isCandidate: true,
       mergeRequest,
     },
+  });
+};
+
+export const importLicenseCsvApi = (formData) => {
+  return sendRequest({
+    url: endpoints.license.importCsv(),
+    method: "POST",
+    isMultipart: true,
+    headers: {
+      Authorization: getToken(),
+    },
+    body: formData,
+  });
+};
+
+export const importLicenseJsonApi = (formData) => {
+  return sendRequest({
+    url: endpoints.license.importJson(),
+    method: "POST",
+    isMultipart: true,
+    headers: {
+      Authorization: getToken(),
+    },
+    body: formData,
+  });
+};
+
+export const exportLicenseCsvApi = (id = 0) => {
+  return sendRequest({
+    url: endpoints.license.exportCsv(),
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+    queryParams: {
+      id,
+    },
+    isFile: true,
+  });
+};
+
+export const exportLicenseJsonApi = (id = 0) => {
+  return sendRequest({
+    url: endpoints.license.exportJson(),
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+    queryParams: {
+      id,
+    },
+    isFile: true,
   });
 };

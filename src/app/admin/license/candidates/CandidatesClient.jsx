@@ -1,5 +1,6 @@
 /*
- SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
+ SPDX-FileCopyrightText: 2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -16,12 +17,20 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import SelectLicenseClient from "./SelectLicenseClient";
+"use client"
 
-export const metadata = {
-    title: "Select License | FOSSology",
+import React from "react";
+
+
+const Candidates = () => {
+
+    return(
+        <div>
+            <h1 className="text-2xl font-semibold text-gray-900 mb-6">
+                Candidates
+            </h1>
+        </div>
+    );
 };
 
-export default function SelectLicensePage() {
-    return <SelectLicenseClient />;
-}
+export default Candidates;

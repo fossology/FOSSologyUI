@@ -1,5 +1,5 @@
 /*
- SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -16,12 +16,14 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import SelectLicenseClient from "./SelectLicenseClient";
+import LicenseAdminTabsNav from "./LicenseAdminTabsNav";
 
-export const metadata = {
-    title: "Select License | FOSSology",
-};
-
-export default function SelectLicensePage() {
-    return <SelectLicenseClient />;
+export default function LicenseAdminLayout({ children }) {
+  return (
+    <div className="mx-40 px-4">
+      <h1 className="text-2xl font-semibold text-gray-900 mt-6 mb-4">License Administration</h1>
+      <LicenseAdminTabsNav />
+      <div className="mt-6">{children}</div>
+    </div>
+  );
 }

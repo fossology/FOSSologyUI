@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -17,20 +17,188 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React from "react";
+"use client";
+
+import React, { useEffect, useMemo, useState } from "react";
+
+// UI Components
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/select";
+import { AlertBanner } from "@/components/ui/alert";
+import { Spinner } from "@/components/Widgets";
+
+// Services
+import { getAllLicense } from "@/services/licenses";
+
+// Helper
+import { handleError } from "@/shared/helper";
 
 const SelectLicense = () => {
+  const [licenses, setLicenses] = useState([]);
+  const [filter, setFilter] = useState("");
+  const [familyName, setFamilyName] = useState("");
+
+  const [loading, setLoading] = useState(true);
+
+  const [showMessage, setShowMessage] = useState(false);
+  const [message, setMessage] = useState({
+    type: "success",
+    text: "",
+  });
+
+  useEffect(() => {
+    getAllLicense({
+      page: 1,
+      limit: 1000,
+      kind: "all",
+    })
+      .then((res) => {
+        setLicenses(Array.isArray(res) ? res : []);
+      })
+      .catch((error) => {
+        handleError(error, setMessage);
+        setShowMessage(true);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  const familyNames = useMemo(() => {
+    const families = new Set();
+
+    licenses.forEach((license) => {
+      if (!license.shortName) return;
+
+      if (
+        license.shortName === "No_license_found" ||
+        license.shortName === "Unknown license"
+      ) {
+        families.add(license.shortName);
+      } else {
+        const family = license.shortName.split(/[\s_\-\(\[\/]/)[0];
+        families.add(family);
+      }
+    });
+
+    return ["All", ...Array.from(families).sort()];
+  }, [licenses]);
+
+  const handleFind = (e) => {
+    e.preventDefault();
+
+    console.log({
+      filter,
+      familyName,
+    });
+
+    // TODO:
+    // Navigate to license listing page
+    // or filter licenses after table implementation
+  };
+
+  const alertType =
+    message.type === "danger" || message.type === "error"
+      ? "Error"
+      : message.type === "success"
+      ? "Success"
+      : "Info";
+
   return (
-    <>
-      <div className="main-container my-3">
-        <div className="row">
-          <div className="col-lg-8 col-md-12 col-sm-12 col-12">
-            <h1 className="font-size-main-heading">Select License</h1>
-            <br />
-          </div>
+    <div>
+      {showMessage && (
+        <div className="mb-4">
+          <AlertBanner
+            type={alertType}
+            description={message.text}
+            showClose
+            onClose={() => setShowMessage(false)}
+          />
         </div>
-      </div>
-    </>
+      )}
+
+      <h1 className="text-2xl font-semibold text-gray-900 mb-6">
+        Select License
+      </h1>
+
+      <form onSubmit={handleFind} className="space-y-6">
+        <p className="text-sm">
+          What license family do you wish to view:
+        </p>
+
+        <div>
+          <label className="block font-normal mb-3">
+            Filter:
+          </label>
+
+          <Select value={filter} onValueChange={setFilter}>
+            <SelectTrigger className="w-[320px]">
+              <SelectValue placeholder="Select filter" />
+            </SelectTrigger>
+
+            <SelectContent>
+              <SelectItem value="all">All</SelectItem>
+              <SelectItem value="done">Checked</SelectItem>
+              <SelectItem value="notdone">Not Checked</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div>
+          <label className="block font-normal mb-3">
+            License family name:
+          </label>
+
+          {loading ? (
+            <div className="flex items-center gap-2 text-sm text-gray-500">
+              <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
+              Loading license families...
+            </div>
+          ) : (
+            <Select
+              value={familyName}
+              onValueChange={setFamilyName}
+            >
+              <SelectTrigger className="w-[320px]">
+                <SelectValue placeholder="Select license family" />
+              </SelectTrigger>
+
+              <SelectContent>
+                {familyNames.map((family) => (
+                  <SelectItem key={family} value={family}>
+                    {family}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+        </div>
+
+        <div className="pt-2">
+          <Button
+            type="submit"
+            variant="default"
+            disabled={
+              loading ||
+              !filter ||
+              !familyName
+            }
+          >
+            Find
+          </Button>
+        </div>
+      </form>
+    </div>
   );
 };
 

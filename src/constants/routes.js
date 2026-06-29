@@ -88,7 +88,10 @@ const routes = {
     license: {
       create: "/admin/license/create",
       selectLicense: "/admin/license/selectLicense",
-      licenseCSV: "/licenseCSV/fossology-license-export.csv",
+      candidates: "/admin/license/candidates",
+      operations: "/admin/license/operations",
+      licenseCSV: "/admin/license/operations/licenseCSV/fossology-license-export.csv",
+      licenseImport: "/admin/license/operations/licenseImport"
     },
     maintenance: "/admin/maintenance",
   },
