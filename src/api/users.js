@@ -57,7 +57,7 @@ export const getAllUsersApi = () => {
 
 export const getUserByIdApi = (id) => {
   return sendRequest({
-    url: endpoints.users.getSingle(id),
+    url: endpoints.users.getByName(id),
     method: "GET",
     headers: {
       Authorization: getToken(),
@@ -70,7 +70,7 @@ export const getUserByIdApi = (id) => {
 
 export const addUserApi = (userData) => {
   return sendRequest({
-    url: endpoints.users.add(),
+    url: endpoints.users.create(),
     method: "POST",
     headers: {
       Authorization: getToken(),
@@ -84,7 +84,7 @@ export const addUserApi = (userData) => {
 
 export const editUserByIdApi = (id, userData) => {
   return sendRequest({
-    url: endpoints.users.edit(id),
+    url: endpoints.users.updateByName(id),
     method: "PUT",
     headers: {
       Authorization: getToken(),
@@ -98,7 +98,7 @@ export const editUserByIdApi = (id, userData) => {
 
 export const deleteUserApi = (id) => {
   return sendRequest({
-    url: endpoints.users.delete(id),
+    url: endpoints.users.deleteByName(id),
     method: "DELETE",
     headers: {
       Authorization: getToken(),
@@ -111,7 +111,7 @@ export const deleteUserApi = (id) => {
 
 export const getTokensApi = (type) => {
   return sendRequest({
-    url: endpoints.users.getTokens(type),
+    url: endpoints.users.tokensByType(type),
     method: "GET",
     headers: {
       Authorization: getToken(),

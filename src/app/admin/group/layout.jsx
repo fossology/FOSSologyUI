@@ -1,5 +1,5 @@
 /*
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -16,12 +16,14 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import CreateGroupClient from "./CreateGroupClient";
+import GroupTabsNav from "./GroupTabsNav";
 
-export const metadata = {
-    title: "Add Group | FOSSology",
-};
-
-export default function CreateGroupPage() {
-    return <CreateGroupClient />;
+export default function GroupLayout({ children }) {
+  return (
+    <div className="mx-40 px-4">
+      <h1 className="text-2xl font-semibold text-gray-900 mt-6 mb-4">Group</h1>
+      <GroupTabsNav />
+      <div className="mt-6">{children}</div>
+    </div>
+  );
 }
