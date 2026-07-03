@@ -65,7 +65,7 @@ if (type === "radio") {
 
       <Label
         htmlFor={id}
-        className="text-base font-normal leading-none cursor-pointer"
+        className="leading-none cursor-pointer"
       >
         {children}
       </Label>
@@ -84,7 +84,7 @@ if (type === "radio") {
           disabled={disabled}
           id={id}
         />
-        <Label htmlFor={id} className="text-base font-normal">{children} </Label>
+        <Label htmlFor={id}>{children} </Label>
       </div>
     );
   }
@@ -93,9 +93,9 @@ if (type === "radio") {
       <div className="my-1">
         <div className={`flex items-center gap-3 ${fullWidth ? "w-full" : ""} ${labelPosition === "top" ? "flex-col items-start" : ""}`}>
           {children && (
-            <label htmlFor={id} className={`font-base whitespace-nowrap ${disabled ? "text-neutral-600" : ""}`}>
+            <Label htmlFor={id} className={`whitespace-nowrap ${disabled ? "text-neutral-600" : ""}`}>
               {children}
-            </label>
+            </Label>
           )}
           <Select
             name={name}
@@ -136,9 +136,9 @@ if (type === "radio") {
   return (
     <div className="my-2">
       <div className={`flex items-center gap-3 ${fullWidth ? "w-full" : ""} ${labelPosition === "top" ? "flex-col items-start" : ""}`}>
-        <label htmlFor={id} className={`font-demi ${disabled ? "text-neutral-600" : ""}`}>
+        <Label htmlFor={id} className={`font-demi ${disabled ? "text-neutral-600" : ""}`}>
           {children}
-        </label>
+        </Label>
         <div className={`flex items-center gap-2 ${fullWidth ? "w-full" : ""}`}>
           <input
             type={type}

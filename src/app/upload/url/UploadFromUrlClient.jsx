@@ -29,7 +29,7 @@ import CommonFields from "@/components/Upload/CommonFields";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectTrigger,
@@ -340,9 +340,9 @@ const UploadFromUrlPage = () => {
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* 1. Folder */}
         <div>
-          <label className="block font-normal mb-3">
+          <Label className="block mb-3">
             1. Select the folder for storing the uploaded files:
-          </label>
+          </Label>
           <Select
             value={uploadUrlData.folderId?.toString()}
             onValueChange={(value) =>
@@ -358,9 +358,9 @@ const UploadFromUrlPage = () => {
 
         {/* 2. URL */}
         <div>
-          <label className="block font-normal mb-3">
+          <Label className="block mb-3">
             2. Enter the URL to the file or directory:
-          </label>
+          </Label>
           <div className="flex items-baseline gap-3">
             <Input
               type="text" name="url" value={urlData.url}
@@ -376,9 +376,9 @@ const UploadFromUrlPage = () => {
 
         {/* 3. Viewable Name */}
         <div>
-          <label className="block font-normal mb-3">
+          <Label className="block mb-3">
             3. (Optional) Enter a viewable name for this file or directory:
-          </label>
+          </Label>
           <Input
             type="text" name="name" value={urlData.name}
             onChange={handleUrlChange} placeholder="Enter viewable name"
@@ -391,7 +391,7 @@ const UploadFromUrlPage = () => {
 
         {/* 4. Description */}
         <div>
-          <label className="block font-normal mb-1">4. Description</label>
+          <Label className="block mb-1">4. Description</Label>
           <p className={`text-sm mb-2 ${isUrlValid ? "text-info-500" : "text-error-600"}`}>
             {displayName}
           </p>

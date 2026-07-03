@@ -47,6 +47,7 @@ import {
 } from '@/components/ui/alert';
 
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 
 const ScheduleAgentsPage = () => {
   const initialScheduleAnalysisData = {
@@ -244,12 +245,12 @@ const ScheduleAgentsPage = () => {
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Folder selection */}
         <div>
-          <label
+          <Label
             htmlFor="folderId"
-            className="block text-base font-normal text-foreground mb-3"
+            className="block mb-3"
           >
             1. Select the folder containing the upload you wish to analyze:
-          </label>
+          </Label>
           <Select
             name="folderId"
             value={scheduleAnalysisData.folderId.toString()}
@@ -275,12 +276,12 @@ const ScheduleAgentsPage = () => {
 
         {/* Upload selection */}
         <div>
-          <label
+          <Label
             htmlFor="uploadId"
-            className="block text-base font-normal text-foreground mb-3"
+            className="block mb-3"
           >
             2. Select the upload to analyze:
-          </label>
+          </Label>
           <Select
             name="uploadId"
             value={scheduleAnalysisData.uploadId?.toString() || ""}

@@ -26,6 +26,7 @@ import messages from "@/constants/messages";
 import { Spinner } from "@/components/Widgets";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
   AlertBanner,
@@ -144,9 +145,9 @@ const CreateFolderPage = () => {
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Parent Folder */}
         <div>
-          <label className="block font-normal mb-3">
+          <Label className="block mb-3">
             1. Select the parent folder:
-          </label>
+          </Label>
 
           <Select
             value={parentFolder?.toString()}
@@ -176,12 +177,12 @@ const CreateFolderPage = () => {
 
         {/* Folder Name */}
         <div>
-          <label
+          <Label
             htmlFor="organize-folder-create-folder-name"
-            className="block font-normal mb-3"
+            className="block mb-3"
           >
             2. Enter the new folder name:
-          </label>
+          </Label>
 
           <Input
             id="organize-folder-create-folder-name"
@@ -196,12 +197,12 @@ const CreateFolderPage = () => {
 
         {/* Folder Description */}
         <div>
-          <label
+          <Label
             htmlFor="organize-folder-create-folder-description"
-            className="block font-normal mb-3"
+            className="block mb-3"
           >
             3. Enter a meaningful description:
-          </label>
+          </Label>
 
           <Textarea
             id="organize-folder-create-folder-description"

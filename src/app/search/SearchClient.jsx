@@ -136,9 +136,9 @@ const SearchClient = () => {
               <RadioGroupItem
                 value="directory"
                 id="directory"
-                className="w-4 h-4 mt-1"
+                className="w-4 h-4"
               />
-              <Label htmlFor="directory" className="text-base text-foreground">
+              <Label htmlFor="directory">
                 Containers only (rpms, tars, isos, etc), including directories.
               </Label>
             </div>
@@ -147,9 +147,9 @@ const SearchClient = () => {
                 <RadioGroupItem
                   value="containers"
                   id="containers"
-                  className="w-4 h-4 mt-1"
+                  className="w-4 h-4"
                 />
-                <Label htmlFor="containers" className="text-base text-foreground">
+                <Label htmlFor="containers">
                   Containers only (rpms, tars, isos, etc), excluding directories. The filtering for license or copyright is not supported in this case.
                 </Label>
               </div>
@@ -158,9 +158,9 @@ const SearchClient = () => {
               <RadioGroupItem
                 value="allfiles"
                 id="allfiles"
-                className="w-4 h-4 mt-1"
+                className="w-4 h-4"
               />
-              <Label htmlFor="allfiles" className="text-base text-foreground">
+              <Label htmlFor="allfiles">
                 All Files
               </Label>
             </div>
@@ -176,9 +176,9 @@ const SearchClient = () => {
 
             <AccordionContent className="space-y-4 pb-2">
               <div>
-                <label className="block text-base font-medium text-gray-700 mb-1">
+                <Label className="block text-gray-700 mb-1">
                   Choose upload to search into:
-                </label>
+                </Label>
                 <Select
                   name="uploadId"
                   onValueChange={(value) =>
@@ -200,9 +200,9 @@ const SearchClient = () => {
 
 
               <div>
-                <label className="block text-base font-medium text-gray-700 mb-1">
+                <Label className="block text-gray-700 mb-1">
                   Enter the filename to find:
-                </label>
+                </Label>
                 <Input
                   type="text"
                   name="filename"
@@ -216,9 +216,9 @@ const SearchClient = () => {
               </div>
 
               <div>
-                <label className="block text-base font-medium text-gray-700 mb-1">
+                <Label className="block text-gray-700 mb-1">
                   File size is ≥
-                </label>
+                </Label>
                 <Input
                   type="text"
                   name="filesizemin"
@@ -229,9 +229,9 @@ const SearchClient = () => {
               </div>
 
               <div>
-                <label className="block text-base font-medium text-gray-700 mb-1">
+                <Label className="block text-gray-700 mb-1">
                   File size is ≤
-                </label>
+                </Label>
                 <Input
                   type="text"
                   name="filesizemax"
@@ -257,7 +257,7 @@ const SearchClient = () => {
           <AccordionContent>
             <div className="space-y-4 mt-2">
               <div>
-                <label className="block text-base font-medium text-gray-700 mb-1">License:</label>
+                <Label className="block text-gray-700 mb-1">License:</Label>
                 <Input
                   type="text"
                   name="license"
@@ -269,7 +269,7 @@ const SearchClient = () => {
               </div>
 
               <div>
-                <label className="block text-base font-medium text-gray-700 mb-1">Copyright:</label>
+                <Label className="block text-gray-700 mb-1">Copyright:</Label>
                 <Input
                   type="text"
                   name="copyright"

@@ -25,6 +25,7 @@ import messages from "@/constants/messages";
 import CommonFields from "@/components/Upload/CommonFields";
 
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import {
@@ -305,9 +306,9 @@ const UploadFromServerPage = () => {
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* 1. Folder */}
         <div>
-          <label className="block font-normal mb-3">
+          <Label className="block mb-3">
             1. Select the folder for storing the uploaded files:
-          </label>
+          </Label>
           <Select
             value={uploadServerData.folderId?.toString()}
             onValueChange={(value) =>
@@ -329,7 +330,7 @@ const UploadFromServerPage = () => {
 
         {/* 2. File Path */}
         <div>
-          <label className="block font-normal mb-3">2. Enter the file path:</label>
+          <Label className="block mb-3">2. Enter the file path:</Label>
           <div className="flex items-center gap-3">
             <Input
               type="text"
@@ -351,9 +352,9 @@ const UploadFromServerPage = () => {
 
         {/* 3. Viewable Name */}
         <div>
-          <label className="block font-normal mb-3">
+          <Label className="block mb-3">
             3. (Optional) Enter a viewable name for this file or directory:
-          </label>
+          </Label>
           <Input
             type="text"
             name="viewableName"
@@ -369,7 +370,7 @@ const UploadFromServerPage = () => {
 
         {/* 4. Description */}
         <div>
-          <label className="block font-normal mb-1">4. Description</label>
+          <Label className="block mb-1">4. Description</Label>
           <p className={`text-sm mb-2 ${fileName ? "text-info-500" : "text-error-600"}`}>
             {fileName || "No file chosen"}
           </p>

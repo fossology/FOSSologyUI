@@ -53,7 +53,6 @@ function AccessLevel({ accessLevel, handleChange }) {
 
           <Label
             htmlFor="upload-access-level-private"
-            className="text-base font-normal"
           >
             Visible only for active group{" "}
             <Tooltip title="which is the currently selected group" />
@@ -68,7 +67,6 @@ function AccessLevel({ accessLevel, handleChange }) {
 
           <Label
             htmlFor="upload-access-level-protected"
-            className="text-base font-normal"
           >
             Visible for all groups{" "}
             <Tooltip title="which are accessible by you now" />
@@ -83,7 +81,6 @@ function AccessLevel({ accessLevel, handleChange }) {
 
           <Label
             htmlFor="upload-access-level-public"
-            className="text-base font-normal"
           >
             Make Public{" "}
             <Tooltip title="visible for all users" />

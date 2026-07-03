@@ -27,6 +27,7 @@ import CommonFields from "@/components/Upload/CommonFields";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import {
   Select, SelectTrigger, SelectContent, SelectItem, SelectValue,
 } from "@/components/ui/select";
@@ -378,9 +379,9 @@ const UploadFromVcsPage = () => {
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* 1. Folder */}
         <div>
-          <label className="block font-normal mb-3">
+          <Label className="block mb-3">
             1. Select the folder for storing the uploaded files:
-          </label>
+          </Label>
           <Select
             value={uploadVcsData.folderId?.toString()}
             onValueChange={(value) =>
@@ -396,9 +397,9 @@ const UploadFromVcsPage = () => {
 
         {/* 2. VCS Type */}
         <div>
-          <label className="block font-normal mb-3">
+          <Label className="block mb-3">
             2. Select the type of version control system:
-          </label>
+          </Label>
           <Select
             value={vcsData.vcsType}
             onValueChange={(value) => setVcsData({ ...vcsData, vcsType: value })}
@@ -418,7 +419,7 @@ const UploadFromVcsPage = () => {
 
         {/* 3. Repo URL */}
         <div>
-          <label className="block font-normal mb-3">3. Enter the URL of the repo:</label>
+          <Label className="block mb-3">3. Enter the URL of the repo:</Label>
           <div className="flex items-baseline gap-3">
             <Input
               type="text"
@@ -439,7 +440,7 @@ const UploadFromVcsPage = () => {
 
         {/* 4. Branch */}
         <div>
-          <label className="block font-normal mb-3">4. (Optional for Git) Branch name:</label>
+          <Label className="block mb-3">4. (Optional for Git) Branch name:</Label>
           <Input
             type="text" name="vcsBranch" value={vcsData.vcsBranch}
             onChange={handleVcsChange} placeholder="main"
@@ -449,7 +450,7 @@ const UploadFromVcsPage = () => {
 
         {/* 5. Username */}
         <div>
-          <label className="block font-normal mb-3">5. (Optional) Username:</label>
+          <Label className="block mb-3">5. (Optional) Username:</Label>
           <Input
             type="text" name="vcsUsername" value={vcsData.vcsUsername}
             onChange={handleVcsChange} placeholder="Enter username"
@@ -459,7 +460,7 @@ const UploadFromVcsPage = () => {
 
         {/* 6. Password */}
         <div>
-          <label className="block font-normal mb-3">6. (Optional) Password:</label>
+          <Label className="block mb-3">6. (Optional) Password:</Label>
           <Input
             type="password" name="vcsPassword" value={vcsData.vcsPassword}
             onChange={handleVcsChange} placeholder="Enter password"
@@ -469,9 +470,9 @@ const UploadFromVcsPage = () => {
 
         {/* 7. Viewable Name */}
         <div>
-          <label className="block font-normal mb-3">
+          <Label className="block mb-3">
             7. (Optional) Enter a viewable name for this file (directory):
-          </label>
+          </Label>
           <Input
             type="text" name="vcsName" value={vcsData.vcsName}
             onChange={handleVcsChange} placeholder="Enter viewable name"
@@ -484,7 +485,7 @@ const UploadFromVcsPage = () => {
 
         {/* 8. Description */}
         <div>
-          <label className="block font-normal mb-1">8. Description</label>
+          <Label className="block mb-1">8. Description</Label>
           <p className={`text-sm mb-2 ${isRepoValid ? "text-info-500" : "text-error-600"}`}>
             {repoName || "No repository chosen"}
           </p>
