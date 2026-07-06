@@ -27,6 +27,7 @@ import { Spinner } from "@/components/Widgets";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import {
   AlertBanner,
 } from "@/components/ui/alert";
@@ -158,9 +159,9 @@ const EditFolderPage = () => {
 
         {/* Folder to edit */}
         <div>
-          <label className="block font-normal mb-3">
+          <Label className="block mb-3">
             1. Select the folder to edit:
-          </label>
+          </Label>
 
           <Select
             value={id?.toString()}
@@ -190,12 +191,12 @@ const EditFolderPage = () => {
 
         {/* Folder Name */}
         <div>
-          <label
+          <Label
             htmlFor="organize-folder-edit-name"
-            className="block font-normal mb-3"
+            className="block mb-3"
           >
             2. Change the folder name:
-          </label>
+          </Label>
 
           <Input
             id="organize-folder-edit-name"
@@ -210,12 +211,12 @@ const EditFolderPage = () => {
 
         {/* Folder Description */}
         <div>
-          <label
+          <Label
             htmlFor="organize-folder-edit-description"
-            className="block font-normal mb-3"
+            className="block mb-3"
           >
             3. Change the folder description:
-          </label>
+          </Label>
 
           <Textarea
             id="organize-folder-edit-description"

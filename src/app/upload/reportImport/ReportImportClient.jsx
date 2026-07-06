@@ -25,6 +25,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 // Widgets
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { InputContainer } from "@/components/Widgets";
 import { RadioGroup } from "@/components/ui/radio-group";
 import {
@@ -267,9 +268,9 @@ const ImportReportPage = () => {
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* 1. Folder Selection */}
         <div>
-          <label className="block font-normal mb-3">
+          <Label className="block mb-3">
             1. Select the folder that contains the upload:
-          </label>
+          </Label>
 
           <Select
             value={
@@ -303,9 +304,9 @@ const ImportReportPage = () => {
 
         {/* 2. Upload Selection */}
         <div>
-          <label className="block font-normal mb-3">
+          <Label className="block mb-3">
             2. Select the upload you wish to edit:
-          </label>
+          </Label>
 
           <Select
             value={
@@ -339,9 +340,9 @@ const ImportReportPage = () => {
 
         {/* 3. Report Upload */}
         <div>
-          <label className="block font-normal mb-3">
+          <Label className="block mb-3">
             3. Select report to upload:
-          </label>
+          </Label>
 
           <div className="flex items-end gap-3">
             <input

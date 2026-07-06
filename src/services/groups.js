@@ -46,7 +46,6 @@ export const createGroup = (name) => {
   return createGroupApi(name).then((res) => res);
 };
 
-// v2: accepts group name (string) instead of id (integer)
 export const deleteGroup = (name) => {
   return deleteGroupApi(name).then((res) => res);
 };

@@ -25,6 +25,7 @@ import { cn } from "@/lib/utils"
 import { Eye, EyeOff } from "lucide-react"
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Label } from "@/components/ui/label";
 import {
   AlertBanner,
 } from '@/components/ui/alert';
@@ -152,9 +153,9 @@ export default function HomeClient() {
             )}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label htmlFor="username" className="block text-base font-normal text-foreground mb-1">
+                <Label htmlFor="username" className="block mb-1">
                   Username
-                </label>
+                </Label>
                 <Input
                   id="username"
                   type="text"
@@ -167,9 +168,9 @@ export default function HomeClient() {
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-base font-normal text-foreground mb-1">
+                <Label htmlFor="password" className="block mb-1">
                   Password
-                </label>
+                </Label>
                 <div className="relative">
                   <Input
                     id="password"

@@ -25,6 +25,7 @@ import messages from "@/constants/messages";
 import CommonFields from "@/components/Upload/CommonFields";
 
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
@@ -352,9 +353,9 @@ const UploadFileClient = () => {
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* 1. Folder */}
         <div>
-          <label className="block font-normal mb-3">
+          <Label className="block mb-3">
             1. Select the folder for storing the uploaded files:
-          </label>
+          </Label>
           <Select
             onValueChange={(value) =>
               setUploadFileData({ ...uploadFileData, folderId: Number(value) })
@@ -375,7 +376,7 @@ const UploadFileClient = () => {
 
         {/* 2. File upload */}
         <div>
-          <label className="block font-normal mb-3">2. Select the file(s) to upload:</label>
+          <Label className="block mb-3">2. Select the file(s) to upload:</Label>
           <div className="flex items-end gap-3">
             <input
               ref={fileInputRef}
@@ -407,7 +408,7 @@ const UploadFileClient = () => {
 
         {/* 3. Descriptions */}
         <div>
-          <label className="block font-normal mb-3">3. Description(s)</label>
+          <Label className="block mb-3">3. Description(s)</Label>
           <div className="flex flex-wrap gap-6">
             {(fileSelected ? uploadFileData.fileInput : [null]).map((file, index) => (
               <div key={index}>

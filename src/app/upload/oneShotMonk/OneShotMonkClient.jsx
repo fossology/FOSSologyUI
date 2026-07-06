@@ -24,6 +24,8 @@ import React, { useRef, useState } from "react";
 // Widgets
 import { Button } from "@/components/ui/button";
 
+import { Label } from "@/components/ui/label";
+
 import { AlertBanner } from "@/components/ui/alert";
 
 import { oneShotMonk } from "@/services/jobs";
@@ -139,9 +141,9 @@ const OneShotMonk = () => {
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* File Upload */}
         <div>
-          <label className="block font-normal mb-3">
+          <Label className="block mb-3">
             Select the file to upload:
-          </label>
+          </Label>
 
           <div className="flex items-end gap-3">
             <input
