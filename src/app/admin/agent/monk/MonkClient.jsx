@@ -1,6 +1,5 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
- SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -20,41 +19,40 @@ SPDX-License-Identifier: GPL-2.0-only
 "use client";
 
 import React, { useState } from "react";
-import messages from "@/constants/messages";
 
 // Widgets
 import { Spinner } from "@/components/Widgets";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { AlertBanner } from "@/components/ui/alert";
-
-// API Services
-import { createGroup } from "@/services/groups";
 
 // Helper
 import { handleError } from "@/shared/helper";
 
-const CreateGroupClient = () => {
-  const [groupName, setGroupName] = useState("");
+const MonkClient = () => {
   const [loading, setLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
-  const [message, setMessage] = useState({ type: "success", text: "" });
+  const [message, setMessage] = useState({
+    type: "success",
+    text: "",
+  });
 
-  const handleSubmit = (e) => {
+  const handleRenew = async (e) => {
     e.preventDefault();
     setLoading(true);
-    createGroup(groupName)
-      .then(() => {
-        setMessage({ type: "success", text: messages.groupCreate });
-        setGroupName("");
-      })
-      .catch((error) => {
-        handleError(error, setMessage);
-      })
-      .finally(() => {
-        setLoading(false);
-        setShowMessage(true);
+
+    try {
+      // TODO: call renewMonkRevision()
+
+      setMessage({
+        type: "success",
+        text: "You have renewed the monk revision.",
       });
+    } catch (error) {
+      handleError(error, setMessage);
+    } finally {
+      setLoading(false);
+      setShowMessage(true);
+    }
   };
 
   const alertType =
@@ -78,35 +76,27 @@ const CreateGroupClient = () => {
       )}
 
       <h1 className="text-2xl font-semibold text-gray-900 mb-6">
-        Add a Group
+        Monk
       </h1>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <label className="block font-normal mb-3">
-            Enter the group name:
-          </label>
-          <Input
-            type="text"
-            name="name"
-            id="admin-group-add-name"
-            value={groupName}
-            onChange={(e) => setGroupName(e.target.value)}
-            placeholder="Group name"
-            className="w-[320px]"
-          />
-        </div>
-
+      <form onSubmit={handleRenew} className="space-y-6">
         <div className="pt-2">
           <Button
             type="submit"
-            disabled={loading || !groupName}
-            variant="default" size="default"
+            disabled={loading}
+            variant="default"
+            size="default"
           >
             {loading ? (
-              <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+              <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
             ) : (
-              "Add"
+              "Renew monk revision"
             )}
           </Button>
         </div>
@@ -115,4 +105,4 @@ const CreateGroupClient = () => {
   );
 };
 
-export default CreateGroupClient;
+export default MonkClient;

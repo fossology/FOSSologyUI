@@ -1,4 +1,5 @@
 /*
+ Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
  SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
@@ -16,12 +17,16 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import CreateGroupClient from "./CreateGroupClient";
+import sendRequest from "@/api/sendRequest";
+import endpoints from "@/constants/endpoints";
+import { getToken } from "@/shared/authHelper";
 
-export const metadata = {
-    title: "Add Group | FOSSology",
+export const getMonkRevision = (uploadId) => {
+  return sendRequest({
+    url: endpoints.uploads.getAgentRevision(uploadId),
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+  });
 };
-
-export default function CreateGroupPage() {
-    return <CreateGroupClient />;
-}

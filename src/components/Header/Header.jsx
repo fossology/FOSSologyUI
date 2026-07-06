@@ -289,7 +289,7 @@ export default function Header({ variant = "default" }) {
                       )}>Agent
                       </DropdownMenuSubTrigger>
                       <DropdownMenuSubContent className="p-0 m-0 bg-white border border-gray-200">
-                        <DropdownMenuItem asChild className="focus:bg-secondary focus:text-gray-900 focus:font-bold"><Link href={""}>Monk</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={routes.admin.monk}>Monk</Link></DropdownMenuItem>
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
                     <DropdownMenuSub>

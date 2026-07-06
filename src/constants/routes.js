@@ -66,6 +66,7 @@ const routes = {
   },
   thirdPartyLicensesHTML: "/thirdPartyLicenses.html",
   admin: {
+    monk: "/admin/agent/monk",
     customize:"/admin/customize",
     group: {
       index: "/admin/group",
@@ -108,4 +109,3 @@ const routes = {
 };
 
 export default routes;
-

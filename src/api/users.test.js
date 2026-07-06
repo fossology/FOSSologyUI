@@ -22,7 +22,7 @@ jest.mock("api/sendRequest");
 
 describe("users", () => {
   test("getUserSelfApi", () => {
-    const url = endpoints.users.self();
+    const url = endpoints.users.getSelf();
     sendRequest.mockImplementation(() => true);
 
     expect(getUserSelfApi()).toBe(sendRequest({}));
@@ -56,7 +56,7 @@ describe("users", () => {
 
   test("deleteUserApi", () => {
     const id = 1;
-    const url = endpoints.users.delete(id);
+    const url = endpoints.users.deleteByName(id);
     sendRequest.mockImplementation(() => true);
 
     expect(deleteUserApi(id)).toBe(sendRequest({}));
