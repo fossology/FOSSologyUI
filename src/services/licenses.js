@@ -24,6 +24,10 @@ import {
   importLicenseJsonApi,
   exportLicenseCsvApi,
   exportLicenseJsonApi,
+  marydoneExportCsvApi,
+  marydoneExportJsonApi,
+  importLicenseRulesApi,
+  exportLicenseRulesApi,
 } from "@/api/licenses";
 
 // Fetching the licenses with their kind i.e (candidate, main, all)
@@ -38,7 +42,7 @@ export const createCandidateLicense = (licenseData) => {
 export const importLicenseCsv = (formData) => {
   return importLicenseCsvApi(formData).then((res) => res);
 };
-
+// api endpoint not exposed
 export const importLicenseJson = (formData) => {
   return importLicenseJsonApi(formData).then((res) => res);
 };
@@ -46,7 +50,23 @@ export const importLicenseJson = (formData) => {
 export const exportLicenseCsv = (id) => {
   return exportLicenseCsvApi(id);
 };
-
+// api endpoint not exposed
 export const exportLicenseJson = (id) => {
   return exportLicenseJsonApi(id);
+};
+// api endpoints not exposed
+export const exportMarydoneCsv = () => {
+  return marydoneExportCsvApi();
+};
+
+export const exportMarydoneJson = () => {
+  return marydoneExportJsonApi();
+};
+
+export const importLicenseRules = (formData) => {
+  return importLicenseRulesApi(formData);
+};
+
+export const exportLicenseRules = () => {
+  return exportLicenseRulesApi();
 };

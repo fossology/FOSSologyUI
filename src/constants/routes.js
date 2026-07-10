@@ -86,12 +86,12 @@ const routes = {
       rulesImport: "/admin/compatibility/operations/rulesImport",
     },
     license: {
-      create: "/admin/license/create",
-      selectLicense: "/admin/license/selectLicense",
-      candidates: "/admin/license/candidates",
-      operations: "/admin/license/operations",
-      licenseCSV: "/admin/license/operations/licenseCSV/fossology-license-export.csv",
-      licenseImport: "/admin/license/operations/licenseImport"
+      create: "/admin/licenseAdmin/addLicense",
+      selectLicense: "/admin/licenseAdmin/selectLicense",
+      candidates: "/admin/licenseAdmin/candidates",
+      operations: "/admin/licenseAdmin/operations",
+      licenseCSV: "/admin/licenseAdmin/operations/licenseCSV/fossology-license-export.csv",
+      licenseImport: "/admin/licenseAdmin/operations/licenseImport"
     },
     maintenance: "/admin/maintenance",
   },

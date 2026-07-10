@@ -18,6 +18,10 @@ SPDX-License-Identifier: GPL-2.0-only
 
 import OperationsClient from "./OperationsClient";
 
+export const metadata = {
+    title: "License Operations | FOSSology",
+};
+
 export default function OperationsPage() {
   return <OperationsClient />;
 }

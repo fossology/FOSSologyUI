@@ -31,19 +31,19 @@ export const getAllLicenseApi = ({
   limit = 100,
   kind = "all",
   active,
-}) => {
+} = {}) => {
   return sendRequest({
     url: endpoints.license.get(),
     method: "GET",
     headers: {
       Authorization: getToken(),
     },
-    params: {
-      page,
-      limit,
-      kind,
-      active,
-    },
+  queryParams: {
+    page,
+    limit,
+    kind,
+    active,
+  },
   });
 };
 
@@ -84,7 +84,7 @@ export const importLicenseCsvApi = (formData) => {
     body: formData,
   });
 };
-
+// api endpoint not exposed
 export const importLicenseJsonApi = (formData) => {
   return sendRequest({
     url: endpoints.license.importJson(),
@@ -110,7 +110,7 @@ export const exportLicenseCsvApi = (id = 0) => {
     isFile: true,
   });
 };
-
+// api endpoint not exposed
 export const exportLicenseJsonApi = (id = 0) => {
   return sendRequest({
     url: endpoints.license.exportJson(),
@@ -120,6 +120,59 @@ export const exportLicenseJsonApi = (id = 0) => {
     },
     queryParams: {
       id,
+    },
+    isFile: true,
+  });
+};
+// api endpoints not yet exposed
+// Export Marydone JSON
+
+export const marydoneExportJsonApi = () => {
+  return sendRequest({
+    url: endpoints.license.marydoneExportJson(),
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+    isFile: true,
+  });
+};
+
+// Export Marydone CSV
+
+export const marydoneExportCsvApi = () => {
+  return sendRequest({
+    url: endpoints.license.marydoneExportCsv(),
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+    isFile: true,
+  });
+};
+
+// Import License Rules
+
+export const importLicenseRulesApi = (formData) => {
+  return sendRequest({
+    url: endpoints.license.importRules(),
+    method: "POST",
+    isMultipart: true,
+    headers: {
+      Authorization: getToken(),
+    },
+    body: formData,
+  });
+};
+
+// Export License Rules
+
+export const exportLicenseRulesApi = () => {
+  return sendRequest({
+    url: endpoints.license.exportRules(),
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
     },
     isFile: true,
   });
