@@ -18,6 +18,10 @@ SPDX-License-Identifier: GPL-2.0-only
 
 import SelectCompatibilityClient from "./SelectCompatibilityClient";
 
+export const metadata = {
+    title: "Select Compatibility | FOSSology",
+};
+
 export default function SelectCompatibilityPage() {
   return <SelectCompatibilityClient />;
 }

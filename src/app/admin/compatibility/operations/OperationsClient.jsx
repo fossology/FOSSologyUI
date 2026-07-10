@@ -19,22 +19,80 @@ SPDX-License-Identifier: GPL-2.0-only
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
+// Routes
 import routes from "@/constants/routes";
+import { useState } from "react";
+// UI Components
+import { Button } from "@/components/ui/button";
+import { AlertBanner } from "@/components/ui/alert";
+// API services
+import { exportLicenseRules } from "@/services/licenses";
 
 const OperationsClient = () => {
   const router = useRouter();
+
+  const [message, setMessage] = useState(null);
+  const [showMessage, setShowMessage] = useState(false);
+  const [exporting, setExporting] = useState(false);
+
+  const alertType =
+    message?.type === "error"
+      ? "Error"
+      : message?.type === "success"
+      ? "Success"
+      : "Info";
 
   const handleImport = () => {
     router.push(routes.admin.compatibility.rulesImport);
   };
 
-  const handleExport = () => {
-    // TODO: implement Rules Export
+  const handleExport = async () => {
+    try {
+      setExporting(true);
+
+      const { blob, filename } = await exportLicenseRules();
+
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename || "license-rules.yaml";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      window.URL.revokeObjectURL(url);
+
+      setMessage({
+        type: "success",
+        text: "Rules exported successfully.",
+      });
+    } catch (error) {
+      setMessage({
+        type: "error",
+        text:
+          error?.body?.message ||
+          error?.message ||
+          "Failed to export rules.",
+      });
+    } finally {
+      setExporting(false);
+      setShowMessage(true);
+    }
   };
 
   return (
     <div>
+      {showMessage && message && (
+        <div className="mb-4">
+          <AlertBanner
+            type={alertType}
+            description={message.text}
+            showClose
+            onClose={() => setShowMessage(false)}
+          />
+        </div>
+      )}
       <h1 className="text-2xl font-semibold text-gray-900 mb-6">
         Operations
       </h1>
@@ -52,8 +110,9 @@ const OperationsClient = () => {
           type="button"
           variant="default"
           onClick={handleExport}
+          disabled={exporting}
         >
-          Rules Export
+          {exporting ? "Exporting..." : "Rules Export"}
         </Button>
       </div>
     </div>
