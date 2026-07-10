@@ -63,9 +63,9 @@ const config = {
         },
 
         alert: {
-            DEFAULT: "#D02216",
-            hover:   "#A41411",
-            bg:      "#FFEBEE",
+            500: "#D02216",
+            700: "#A41411",
+            100: "#FFEBEE",
         },
 
         error: {
@@ -80,9 +80,13 @@ const config = {
             600: "#EF6C00",
             700: "#663C00",
         },
+        yellow: {
+            100: "#FFD23F",
+        },
         info: {
             100: "#E1F5FE",
-            500: "#0079BA",
+            500: "#0076B6",
+            600: "#00669D",
             700: "#014361",
         },
         success: {

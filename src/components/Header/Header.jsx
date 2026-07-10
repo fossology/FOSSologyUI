@@ -363,22 +363,8 @@ export default function Header({ variant = "default" }) {
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
                     <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
-                    <Link href={""}>Scheduler</Link>
+                      <Link href={routes.admin.tag.create}>Tag</Link>
                     </DropdownMenuItem>
-                    <DropdownMenuSub>
-                      <DropdownMenuSubTrigger 
-                      className={clsx(
-                        "flex items-center justify-between w-full px-2 py-2 text-sm rounded-md cursor-pointer",
-                        "hover:bg-secondary hover:text-gray-900 hover:font-bold",
-                        "focus:bg-secondary focus:text-gray-900 focus:font-bold",
-                        "data-[state=open]:bg-secondary data-[state=open]:text-gray-900 data-[state=open]:font-bold"
-                      )}>Tag
-                      </DropdownMenuSubTrigger>
-                      <DropdownMenuSubContent className="p-0 m-0 bg-white border border-gray-200">
-                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={""}>Create Tag</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={""}>Enable/Disable Tag</Link></DropdownMenuItem>
-                      </DropdownMenuSubContent>
-                    </DropdownMenuSub>
                     <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
                     <Link href={""}>Upload Permissions</Link>
                     </DropdownMenuItem>

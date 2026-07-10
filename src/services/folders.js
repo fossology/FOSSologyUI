@@ -24,6 +24,7 @@ import {
   deleteFolderApi,
   editFolderApi,
   moveCopyFolderApi,
+  getFolderContentsApi,
 } from "@/api/folders";
 
 // Fetching all the folders
@@ -79,4 +80,8 @@ export const copyFolder = ({ parent, id }) => {
   return moveCopyFolderApi(parent, id, "copy").then((res) => {
     return res;
   });
+};
+
+export const getFolderContents = (folderId) => {
+  return getFolderContentsApi({ folderId }).then((res) => res);
 };

@@ -91,6 +91,16 @@ const routes = {
       licenseCSV: "/licenseCSV/fossology-license-export.csv",
     },
     maintenance: "/admin/maintenance",
+    tag: {
+      create: "/admin/tag/create",
+      enableDisable: "/admin/tag/enableDisable"
+    },
+    obligation: {
+      add: "/admin/obligation/add",
+      select: "/admin/obligation/select",
+      operations: "/admin/obligation/operations",
+      obligationImport: "/admin/obligation/operations/obligationImport"
+    },
   },
   browseUploads: {
     licenseBrowser: "/browseUploads/licenseBrowser",
