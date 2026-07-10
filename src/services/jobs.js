@@ -32,6 +32,10 @@ import { scheduleAnalysisApi } from "@/api/jobs";
 import { oneShotCEUApi } from "@/api/jobs";
 import { oneShotMonkApi } from "@/api/jobs";
 import { oneShotNomosApi } from "@/api/jobs";
+import {
+  getSchedulerOptionsApi,
+  runSchedulerOperationApi,
+} from "@/api/jobs";
 
 // Fetching single job
 export const getJob = (jobId) =>
@@ -141,3 +145,21 @@ export const oneShotMonk = (reqBody) =>
 
 export const oneShotNomos = (reqBody) =>
   oneShotNomosApi({ reqBody });
+
+export const getSchedulerOptions = (operation) => {
+  return getSchedulerOptionsApi(operation);
+};
+
+export const runSchedulerOperation = (
+  operation,
+  job,
+  level,
+  priority
+) => {
+  return runSchedulerOperationApi(
+    operation,
+    job,
+    level,
+    priority
+  );
+};

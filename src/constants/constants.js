@@ -391,3 +391,53 @@ export const agents = {
   reso: "REUSE.Software Analysis (forces *Ojo License Analysis*)",
   heritage: "Software Heritage Analysis",
 };
+
+export const schedulerOperations = [
+  {
+    value: "status",
+    label: "Status",
+    description: "Display job or scheduler status.",
+  },
+  {
+    value: "database",
+    label: "Check job queue",
+    description: "Check for new jobs.",
+  },
+  {
+    value: "reload",
+    label: "Reload",
+    description: "Reload fossology.conf.",
+  },
+  {
+    value: "agents",
+    label: "Agents",
+    description: "Show a list of enabled agents.",
+  },
+  {
+    value: "verbose",
+    label: "Verbose",
+    description:
+      "Change the verbosity level of the scheduler or a job.",
+  },
+  {
+    value: "stop",
+    label: "Shutdown Scheduler",
+    description:
+      "Shutdown the scheduler gracefully and stop all background processing. This can take a while for all the agents to quit.",
+  },
+  {
+    value: "restart",
+    label: "Unpause a job",
+    description: "Unpause a job.",
+  },
+  {
+    value: "pause",
+    label: "Pause a running job",
+    description: "Pause a running job.",
+  },
+  {
+    value: "priority",
+    label: "Priority",
+    description: "Change the priority of a job.",
+  },
+];

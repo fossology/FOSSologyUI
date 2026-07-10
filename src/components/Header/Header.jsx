@@ -345,23 +345,12 @@ export default function Header({ variant = "default" }) {
                     <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
                     <Link href={routes.admin.maintenance}>Maintenance</Link>
                     </DropdownMenuItem>
-                    <DropdownMenuSub>
-                      <DropdownMenuSubTrigger 
-                      className={clsx(
-                        "flex items-center justify-between w-full px-2 py-2 text-sm rounded-md cursor-pointer",
-                        "hover:bg-secondary hover:text-gray-900 hover:font-bold",
-                        "focus:bg-secondary focus:text-gray-900 focus:font-bold",
-                        "data-[state=open]:bg-secondary data-[state=open]:text-gray-900 data-[state=open]:font-bold"
-                      )}>Obligation Administration
-                      </DropdownMenuSubTrigger>
-                      <DropdownMenuSubContent className="p-0 m-0 bg-white border border-gray-200">
-                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={""}>Add Obligation</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={""}>CSV Export</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={""}>JSON Export</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={""}>Obligation Import</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={""}>Select Obligation</Link></DropdownMenuItem>
-                      </DropdownMenuSubContent>
-                    </DropdownMenuSub>
+                    <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
+                    <Link href={routes.admin.obligation.add}>Obligation Administration</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
+                    <Link href={routes.admin.scheduler}>Scheduler</Link>
+                    </DropdownMenuItem>
                     <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
                     <Link href={""}>Scheduler</Link>
                     </DropdownMenuItem>
