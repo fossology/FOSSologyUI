@@ -26,6 +26,7 @@ import messages from "@/constants/messages";
 import { Spinner } from "@/components/Widgets";
 import { Button } from "@/components/ui/button";
 import { AlertBanner } from "@/components/ui/alert";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectTrigger,
@@ -108,9 +109,9 @@ const DeleteGroupClient = () => {
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
 
-          <label className={`block font-normal mb-3 ${!initialLoading && groups.length === 0 ? "text-neutral-600" : ""}`}>
+          <Label className={`block mb-3 ${!initialLoading && groups.length === 0 ? "text-neutral-600" : ""}`}>
             Select group to delete:
-          </label>
+          </Label>
 
           {initialLoading ? (
             <div className="flex items-center gap-2 text-sm text-gray-500">
