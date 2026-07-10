@@ -68,6 +68,7 @@ const routes = {
   admin: {
     monk: "/admin/agent/monk",
     customize:"/admin/customize",
+    scheduler:"/admin/scheduler",
     group: {
       index: "/admin/group",
       create: "/admin/group/create",
