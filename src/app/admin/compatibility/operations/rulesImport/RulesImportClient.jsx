@@ -20,23 +20,64 @@ SPDX-License-Identifier: GPL-2.0-only
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-
+// Routes
 import routes from "@/constants/routes";
-
+//UI Components
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { AlertBanner } from "@/components/ui/alert";
+//API services
+import { importLicenseRules } from "@/services/licenses";
 
 export default function RulesImportClient() {
   const router = useRouter();
   const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(null);
+  const [showMessage, setShowMessage] = useState(false);
 
-  const handleSubmit = (e) => {
+  const alertType =
+    message?.type === "error"
+      ? "Error"
+      : message?.type === "success"
+      ? "Success"
+      : "Info";
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!file) {
-      return;
-    }
+    if (!file) return;
 
-    // TODO: call Rules Import API
+    try {
+      setLoading(true);
+
+      const formData = new FormData();
+      formData.append("fileInput", file);
+
+      const response = await importLicenseRules(formData);
+
+      setMessage({
+        type: "success",
+        text: response?.message || "Rules imported successfully.",
+      });
+
+      setFile(null);
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    } catch (error) {
+      setMessage({
+        type: "error",
+        text:
+          error?.body?.message ||
+          error?.message ||
+          "Rules import failed.",
+      });
+    } finally {
+      setLoading(false);
+      setShowMessage(true);
+    }
   };
 
   const handleBack = () => {
@@ -47,6 +88,16 @@ export default function RulesImportClient() {
 
   return (
     <div>
+      {showMessage && message && (
+        <div className="mb-4">
+          <AlertBanner
+            type={alertType}
+            description={message.text}
+            showClose
+            onClose={() => setShowMessage(false)}
+          />
+        </div>
+      )}
       <h1 className="text-2xl font-semibold text-gray-900 mb-6">
         Operations
       </h1>
@@ -66,9 +117,9 @@ export default function RulesImportClient() {
       <form onSubmit={handleSubmit}>
         <div className="mb-6">
           <div>
-            <label className="block font-normal mb-3">
+            <Label className="block mb-3">
               Select the YAML-file to upload:
-            </label>
+            </Label>
 
             <div className="flex items-end gap-3">
               <input
@@ -112,9 +163,9 @@ export default function RulesImportClient() {
 
           <Button
             type="submit"
-            disabled={!file}
+            disabled={!file || loading}
           >
-            Upload
+            {loading ? "Uploading..." : "Upload"}
           </Button>
         </div>
       </form>

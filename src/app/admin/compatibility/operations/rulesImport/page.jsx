@@ -18,6 +18,10 @@ SPDX-License-Identifier: GPL-2.0-only
 
 import RulesImportClient from "./RulesImportClient";
 
+export const metadata = {
+    title: "Import Rules | FOSSology",
+};
+
 export default function RulesImportPage() {
   return <RulesImportClient />;
 }
