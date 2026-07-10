@@ -163,6 +163,18 @@ const endpoints = {
   maintenance: {
     run: () => withBase("/maintenance"),
   },
+
+  // Obligations
+  obligations: {
+    //create: () => yet to expose endpoint
+    getList: () => withBase("/obligations/list"),
+    getAll: () => withBase("/obligations"),
+    getById: (id) => withBase(`/obligations/${id}`),
+    exportCsv: () => withBase("/obligations/export-csv"),
+    exportJson: () => withBase("/obligations/export-json"),// api endpoint not exposed
+    importJson: () => withBase("/obligations/import-csv"),
+    importCsv: () => withBase("/obligations/import-json"),// api endpoint not exposed
+  },
 };
 
 export default endpoints;

@@ -1,8 +1,7 @@
 /*
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
  SPDX-FileCopyrightText: 2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
- SPDX-License-Identifier: GPL-2.0
+SPDX-License-Identifier: GPL-2.0-only
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -17,20 +16,14 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import Alert from "./Alert";
-import Button from "./Button";
-import Image from "./Image";
-import InputContainer from "./Input";
-import Tooltip from "./Tooltip";
-import SearchableMultiSelect from "./SearchableMultiSelect";
+import ObligationTabsNav from "./ObligationTabsNav";
 
-const Spinner = ({ size = "default" }) => (
-  <span
-    className={`inline-block rounded-full border-2 border-current border-t-transparent animate-spin ${
-      size === "sm" ? "w-4 h-4" : "w-6 h-6"
-    }`}
-    aria-hidden="true"
-  />
-);
-
-export { Alert, Button, Image, InputContainer, Tooltip, SearchableMultiSelect, Spinner };
+export default function ObligationLayout({ children }) {
+  return (
+    <div className="mx-40 px-4">
+      <h1 className="text-2xl font-semibold text-gray-900 mt-6 mb-4">Obligations and Risks Administration</h1>
+      <ObligationTabsNav />
+      <div className="mt-6">{children}</div>
+    </div>
+  );
+}
