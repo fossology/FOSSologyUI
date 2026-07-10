@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2022 Samuel Dushimimana (dushsam100@gmail.com)
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -20,136 +20,164 @@ SPDX-License-Identifier: GPL-2.0-only
 
 import React, { useState } from "react";
 
-import { Alert, Button, InputContainer, Spinner } from "@/components/Widgets";
-import { initialMantainanceFields, initialMessage } from "@/constants/constants";
-import createMaintenance from "@/services/maintenance";
+// External Links
+import externalLinks from "@/constants/externalLinks";
 
-const ManageMantainance = () => {
+import { createMaintenance } from "@/services/maintenance";
+import {
+  maintenanceOptions,
+  initialMaintenanceFields,
+  initialMessage,
+} from "@/constants/constants";
+
+import { AlertBanner } from "@/components/ui/alert";
+import { Input } from "@/components/ui/input";
+import {
+  Button,
+  InputContainer,
+  Spinner,
+} from "@/components/Widgets";
+
+
+const ManageMaintenance = () => {
   const [loading, setLoading] = useState(false);
-  const [fields, setFields] = useState(initialMantainanceFields);
+  const [fields, setFields] = useState(initialMaintenanceFields);
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState(initialMessage);
 
-  const handleChange = (e) => {
-    const { name } = e.target;
-
-    if (Object.keys(fields).includes(name)) {
-      if (name === "logsDate" || name === "goldDate") {
-        setFields({ ...fields, [name]: e.target.value });
-      } else {
-        setFields({ ...fields, [name]: e.target.checked });
-      }
+  const handleChange = (value, name) => {
+    if (name === "logsDate" || name === "goldDate") {
+      setFields((prev) => ({
+        ...prev,
+        [name]: value.target.value,
+      }));
+      return;
     }
+
+    setFields((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const getSelectedKeys = () => {
-    return Object.keys(fields).filter((key) => fields[key] === true);
-  };
+  const hasSelection = maintenanceOptions.some(
+    ({ key }) => fields[key]
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    const req = {
-      options: getSelectedKeys(),
-      logsDate: fields.logsDate,
-      goldDate: fields.goldDate,
-    };
+  const req = {
+    options: maintenanceOptions
+      .map(({ key }) => key)
+      .filter((key) => fields[key]),
+    logsDate: fields.logsDate,
+    goldDate: fields.goldDate,
+  };
 
     try {
       const res = await createMaintenance(req);
       setMessage({ type: "success", text: res.message });
-      setFields(initialMantainanceFields);
+      setFields(initialMaintenanceFields);
     } catch (error) {
-      setMessage({ type: "danger", text: error.message });
+      setMessage({ type: "error", text:
+        error?.message ||
+        "Failed to queue maintenance agent.", });
     } finally {
       setLoading(false);
       setShowMessage(true);
     }
   };
 
+  const alertType =
+    message.type === "success"
+      ? "Success"
+      : message.type === "error"
+        ? "Error"
+        : "Info";
+
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-12">
-          {showMessage && (
-            <Alert
-              type={message.type}
-              setShow={setShowMessage}
-              message={message.text}
+    <div className="max-w-5xl mx-40 my-6 px-4">
+        {showMessage && (
+          <div className="mb-4">
+            <AlertBanner
+              type={alertType}
+              description={message.text}
+              showClose
+              onClose={() => setShowMessage(false)}
             />
-          )}
-          <h1 className="font-size-main-heading mt-4">
+          </div>
+        )}
+          <h1 className="text-2xl font-semibold text-gray-900 mb-6">
             FOSSology Maintenance
           </h1>
-        </div>
-        <div className="col-12">
-          <form className="my-3">
-            {[
-              ["a", "Run all non slow maintenance operations."],
-              ["A", "Run all maintenance operations."],
-              ["F", "Validate folder contents."],
-              ["g", "Remove orphaned gold files."],
-              ["E", "Remove orphaned rows from database."],
-              ["L", "Remove orphaned log files from file system."],
-              ["N", "Normalize priority"],
-              ["R", "Remove uploads with no pfiles."],
-              ["t", "Remove expired personal access tokens."],
-              ["T", "Remove orphaned temp tables."],
-              ["D", "Vacuum Analyze the database."],
-              ["Z", "Remove orphaned files from the repository (slow)."],
-              [
-                "I",
-                "Reindexing of database (This activity may take 5-10 mins. Execute only when system is not in use).",
-              ],
-              ["v", "Verbose (turns on debugging output)."],
-              ["o", "Remove older gold files from repository."],
-            ].map(([key, label]) => (
-              <InputContainer
-                key={key}
-                type="checkbox"
-                checked={fields[key]}
-                name={key}
-                className="my-3"
-                id={`maintain-${key}`}
-                onChange={handleChange}
-              >
-                {label}
-              </InputContainer>
-            ))}
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-7"
+          >
+            <div className="space-y-7">
+              {maintenanceOptions
+                .filter(({ key }) => key !== "o" && key !== "l")
+                .map(({ key, label }) => (
+                  <InputContainer
+                    key={key}
+                    type="checkbox"
+                    checked={fields[key]}
+                    name={key}
+                    id={`maintenance-${key}`}
+                    onChange={(checked) => handleChange(checked, key)}
+                  >
+                    {label}
+                  </InputContainer>
+              ))}
+            </div>
 
-            <InputContainer
-              type="date"
-              className="col-3"
-              name="logsDate"
-              id="logs-date"
-              onChange={handleChange}
-            />
-
+            <div className="space-y-4">
             <InputContainer
               type="checkbox"
-              checked={fields.l}
-              name="l"
-              className="mt-3"
-              id="rmv-repo-old-files-2"
-              onChange={handleChange}
+              checked={fields.o}
+              name="o"
+              id="maintenance-o"
+              onChange={(checked) => handleChange(checked, "o")}
             >
               Remove older gold files from repository.
             </InputContainer>
 
+            <div className="w-80 ml-8">
+              <Input
+                type="date"
+                name="goldDate"
+                value={fields.goldDate}
+                onChange={(e) => handleChange(e, "goldDate")}
+              />
+            </div>
+            </div>
+
+            <div className="space-y-4">
             <InputContainer
-              type="date"
-              className="col-3"
-              name="goldDate"
-              id="gold-date"
-              onChange={handleChange}
-            />
+              type="checkbox"
+              checked={fields.l}
+              name="l"
+              id="maintenance-l"
+              onChange={(checked) => handleChange(checked, "l")}
+            >
+              Remove older log files from repository.
+            </InputContainer>
+
+            <div className="w-80 ml-8">
+              <Input
+                type="date"
+                name="logsDate"
+                value={fields.logsDate}
+                onChange={(e) => handleChange(e, "logsDate")}
+              />
+            </div>
+            </div>
 
             <Button
               type="submit"
-              onClick={handleSubmit}
-              disabled={getSelectedKeys().length === 0}
-              className="mt-4"
+              disabled={loading || !hasSelection}
             >
               {loading ? (
                 <Spinner
@@ -160,22 +188,25 @@ const ManageMantainance = () => {
                   aria-hidden="true"
                 />
               ) : (
-                "Queue the maintenance agent"
+                "Queue Maintenance Agent"
               )}
             </Button>
           </form>
-          <div className="my-3">
-            <span className="mr-2">
-              More information about these operations can be found
-            </span>
-            <a href="https://github.com/fossology/fossology/wiki/Maintenance-Agent">
+
+          <div className="mt-8 text-sm">
+            More information about these operations can be found{" "}
+            <a
+              href={externalLinks.maintenanceAgent}
+              target="_blank"
+              rel="noopener noreferrer"
+              className= "text-primary hover:text-accent-foreground underline"
+            >
               here
             </a>
+            .
           </div>
-        </div>
-      </div>
     </div>
   );
 };
 
-export default ManageMantainance;
+export default ManageMaintenance;

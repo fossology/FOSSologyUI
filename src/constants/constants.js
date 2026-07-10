@@ -274,7 +274,42 @@ export const initialFolderList = [
   },
 ];
 
-export const initialMantainanceFields = {
+export const maintenanceOptions = [
+  { key: "a", label: "Run all non slow maintenance operations." },
+  { key: "A", label: "Run all maintenance operations." },
+  { key: "F", label: "Validate folder contents." },
+  { key: "g", label: "Remove orphaned gold files." },
+  { key: "E", label: "Remove orphaned rows from database." },
+  { key: "L", label: "Remove orphaned log files from file system." },
+  { key: "N", label: "Normalize priority." },
+  { key: "R", label: "Remove uploads with no pfiles." },
+  { key: "t", label: "Remove expired personal access tokens." },
+  { key: "T", label: "Remove orphaned temp tables." },
+  { key: "D", label: "Vacuum Analyze the database." },
+  {
+    key: "Z",
+    label: "Remove orphaned files from the repository (slow).",
+  },
+  {
+    key: "I",
+    label:
+      "Reindexing of database (This activity may take 5-10 mins. Execute only when system is not in use).",
+  },
+  {
+    key: "v",
+    label: "Verbose (turns on debugging output).",
+  },
+  {
+    key: "o",
+    label: "Remove older gold files from repository.",
+  },
+  {
+    key: "l",
+    label: "Remove older log files from repository.",
+  },
+];
+
+export const initialMaintenanceFields = {
   a: false,
   A: false,
   F: false,

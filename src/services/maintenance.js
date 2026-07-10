@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2022  Samuel Dushimimana (dushsam100@gmail.com)
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -17,10 +17,7 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-// Create Uploads from File
 import { createMaintenanceApi } from "@/api/maintenance";
 
-// Creating a group
-export const createMaintenance = (data) => {
-  return createMaintenanceApi(data).then((res) => res);
-};
+export const createMaintenance = (data) =>
+  createMaintenanceApi(data);
