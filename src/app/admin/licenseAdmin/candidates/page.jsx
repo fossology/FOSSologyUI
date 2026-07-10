@@ -19,7 +19,7 @@ SPDX-License-Identifier: GPL-2.0-only
 import CandidatesClient from "./CandidatesClient";
 
 export const metadata = {
-    title: "Select License | FOSSology",
+    title: "Candidate License | FOSSology",
 };
 
 export default function CandidatesPage() {

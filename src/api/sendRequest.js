@@ -114,7 +114,30 @@ const sendRequest = ({
         setLocalStorage("pages", totalPages);
       }
 
-      return isFile ? res : res.json();
+  if (isFile) {
+    return res.blob().then((blob) => {
+      const disposition = res.headers.get("content-disposition");
+
+      let filename;
+
+      if (disposition) {
+        const match = disposition.match(
+          /filename\*=UTF-8''([^;]+)|filename="?([^"]+)"?/i
+        );
+
+        filename = decodeURIComponent(
+          match?.[1] || match?.[2] || ""
+        );
+      }
+
+      return {
+        blob,
+        filename, // undefined if not provided by backend
+      };
+    });
+  }
+
+    return res.json();
     }
 
     

@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/select";
 import { AlertBanner } from "@/components/ui/alert";
 import { Spinner } from "@/components/Widgets";
+import { Label } from "@/components/ui/label";
 
 // Services
 import { getAllLicense } from "@/services/licenses";
@@ -131,9 +132,9 @@ const SelectLicense = () => {
         </p>
 
         <div>
-          <label className="block font-normal mb-3">
+          <Label className="block mb-3">
             Filter:
-          </label>
+          </Label>
 
           <Select value={filter} onValueChange={setFilter}>
             <SelectTrigger className="w-[320px]">
@@ -149,9 +150,9 @@ const SelectLicense = () => {
         </div>
 
         <div>
-          <label className="block font-normal mb-3">
+          <Label className="block mb-3">
             License family name:
-          </label>
+          </Label>
 
           {loading ? (
             <div className="flex items-center gap-2 text-sm text-gray-500">

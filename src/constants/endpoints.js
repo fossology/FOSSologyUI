@@ -137,18 +137,22 @@ const endpoints = {
   // License
   license: {
     get:                () => withBase("/license"),
-    create:             () => withBase("/license"),          // POST (replaces createCandidateLicense)
+    create:             () => withBase("/license"),          
     getByShortName:     (shortName) => withBase(`/license/${shortName}`),
     importCsv:          () => withBase("/license/import-csv"),
-    importJson:         () => withBase("/license/import-json"),
+    importJson:         () => withBase("/license/import-json"),// api endpoint not exposed
     exportCsv:          () => withBase("/license/export-csv"),
-    exportJson:         () => withBase("/license/export-json"),
+    exportJson:         () => withBase("/license/export-json"),// api endpoint not exposed
+    marydoneExportJson: () => withBase("/license/marydone/export-json"),// api endpoint not exposed
+    marydoneExportCsv:  () => withBase("/license/marydone/export-csv"),// api endpoint not exposed
     adminCandidates:    () => withBase("/license/admincandidates"),
     adminAcknowledgements: () => withBase("/license/adminacknowledgements"),
     standardComments:   () => withBase("/license/stdcomments"),
     suggest:            () => withBase("/license/suggest"),
     verify:             (shortName) => withBase(`/license/verify/${shortName}`),
     merge:              (shortName) => withBase(`/license/merge/${shortName}`),
+    importRules:        () => withBase("/license/import-rules"),// api endpoint not exposed
+    exportRules:        () => withBase("/license/export-rules"),// api endpoint not exposed
   },
 
   // Maintenance

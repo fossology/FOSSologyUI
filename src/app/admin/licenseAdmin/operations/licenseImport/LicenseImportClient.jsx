@@ -26,13 +26,14 @@ import routes from "@/constants/routes";
 import { Button } from "@/components/ui/button";
 import { AlertBanner } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 import {
 importLicenseCsv,
 importLicenseJson,
 } from "@/services/licenses";
 
-export default function RulesImportClient() {
+export default function LicenseImportClient() {
 const router = useRouter();
 
 const [files, setFiles] = useState([]);
@@ -41,6 +42,7 @@ const [enclosure, setEnclosure] = useState("");
 const [message, setMessage] = useState(null);
 const [showMessage, setShowMessage] = useState(false);
 const [importResults, setImportResults] = useState([]);
+const [uploading, setUploading] = useState(false);
 
 const fileInputRef = useRef(null);
 
@@ -50,6 +52,8 @@ const handleSubmit = async (e) => {
   if (files.length === 0) return;
 
   try {
+    setUploading(true);
+
     const uploadableFiles = files.filter((file) => {
       const ext = file.name.split(".").pop()?.toLowerCase();
       return ext === "csv" || ext === "json";
@@ -112,6 +116,8 @@ const handleSubmit = async (e) => {
     });
 
     setShowMessage(true);
+  } finally {
+    setUploading(false);
   }
 };
 
@@ -155,9 +161,9 @@ return (
 
     <form onSubmit={handleSubmit}>
         <div className="mb-6">
-        <label className="block font-normal mb-3">
+        <Label className="block mb-3">
             Select the CSV-file or JSON-file to upload:
-        </label>
+        </Label>
 
         <div className="flex items-end gap-3">
             <input
@@ -165,6 +171,7 @@ return (
             type="file"
             accept=".csv,.json"
             multiple
+            disabled={uploading}
             className="hidden"
             onChange={(e) =>
                 setFiles(Array.from(e.target.files || []))
@@ -174,6 +181,7 @@ return (
             <Button
             type="button"
             variant="outline"
+            disabled={uploading}
             className="font-medium text-primary rounded border-primary hover:bg-accent hover:text-accent-foreground"
             onClick={() => fileInputRef.current?.click()}
             >
@@ -210,9 +218,9 @@ return (
 
         <div className="mt-6 space-y-4">
             <div className="flex items-center gap-4">
-            <label className="font-normal min-w-[100px]">
+            <Label className="min-w-[100px]">
                 Delimiter:
-            </label>
+            </Label>
 
             <Input
                 type="text"
@@ -227,9 +235,9 @@ return (
             </div>
 
             <div className="flex items-center gap-4">
-            <label className="font-normal min-w-[100px]">
+            <Label className="min-w-[100px]">
                 Enclosure:
-            </label>
+            </Label>
 
             <Input
                 type="text"
@@ -255,10 +263,10 @@ return (
         </Button>
 
         <Button
-            type="submit"
-            disabled={files.length === 0}
+        type="submit"
+        disabled={files.length === 0 || uploading}
         >
-            Upload
+        {uploading ? "Uploading..." : "Upload"}
         </Button>
         </div>
 
