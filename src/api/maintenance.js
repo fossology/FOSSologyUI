@@ -26,13 +26,12 @@ import { getToken } from "@/shared/authHelper";
 import sendRequest from "./sendRequest";
 
 // Creating a maintenance
-export const createMaintenanceApi = (data) => {
-  return sendRequest({
-    url: endpoints.admin.maintenance.create(),
+export const createMaintenanceApi = (body) =>
+  sendRequest({
+    url: endpoints.maintenance.run(),
     method: "POST",
     headers: {
       Authorization: getToken(),
     },
-    body: data,
+    body,
   });
-};
