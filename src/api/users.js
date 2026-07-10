@@ -118,3 +118,57 @@ export const getTokensApi = (type) => {
     },
   });
 };
+// api endpoints not exposed
+// EXPORT USERS CSV
+
+export const exportUsersCsvApi = () => {
+  return sendRequest({
+    url: endpoints.users.exportCsv(),
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+    isFile: true,
+  });
+};
+
+// EXPORT USERS JSON
+
+export const exportUsersJsonApi = () => {
+  return sendRequest({
+    url: endpoints.users.exportJson(),
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+    isFile: true,
+  });
+};
+
+// IMPORT USERS CSV
+
+export const importUsersCsvApi = (formData) => {
+  return sendRequest({
+    url: endpoints.users.importCsv(),
+    method: "POST",
+    headers: {
+      Authorization: getToken(),
+    },
+    body: formData,
+    isMultipart: true,
+  });
+};
+
+// IMPORT USERS JSON
+
+export const importUsersJsonApi = (formData) => {
+  return sendRequest({
+    url: endpoints.users.importJson(),
+    method: "POST",
+    headers: {
+      Authorization: getToken(),
+    },
+    body: formData,
+    isMultipart: true,
+  });
+};
