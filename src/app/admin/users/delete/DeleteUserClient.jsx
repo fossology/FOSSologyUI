@@ -17,170 +17,215 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-// src/app/admin/users/delete/page.jsx
-
 "use client";
 
-import React, { useState, useEffect } from "react";
-import messages from "@/constants/messages";
+import { useEffect, useState } from "react";
 
-// Widgets
-import { Alert, Button, InputContainer, Spinner } from "@/components/Widgets";
+// UI Components
+import { Button } from "@/components/ui/button";
+import { AlertBanner } from "@/components/ui/alert";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import {
+    Select,
+    SelectTrigger,
+    SelectValue,
+    SelectContent,
+    SelectItem,
+} from "@/components/ui/select";
 
 // Services
 import { getAllUsersName, deleteUser } from "@/services/users";
 
 // Helpers
 import { handleError } from "@/shared/helper";
+import messages from "@/constants/messages";
 
-const DeleteUserPage = () => {
-  const initialDeleteUserData = {
-    id: 0,
-    confirm: false,
-  };
+const DeleteUserClient = () => {
+    const [deleteUserData, setDeleteUserData] = useState({
+        id: "",
+        confirm: false,
+    });
 
-  const initialMessage = {
-    type: "success",
-    text: "",
-  };
+    const [usersList, setUsersList] = useState([]);
+    const [loading, setLoading] = useState(false);
 
-  const [deleteUserData, setDeleteUserData] = useState(initialDeleteUserData);
-  const [usersList, setUsersList] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [showMessage, setShowMessage] = useState(false);
-  const [message, setMessage] = useState(initialMessage);
+    const [message, setMessage] = useState(null);
+    const [showMessage, setShowMessage] = useState(false);
 
-  const { id, confirm } = deleteUserData;
+    const { id, confirm } = deleteUserData;
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setDeleteUserData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
+    const setDefaultsForDropdown = (res) => {
+        const userList = res.map((user) => ({
+            ...user,
+            disabled:
+                user.name === "fossy" ||
+                user.name === "Default User",
+        }));
 
-  const setDefaultsForDropdown = (res) => {
-    const userList = res.map((user) => ({
-      ...user,
-      disabled: !(user.name !== "fossy" && user.name !== "Default User"),
-    }));
-    setUsersList(userList);
+        setUsersList(userList);
 
-    const selectableUser = userList.find(
-      (user) => user.name !== "fossy" && user.name !== "Default User"
-    );
+        setDeleteUserData({
+            id: "",
+            confirm: false,
+        });
+    };
 
-    setDeleteUserData((prev) => ({
-      ...prev,
-      id: selectableUser?.id || 0,
-    }));
-  };
+    useEffect(() => {
+        getAllUsersName()
+            .then(setDefaultsForDropdown)
+            .catch((error) => {
+                handleError(error, setMessage);
+                setShowMessage(true);
+            });
+    }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    const handleSubmit = async () => {
+        if (!confirm) {
+            setMessage({
+                type: "error",
+                text: messages.confirmDeletion,
+            });
+            setShowMessage(true);
+            return;
+        }
 
-    if (!confirm) {
-      setMessage({ type: "danger", text: messages.confirmDeletion });
-      setShowMessage(true);
-      return;
-    }
+        const selectedUser = usersList.find(
+            (user) => user.id.toString() === id
+        );
 
-    try {
-      setLoading(true);
-      await deleteUser(id);
-      setMessage({ type: "success", text: messages.deletedUser });
+        if (!selectedUser) {
+            setMessage({
+                type: "error",
+                text: "Please select a valid user.",
+            });
+            setShowMessage(true);
+            return;
+        }
 
-      const res = await getAllUsersName();
-      setDefaultsForDropdown(res);
-    } catch (error) {
-      if (id === 0) {
-        const err = new Error("Default users cannot be deleted");
-        handleError(err, setMessage);
-      } else {
-        handleError(error, setMessage);
-      }
-    } finally {
-      setLoading(false);
-      setShowMessage(true);
-    }
-  };
+        try {
+            setLoading(true);
 
-  useEffect(() => {
-    getAllUsersName()
-      .then(setDefaultsForDropdown)
-      .catch((error) => {
-        handleError(error, setMessage);
-        setShowMessage(true);
-      });
-  }, []);
+            await deleteUser(selectedUser.name);
 
-  return (
-    <div className="main-container my-3">
-      {showMessage && (
-        <Alert
-          type={message.type}
-          setShow={setShowMessage}
-          message={message.text}
-        />
-      )}
+            setMessage({
+                type: "success",
+                text: `${messages.deletedUser}: ${selectedUser.name}`,
+            });
 
-      <h1 className="font-size-main-heading">Delete A User</h1>
-      <br />
+            const res = await getAllUsersName();
+            setDefaultsForDropdown(res);
+        } catch (error) {
+            handleError(error, setMessage);
+        } finally {
+            setLoading(false);
+            setShowMessage(true);
+        }
+    };
 
-      <div className="row">
-        <div className="col-12 col-lg-8">
-          <p>
-            Deleting a user removes the user entry from the FOSSology system.
-            The user's name, account information, and password will be
-            permanently removed. (There is no 'undo' to this delete.)
-            <br />
-            To delete a user, enter the following information:
-          </p>
+    const alertType =
+        message?.type === "danger" || message?.type === "error"
+            ? "Error"
+            : message?.type === "success"
+            ? "Success"
+            : "Info";
 
-          <form>
-            <InputContainer
-              type="select"
-              name="id"
-              id="admin-users-delete-id"
-              onChange={handleChange}
-              options={usersList}
-              value={id || ""}
-              property="name"
-              valueProperty="id"
-            >
-              Select the user to delete:
-            </InputContainer>
+    const isFormValid = id !== "" && confirm;
 
-            <InputContainer
-              type="checkbox"
-              checked={confirm}
-              name="confirm"
-              id="admin-users-delete-confirm"
-              onChange={handleChange}
-            >
-              Confirm user deletion
-            </InputContainer>
+    return (
+        <div className="pb-10">
+            {showMessage && message && (
+                <div className="mb-4">
+                    <AlertBanner
+                        type={alertType}
+                        description={message.text}
+                        showClose
+                        onClose={() => setShowMessage(false)}
+                    />
+                </div>
+            )}
 
-            <Button type="submit" onClick={handleSubmit} className="mt-4">
-              {loading ? (
-                <Spinner
-                  as="span"
-                  animation="border"
-                  size="sm"
-                  role="status"
-                  aria-hidden="true"
-                />
-              ) : (
-                "Delete"
-              )}
-            </Button>
-          </form>
+            <h1 className="mb-8 text-2xl font-semibold text-gray-900">
+                Delete User
+            </h1>
+
+            <AlertBanner
+                type="Warning"
+                description="Deleting a user removes the user entry from the FOSSology system. The user's name, account information, and password will be permanently removed. There is no undo for this action."
+                showClose={false}
+                className="mb-6"
+            />
+
+            <p className="text-base">
+                To delete a user, enter the following information:
+            </p>
+
+            <div className="mt-8 space-y-8">
+                <div className="space-y-2">
+                    <Label className="block">
+                        1. Select the user to delete:
+                    </Label>
+
+                    <Select
+                        value={id}
+                        onValueChange={(value) =>
+                            setDeleteUserData((prev) => ({
+                                ...prev,
+                                id: value,
+                            }))
+                        }
+                    >
+                        <SelectTrigger className="w-[320px]">
+                            <SelectValue placeholder="Select User" />
+                        </SelectTrigger>
+
+                        <SelectContent>
+                            {usersList.map((user) => (
+                                <SelectItem
+                                    key={user.id}
+                                    value={user.id.toString()}
+                                    disabled={user.disabled}
+                                >
+                                    {user.name}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+
+                <div className="space-y-2">
+                    <Label
+                        htmlFor="confirm"
+                        className="flex items-center gap-3"
+                    >
+                        <span>2.</span>
+
+                        <Checkbox
+                            id="confirm"
+                            checked={confirm}
+                            onCheckedChange={(checked) =>
+                                setDeleteUserData((prev) => ({
+                                    ...prev,
+                                    confirm: !!checked,
+                                }))
+                            }
+                        />
+
+                        <span>Confirm user deletion</span>
+                    </Label>
+                </div>
+
+                <Button
+                    type="button"
+                    variant="alert"
+                    onClick={handleSubmit}
+                    disabled={!isFormValid || loading}
+                >
+                    {loading ? "Deleting..." : "Delete"}
+                </Button>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
-export default DeleteUserPage;
-
+export default DeleteUserClient;

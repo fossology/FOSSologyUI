@@ -79,6 +79,8 @@ const routes = {
       add: "/admin/users/add",
       delete: "/admin/users/delete",
       edit: "/admin/users/edit",
+      operations: "/admin/users/operations",
+      userImport: "/admin/users/operations/userImport"
     },
     compatibility:{
       selectCompatibility: "/admin/compatibility/selectCompatibility",

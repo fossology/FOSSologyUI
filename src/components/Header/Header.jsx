@@ -382,21 +382,9 @@ export default function Header({ variant = "default" }) {
                     <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
                     <Link href={""}>Upload Permissions</Link>
                     </DropdownMenuItem>
-                    <DropdownMenuSub>
-                      <DropdownMenuSubTrigger 
-                      className={clsx(
-                        "flex items-center justify-between w-full px-2 py-2 text-sm rounded-md cursor-pointer",
-                        "hover:bg-secondary hover:text-gray-900 hover:font-bold",
-                        "focus:bg-secondary focus:text-gray-900 focus:font-bold",
-                        "data-[state=open]:bg-secondary data-[state=open]:text-gray-900 data-[state=open]:font-bold"
-                      )}>Users
-                      </DropdownMenuSubTrigger>
-                      <DropdownMenuSubContent className="p-0 m-0 bg-white border border-gray-200">
-                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={routes.admin.users.add}>Add User</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={routes.admin.users.edit}>Edit User Account</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={routes.admin.users.delete}>Delete User</Link></DropdownMenuItem>
-                      </DropdownMenuSubContent>
-                    </DropdownMenuSub>
+                    <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
+                      <Link href={routes.admin.users.add}>Users</Link>
+                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               )}

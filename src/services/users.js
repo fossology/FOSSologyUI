@@ -26,6 +26,10 @@ import {
   editUserByIdApi,
   deleteUserApi,
   getTokensApi,
+  exportUsersCsvApi,
+  exportUsersJsonApi,
+  importUsersCsvApi,
+  importUsersJsonApi,
 } from "@/api/users";
 import { setLocalStorage } from "@/shared/storageHelper";
 
@@ -116,10 +120,9 @@ export const editUserById = (id, data) => {
 
 // DELETE USER
 
-export const deleteUser = (id) => {
-  return deleteUserApi(id).then((res) => res);
+export const deleteUser = (name) => {
+  return deleteUserApi(name).then((res) => res);
 };
-
 
 // TOKENS
 
@@ -136,4 +139,28 @@ export const createToken = (tokenDetails) => {
     tokenDetails.password,
     tokenDetails
   ).then((res) => res);
+};
+// api endpoints not exposed
+// EXPORT USERS CSV
+
+export const exportUsersCsv = () => {
+  return exportUsersCsvApi().then((res) => res);
+};
+
+// EXPORT USERS JSON
+
+export const exportUsersJson = () => {
+  return exportUsersJsonApi().then((res) => res);
+};
+
+// IMPORT USERS CSV
+
+export const importUsersCsv = (formData) => {
+  return importUsersCsvApi(formData).then((res) => res);
+};
+
+// IMPORT USERS JSON
+
+export const importUsersJson = (formData) => {
+  return importUsersJsonApi(formData).then((res) => res);
 };

@@ -44,26 +44,30 @@ const endpoints = {
 
   // Users
   users: {
-    create:         ()      => withBase("/users"),          // POST
-    getAll:         ()      => withBase("/users"),          // GET
-    getSelf:        ()      => withBase("/users/self"),     // GET
-    getByName:      (name)  => withBase(`/users/${name}`), // GET  (was getSingle by id)
-    updateByName:   (name)  => withBase(`/users/${name}`), // PUT  (was edit by id)
-    deleteByName:   (name)  => withBase(`/users/${name}`), // DELETE (was delete by id)
-    tokens:         ()      => withBase("/users/tokens"),   // POST (create token for self)
-    tokensByType:   (type)  => withBase(`/users/tokens/${type}`), // GET active|expired
+    create:         ()      => withBase("/users"),
+    getAll:         ()      => withBase("/users"),
+    getSelf:        ()      => withBase("/users/self"),
+    getByName:      (name)  => withBase(`/users/${name}`),
+    updateByName:   (name)  => withBase(`/users/${name}`),
+    deleteByName:   (name)  => withBase(`/users/${name}`),
+    tokens:         ()      => withBase("/users/tokens"), 
+    tokensByType:   (type)  => withBase(`/users/tokens/${type}`),
+    exportCsv: () => withBase("/users/export-csv"),// api endpoint not exposed
+    exportJson: () => withBase("/users/export-json"),// api endpoint not exposed
+    importJson: () => withBase("/users/import-json"),// api endpoint not exposed
+    importCsv: () => withBase("/users/import-csv"),// api endpoint not exposed
   },
 
   // Uploads
   uploads: {
-    getAll:   ()    => withBase("/uploads"),              // GET  (browse + organize list)
-    create:   ()    => withBase("/uploads"),              // POST
-    getById:  (id)  => withBase(`/uploads/${id}`),       // GET
-    moveOrCopy: (id) => withBase(`/uploads/${id}`),      // PUT
-    delete:     (id) => withBase(`/uploads/${id}`),      // DELETE
-    summary:    (id) => withBase(`/uploads/${id}/summary`),   // GET
-    licenses:   (id) => withBase(`/uploads/${id}/licenses`),  // GET
-    download:   (id) => withBase(`/uploads/${id}/download`),  // GET
+    getAll:   ()    => withBase("/uploads"),
+    create:   ()    => withBase("/uploads"),
+    getById:  (id)  => withBase(`/uploads/${id}`),
+    moveOrCopy: (id) => withBase(`/uploads/${id}`),
+    delete:     (id) => withBase(`/uploads/${id}`),
+    summary:    (id) => withBase(`/uploads/${id}/summary`),
+    licenses:   (id) => withBase(`/uploads/${id}/licenses`),
+    download:   (id) => withBase(`/uploads/${id}/download`),
     oneshotCEU: () => withBase("/uploads/oneshot/ceu"),
     oneShotMonk: () => withBase("/uploads/oneshot/monk"),
     oneShotNomos: () => withBase("/uploads/oneshot/nomos"),
@@ -78,11 +82,11 @@ const endpoints = {
 
   // Jobs 
   jobs: {
-    getAll:      ()      => withBase("/jobs"),           // GET (user's own jobs)
-    create:      ()      => withBase("/jobs"),           // POST (schedule analysis)
-    getAllAdmin:  ()      => withBase("/jobs/all"),       // GET (admin)
-    getById:     (id)    => withBase(`/jobs/${id}`),     // GET
-    deleteJob:   (id, queue) => withBase(`/jobs/${id}/${queue}`), // DELETE
+    getAll:      ()      => withBase("/jobs"),           
+    create:      ()      => withBase("/jobs"),           
+    getAllAdmin:  ()      => withBase("/jobs/all"),      
+    getById:     (id)    => withBase(`/jobs/${id}`),    
+    deleteJob:   (id, queue) => withBase(`/jobs/${id}/${queue}`),
     statistics:  ()      => withBase("/jobs/dashboard/statistics"),
     dashboard:   ()      => withBase("/jobs/dashboard"),
     schedulerOperation: (operation) =>
@@ -93,9 +97,9 @@ const endpoints = {
 
   // Report
   report: {
-    schedule:  ()   => withBase("/report"),          // GET ?uploadId=…&reportFormat=…
-    download:  (id) => withBase(`/report/${id}`),    // GET
-    import:    ()   => withBase("/report/import"),   // POST ?upload=…&reportFormat=…
+    schedule:  ()   => withBase("/report"),        
+    download:  (id) => withBase(`/report/${id}`),    
+    import:    ()   => withBase("/report/import"),   
   },
 
   // Folders
@@ -103,8 +107,8 @@ const endpoints = {
     getAll:          ()    => withBase("/folders"),
     create:          ()    => withBase("/folders"),
     getById:         (id)  => withBase(`/folders/${id}`),
-    updateById:      (id)  => withBase(`/folders/${id}`),  // PATCH
-    moveOrCopy:      (id)  => withBase(`/folders/${id}`),  // PUT ?parent=…&action=…
+    updateById:      (id)  => withBase(`/folders/${id}`),  
+    moveOrCopy:      (id)  => withBase(`/folders/${id}`),  
     deleteById:      (id)  => withBase(`/folders/${id}`),
     contents:        (id)  => withBase(`/folders/${id}/contents`),
     unlinkContent:   (contentId) =>
