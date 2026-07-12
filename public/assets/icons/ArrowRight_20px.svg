@@ -1,0 +1,8 @@
+<!--
+SPDX-FileCopyrightText: 2026 Devanshi Sachan <devs221102@gmail.com>
+SPDX-License-Identifier: CC-BY-4.0
+-->
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M11 15L16.3333 10L11 5" stroke="#101010" stroke-width="1.5" stroke-linecap="square"/>
+<path d="M14.6667 9.96143L4 9.96143" stroke="#101010" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="round"/>
+</svg>
