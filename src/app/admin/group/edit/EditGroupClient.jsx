@@ -26,6 +26,7 @@ import { Spinner } from "@/components/Widgets";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { AlertBanner } from "@/components/ui/alert";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectTrigger,
@@ -116,9 +117,9 @@ const EditGroupClient = () => {
             Select a group and enter the new name to rename it.
           </p>
 
-          <label className="block font-normal mb-3">
+          <Label className="block mb-3">
             1. Select the group to edit:
-          </label>
+          </Label>
 
           {initialLoading ? (
             <div className="flex items-center gap-2 text-sm text-gray-500">
@@ -147,9 +148,9 @@ const EditGroupClient = () => {
         </div>
 
         <div>
-          <label className="block font-normal mb-3">
+          <Label className="block mb-3">
             2. Enter the new group name:
-          </label>
+          </Label>
           <Input
             type="text"
             name="groupName"

@@ -153,7 +153,7 @@ export default function HomeClient() {
             )}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <Label htmlFor="username" className="block mb-1">
+                <Label htmlFor="username" className="block mb-2">
                   Username
                 </Label>
                 <Input
@@ -168,7 +168,7 @@ export default function HomeClient() {
               </div>
 
               <div>
-                <Label htmlFor="password" className="block mb-1">
+                <Label htmlFor="password" className="block mb-2">
                   Password
                 </Label>
                 <div className="relative">
@@ -178,6 +178,7 @@ export default function HomeClient() {
                     placeholder="Enter password"
                     value={password}
                     onChange={handleChange("password")}
+                    disabled={loading}
                   />
 
 

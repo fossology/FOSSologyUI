@@ -27,6 +27,7 @@ import { Spinner } from "@/components/Widgets";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { AlertBanner } from "@/components/ui/alert";
+import { Label } from "@/components/ui/label";
 
 // API Services
 import { createGroup } from "@/services/groups";
@@ -83,9 +84,9 @@ const CreateGroupClient = () => {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label className="block font-normal mb-3">
+          <Label className="block mb-3">
             Enter the group name:
-          </label>
+          </Label>
           <Input
             type="text"
             name="name"
