@@ -167,8 +167,6 @@ export const oneShotNomosApi = ({ reqBody }) => {
   });
 };
 
-export default getJobApi;
-
 // GET /jobs/scheduler/operation/{operation}
 export const getSchedulerOptionsApi = (operation) => {
   return sendRequest({

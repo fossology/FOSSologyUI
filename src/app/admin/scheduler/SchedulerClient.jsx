@@ -118,12 +118,14 @@ const SchedulerClient = () => {
   useEffect(() => {
     const fetchSchedulerOptions = async () => {
       try {
-        const data = await getSchedulerOptions(
-          selectedOperation
-        );
+        const data = await getSchedulerOptions(selectedOperation);
+
+        const jobList = Array.isArray(data?.jobList)
+          ? data.jobList
+          : Object.values(data?.jobList || {});
 
         setSchedulerOptions({
-          jobList: data?.jobList || [],
+          jobList,
           priorityList: data?.priorityList || [],
           verboseList: data?.verboseList || [],
           agentList: data?.agentList || [],
