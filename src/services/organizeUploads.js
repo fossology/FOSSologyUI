@@ -22,6 +22,7 @@ import {
   deleteUploadsApi,
   moveUploadApi,
   copyUploadApi,
+  updateUploadApi
 } from "@/api/organizeUploads";
 
 // Getting uploads with folder id
@@ -43,11 +44,24 @@ export const deleteUploadsbyId = (uploadId) => {
 };
 
 // Moving the upload into another folder
-export const moveUpload = (folderId, uploadId) => {
+export const moveUpload = ({ folderId, uploadId }) => {
   return moveUploadApi({ folderId, uploadId }).then((res) => res);
 };
 
 // Copying the upload into another folder
-export const copyUpload = (folderId, uploadId) => {
+export const copyUpload = ({ folderId, uploadId }) => {
   return copyUploadApi({ folderId, uploadId }).then((res) => res);
+};
+
+//Editing upload properties
+export const updateUpload = ({
+  uploadId,
+  uploadName,
+  uploadDescription,
+}) => {
+  return updateUploadApi({
+    uploadId,
+    uploadName,
+    uploadDescription,
+  }).then((res) => res);
 };

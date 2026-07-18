@@ -78,7 +78,7 @@ export const createFolderApi = (parentFolder, folderName, folderDescription) => 
 // PATCH /folders/{id}?name=…&description=…
 export const editFolderApi = (name, description, id) => {
   return sendRequest({
-    url: endpoints.folders.updateById(id), // v1: edit(id)
+    url: endpoints.folders.updateById(id),
     method: "PATCH",
     headers: {
       Authorization: getToken(),
@@ -93,7 +93,7 @@ export const editFolderApi = (name, description, id) => {
 // PUT /folders/{id}?parent=…&action=move|copy
 export const moveCopyFolderApi = (parent, id, action) => {
   return sendRequest({
-    url: endpoints.folders.moveOrCopy(id), // v1: move(id)
+    url: endpoints.folders.moveOrCopy(id),
     method: "PUT",
     headers: {
       Authorization: getToken(),
@@ -109,6 +109,16 @@ export const getFolderContentsApi = ({ folderId }) => {
   return sendRequest({
     url: endpoints.folders.contents(folderId),
     method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+};
+
+export const unlinkContentApi = (contentId) => {
+  return sendRequest({
+    url: endpoints.folders.unlinkContent(contentId),
+    method: "PUT",
     headers: {
       Authorization: getToken(),
     },

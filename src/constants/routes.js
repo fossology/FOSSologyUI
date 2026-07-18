@@ -45,7 +45,7 @@ const routes = {
       create: "/organize/folders/create",
       delete: "/organize/folders/delete",
       edit: "/organize/folders/edit",
-      move: "/organize/folders/move",
+      moveCopy: "/organize/folders/moveCopy",
       unlinkContent: "/organize/folders/unlinkContent",
     },
     licenses: {

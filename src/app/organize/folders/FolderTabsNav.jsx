@@ -27,7 +27,7 @@ const folderTabs = [
   { label: "Create", href: routes.organize.folders.create },
   { label: "Delete", href: routes.organize.folders.delete },
   { label: "Edit Properties", href: routes.organize.folders.edit },
-  { label: "Move or Copy", href: routes.organize.folders.move },
+  { label: "Move or Copy", href: routes.organize.folders.moveCopy },
   { label: "Unlink Content", href: routes.organize.folders.unlinkContent },
 ];
 

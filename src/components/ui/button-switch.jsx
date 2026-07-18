@@ -23,9 +23,10 @@ import { cva } from "class-variance-authority";
 
 import { cn } from "@/lib/utils"
 import { ButtonGroup } from "@/components/ui/button-group"
+import { Button } from "@/components/ui/button";
 
 const buttonSwitchVariants = cva(
-  "inline-flex rounded border border-neutral-800 bg-white p-0.5",
+  "inline-flex",
   {
     variants: {
       size: {
@@ -44,26 +45,6 @@ const buttonSwitchVariants = cva(
   }
 )
 
-const switchButtonVariants = cva(
-  "inline-flex items-center justify-center rounded px-3 text-sm font-medium transition-colors",
-  {
-    variants: {
-      size: {
-        default: "h-8",
-        sm: "h-6 text-xs",
-      },
-      active: {
-        true: "bg-tertiary1-800 text-white",
-        false: "bg-transparent text-tertiary1-800 hover:bg-tertiary1-200",
-      },
-    },
-    defaultVariants: {
-      size: "default",
-      active: false,
-    },
-  }
-)
-
 function ButtonSwitch({
   options = [],
   value,
@@ -78,27 +59,30 @@ function ButtonSwitch({
       className={cn(buttonSwitchVariants({ size, disabled }), className)}
       aria-disabled={disabled}
     >
-      {options.map((option) => {
-        const optionValue = option.value ?? option.label;
-        const isActive = value === optionValue;
+    {options.map((option, index) => {
+      const optionValue = option.value ?? option.label;
+      const isActive = value === optionValue;
 
-        return (
-          <button
-            key={optionValue}
-            type="button"
-            role="radio"
-            aria-checked={isActive}
-            disabled={disabled || option.disabled}
-            onClick={() => onValueChange?.(optionValue)}
-            className={cn(
-              switchButtonVariants({ size, active: isActive }),
-              "disabled:opacity-50 disabled:pointer-events-none"
-            )}
-          >
-            {option.label}
-          </button>
-        );
-      })}
+      return (
+        <Button
+          key={optionValue}
+          size={size}
+          variant={isActive ? "outline" : "inactive"}
+          onClick={() => onValueChange?.(optionValue)}
+          className={cn(
+            index === 0
+              ? isActive
+                ? "rounded-md"
+                : "rounded-l-md rounded-r-none"
+              : isActive
+                ? "rounded-md"
+                : "rounded-r-md rounded-l-none"
+          )}
+        >
+          {option.label}
+        </Button>
+      );
+    })}
     </ButtonGroup>
   );
 }
