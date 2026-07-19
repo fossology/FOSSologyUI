@@ -55,7 +55,7 @@ const routes = {
     uploads: {
       delete: "/organize/uploads/delete",
       edit: "/organize/uploads/edit",
-      move: "/organize/uploads/move",
+      moveCopy: "/organize/uploads/moveCopy",
     },
   },
   help: {
