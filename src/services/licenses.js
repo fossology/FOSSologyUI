@@ -19,6 +19,7 @@ SPDX-License-Identifier: GPL-2.0-only
 
 import {
   getAllLicenseApi,
+  createLicenseApi,
   createCandidateLicenseApi,
   importLicenseCsvApi,
   importLicenseJsonApi,
@@ -28,11 +29,26 @@ import {
   marydoneExportJsonApi,
   importLicenseRulesApi,
   exportLicenseRulesApi,
+  getAdminLicenseAcknowledgementsApi,
+  mutateAdminLicenseAcknowledgementApi,
+  getStandardLicenseCommentsApi,
+  mutateStandardLicenseCommentsApi,
+  getCompatibilityLicenseOptionsApi,
+  getCustomiseDataApi,
 } from "@/api/licenses";
 
 // Fetching the licenses with their kind i.e (candidate, main, all)
 export const getAllLicense = (licenseData) => {
   return getAllLicenseApi(licenseData).then((res) => res);
+};
+
+export const createLicense = (licenseData) => {
+  return createLicenseApi(licenseData).then((res) => res);
+};
+
+// Fetch Admin customisation data
+export const getCustomiseData = () => {
+  return getCustomiseDataApi().then((res) => res);
 };
 
 export const createCandidateLicense = (licenseData) => {
@@ -69,4 +85,41 @@ export const importLicenseRules = (formData) => {
 
 export const exportLicenseRules = () => {
   return exportLicenseRulesApi();
+};
+
+export const getAdminLicenseAcknowledgements = () => {
+  return getAdminLicenseAcknowledgementsApi().then(
+    (res) => res
+  );
+};
+
+export const mutateAdminLicenseAcknowledgement = (
+  acknowledgements
+) => {
+  return mutateAdminLicenseAcknowledgementApi(
+    acknowledgements
+  ).then((res) => res);
+};
+
+// Fetching standard license comments
+export const getStandardLicenseComments = () => {
+  return getStandardLicenseCommentsApi().then(
+    (res) => res
+  );
+};
+
+// Adding and updating standard license comments
+export const mutateStandardLicenseComments = (
+  comments
+) => {
+  return mutateStandardLicenseCommentsApi(
+    comments
+  ).then((res) => res);
+};
+
+// Fetch licenses for compatibility rule dropdowns
+export const getCompatibilityLicenseOptions = () => {
+  return getCompatibilityLicenseOptionsApi().then(
+    (res) => res
+  );
 };

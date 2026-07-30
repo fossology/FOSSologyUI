@@ -97,6 +97,8 @@ const routes = {
       licenseImport: "/admin/licenseAdmin/operations/licenseImport"
     },
     maintenance: "/admin/maintenance",
+    acknowledgements: "/admin/acknowledgements",
+    stdcomments: "/admin/stdcomments",
     tag: {
       create: "/admin/tag/create",
       enableDisable: "/admin/tag/enableDisable"
