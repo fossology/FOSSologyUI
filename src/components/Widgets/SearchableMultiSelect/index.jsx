@@ -30,7 +30,7 @@ const SearchableMultiSelect = ({
   options = [],
   value = [],
   onChange,
-  placeholder = "Search...",
+  placeholder = "Search",
   className,
 }) => {
   const [open, setOpen] = useState(false);
@@ -44,20 +44,27 @@ const SearchableMultiSelect = ({
     );
   }, [options, search]);
 
-  const toggleOption = (option) => {
-    const exists = value.some((item) => item.value === option.value);
+const toggleOption = (option) => {
+  const exists = value.some(
+    (item) => item.id === option.id
+  );
 
-    if (exists) {
-      onChange(value.filter((item) => item.value !== option.value));
-    } else {
-      onChange([...value, option]);
-    }
-      setSearch("");
-  };
+  if (exists) {
+    onChange(
+      value.filter((item) => item.id !== option.id)
+    );
+  } else {
+    onChange([...value, option]);
+  }
 
-  const removeOption = (option) => {
-    onChange(value.filter((item) => item.value !== option.value));
-  };
+  setSearch("");
+};
+
+const removeOption = (option) => {
+  onChange(
+    value.filter((item) => item.id !== option.id)
+  );
+};
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -85,7 +92,7 @@ const SearchableMultiSelect = ({
         <div className="flex flex-wrap items-center gap-2 flex-1">
             {value.map((item) => (
             <Chip
-                key={item.value}
+                key={item.id}
                 label={item.label}
                 onRemove={() => removeOption(item)}
             />
@@ -137,41 +144,41 @@ const SearchableMultiSelect = ({
         </InputGroup>
 
     {open && (
-        <div className="absolute left-0 top-full z-50 mt-1 w-full overflow-hidden rounded-b border-x border-b border-neutral-300 border-t-0 bg-white shadow-[0px_4px_6px_0px_#00000017]">
-        <ScrollArea className="max-h-64">
-            {filteredOptions.length === 0 ? (
-            <div className="px-4 py-3 text-sm text-muted-foreground">
-                No results found.
-            </div>
-            ) : (
-            filteredOptions.map((option) => {
-                const selected = value.some(
-                (item) => item.value === option.value
-                );
-
-                return (
-                <button
-                    key={option.value}
-                    type="button"
-                    onMouseDown={(e) => e.preventDefault()}
-                    onClick={() => toggleOption(option)}
-                    className={cn(
-                    "relative flex h-[36px] w-full items-center justify-between px-3 text-[14px] leading-[20px]",
-                    "hover:bg-neutral-100",
-                    selected && "bg-accent"
-                    )}
-                >
-                    {option.label}
-
-                    {selected && (
-                    <Check className="h-4 w-4 text-primary" />
-                    )}
-                </button>
-                );
-            })
-            )}
-        </ScrollArea>
+    <div className="absolute left-0 top-full z-50 mt-1 w-full overflow-hidden rounded-b border-x border-b border-neutral-300 border-t-0 bg-white shadow-[0px_4px_6px_0px_#00000017]">
+      <ScrollArea className="max-h-64 w-full">
+        {filteredOptions.length === 0 ? (
+        <div className="px-4 py-3 text-sm text-muted-foreground">
+            No results found.
         </div>
+        ) : (
+        filteredOptions.map((option) => {
+            const selected = value.some(
+            (item) => item.id === option.id
+            );
+
+            return (
+            <button
+                key={option.id}
+                type="button"
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => toggleOption(option)}
+                className={cn(
+                "relative flex h-[36px] w-full items-center justify-between px-3 text-[14px] leading-[20px]",
+                "hover:bg-neutral-100",
+                selected && "bg-accent"
+                )}
+            >
+                {option.label}
+
+                {selected && (
+                <Check className="h-4 w-4 text-primary" />
+                )}
+            </button>
+            );
+        })
+        )}
+    </ScrollArea>
+    </div>
     )}
     </div>
     );
