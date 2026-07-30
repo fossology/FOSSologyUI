@@ -27,7 +27,7 @@ const groupTabs = [
   { label: "Add Group", href: routes.admin.group.create },
   { label: "Delete Group", href: routes.admin.group.delete },
   { label: "Edit Group", href: routes.admin.group.edit },
-  { label: "Manage Group Users", href: routes.admin.group.manageUsers },
+  { label: "Manage Group Users", href: routes.admin.group.manageGroupUsers },
 ];
 
 export default function GroupTabsNav() {

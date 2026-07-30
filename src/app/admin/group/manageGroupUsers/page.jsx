@@ -16,14 +16,12 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+import ManageGroupUsersClient from "./ManageGroupUsersClient";
+
 export const metadata = {
   title: "Manage Group Users | FOSSology",
 };
 
 export default function ManageGroupUsersPage() {
-  return (
-    <p className="text-sm text-gray-500">
-      Manage Group Users — coming soon.
-    </p>
-  );
+  return <ManageGroupUsersClient />;
 }

@@ -70,9 +70,9 @@ const buttonVariants = cva(
           "hover:bg-accent hover:text-accent-foreground",
       },
       size: {
-        default: "h-10 px-8 py-2",  // 40px — normal
-        md:      "h-8  px-4 py-1",  // 32px — medium
-        sm:      "h-6  px-3 py-1 text-xs gap-1", // 24px — small
+        default: "px-8 py-2",  // 40px — normal
+        md:      "px-8 py-1",  // 32px — medium
+        sm:      "px-8 py-1 text-xs gap-1", // 24px — small
         icon:    "size-10",
       },
     },
