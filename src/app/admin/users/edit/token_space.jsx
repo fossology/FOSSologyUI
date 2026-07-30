@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2022 Krishna Mahato (krishhtrishh9304@gmail.com)
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -20,61 +20,65 @@ SPDX-License-Identifier: GPL-2.0-only
 "use client";
 
 import React, { useState, useEffect } from "react";
-
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
 // widgets
-import { Button, InputContainer, Spinner } from "@/components/Widgets";
-import Modal from "@/components/Widgets/Modal";
+import { Spinner } from "@/components/Widgets";
+import { Button } from "@/components/ui/button";
 import PropTypes from "prop-types";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 // utils
 import formatDate from "@/utils";
 
-// css
-import "./token_space.css";
-import { createToken, getTokens } from "@/services/users";
-import { Col, Form, Row } from "react-bootstrap";
+import {
+  createToken,
+  getTokens,
+  revokeToken,
+} from "@/services/users";
 
 const TokenSpace = ({ setMessage, setShowMessage }) => {
   const [loading, setLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [currTokenVal, setCurrTokenVal] = useState("");
-
-  const CHILD_IDS = {
-    TOKEN: "token_val",
-    VALIDATE: "validate",
-  };
-  const [modalChildId, setModalChildId] = useState(CHILD_IDS.TOKEN);
-
+  const [calendarOpen, setCalendarOpen] = useState(false);
+  const [newlyCreatedToken, setNewlyCreatedToken] = useState("");
   const [newTokenInfo, setNewTokenInfo] = useState({
-    username: "", // Initialized as empty
-    password: "",
     tokenName: "",
     accessScope: "read",
-    tokenExpDate: formatDate(new Date()),
+    tokenExpDate: undefined,
   });
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const user = JSON.parse(localStorage.getItem("user"));
-      if (user?.name) {
-        setNewTokenInfo((prev) => ({
-          ...prev,
-          username: user.name,
-        }));
-      }
-    }
-  }, []);
-
+  const [revealedTokenId, setRevealedTokenId] = useState(null);
+  const [revealedTokenValue, setRevealedTokenValue] = useState("");
+  const [revokingTokenId, setRevokingTokenId] = useState(null);
   const [activeAccessTokens, setActiveAccessTokens] = useState([]);
   const [expiredAccessTokens, setExpiredAccessTokens] = useState([]);
 
   const handleChange = (e) => {
     if (e.target.type === "date") {
-      setNewTokenInfo({
-        ...newTokenInfo,
-        [e.target.name]: formatDate(e.target.valueAsDate),
-      });
+      setNewTokenInfo((prev) => ({
+        ...prev,
+        [e.target.name]:
+          e.target.type === "date"
+            ? formatDate(e.target.valueAsDate)
+            : e.target.value,
+      }));
     } else {
       setNewTokenInfo({
         ...newTokenInfo,
@@ -87,10 +91,28 @@ const TokenSpace = ({ setMessage, setShowMessage }) => {
     try {
       const res1 = await getTokens("active");
       const res2 = await getTokens("expired");
-      setActiveAccessTokens(res1.active_tokens);
-      setExpiredAccessTokens(res2.expired_tokens);
+
+      setActiveAccessTokens(
+        Array.isArray(res1?.activeTokens)
+          ? res1.activeTokens
+          : []
+      );
+
+      setExpiredAccessTokens(
+        Array.isArray(res2?.expiredTokens)
+          ? res2.expiredTokens
+          : []
+      );
+
     } catch (error) {
-      setMessage({ type: "danger", text: error.message });
+      setActiveAccessTokens([]);
+      setExpiredAccessTokens([]);
+
+      setMessage({
+        type: "error",
+        text: error.message,
+      });
+
       setShowMessage(true);
     }
   };
@@ -101,256 +123,454 @@ const TokenSpace = ({ setMessage, setShowMessage }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!newTokenInfo.tokenName.trim()) {
+      setMessage({
+        type: "error",
+        text: "Token name is required.",
+      });
+      setShowMessage(true);
+      return;
+    }
+
+    if (newTokenInfo.tokenName.length > 40) {
+      setMessage({
+        type: "error",
+        text: "Token name cannot exceed 40 characters.",
+      });
+      setShowMessage(true);
+      return;
+    }
+
     setLoading(true);
     try {
       const finalTokenDetails = {
         tokenName: newTokenInfo.tokenName,
         tokenScope: newTokenInfo.accessScope,
-        tokenExpire: newTokenInfo.tokenExpDate,
-        username: newTokenInfo.username,
-        password: newTokenInfo.password,
+        tokenExpire: newTokenInfo.tokenExpDate
+          ? format(newTokenInfo.tokenExpDate, "yyyy-MM-dd")
+          : null,
       };
       const res = await createToken(finalTokenDetails);
-      if (res.Authorization) {
-        setMessage({ type: "success", text: "Token created successfully!" });
-        setShowMessage(true);
+
+      if (res?.token) {
+        setRevealedTokenId(null);
+        setRevealedTokenValue("");
+        setNewlyCreatedToken(res.token);
+        await fetchTokens();
       }
-      await fetchTokens();
     } catch (error) {
-      setMessage({ type: "danger", text: error.message });
+      setMessage({ type: "error", text: error.message });
+      setShowMessage(true);
+    } finally {
+      setNewTokenInfo({
+        tokenName: "",
+        accessScope: "read",
+        tokenExpDate: undefined,
+      });
+      setLoading(false);
+    }
+  };
+
+  const handleRevoke = async (id) => {
+    try {
+      // Show temporary message row
+      setRevokingTokenId(id);
+
+      // Close revealed textarea if this token is open
+      if (revealedTokenId === id) {
+        setRevealedTokenId(null);
+        setRevealedTokenValue("");
+      }
+
+      await revokeToken(id);
+
+      // Keep the message visible briefly
+      setTimeout(async () => {
+        await fetchTokens();
+        setRevokingTokenId(null);
+      }, 1500);
+
+    } catch (error) {
+      setRevokingTokenId(null);
+
+      setMessage({
+        type: "error",
+        text: error.message,
+      });
       setShowMessage(true);
     }
-    setNewTokenInfo((prev) => ({
-      ...prev,
-      password: "",
-      tokenName: "",
-    }));
-    setShowModal(false);
-    setTimeout(() => {
-      setShowMessage(false);
-    }, 2000);
-    setLoading(false);
   };
 
   return (
     <>
-      <Modal setShow={setShowModal} show={showModal}>
-        {modalChildId === CHILD_IDS.VALIDATE ? (
-          <ValidateForm
-            handleChange={handleChange}
-            handleSubmit={handleSubmit}
-            loading={loading}
-            newTokenInfo={newTokenInfo}
-          />
-        ) : (
-          <textarea
-            style={{ width: "100%", minHeight: "100px" }}
-            name="tokenValue"
-            id="tokenValue"
-            value={currTokenVal}
-            readOnly
-          />
-        )}
-      </Modal>
+      <div className="mt-8">
+        <h2 className="font-size-main-heading mb-3">
+          REST API Tokens
+        </h2>
 
-      <div>
-        <h1 className="font-size-main-heading">REST API Tokens</h1>
-        <p>
-          You can create/manage your tokens here for using FOSSology's REST API.
+        <p className="mb-8">
+          You can create/manage your tokens here for using FOSSology&apos;s REST API.
         </p>
-        <hr />
-        <h1 className="font-size-main-heading">Create a new token</h1>
-        <form>
-          <InputContainer
-            name="tokenName"
-            id="tokenName"
-            type="text"
-            onChange={handleChange}
-            value={newTokenInfo.tokenName}
-          >
-            Name
-          </InputContainer>
 
-          <div className="mb-1">
-            <p className="font-demi my-1">Expires at</p>
-            <input
-              value={newTokenInfo.tokenExpDate}
-              type="date"
+        {newlyCreatedToken && (
+          <div className="mb-8 space-y-2">
+            <h3 className="font-size-main-heading font-semibold">
+              New token
+            </h3>
+            <Label className="font-medium mb-3">
+              New token for Bearer authentication
+            </Label>
+
+            <div className="relative">
+              <Textarea
+                value={newlyCreatedToken}
+                readOnly
+                className="w-full resize pr-10 text-neutral-800"
+              />
+
+              <img
+                src="/assets/icons/Copy_16px.svg"
+                alt="Copy token"
+                role="button"
+                tabIndex={0}
+                className="absolute top-3 right-3 h-4 w-4 cursor-pointer opacity-70 hover:opacity-100"
+                onClick={() => navigator.clipboard.writeText(newlyCreatedToken)}
+              />
+            </div>
+          </div>
+        )}
+
+        <h4 className="font-size-main-heading font-semibold mb-6">
+          Create a New Token
+        </h4>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-2">
+            <Label
+              htmlFor="tokenName"
+              className="font-semibold"
+            >
+              Name
+            </Label>
+
+            <Input
+              id="tokenName"
+              name="tokenName"
+              value={newTokenInfo.tokenName}
+              maxLength={40}
               onChange={handleChange}
-              name="tokenExpDate"
-              id="tokenExpDate"
+              placeholder="Friendly name for new token"
+              className="h-10 w-[390px]"
             />
           </div>
 
-          <p className="font-demi mt-1">Access scope</p>
+          <div className="space-y-2">
+            <Label
+              htmlFor="tokenExpDate"
+              className="font-semibold"
+            >
+              Expires at
+            </Label>
 
-          <RadioGroup
-            value={newTokenInfo.accessScope}
-            onValueChange={(value) =>
-              setNewTokenInfo((prev) => ({
-                ...prev,
-                accessScope: value,
-              }))
-            }
-          >
-            <div className="flex items-center gap-2">
-              <RadioGroupItem value="read" id="read_only_scope" />
-              <label htmlFor="read_only_scope">
-                Read only access (Limited only to "GET" calls)
-              </label>
-            </div>
+            <Popover
+              open={calendarOpen}
+              onOpenChange={setCalendarOpen}
+            >
+              <PopoverTrigger asChild>
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      setCalendarOpen(true);
+                    }
+                  }}
+                  className={cn(
+                    "flex h-10 w-[390px] cursor-pointer items-center justify-between",
+                    "px-3 py-2 bg-white border border-neutral-800 placeholder:text-neutral-800 rounded text-sm transition-colors caret-primary",
+                    "focus-visible:border-primary focus-visible:shadow-[0px_0_3px_2px_#00449440] focus-visible:outline-none",
+                    calendarOpen
+                      ? "border-primary shadow-[0px_0_3px_2px_#00449440]"
+                      : ""
+                  )}
+                >
+                  <span
+                    className={
+                      newTokenInfo.tokenExpDate
+                        ? ""
+                        : "text-neutral-500"
+                    }
+                  >
+                    {newTokenInfo.tokenExpDate
+                      ? format(newTokenInfo.tokenExpDate, "yyyy-MM-dd")
+                      : "YYYY-MM-DD"}
+                  </span>
 
-            <div className="flex items-center gap-2">
-              <RadioGroupItem value="write" id="read_write_scope" />
-              <label htmlFor="read_write_scope">
-                Read/Write access Required for calls other than "GET"
-              </label>
-            </div>
-          </RadioGroup>
+                  <img
+                    src="/assets/icons/Calendar_20px.svg"
+                    alt=""
+                    width={20}
+                    height={20}
+                    className="opacity-60"
+                  />
+                </div>
+              </PopoverTrigger>
 
-          <Button
-            type="submit"
-            onClick={(e) => {
-              e.preventDefault();
-              setShowModal(true);
-              setModalChildId(CHILD_IDS.VALIDATE);
-            }}
-            className="mt-4"
-          >
-            {loading ? (
-              <Spinner
-                as="span"
-                animation="border"
-                size="sm"
-                role="status"
-                aria-hidden="true"
+              <PopoverContent className="w-auto p-0 animate-none">
+                <Calendar
+                  mode="single"
+                  selected={newTokenInfo.tokenExpDate}
+                  onSelect={(date) => {
+                    setNewTokenInfo((prev) => ({
+                      ...prev,
+                      tokenExpDate: date,
+                    }));
+
+                    setCalendarOpen(false);
+                  }}
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+
+          <div className="space-y-4">
+            <Label className="font-semibold">
+              Access scope
+            </Label>
+
+            <RadioGroup
+              value={newTokenInfo.accessScope}
+              onValueChange={(value) =>
+                setNewTokenInfo((prev) => ({
+                  ...prev,
+                  accessScope: value,
+                }))
+              }
+              className="space-y-3"
+            >
+            <div className="flex items-center gap-3">
+              <RadioGroupItem
+                value="read"
+                id="read_only_scope"
               />
-            ) : (
-              "Create new token"
-            )}
-          </Button>
+              <Label
+                htmlFor="read_only_scope"
+                className="font-normal cursor-pointer"
+              >
+                Read only access (Limited only to "GET" calls)
+              </Label>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <RadioGroupItem
+                value="write"
+                id="read_write_scope"
+              />
+              <Label
+                htmlFor="read_write_scope"
+                className="font-normal cursor-pointer"
+              >
+                Read/Write access (Required for calls other than "GET")
+              </Label>
+            </div>
+
+            </RadioGroup>
+
+            <div className="pt-2">
+              <Button
+                type="submit"
+                disabled={loading}
+              >
+                {loading && (
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                    className="mr-2"
+                  />
+                )}
+                {loading ? "Creating..." : "Create New Token"}
+              </Button>
+            </div>
+          </div>
         </form>
-        <hr />
         <AccessTokenTable
           title="Active access tokens"
           tokens={activeAccessTokens}
-          onReveal={(val) => {
-            setShowModal(true);
-            setCurrTokenVal(val);
-            setModalChildId(CHILD_IDS.TOKEN);
+          showRevoke={true}
+          onReveal={(token) => {
+            if (revealedTokenId === token.id) {
+              setRevealedTokenId(null);
+              setRevealedTokenValue("");
+            } else {
+              setRevealedTokenId(token.id);
+              setRevealedTokenValue(token.token);
+            }
           }}
+          onRevoke={handleRevoke}
+          revealedTokenId={revealedTokenId}
+          revealedTokenValue={revealedTokenValue}
+          revokingTokenId={revokingTokenId}
         />
-        <hr />
+
         <AccessTokenTable
           title="Expired access tokens"
           tokens={expiredAccessTokens}
-          onReveal={(val) => {
-            setShowModal(true);
-            setCurrTokenVal(val);
-            setModalChildId(CHILD_IDS.TOKEN);
+          onReveal={(token) => {
+            if (revealedTokenId === token.id) {
+              setRevealedTokenId(null);
+              setRevealedTokenValue("");
+            } else {
+              setRevealedTokenId(token.id);
+              setRevealedTokenValue(token.token);
+            }
           }}
+          showRevoke={false}
+          revealedTokenId={revealedTokenId}
+          revealedTokenValue={revealedTokenValue}
         />
       </div>
     </>
   );
 };
 
-const ValidateForm = ({
-  handleChange,
-  handleSubmit,
-  newTokenInfo,
-  loading,
-}) => {
-  return (
-    <Form>
-      <Form.Group as={Row} controlId="loginUsername">
-        <Form.Label column sm="4">
-          Username
-        </Form.Label>
-        <Col sm="8">
-          <Form.Label className="font-bold">{newTokenInfo.username}</Form.Label>
-        </Col>
-      </Form.Group>
-      <Form.Group as={Row} controlId="loginPassword">
-        <Form.Label column sm="4">
-          Password
-        </Form.Label>
-        <Col sm="8">
-          <input
-            id="password"
-            type="password"
-            name="password"
-            placeholder="Enter Password"
-            onChange={handleChange}
-            value={newTokenInfo.password}
-          />
-        </Col>
-      </Form.Group>
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <Button type="submit" onClick={handleSubmit} className="d-block">
-          {loading ? (
-            <Spinner
-              as="span"
-              animation="border"
-              size="sm"
-              role="status"
-              aria-hidden="true"
-            />
-          ) : (
-            "Authorize"
-          )}
-        </Button>
-      </div>
-    </Form>
-  );
-};
-
-const AccessTokenTable = ({ title, tokens, onReveal }) => (
-  <div>
-    <h1 className="font-size-main-heading">
+const AccessTokenTable = ({
+  title,
+  tokens,
+  onReveal,
+  onRevoke,
+  showRevoke,
+  revealedTokenId,
+  revealedTokenValue,
+  revokingTokenId,
+}) => (
+  <div className="mt-12">
+    <h3 className="text-2xl font-semibold mb-4">
       {title} ({tokens.length})
-    </h1>
-    <table className="table table-striped text-primary-color font-size-medium table-bordered">
-      <thead>
-        <tr className="font-bold">
-          <th>Token name</th>
-          <th>Created on</th>
-          <th>Expiry</th>
-          <th>Scope</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        {tokens.map((token) => (
-          <tr key={token.name} className="token_row">
-            <td>{token.name}</td>
-            <td>{token.created}</td>
-            <td>{token.expire}</td>
-            <td>{token.scope === "w" ? "read/write" : "read-only"}</td>
-            <td>
-              <Button type="button" onClick={() => onReveal(token.token)}>
-                Reveal
-              </Button>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    </h3>
+
+    <Table className="w-full table-auto">
+      <TableHeader>
+        <TableRow>
+          <TableHead className="w-[40%]">Token name</TableHead>
+          <TableHead className="w-[15%]">Created on</TableHead>
+          <TableHead className="w-[15%]">Expiry</TableHead>
+          <TableHead className="w-[15%]">Scope</TableHead>
+          <TableHead className="w-[15%] text-center">Action</TableHead>
+        </TableRow>
+      </TableHeader>
+
+    <TableBody className="text-neutral-800">
+      {tokens.length > 0 ? (
+        tokens.map((token) => {
+          if (revokingTokenId === token.id) {
+            return (
+              <TableRow key={token.id}>
+                <TableCell
+                  colSpan={5}
+                  className="text-muted-foreground"
+                >
+                  This token is revoked.
+                </TableCell>
+              </TableRow>
+            );
+          }
+
+          return (
+            <React.Fragment key={token.id}>
+
+            <TableRow>
+              <TableCell className="break-all whitespace-normal">
+                {token.name}
+              </TableCell>
+
+              <TableCell className="whitespace-nowrap">
+                {token.created}
+              </TableCell>
+
+              <TableCell className="whitespace-nowrap">
+                {token.expire}
+              </TableCell>
+
+              <TableCell className="whitespace-nowrap">
+                {token.scope === "write" || token.scope === "w"
+                  ? "Read/Write"
+                  : "Read Only"}
+              </TableCell>
+
+              <TableCell className="text-center whitespace-nowrap">
+                <div className="flex justify-center gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="md"
+                    onClick={() => onReveal(token)}
+                  >
+                    Reveal
+                  </Button>
+
+                  {showRevoke && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="md"
+                      onClick={() => onRevoke(token.id)}
+                    >
+                      Revoke
+                    </Button>
+                  )}
+                </div>
+              </TableCell>
+            </TableRow>
+
+            {revealedTokenId === token.id && (
+              <TableRow>
+                <TableCell colSpan={5}>
+                  <div className="relative">
+                    <Textarea
+                      value={revealedTokenValue}
+                      readOnly
+                      className="w-full resize pr-10 border-neutral-400 text-neutral-800"
+                    />
+
+                    <img
+                      src="/assets/icons/Copy_16px.svg"
+                      alt="Copy token"
+                      role="button"
+                      tabIndex={0}
+                      className="absolute top-3 right-3 h-4 w-4 cursor-pointer opacity-70 hover:opacity-100"
+                      onClick={() =>
+                        navigator.clipboard.writeText(revealedTokenValue)
+                      }
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          navigator.clipboard.writeText(revealedTokenValue);
+                        }
+                      }}
+                    />
+                  </div>
+                </TableCell>
+              </TableRow>
+            )}
+            </React.Fragment>
+          );
+        })
+        ) : (
+          <TableRow>
+            <TableCell
+              colSpan={5}
+              className="text-center text-muted-foreground"
+            >
+              No tokens found.
+            </TableCell>
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
   </div>
 );
-
-ValidateForm.propTypes = {
-  handleChange: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  loading: PropTypes.bool,
-  newTokenInfo: PropTypes.shape({
-    username: PropTypes.string,
-    password: PropTypes.string,
-    tokenName: PropTypes.string,
-    accessScope: PropTypes.string,
-    tokenExpDate: PropTypes.string,
-  }),
-};
 
 TokenSpace.propTypes = {
   setMessage: PropTypes.func.isRequired,
@@ -359,8 +579,19 @@ TokenSpace.propTypes = {
 
 AccessTokenTable.propTypes = {
   title: PropTypes.string.isRequired,
-  tokens: PropTypes.array.isRequired,
+  tokens: PropTypes.array,
   onReveal: PropTypes.func.isRequired,
+  onRevoke: PropTypes.func,
+  showRevoke: PropTypes.bool,
+  revealedTokenId: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
+  revokingTokenId: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
+  revealedTokenValue: PropTypes.string,
 };
 
 export default TokenSpace;
