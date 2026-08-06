@@ -68,6 +68,7 @@ const routes = {
   admin: {
     monk: "/admin/agent/monk",
     customize:"/admin/customize",
+    scheduler:"/admin/scheduler",
     group: {
       index: "/admin/group",
       create: "/admin/group/create",
@@ -96,6 +97,16 @@ const routes = {
       licenseImport: "/admin/licenseAdmin/operations/licenseImport"
     },
     maintenance: "/admin/maintenance",
+    tag: {
+      create: "/admin/tag/create",
+      enableDisable: "/admin/tag/enableDisable"
+    },
+    obligation: {
+      add: "/admin/obligation/add",
+      select: "/admin/obligation/select",
+      operations: "/admin/obligation/operations",
+      obligationImport: "/admin/obligation/operations/obligationImport"
+    },
   },
   browseUploads: {
     licenseBrowser: "/browseUploads/licenseBrowser",

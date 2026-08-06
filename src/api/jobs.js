@@ -167,4 +167,37 @@ export const oneShotNomosApi = ({ reqBody }) => {
   });
 };
 
-export default getJobApi;
+// GET /jobs/scheduler/operation/{operation}
+export const getSchedulerOptionsApi = (operation) => {
+  return sendRequest({
+    url: endpoints.jobs.schedulerOperation(operation),
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+};
+
+// POST /jobs/scheduler/operation/run
+export const runSchedulerOperationApi = (
+  operation,
+  job,
+  level,
+  priority
+) => {
+  return sendRequest({
+    url: endpoints.jobs.schedulerRun(),
+    method: "POST",
+    headers: {
+      Authorization: getToken(),
+    },
+    queryParams: {
+      ...(job && { job }),
+      ...(level && { level }),
+      ...(priority && { priority }),
+    },
+    body: {
+      operation,
+    },
+  });
+};

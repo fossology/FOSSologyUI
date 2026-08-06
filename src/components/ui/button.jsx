@@ -22,30 +22,12 @@ import { cva } from "class-variance-authority";
 
 import { cn } from "@/lib/utils"
 
-/**
- * Two button families, each with 3 variants and 3 sizes.
- *
- * Normal (blue):
- *   variant="default"   — primary blue  (#004494 → #000B54 → disabled #B0C4DE)
- *   variant="outline"   — secondary blue (border #004494, bg white → #E2EFFF → disabled border #B0C4DE)
- *   variant="link"      — tertiary blue  (text #004494 → underline #000B54 → disabled #B0C4DE)
- *
- * Alert (red):
- *   variant="alert"            — primary alert   (#D02216 → #A41411 → disabled #D02216/40%)
- *   variant="alert-outline"    — secondary alert (border #D02216, bg white → #FFEBEE → disabled /40%)
- *   variant="alert-link"       — small/tertiary alert (no border, text #D02216 → #FFEBEE bg + underline → disabled /40%)
- *
- * Sizes:
- *   size="default"  h-10 px-8 py-2    (40px tall, normal button)
- *   size="md"       h-8  px-4 py-1    (32px tall, medium)
- *   size="sm"       h-6  px-3 py-1    (24px tall, small)
- */
 const buttonVariants = cva(
   "inline-flex items-center justify-center gap-[10px] whitespace-nowrap rounded text-sm font-medium transition-colors disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none",
   {
     variants: {
       variant: {
-        // ── Normal / Blue ─────────────────────────────────────────────────
+        // Normal / Blue
         default:
           "bg-tertiary1-800 text-white hover:bg-tertiary1-900 disabled:bg-tertiary1-400 disabled:text-white",
         outline:
@@ -53,21 +35,37 @@ const buttonVariants = cva(
         link:
           "text-tertiary1-800 bg-transparent border-none underline-offset-4 hover:underline hover:text-tertiary1-900 hover:decoration-tertiary1-900 disabled:text-tertiary1-400 disabled:underline disabled:decoration-tertiary1-400 disabled:opacity-100",
 
-        // ── Alert / Red ───────────────────────────────────────────────────
+        // Alert / Red
         alert:
-          "bg-alert text-white hover:bg-alert-hover disabled:bg-alert disabled:opacity-40",
+          "bg-alert-500 text-white hover:bg-alert-700 disabled:bg-alert-500 disabled:opacity-40",
         "alert-outline":
-          "border border-alert text-alert bg-white hover:bg-alert-bg hover:border-alert disabled:border-alert disabled:text-alert disabled:bg-white disabled:opacity-40",
+          "border border-alert-500 text-alert-500 bg-white hover:bg-alert-100 hover:border-alert-700 hover:text-alert-700 disabled:border-alert-500 disabled:text-alert-500 disabled:bg-white disabled:opacity-40",
         "alert-link":
-          "text-alert bg-transparent border-none underline-offset-4 hover:bg-alert-bg hover:underline hover:text-alert hover:decoration-alert disabled:text-alert disabled:opacity-40",
-
-        // ── Legacy aliases (kept for backward compat) ─────────────────────
-        destructive:
-          "bg-alert text-white hover:bg-alert-hover disabled:bg-alert disabled:opacity-40",
-        secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost:
-          "hover:bg-accent hover:text-accent-foreground",
+          "text-alert-500 bg-transparent border-none underline-offset-4 hover:underline hover:text-alert-700 hover:decoration-alert-700 disabled:text-alert-500 disabled:opacity-40",
+        
+        //Info / Blue
+        info:
+          "bg-info-500 text-white hover:bg-info-600 disabled:bg-info-500 disabled:opacity-40",
+        "info-outline":
+          "border border-info-500 text-info-500 bg-white hover:bg-info-100 hover:border-info-600 hover:text-info-600 disabled:border-info-500 disabled:text-info-500 disabled:bg-white disabled:opacity-40",
+        "info-link":
+          "text-info-500 bg-transparent border-none underline-offset-4 hover:underline hover:text-info-600 hover:decoration-info-600 disabled:text-info-500 disabled:opacity-40",
+        
+        //Success / Green
+        success:
+          "bg-success-500 text-white hover:bg-success-700 disabled:bg-success-500 disabled:opacity-40",
+        "success-outline":
+          "border border-success-500 text-success-500 bg-white hover:bg-success-100 hover:border-success-700 hover:text-success-700 disabled:border-success-500 disabled:text-success-500 disabled:bg-white disabled:opacity-40",
+        "success-link":
+          "text-sucsess-500 bg-transparent border-none underline-offset-4 hover:underline hover:text-success-700 hover:decoration-success-700 disabled:text-success-500 disabled:opacity-40",
+        
+        //Warning / Orange
+        warning:
+          "bg-warning-500 text-white hover:bg-warning-600 disabled:bg-warning-500 disabled:opacity-40",
+        "warning-outline":
+          "border border-warning-500 text-warning-500 bg-white hover:bg-warning-100 hover:border-warning-600 hover:text-warning-600 disabled:border-warning-500 disabled:text-warning-500 disabled:bg-white disabled:opacity-40",
+        "warning-link":
+          "text-warning-500 bg-transparent border-none underline-offset-4 hover:underline hover:text-warning-600 hover:decoration-warning-600 disabled:text-warning-500 disabled:opacity-40",
       },
       size: {
         default: "h-10 px-8 py-2",  // 40px — normal
