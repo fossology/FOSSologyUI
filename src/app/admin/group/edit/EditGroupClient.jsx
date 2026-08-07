@@ -36,7 +36,7 @@ import {
 } from "@/components/ui/select";
 
 // API Services
-import { fetchAllGroups } from "@/services/groups";
+import { editGroup, fetchAllDeletableGroups } from "@/services/groups";
 
 // Helper
 import { handleError } from "@/shared/helper";
@@ -50,11 +50,16 @@ const EditGroupClient = () => {
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState({ type: "success", text: "" });
 
+  const loadGroups = () => {
+    return fetchAllDeletableGroups().then((res) => {
+      const groupList = Array.isArray(res) ? res : [];
+      setGroups(groupList);
+      return groupList;
+    });
+  };
+
   useEffect(() => {
-    fetchAllGroups()
-      .then((res) => {
-        setGroups(Array.isArray(res) ? res : []);
-      })
+    loadGroups()
       .catch((error) => {
         handleError(error, setMessage);
         setShowMessage(true);
@@ -74,17 +79,25 @@ const EditGroupClient = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const selectedGroup = groups.find(
+      (g) => g.id.toString() === selectedGroupId.toString()
+    );
+    if (!selectedGroup) return;
 
-    // TODO:
-    // FOSSology API v2 does not provide a Group Rename endpoint.
-    // Re-enable this handler once the backend exposes a rename API.
-
-    setMessage({
-      type: "info",
-      text: "Group renaming is currently unavailable because the API endpoint is not implemented in FOSSology API v2.",
-    });
-
-    setShowMessage(true);
+    setLoading(true);
+    editGroup(selectedGroup.name, groupName.trim())
+      .then(() => {
+        setMessage({ type: "success", text: messages.renamedGroup });
+        setSelectedGroupId("");
+        return loadGroups();
+      })
+      .catch((error) => {
+        handleError(error, setMessage);
+      })
+      .finally(() => {
+        setLoading(false);
+        setShowMessage(true);
+      });
   };
 
   const alertType =
@@ -127,7 +140,7 @@ const EditGroupClient = () => {
               Loading groups…
             </div>
           ) : groups.length === 0 ? (
-            <p className="text-sm text-gray-500">No groups available.</p>
+            <p className="text-sm text-gray-500">No groups available for editing.</p>
           ) : (
             <Select
               value={selectedGroupId?.toString()}
