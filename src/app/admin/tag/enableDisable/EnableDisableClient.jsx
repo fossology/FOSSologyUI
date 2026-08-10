@@ -37,6 +37,7 @@ import {
   getAllFolders,
   getFolderContents,
 } from "@/services/folders";
+import { setTagDisplayStatus } from "@/services/tags";
 
 const EnableDisableClient = () => {
     const [folder, setFolder] = useState("");
@@ -45,6 +46,7 @@ const EnableDisableClient = () => {
     const [selectedUpload, setSelectedUpload] = useState(null);
     const [message, setMessage] = useState(null);
     const [showMessage, setShowMessage] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
         getAllFolders()
@@ -53,6 +55,8 @@ const EnableDisableClient = () => {
     }, []);
 
     useEffect(() => {
+        setSelectedUpload(null);
+
         if (!folder) {
             setUploads([]);
             return;
@@ -72,33 +76,30 @@ const EnableDisableClient = () => {
 
     const isFormValid = folder !== "" && selectedUpload !== null;
 
-    const handleDisable = () => {
-        // TODO: API Integration
-        setMessage({
-            type: "error",
-            text: "Enable/Disable Tag Display API has not been implemented yet.",
-        });
-        setShowMessage(true);
+    const handleToggle = (enabled) => {
+        setIsSubmitting(true);
 
-        console.log("Disable", {
-            folder,
-            upload: selectedUpload,
-        });
+        setTagDisplayStatus({ uploadId: selectedUpload, enabled })
+            .then(() => {
+                setMessage({
+                    type: "success",
+                    text: `Tag display ${enabled ? "enabled" : "disabled"} for the selected upload.`,
+                });
+                setShowMessage(true);
+            })
+            .catch((error) => {
+                setMessage({
+                    type: "error",
+                    text: error?.message || "Failed to update tag display status.",
+                });
+                setShowMessage(true);
+            })
+            .finally(() => setIsSubmitting(false));
     };
 
-    const handleEnable = () => {
-        // TODO: API Integration
-        setMessage({
-            type: "error",
-            text: "Enable/Disable Tag Display API has not been implemented yet.",
-        });
-        setShowMessage(true);
+    const handleDisable = () => handleToggle(false);
 
-        console.log("Enable", {
-            folder,
-            upload: selectedUpload,
-        });
-    };
+    const handleEnable = () => handleToggle(true);
 
     const alertType =
     message?.type === "danger" || message?.type === "error"
@@ -173,12 +174,12 @@ const EnableDisableClient = () => {
                             <button
                             key={upload.id}
                             type="button"
-                            onClick={() => setSelectedUpload(upload.id)}
+                            onClick={() => setSelectedUpload(upload.uploadId)}
                             className={`
                                 w-full rounded-sm px-2 py-1.5 text-left text-sm
                                 outline-none transition-colors
                                 ${
-                                selectedUpload === upload.id
+                                selectedUpload === upload.uploadId
                                     ? "bg-secondary text-gray-900"
                                     : "text-foreground hover:bg-secondary hover:text-gray-900 focus:bg-secondary focus:text-gray-900"
                                 }
@@ -196,7 +197,7 @@ const EnableDisableClient = () => {
                 type="button"
                 variant="alert-outline"
                 onClick={handleDisable}
-                disabled={!isFormValid}
+                disabled={!isFormValid || isSubmitting}
             >
                 Disable
             </Button>
@@ -205,7 +206,7 @@ const EnableDisableClient = () => {
                 type="button"
                 variant="success-outline"
                 onClick={handleEnable}
-                disabled={!isFormValid}
+                disabled={!isFormValid || isSubmitting}
             >
                 Enable
             </Button>
