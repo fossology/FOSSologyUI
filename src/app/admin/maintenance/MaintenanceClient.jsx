@@ -29,6 +29,7 @@ import {
   initialMaintenanceFields,
   initialMessage,
 } from "@/constants/constants";
+import { isAdmin } from "@/shared/authHelper";
 
 import { AlertBanner } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
@@ -47,6 +48,9 @@ const ManageMaintenance = () => {
   const [lastRun, setLastRun] = useState(null);
 
   useEffect(() => {
+    if (!isAdmin()) {
+      return;
+    }
     getMaintenanceInfo()
       .then((res) => setLastRun(res?.lastRun ?? null))
       .catch(() => setLastRun(null));
