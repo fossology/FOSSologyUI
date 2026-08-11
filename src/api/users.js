@@ -55,7 +55,7 @@ export const getAllUsersApi = () => {
 
 // GET user by ID
 
-export const getUserByIdApi = (id) => {
+export const getUserByNameApi = (id) => {
   return sendRequest({
     url: endpoints.users.getByName(id),
     method: "GET",
@@ -82,7 +82,7 @@ export const addUserApi = (userData) => {
 
 // UPDATE user
 
-export const editUserByIdApi = (id, userData) => {
+export const editUserByNameApi = (id, userData) => {
   return sendRequest({
     url: endpoints.users.updateByName(id),
     method: "PUT",
@@ -170,5 +170,17 @@ export const importUsersJsonApi = (formData) => {
     },
     body: formData,
     isMultipart: true,
+  });
+};
+
+// CREATE TOKEN
+export const createTokenApi = (tokenData) => {
+  return sendRequest({
+    url: endpoints.users.tokens(),
+    method: "POST",
+    headers: {
+      Authorization: getToken(),
+    },
+    body: tokenData,
   });
 };
