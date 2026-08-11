@@ -113,9 +113,9 @@ function SelectItem({ className, children, ...props }) {
       )}
       {...props}
     >
-      {React.Children.map(children, (child, index) => (
-        <SelectPrimitive.ItemText key={index}>{child}</SelectPrimitive.ItemText>
-      ))}
+      <SelectPrimitive.ItemText>
+        {children}
+      </SelectPrimitive.ItemText>
     </SelectPrimitive.Item>
   )
 }

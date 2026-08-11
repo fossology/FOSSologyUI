@@ -119,22 +119,11 @@ const endpoints = {
   groups: {
     getAll: () => withBase("/groups"),
     create: () => withBase("/groups"),
-    deleteByName: (name) =>
-      withBase(`/groups/${encodeURIComponent(name)}`),
-    members: (name) =>
-      withBase(`/groups/${encodeURIComponent(name)}/members`),
-    addUser: (name, userName) =>
-      withBase(
-        `/groups/${encodeURIComponent(name)}/user/${encodeURIComponent(userName)}`
-      ),
-    deleteUser: (name, userName) =>
-      withBase(
-        `/groups/${encodeURIComponent(name)}/user/${encodeURIComponent(userName)}`
-      ),
-    updateUserPermission: (name, userName) =>
-      withBase(
-        `/groups/${encodeURIComponent(name)}/user/${encodeURIComponent(userName)}`
-      ),
+    deleteByName: (name) => withBase(`/groups/${encodeURIComponent(name)}`),
+    members: (name) => withBase(`/groups/${encodeURIComponent(name)}/members`),
+    addUser: (name, userName) => withBase(`/groups/${encodeURIComponent(name)}/user/${encodeURIComponent(userName)}`),
+    deleteUser: (name, userName) => withBase(`/groups/${encodeURIComponent(name)}/user/${encodeURIComponent(userName)}`),
+    updateUserPermission: (name, userName) => withBase(`/groups/${encodeURIComponent(name)}/user/${encodeURIComponent(userName)}`),
     deletable: () => withBase("/groups/deletable"),
   },
 
