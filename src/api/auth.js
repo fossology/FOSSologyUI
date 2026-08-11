@@ -34,7 +34,6 @@ const fetchTokenApi = (username, password, tokenDetails = null) => {
     url,
     method: "POST",
     // v2 requires form-encoded body for /tokens
-    isFormUrlEncoded: true,
     body: tokenDetails || {
       username,
       password,
@@ -43,6 +42,7 @@ const fetchTokenApi = (username, password, tokenDetails = null) => {
       tokenExpire: getDate(tokenExpiryDays),
     },
     addGroupName: false,
+    isFormEncoded: true,
   });
 };
 
