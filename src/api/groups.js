@@ -74,3 +74,18 @@ export const deleteGroupApi = (name) => {
     addGroupName: false,
   });
 };
+
+// PATCH /groups/{name}  body: { name: newName }
+export const editGroupApi = (name, newName) => {
+  return sendRequest({
+    url: endpoints.groups.updateByName(name),
+    method: "PATCH",
+    headers: {
+      Authorization: getToken(),
+    },
+    body: {
+      name: newName,
+    },
+    addGroupName: false,
+  });
+};

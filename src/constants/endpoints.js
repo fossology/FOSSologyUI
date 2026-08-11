@@ -121,6 +121,8 @@ const endpoints = {
     create: () => withBase("/groups"),
     deleteByName: (name) =>
       withBase(`/groups/${encodeURIComponent(name)}`),
+    updateByName: (name) =>
+      withBase(`/groups/${encodeURIComponent(name)}`),
     members: (name) =>
       withBase(`/groups/${encodeURIComponent(name)}/members`),
     addUser: (name, userName) =>
