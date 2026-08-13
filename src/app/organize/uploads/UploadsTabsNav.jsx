@@ -23,21 +23,19 @@ import { usePathname } from "next/navigation";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import routes from "@/constants/routes";
 
-const folderTabs = [
-  { label: "Create", href: routes.organize.folders.create },
-  { label: "Delete", href: routes.organize.folders.delete },
-  { label: "Edit Properties", href: routes.organize.folders.edit },
-  { label: "Move or Copy", href: routes.organize.folders.moveCopy },
-  { label: "Unlink Content", href: routes.organize.folders.unlinkContent },
+const uploadsTabs = [
+  { label: "Delete Uploaded File", href: routes.organize.uploads.delete },
+  { label: "Edit Properties", href: routes.organize.uploads.edit },
+  { label: "Move or Copy", href: routes.organize.uploads.moveCopy },
 ];
 
-export default function FolderTabsNav() {
+export default function UploadsTabsNav() {
   const pathname = usePathname();
 
   return (
     <Tabs value={pathname}>
       <TabsList>
-        {folderTabs.map((tab) => (
+        {uploadsTabs.map((tab) => (
           <TabsTrigger key={tab.href} value={tab.href} asChild>
             <Link href={tab.href}>{tab.label}</Link>
           </TabsTrigger>

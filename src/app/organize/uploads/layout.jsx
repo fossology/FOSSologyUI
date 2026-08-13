@@ -16,34 +16,14 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import * as React from "react";
+import UploadsTabsNav from "./UploadsTabsNav";
 
-import { cn } from "@/lib/utils";
-
-function ContentBox({
-  className,
-  children,
-  ...props
-}) {
-  return (
-    <div
-      data-slot="content-box"
-      className={cn(
-        "w-[390px]",
-        "h-[300px] max-h-[300px]",
-        "overflow-y-auto",
-        "rounded",
-        "border border-neutral-400",
-        "bg-white",
-        "p-3",
-        "flex flex-col gap-2.5",
-        className
-      )}
-      {...props}
-    >
-      {children}
+export default function UploadsLayout({ children }) {
+    return (
+    <div className="mx-40 px-4">
+        <h1 className="text-2xl font-semibold text-gray-900 mt-6 mb-4">Uploads</h1>
+        <UploadsTabsNav />
+        <div className="mt-6">{children}</div>
     </div>
-  );
+    );
 }
-
-export { ContentBox };

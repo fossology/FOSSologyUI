@@ -25,6 +25,7 @@ import {
   editFolderApi,
   moveCopyFolderApi,
   getFolderContentsApi,
+  unlinkContentApi
 } from "@/api/folders";
 
 // Fetching all the folders
@@ -84,4 +85,8 @@ export const copyFolder = ({ parent, id }) => {
 
 export const getFolderContents = (folderId) => {
   return getFolderContentsApi({ folderId }).then((res) => res);
+};
+
+export const unlinkContent = (contentId) => {
+  return unlinkContentApi(contentId).then((res) => res);
 };

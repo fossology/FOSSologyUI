@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -18,54 +19,45 @@
 
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Alert, Button, InputContainer } from "@/components/Widgets";
-import { getAllFolders } from "@/services/folders";
-import { getUploadsFolderId } from "@/services/organizeUploads";
-import { getUploadById } from "@/services/upload";
+import React, { useEffect, useState } from "react";
+import messages from "@/constants/messages";
 import { handleError } from "@/shared/helper";
 
+// Widgets
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { AlertBanner } from "@/components/ui/alert";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/select";
+
+// Services
+import { getAllFolders } from "@/services/folders";
+import { getUploadsFolderId, updateUpload } from "@/services/organizeUploads";
+import { getUploadById } from "@/services/upload";
+
 const UploadEditPage = () => {
-  const initialState = {
-    folderId: 1,
-    uploadId: null,
-    uploadName: "",
-    uploadDescription: "",
-  };
-
-  const initialMessage = {
-    type: "success",
-    text: "",
-  };
-
-  const [editUploadFolderData, setEditUploadFolderData] = useState(initialState);
   const [folderList, setFolderList] = useState([]);
-  const [uploadFolderList, setUploadFolderList] = useState([]);
+  const [uploadList, setUploadList] = useState([]);
+
+  const [folderId, setFolderId] = useState(null);
+  const [uploadId, setUploadId] = useState(null);
+
+  const [uploadName, setUploadName] = useState("");
+  const [uploadDescription, setUploadDescription] = useState("");
+
+  const [message, setMessage] = useState(null);
   const [showMessage, setShowMessage] = useState(false);
-  const [message, setMessage] = useState(initialMessage);
-
-  const handleChange = (e) => {
-    setEditUploadFolderData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // Submit API logic here (e.g., updateUploadInfo)
-    // For now, simulate success message:
-    setMessage({
-      type: "success",
-      text: "Upload properties updated (not implemented)",
-    });
-    setShowMessage(true);
-  };
 
   useEffect(() => {
     getAllFolders()
-      .then((res) => setFolderList(res))
+      .then((res) => setFolderList(res || []))
       .catch((error) => {
         handleError(error, setMessage);
         setShowMessage(true);
@@ -73,111 +65,238 @@ const UploadEditPage = () => {
   }, []);
 
   useEffect(() => {
-    if (editUploadFolderData.folderId) {
-      getUploadsFolderId(editUploadFolderData.folderId)
-        .then((res) => setUploadFolderList(res))
-        .catch((error) => {
-          handleError(error, setMessage);
-          setShowMessage(true);
-        });
+    setUploadId(null);
+    setUploadName("");
+    setUploadDescription("");
+
+    if (!folderId) {
+      setUploadList([]);
+      return;
     }
-  }, [editUploadFolderData.folderId]);
+
+    getUploadsFolderId({
+      folderId,
+      recursive: false,
+    })
+      .then((uploads) => {
+        setUploadList(uploads || []);
+      })
+      .catch((error) => {
+        handleError(error, setMessage);
+        setShowMessage(true);
+      });
+  }, [folderId]);
 
   useEffect(() => {
-    if (editUploadFolderData.uploadId) {
-      getUploadById(editUploadFolderData.uploadId)
-        .then((res) => {
-          setEditUploadFolderData((prev) => ({
-            ...prev,
-            uploadName: res.uploadname,
-            uploadDescription: res.description,
-          }));
-        })
-        .catch((error) => {
-          handleError(error, setMessage);
-          setShowMessage(true);
-        });
+    if (!uploadId) {
+      setUploadName("");
+      setUploadDescription("");
+      return;
     }
-  }, [editUploadFolderData.uploadId]);
+
+    getUploadById(uploadId)
+      .then((upload) => {
+        setUploadName(upload.uploadName ?? upload.uploadname ?? "");
+        setUploadDescription(upload.description ?? "");
+      })
+      .catch((error) => {
+        handleError(error, setMessage);
+        setShowMessage(true);
+      });
+  }, [uploadId]);
+
+  const handleEdit = async () => {
+    if (!uploadId) {
+      setMessage({
+        type: "error",
+        text: messages.selectUploadToEdit,
+      });
+      setShowMessage(true);
+      return;
+    }
+
+    try {
+      await updateUpload({
+        uploadId,
+        uploadName,
+        uploadDescription,
+      });
+
+      // Refresh upload list
+      if (folderId) {
+        const uploads = await getUploadsFolderId({
+          folderId,
+          recursive: false,
+        });
+
+        setUploadList(uploads || []);
+      }
+
+      // Reset entire form
+      setFolderId(null);
+      setUploadId(null);
+      setUploadName("");
+      setUploadDescription("");
+
+      setMessage({
+        type: "success",
+        text: messages.uploadPropertiesUpdated,
+      });
+
+      setShowMessage(true);
+    } catch (error) {
+      handleError(error, setMessage);
+      setShowMessage(true);
+    }
+  };
+
+  const alertType =
+    message?.type === "danger" || message?.type === "error"
+      ? "Error"
+      : message?.type === "success"
+      ? "Success"
+      : "Info";
 
   return (
-    <>
-      <div className="main-container my-3">
-        {showMessage && (
-          <Alert
-            type={message.type}
-            setShow={setShowMessage}
-            message={message.text}
+    <div className="pb-10">
+      {showMessage && message && (
+        <div className="mb-4">
+          <AlertBanner
+            type={alertType}
+            description={message.text}
+            showClose
+            onClose={() => setShowMessage(false)}
           />
-        )}
-
-        <h1 className="font-size-main-heading mb-4">
-          Edit Uploaded File Properties
-        </h1>
-
-        <div className="row">
-          <div className="col-lg-8 col-md-12 col-sm-12 col-12">
-            <ul>
-              <li>
-                <InputContainer
-                  type="select"
-                  name="folderId"
-                  id="organize-upload-folder-list"
-                  onChange={handleChange}
-                  options={folderList}
-                  property="name"
-                  value={editUploadFolderData.folderId}
-                >
-                  Select the folder that contains the upload:
-                </InputContainer>
-              </li>
-
-              <li className="mt-4">
-                <InputContainer
-                  type="select"
-                  name="uploadId"
-                  id="organize-upload-list"
-                  onChange={handleChange}
-                  options={uploadFolderList}
-                  property="uploadname"
-                  value={editUploadFolderData.uploadId ?? ""}
-                >
-                  Select the upload you wish to edit:
-                </InputContainer>
-              </li>
-
-              <li className="mt-4">
-                <InputContainer
-                  type="text"
-                  name="uploadName"
-                  id="organize-upload-name"
-                  onChange={handleChange}
-                  value={editUploadFolderData.uploadName}
-                >
-                  Upload name:
-                </InputContainer>
-              </li>
-
-              <li className="mt-4">
-                <InputContainer
-                  type="text"
-                  name="uploadDescription"
-                  id="organize-upload-description"
-                  onChange={handleChange}
-                  value={editUploadFolderData.uploadDescription}
-                >
-                  Upload Description:
-                </InputContainer>
-              </li>
-            </ul>
-
-            <Button type="submit" onClick={handleSubmit} className="mt-4">
-              Edit
-            </Button>
-          </div>
         </div>
-      </div>
-    </>
+      )}
+
+      <h1 className="text-2xl font-semibold text-gray-900 mb-6">
+        Edit Uploaded File Properties
+      </h1>
+
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleEdit();
+        }}
+        className="space-y-6"
+      >
+        <div>
+          <p className="mb-3">
+            Select the folder containing the upload. Then choose the upload you wish
+            to edit. Modify the upload name and/or description as needed.
+          </p>
+        </div>
+
+        {/* Folder */}
+        <div>
+          <Label className="block mb-3">
+            1. Select the folder that contains the upload:
+          </Label>
+
+          <Select
+            value={folderId ? folderId.toString() : ""}
+            onValueChange={(value) => setFolderId(Number(value))}
+          >
+            <SelectTrigger className="w-[320px]">
+              <SelectValue placeholder="Select folder" />
+            </SelectTrigger>
+
+            <SelectContent>
+              {folderList.map((folder) => (
+                <SelectItem
+                  key={folder.id}
+                  value={folder.id.toString()}
+                >
+                  {folder.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Upload */}
+        <div>
+          <Label className="block mb-3">
+            2. Select the upload you wish to edit:
+          </Label>
+
+          <Select
+            value={uploadId ? uploadId.toString() : ""}
+            onValueChange={(value) => setUploadId(Number(value))}
+          >
+            <SelectTrigger className="w-[320px]">
+              <SelectValue placeholder="Select upload" />
+            </SelectTrigger>
+
+            <SelectContent>
+              {!folderId ? (
+                <div className="px-3 py-2 text-sm text-muted-foreground">
+                  Select a folder first.
+                </div>
+              ) : uploadList.length === 0 ? (
+                <div className="px-3 py-2 text-sm text-muted-foreground">
+                  No uploads found in this folder.
+                </div>
+              ) : (
+                uploadList.map((upload) => (
+                  <SelectItem
+                    key={upload.id}
+                    value={upload.id.toString()}
+                  >
+                    {upload.uploadName ?? upload.uploadname}
+                  </SelectItem>
+                ))
+              )}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Upload Name */}
+        <div>
+          <Label
+            htmlFor="upload-name"
+            className="block mb-3"
+          >
+            3. Upload name:
+          </Label>
+            <Input
+              id="upload-name"
+              value={uploadName}
+              onChange={(e) => setUploadName(e.target.value)}
+              placeholder="Upload name"
+              className="w-[320px]"
+            />
+        </div>
+
+        {/* Upload Description */}
+        <div>
+          <Label
+            htmlFor="upload-description"
+            className="block mb-3"
+          >
+            4. Upload Description:
+          </Label>
+            <Textarea
+              id="upload-description"
+              value={uploadDescription}
+              onChange={(e) => setUploadDescription(e.target.value)}
+              placeholder="Upload description"
+              className="min-w-[320px] resize"
+            />
+        </div>
+
+        {/* Submit */}
+        <div className="pt-2">
+          <Button
+            type="submit"
+            disabled={!uploadId}
+          >
+            Edit
+          </Button>
+        </div>
+      </form>
+    </div>
   );
 };
 
