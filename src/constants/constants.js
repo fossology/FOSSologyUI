@@ -406,7 +406,7 @@ export const initialAddUserData = {
 
 export const bucketPool = [
   {
-    id: 0,
+    id: 2,
     name: "GPL Demo bucket pool, v1",
     disabled: false,
   },
