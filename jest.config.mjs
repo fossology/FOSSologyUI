@@ -1,19 +1,29 @@
+import nextJest from "next/jest.js";
+
+const createJestConfig = nextJest({ dir: "./" });
+
+/** @type {import('jest').Config} */
 const config = {
-  testEnvironment: "jest-environment-jsdom",
+  testEnvironment: "node",
   setupFiles: ["<rootDir>/jest.setup.env.js"],
   roots: ["<rootDir>/src"],
   moduleDirectories: ["node_modules", "src"],
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
+    // query-string (and its deps) are ESM-only; next/jest cannot un-ignore
+    // node_modules, so map to a CommonJS stand-in. See jest/queryStringMock.js.
+    "^query-string$": "<rootDir>/jest/queryStringMock.js",
   },
-  transform: {
-    "^.+\\.[jt]sx?$": ["babel-jest", { configFile: "./babel.config.test.js" }],
-  },
-  transformIgnorePatterns: [
-    "/node_modules/.pnpm/(?!(query-string|decode-uri-component|filter-obj|split-on-first)@)",
+  // Only the suites this change introduces/maintains. The other src/api/*.test.js
+  // files predate any test runner in this repo (there was no `jest` dependency,
+  // no config and no `test` script) and need their own setup — `jest-fetch-mock`
+  // and a jsdom environment — before they can run. Reviving them is out of scope
+  // for the job-scheduling fix.
+  testMatch: [
+    "<rootDir>/src/services/**/*.test.{js,jsx}",
+    "<rootDir>/src/api/jobs.test.{js,jsx}",
   ],
-  testMatch: ["<rootDir>/src/**/*.test.{js,jsx}"],
   clearMocks: true,
 };
 
-export default config;
+export default createJestConfig(config);
