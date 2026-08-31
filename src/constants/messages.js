@@ -30,6 +30,8 @@ const messages = {
   confirmDeletion: "Deletion not confirmed",
   loading: "Loading...",
   jobsAdded: "Your jobs have been added to job queue",
+  scheduleAnalysisFailed:
+    "The analysis job could not be scheduled. Please try again.",
   createdFolder: "Successfully created the folder",
   deletedFolder: "Successfully deleted the folder",
   updatedFolderProps: "Successfully updated the folder properties",
