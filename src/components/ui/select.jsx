@@ -55,7 +55,9 @@ function SelectTrigger({ className, children, open, ...props }) {
       )}
       {...props}
     >
-      {children}
+      <div className="flex-1 text-left">
+        {children}
+      </div>
       <SelectPrimitive.Icon asChild>
         <Image
           src="/assets/icons/chevron_down/chevron_down_20px.svg"
@@ -69,7 +71,12 @@ function SelectTrigger({ className, children, open, ...props }) {
   )
 }
 
-function SelectContent({ className, children, position = "popper", ...props }) {
+function SelectContent({
+  className,
+  children,
+  position = "popper",
+  ...props
+}) {
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
@@ -84,7 +91,20 @@ function SelectContent({ className, children, position = "popper", ...props }) {
         avoidCollisions={false}
         {...props}
       >
-        <SelectPrimitive.Viewport className="max-h-64 overflow-y-auto p-0">
+        <SelectPrimitive.Viewport
+          className="
+            max-h-96
+            overflow-y-scroll
+            p-0
+            [scrollbar-width:auto]
+            [scrollbar-color:#737373_#f5f5f5]
+            [&::-webkit-scrollbar]:w-2
+            [&::-webkit-scrollbar-track]:bg-neutral-100
+            [&::-webkit-scrollbar-thumb]:rounded-full
+            [&::-webkit-scrollbar-thumb]:bg-neutral-500
+            [&::-webkit-scrollbar-thumb:hover]:bg-neutral-600
+          "
+        >
           {children}
         </SelectPrimitive.Viewport>
       </SelectPrimitive.Content>
@@ -105,7 +125,7 @@ function SelectItem({ className, children, ...props }) {
   return (
     <SelectPrimitive.Item
       className={cn(
-        "relative flex w-full h-[36px] cursor-pointer select-none items-center gap-2 rounded-sm px-3 py-2 text-[14px] leading-[20px] text-foreground outline-none",
+        "relative flex w-full min-h-[36px] cursor-pointer select-none items-center gap-2 rounded-sm px-3 py-2 text-[14px] leading-[20px] text-foreground outline-none",
         "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
         "data-[state=checked]:bg-accent",
         "hover:bg-neutral-100",
@@ -113,9 +133,9 @@ function SelectItem({ className, children, ...props }) {
       )}
       {...props}
     >
-      {React.Children.map(children, (child, index) => (
-        <SelectPrimitive.ItemText key={index}>{child}</SelectPrimitive.ItemText>
-      ))}
+      <SelectPrimitive.ItemText className="whitespace-normal break-words">
+        {children}
+      </SelectPrimitive.ItemText>
     </SelectPrimitive.Item>
   )
 }
