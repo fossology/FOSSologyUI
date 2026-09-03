@@ -26,7 +26,6 @@ import styled from "styled-components";
 import SecondaryNavBar from "@/components/SecondaryNavBar";
 import { randomString } from "@/shared/helper";
 import makeData from "@/shared/makeData";
-import Table from "@/components/Table";
 
 
 const schema = () => {

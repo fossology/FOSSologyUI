@@ -1,8 +1,7 @@
 /*
- Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com)
  SPDX-FileCopyrightText: 2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
- SPDX-License-Identifier: GPL-2.0
+ SPDX-License-Identifier: GPL-2.0-only
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -17,25 +16,24 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-"use client";
-import React from "react";
+import { cookies } from "next/headers";
+import ShowJobsClient from "./ShowJobsClient";
 
-const IndeterminateCheckbox = React.forwardRef(
-  // eslint-disable-next-line react/prop-types
-  ({ indeterminate, ...rest }, ref) => {
-    const defaultRef = React.useRef();
-    const resolvedRef = ref || defaultRef;
+export const metadata = {
+    title: "Show Jobs | FOSSology",
+};
 
-    React.useEffect(() => {
-      resolvedRef.current.indeterminate = indeterminate;
-    }, [resolvedRef, indeterminate]);
+export default async function JobsPage() {
+  const cookieStore = await cookies();
+  const autoDownloadedReportIds = (
+    cookieStore.get("fossologyAutoDownloadedReports")?.value || ""
+  )
+    .split(",")
+    .filter(Boolean);
 
-    return (
-      <>
-        <input type="checkbox" ref={resolvedRef} {...rest} />
-      </>
-    );
-  }
-);
-
-export default IndeterminateCheckbox;
+  return (
+    <ShowJobsClient
+      autoDownloadedReportIds={autoDownloadedReportIds}
+    />
+  );
+}

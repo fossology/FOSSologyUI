@@ -62,13 +62,14 @@ const sendRequest = ({
   
   // 2. Inject groupName header
   
-  if (addGroupName && mergedHeaders instanceof Headers) {
-    mergedHeaders.append(
-      "groupName",
-      groupName ||
-        getLocalStorage("currentGroup") ||
-        getLocalStorage("user")?.defaultGroup
-    );
+  const selectedGroup =
+    groupName ||
+    queryParams?.groupName ||
+    getLocalStorage("currentGroup") ||
+    getLocalStorage("user")?.defaultGroup;
+
+  if (addGroupName && mergedHeaders instanceof Headers && selectedGroup) {
+    mergedHeaders.set("groupName", selectedGroup);
   }
 
   
@@ -76,9 +77,16 @@ const sendRequest = ({
   
   let finalURL = url;
 
-  if (queryParams && Object.keys(queryParams).length > 0) {
+  // The v2 auth middleware only reads groupName from the query string,
+  // not the header, so it must be appended here too.
+  const finalQueryParams =
+    addGroupName && selectedGroup
+      ? { ...queryParams, groupName: selectedGroup }
+      : queryParams;
+
+  if (finalQueryParams && Object.keys(finalQueryParams).length > 0) {
     const cleanedParams = Object.fromEntries(
-      Object.entries(queryParams).filter(
+      Object.entries(finalQueryParams).filter(
         ([_, v]) => v !== undefined && v !== null && v !== ""
       )
     );
@@ -137,6 +145,19 @@ const sendRequest = ({
     });
   }
 
+    const contentType = res.headers.get("content-type") || "";
+
+    if (!contentType.includes("application/json")) {
+      return res.text().then((body) =>
+        Promise.reject({
+          status: res.status,
+          ok: false,
+          message: "API returned an unexpected non-JSON response.",
+          body,
+        })
+      );
+    }
+
     return res.json();
     }
 
@@ -169,12 +190,6 @@ const sendRequest = ({
     // ERROR HANDLING
     
     return res.json().then((json) => {
-      if (json.code === 403) {
-        logout({
-          message: json.message || messages.forbiddenResource,
-        });
-      }
-
       return Promise.reject({
         status: res.status,
         ok: false,
