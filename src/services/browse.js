@@ -27,12 +27,16 @@ const normalizeUpload = (u) => ({
   uploadDate: u.uploadDate || null,
   assignee: u.assignee ?? null,
   folderId: u.folderId,
+  status: u.status || "",
+  clearingStatus: u.status || "",
+  comment: u.comment || "",
 });
 
 const getBrowseData = async (browseData) => {
   const res = await getBrowseDataApi(browseData);
 
-  const uploads = Array.isArray(res) ? res : res?.uploads ?? [];
+  const rawUploads = Array.isArray(res) ? res : res?.uploads ?? [];
+  const uploads = rawUploads.map(normalizeUpload);
 
   return {
     uploads,

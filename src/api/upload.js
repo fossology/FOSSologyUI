@@ -156,10 +156,68 @@ export const getUploadByIdApi = async ({ uploadId, retries }) => {
   });
 };
 
+// Download upload file by upload ID
+export const getUploadFileByIdApi = (uploadId, retries = 0) => {
+  return sendRequest({
+    url: endpoints.uploads.download(uploadId),
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+    isFile: true,
+    retries,
+  });
+};
+
+export const updateUploadByIdApi = ({
+  uploadId,
+  status,
+  comment = "",
+  assignee,
+}) => {
+  const url = endpoints.uploads.updateById(uploadId);
+
+  const queryParams = {};
+
+  if (status) {
+    queryParams.status = status;
+  }
+
+  if (
+    assignee !== undefined &&
+    assignee !== null
+  ) {
+    queryParams.assignee = assignee;
+  }
+
+  return sendRequest({
+    url,
+    method: "PATCH",
+    headers: {
+      Authorization: getToken(),
+      "Content-Type": "application/json",
+    },
+    queryParams,
+    body: {
+      comment,
+    },
+  });
+};
+
 // Getting a Upload Summary
 export const getUploadSummaryApi = ({ uploadId }) => {
   return sendRequest({
     url: endpoints.uploads.summary(uploadId),
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+};
+
+export const getTopItemApi = (uploadId) => {
+  return sendRequest({
+    url: endpoints.uploads.topItem(uploadId),
     method: "GET",
     headers: {
       Authorization: getToken(),
