@@ -96,12 +96,11 @@ export const addUser = (data) => {
       monk: data.agents?.monk ?? false,
       nomos: data.agents?.nomos ?? false,
       ojo: data.agents?.ojo ?? false,
-      pkgagent: data.agents?.pkgagent ?? false,
+      package: data.agents?.pkgagent ?? false,
       reso: data.agents?.reso ?? false,
-      softwareHeritage: data.agents?.softwareHeritage ?? false,
+      heritage: data.agents?.softwareHeritage ?? false,
     },
   };
-
   return addUserApi(payload).then((res) => res);
 };
 
@@ -112,9 +111,30 @@ export const editUserById = (id, data) => {
   const payload = {
     ...data,
     defaultBucketpool: data.defaultBucketpool ?? null,
-  };
+    emailNotification: data.emailNotification,
+    defaultVisibility: data.defaultVisibility,
+    user_status: data.userStatus,
 
-  return editUserByIdApi(id, payload).then((res) => res);
+    ...(data.userPass ? { userPass: data.userPass } : {}),
+
+    agents: {
+      bucket: data.agents?.bucket ?? false,
+      copyrightEmailAuthor:
+        data.agents?.copyrightEmailAuthor ?? false,
+      ecc: data.agents?.ecc ?? false,
+      ipra: data.agents?.ipra ?? false,
+      keyword: data.agents?.keyword ?? false,
+      mime: data.agents?.mime ?? false,
+      monk: data.agents?.monk ?? false,
+      nomos: data.agents?.nomos ?? false,
+      ojo: data.agents?.ojo ?? false,
+      package: data.agents?.pkgagent ?? false,
+      reso: data.agents?.reso ?? false,
+      heritage:
+        data.agents?.softwareHeritage ?? false,
+    },
+  };
+  return editUserByNameApi(id, payload).then((res) => res);
 };
 
 
