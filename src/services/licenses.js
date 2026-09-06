@@ -28,6 +28,17 @@ import {
   marydoneExportJsonApi,
   importLicenseRulesApi,
   exportLicenseRulesApi,
+  getAdminLicenseAcknowledgementsApi,
+  mutateAdminLicenseAcknowledgementApi,
+  getStandardLicenseCommentsApi,
+  mutateStandardLicenseCommentsApi,
+  getCompatibilityLicenseOptionsApi,
+  getCustomiseDataApi,
+  getAdminLicenseCandidatesApi,
+  getSuggestedLicenseApi,
+  deleteAdminLicenseCandidateApi,
+  verifyLicenseApi,
+  mergeLicenseApi,
 } from "@/api/licenses";
 
 // Fetching the licenses with their kind i.e (candidate, main, all)
@@ -69,4 +80,86 @@ export const importLicenseRules = (formData) => {
 
 export const exportLicenseRules = () => {
   return exportLicenseRulesApi();
+};
+
+export const getAdminLicenseAcknowledgements = () => {
+  return getAdminLicenseAcknowledgementsApi().then(
+    (res) => res
+  );
+};
+
+export const mutateAdminLicenseAcknowledgement = (
+  acknowledgements
+) => {
+  return mutateAdminLicenseAcknowledgementApi(
+    acknowledgements
+  ).then((res) => res);
+};
+
+// Fetching standard license comments
+export const getStandardLicenseComments = () => {
+  return getStandardLicenseCommentsApi().then(
+    (res) => res
+  );
+};
+
+// Adding and updating standard license comments
+export const mutateStandardLicenseComments = (
+  comments
+) => {
+  return mutateStandardLicenseCommentsApi(
+    comments
+  ).then((res) => res);
+};
+
+// Fetch licenses for compatibility rule dropdowns
+export const getCompatibilityLicenseOptions = () => {
+  return getCompatibilityLicenseOptionsApi().then(
+    (res) => res
+  );
+};
+
+// Fetching admin license candidates
+export const getAdminLicenseCandidates = () => {
+  return getAdminLicenseCandidatesApi().then(
+    (res) => res
+  );
+};
+
+// Fetch suggested license from candidate reference text
+export const getSuggestedLicense = (
+  referenceText
+) => {
+  return getSuggestedLicenseApi(
+    referenceText
+  ).then((res) => res);
+};
+
+// Deleting an admin license candidate
+export const deleteAdminLicenseCandidate = (id) => {
+  return deleteAdminLicenseCandidateApi(id).then(
+    (res) => res
+  );
+};
+
+// Verify a license candidate
+export const verifyLicense = (
+  shortname,
+  parentShortname
+) => {
+  return verifyLicenseApi(
+    shortname,
+    parentShortname
+  ).then((res) => res);
+};
+
+// Merge a license candidate
+export const mergeLicense = (
+  shortname,
+  parentShortname
+) => {
+  return mergeLicenseApi(
+    shortname,
+    parentShortname
+  ).then((res) => res);
 };

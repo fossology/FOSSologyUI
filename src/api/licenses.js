@@ -177,3 +177,141 @@ export const exportLicenseRulesApi = () => {
     isFile: true,
   });
 };
+
+// Fetching admin license acknowledgements
+export const getAdminLicenseAcknowledgementsApi = () => {
+  return sendRequest({
+    url: endpoints.license.adminAcknowledgements(),
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+};
+
+export const mutateAdminLicenseAcknowledgementApi = (
+  acknowledgements
+) => {
+  return sendRequest({
+    url: endpoints.license.adminAcknowledgements(),
+    method: "PUT",
+    headers: {
+      Authorization: getToken(),
+    },
+    body: acknowledgements,
+  });
+};
+
+// Fetching standard license comments
+export const getStandardLicenseCommentsApi = () => {
+  return sendRequest({
+    url: endpoints.license.standardComments(),
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+};
+
+// Adding and updating standard license comments
+export const mutateStandardLicenseCommentsApi = (
+  comments
+) => {
+  return sendRequest({
+    url: endpoints.license.standardComments(),
+    method: "PUT",
+    headers: {
+      Authorization: getToken(),
+    },
+    body: comments,
+  });
+};
+
+// Fetch licenses for compatibility rule dropdowns
+export const getCompatibilityLicenseOptionsApi = () => {
+  return sendRequest({
+    url: endpoints.license.get(),
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+    queryParams: {
+      page: 1,
+      limit: 10000,
+      kind: "all",
+      active: true,
+    },
+  });
+};
+
+// Fetching admin license candidates
+export const getAdminLicenseCandidatesApi = () => {
+  return sendRequest({
+    url: endpoints.license.adminCandidates(),
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+};
+
+// Get suggested license from candidate reference text
+export const getSuggestedLicenseApi = (
+  referenceText
+) => {
+  return sendRequest({
+    url: endpoints.license.suggest(),
+    method: "POST",
+    headers: {
+      Authorization: getToken(),
+    },
+    body: {
+      referenceText,
+    },
+  });
+};
+
+// Deleting an admin license candidate
+export const deleteAdminLicenseCandidateApi = (id) => {
+  return sendRequest({
+    url: endpoints.license.adminCandidateById(id),
+    method: "DELETE",
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+};
+
+// Verify candidate as a new license or a variant
+export const verifyLicenseApi = (
+  shortname,
+  parentShortname
+) => {
+  return sendRequest({
+    url: endpoints.license.verify(shortname),
+    method: "PUT",
+    headers: {
+      Authorization: getToken(),
+    },
+    body: {
+      parentShortname,
+    },
+  });
+};
+
+// Merge candidate into an existing license
+export const mergeLicenseApi = (
+  shortname,
+  parentShortname
+) => {
+  return sendRequest({
+    url: endpoints.license.merge(shortname),
+    method: "PUT",
+    headers: {
+      Authorization: getToken(),
+    },
+    body: {
+      parentShortname,
+    },
+  });
+};
