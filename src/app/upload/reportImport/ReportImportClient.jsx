@@ -222,7 +222,7 @@ const ImportReportPage = () => {
 
       setShowMessage(true);
 
-      setTimeout(() => router.push("/jobs/myRecentJobs"), 2000);
+      setTimeout(() => router.push("/jobs"), 2000);
     } catch (error) {
       console.error(error);
 
