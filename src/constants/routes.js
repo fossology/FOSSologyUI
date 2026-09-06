@@ -29,6 +29,7 @@ const routes = {
     server: "/upload/server",
     url: "/upload/url",
     vcs: "/upload/vcs",
+    importFossologyDump: "/upload/importFossologyDump",
     importReport: "/upload/reportImport",
     instructions: "/upload/instructions",
     oneShotNomos: "/upload/oneShotNomos",
