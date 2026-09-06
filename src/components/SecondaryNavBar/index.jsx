@@ -67,12 +67,18 @@ const navLinks = [
 ];
 
 const moreItems = [
-  { name: "Software Heritage", href: routes.browseUploads.more.softwareHeritage},
+  { name: "Software Heritage", href: routes.browseUploads.more.softwareHeritage },
   { name: "Email/URL/Author", href: routes.browseUploads.more.email },
   { name: "File Browser", href: routes.browseUploads.more.fileBrowser },
   { name: "Spasht", href: routes.browseUploads.more.spasht },
   { name: "Keyword", href: routes.browseUploads.more.keyword },
-  { name: "Export List", href: routes.browseUploads.more.exportList },
+  {
+    name: "Export Lists",
+    href: (uploadID) =>
+      uploadID
+        ? `${routes.browseUploads.more.exportLists}?uploadID=${uploadID}`
+        : routes.browseUploads.more.exportLists,
+  },
   { name: "Search", href: routes.browseUploads.more.search },
   { name: "Bucket", href: routes.browseUploads.more.bucket },
   { name: "View", href: routes.browseUploads.more.view },
@@ -170,11 +176,18 @@ const BrowseHeader = ({ title, variant = "default", maxVisible = 5 }) => {
             sideOffset={4}
             className="p-0 m-0 bg-white shadow-md border border-gray-200"
           >
-            {moreItems.map((item) => (
-              <DropdownMenuItem key={item.name} asChild>
-                <Link href={item.href}>{item.name}</Link>
-              </DropdownMenuItem>
-            ))}
+            {moreItems.map((item) => {
+              const href =
+                typeof item.href === "function"
+                  ? item.href(uploadID)
+                  : item.href;
+
+              return (
+                <DropdownMenuItem key={item.name} asChild>
+                  <Link href={href}>{item.name}</Link>
+                </DropdownMenuItem>
+              );
+            })}
           </DropdownMenuContent>
         </DropdownMenu>
 
