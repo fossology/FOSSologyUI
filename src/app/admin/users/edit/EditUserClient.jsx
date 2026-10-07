@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2022 Krishna Mahato (krishhtrishh9304@gmail.com)
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
 SPDX-License-Identifier: GPL-2.0-only
 
@@ -20,36 +20,43 @@ SPDX-License-Identifier: GPL-2.0-only
 "use client";
 
 import React, { useEffect, useState } from "react";
-
-// widgets
-import { Alert, Button, InputContainer, Spinner } from "@/components/Widgets";
-
-// services
-import { getAllFolders } from "@/services/folders";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
-  editUserById,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { AlertBanner } from "@/components/ui/alert";
+import {
+  getAllFolders,
+} from "@/services/folders";
+import {
+  editUserByName,
   getAllUsersName,
-  getUserById,
+  getUserByName,
 } from "@/services/users";
-
-// utils
+import { fetchAllGroups } from "@/services/groups";
 import { isAdmin } from "@/shared/authHelper";
-
-// constants
 import {
   accessLevels,
-  agents,
   bucketPool,
   initialAddUserData,
   userStatus,
 } from "@/constants/constants";
-
-// components
 import CommonFields from "@/components/Upload/CommonFields";
 import TokenSpace from "./token_space";
 
+
 const EditUserPage = () => {
-  const initialMessage = { type: "success", text: "" };
+  const initialMessage = {
+    type: "success",
+    text: "",
+  };
 
   const [editUserData, setEditUserData] = useState({
     ...initialAddUserData,
@@ -57,48 +64,100 @@ const EditUserPage = () => {
     defaultFolderId: 1,
     defaultGroup: null,
     noPass: false,
-    user_status: "active",
+    userStatus: "active",
   });
 
-  const [rePass, setRePass] = useState({ pass1: "", pass2: "" });
+  const [rePass, setRePass] = useState({
+    pass1: "",
+    pass2: "",
+  });
+  const passwordsMatch =
+    rePass.pass2 === "" || rePass.pass1 === rePass.pass2;
+  const [adminUser, setAdminUser] = useState(false);
   const [folderlist, setFolderlist] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
-  const [selectedUserId, setSelectedUserId] = useState(null);
-
+  const [selectedUserName, setSelectedUserName] = useState("");
+  const [groups, setGroups] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(initialMessage);
   const [showMessage, setShowMessage] = useState(false);
 
-  const handleChange = (e) => {
-    // CASE 1: safe guard
-    if (!e) return;
+  useEffect(() => {
+    setAdminUser(isAdmin());
+  }, []);
 
-    // CASE 2: InputContainer / Select / RadioGroup sends raw value
-    if (!e.target) {
+  const handleChange = (e) => {
+    if (!e?.target) return;
+
+    const {
+      name,
+      value,
+      type,
+      checked,
+    } = e.target;
+
+    if (name === "accessLevel") {
+      setEditUserData((prev) => ({
+        ...prev,
+        defaultVisibility: value,
+      }));
+
       return;
     }
 
-    const { name, value, type, checked } = e.target;
-
-    if (name === "accessLevel") {
-      setEditUserData({
-        ...editUserData,
-        defaultVisibility: value,
-      });
-    } else {
-      setEditUserData({
-        ...editUserData,
-        [name]: type === "checkbox" ? checked : value,
-      });
+    if (name === "pass1" || name === "pass2") {
+      setRePass((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+      return;
     }
+
+    if (name in editUserData.agents) {
+      setEditUserData((prev) => ({
+        ...prev,
+        agents: {
+          ...prev.agents,
+          [name]: checked,
+        },
+      }));
+      return;
+    }
+
+    setEditUserData((prev) => ({
+      ...prev,
+      [name]:
+        type === "checkbox"
+          ? checked
+          : value,
+    }));
+  };
+
+  const handleSelectChange = (name, value) => {
+    handleChange({
+      target: {
+        name,
+        value,
+        type: "select",
+      },
+    });
   };
 
   const fetchFolders = async () => {
     try {
       const folders = await getAllFolders();
-      setFolderlist(folders.map((f) => ({ id: f.id, name: f.name })));
-    } catch (error) {
-      setMessage({ type: "danger", text: error.message });
+
+      setFolderlist(
+        folders.map((folder) => ({
+          id: folder.id,
+          name: folder.name,
+        }))
+      );
+    } catch(error) {
+      setMessage({
+        type: "error",
+        text: error.message,
+      });
       setShowMessage(true);
     }
   };
@@ -106,32 +165,85 @@ const EditUserPage = () => {
   const fetchAllUsers = async () => {
     try {
       const users = await getAllUsersName();
-      setAllUsers(users.map((u) => ({ ...u, disabled: false })));
-      const currentUserId = JSON.parse(localStorage.getItem("user")).id;
-      setSelectedUserId(currentUserId);
-    } catch (error) {
-      setMessage({ type: "danger", text: error.message });
+
+      setAllUsers(
+        users.map((user)=>({
+          ...user,
+          disabled:false,
+        }))
+      );
+
+      const currentUser =
+        JSON.parse(
+          localStorage.getItem("user")
+        );
+
+      setSelectedUserName(currentUser.name);
+    } catch(error){
+
+      setMessage({
+        type:"error",
+        text:error.message,
+      });
+
       setShowMessage(true);
     }
   };
 
-  const fetchUserInfo = async (userId) => {
+  const fetchGroups = async () => {
     try {
-      const user = await getUserById(userId);
-      if (user && user.agents) {
-        user.agents.mime = user.agents.mimetype;
+      const response = await fetchAllGroups();
+
+      setGroups(response);
+    } catch (error) {
+      setMessage({
+        type: "error",
+        text: error.message,
+      });
+      setShowMessage(true);
+    }
+  };
+
+  const fetchUserInfo = async(name)=>{
+
+    try{
+      const user =
+        await getUserByName(name);
+      user.emailNotification = user.emailNotification === "y";
+
+      const group = groups.find(
+        (g) => g.name === user.defaultGroup
+      );
+
+      user.defaultGroup = group ? String(group.id) : "";
+
+      if(user?.agents){
+        user.agents.mime =
+          user.agents.mimetype;
         delete user.agents.mimetype;
+
         setEditUserData({
           ...initialAddUserData,
           ...user,
-          agents: { ...initialAddUserData.agents, ...user.agents },
-          noPass: false,
+          agents:{
+            ...initialAddUserData.agents,
+            ...user.agents,
+          },
+          noPass:false,
         });
-      } else {
-        setEditUserData({ ...initialAddUserData, ...user });
+
+      }else{
+        setEditUserData({
+          ...initialAddUserData,
+          ...user,
+        });
       }
-    } catch (error) {
-      setMessage({ type: "danger", text: error.message });
+
+    }catch(error){
+      setMessage({
+        type:"error",
+        text:error.message,
+      });
       setShowMessage(true);
     }
   };
@@ -139,257 +251,599 @@ const EditUserPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (rePass.pass1 !== rePass.pass2) {
-      setMessage({ type: "danger", text: "Passwords do not match!" });
+      setMessage({
+        type: "error",
+        text: "Passwords do not match!",
+      });
       setShowMessage(true);
       return;
     }
 
     setLoading(true);
+
     try {
-      const payload = {
-        ...editUserData,
-        _blank_pass: editUserData.noPass,
-      };
-      if (rePass.pass1) payload.userPass = rePass.pass1;
-      delete payload.noPass;
+      const response = await editUserByName(
+        selectedUserName,
+        {
+          ...editUserData,
+          emailNotification: editUserData.emailNotification ? "y" : "n",
+          userPass: rePass.pass1 || undefined,
+        }
+      );
 
-      const response = await editUserById(selectedUserId, payload);
-      await fetchUserInfo(selectedUserId);
-      setRePass({ pass1: "", pass2: "" });
+      await fetchUserInfo(selectedUserName);
 
-      setMessage({ type: "success", text: response.message });
+      setRePass({
+        pass1: "",
+        pass2: "",
+      });
+
+      setMessage({
+        type: "success",
+        text: response.message,
+      });
     } catch (error) {
-      setMessage({ type: "danger", text: error.message });
+      setMessage({
+        type: "error",
+        text: error.message,
+      });
     } finally {
-      setShowMessage(true);
       setLoading(false);
+      setShowMessage(true);
     }
   };
 
-  useEffect(() => {
+
+  useEffect(()=>{
     fetchFolders();
     fetchAllUsers();
-  }, []);
+    fetchGroups();
+  },[]);
 
   useEffect(() => {
-    if (selectedUserId) {
-      fetchUserInfo(selectedUserId);
+    if (selectedUserName && groups.length > 0) {
+      fetchUserInfo(selectedUserName);
     }
-  }, [selectedUserId]);
+  }, [selectedUserName, groups]);
 
+
+  const alertType =
+    message.type === "success"
+      ? "Success"
+      : message.type === "error"
+      ? "Error"
+      : "Info";
   return (
-    <div className="main-container my-3">
+  <div className="main-container my-3">
+    <div className="w-full max-w-3xl">
       {showMessage && (
-        <Alert
-          type={message.type}
-          setShow={setShowMessage}
-          message={message.text}
-        />
+        <div className="mb-4">
+          <AlertBanner
+            type={alertType}
+            description={message.text}
+            showClose
+            onClose={() => setShowMessage(false)}
+          />
+        </div>
       )}
-      <h1 className="font-size-main-heading">Edit A User</h1>
 
-      {isAdmin() && (
-        <>
-          <InputContainer
-            type="select"
-            name="selectedUserId"
-            id="user-selector"
-            onChange={(e) => setSelectedUserId(e.target.value)}
-            options={allUsers}
-            property="name"
-            value={selectedUserId}
-            valueProperty="id"
+      <h1 className="font-size-main-heading mb-6">
+        Edit User Account
+      </h1>
+
+      {adminUser && (
+        <div className="space-y-2 mb-6">
+          <Label
+            htmlFor="user-selector"
+            className="font-semibold"
           >
-            Select a user
-          </InputContainer>
-          <hr />
-        </>
+            Select a user to edit
+          </Label>
+
+          <Select
+            value={selectedUserName}
+            onValueChange={(value) =>
+              setSelectedUserName(value)
+            }
+          >
+            <SelectTrigger
+              id="user-selector"
+              className="h-10 w-[390px]"
+            >
+              <SelectValue
+                placeholder="Select user"
+              />
+            </SelectTrigger>
+
+            <SelectContent>
+              {allUsers.map((user)=>(
+                <SelectItem
+                  key={user.id}
+                  value={user.name}
+                  disabled={user.disabled}
+                >
+                  {user.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       )}
 
-      <div className="row">
-        <div className="col-12 col-lg-8">
-          <form onSubmit={handleSubmit}>
-            <InputContainer
-              name="name"
-              id="name"
-              type="text"
-              onChange={handleChange}
-              value={editUserData.name}
-            >
-              Username
-            </InputContainer>
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-6"
+      >
 
-            <InputContainer
-              name="description"
-              id="description"
-              type="text"
-              onChange={handleChange}
-              value={editUserData.description}
-            >
-              Description (optional)
-            </InputContainer>
+        {/* Username */}
+        <div className="space-y-2">
+          <Label
+            htmlFor="name"
+            className="font-semibold"
+          >
+            Username.
+          </Label>
+          <Input
+            id="name"
+            name="name"
+            value={
+              editUserData.name ?? ""
+            }
+            onChange={handleChange}
+            placeholder="Enter username"
+            className="h-10"
+          />
+        </div>
 
-            <InputContainer
-              name="email"
-              id="email"
-              type="email"
-              onChange={handleChange}
-              value={editUserData.email}
-            >
-              Email address
-            </InputContainer>
+        {/* Description */}
+        <div className="space-y-2">
+          <Label
+            htmlFor="description"
+            className="font-semibold"
+          >
+            Description (name, contact, or other information). This may be blank.
+          </Label>
+          <Input
+            id="description"
+            name="description"
+            value={
+              editUserData.description ?? ""
+            }
+            onChange={handleChange}
+            placeholder="Enter description"
+            className="h-10"
+          />
+        </div>
 
-            {isAdmin() && (
-              <>
-                <InputContainer
-                  type="select"
-                  name="permission"
-                  id="permission"
-                  onChange={handleChange}
-                  options={accessLevels}
-                  property="name"
-                  value={editUserData.accessLevel}
-                  valueProperty="value"
+        {/* Email */}
+        <div className="space-y-2">
+          <Label
+            htmlFor="email"
+            className="font-semibold"
+          >
+            Email address. This may be blank.
+          </Label>
+          <Input
+            id="email"
+            type="email"
+            name="email"
+            value={
+              editUserData.email ?? ""
+            }
+            onChange={handleChange}
+            placeholder="Enter email address"
+            className="h-10"
+          />
+        </div>
+
+        {/* Email notification on job completion */}
+        <div className="flex items-center gap-2">
+          <Checkbox
+            id="emailNotification"
+            name="emailNotification"
+            checked={
+              editUserData.emailNotification ?? false
+            }
+            onCheckedChange={(checked) =>
+              handleChange({
+                target: {
+                  name: "emailNotification",
+                  type: "checkbox",
+                  checked,
+                },
+              })
+            }
+          />
+
+          <Label
+            htmlFor="emailNotification"
+            className="font-semibold"
+          >
+            E-mail notification on job completion
+          </Label>
+        </div>
+        {adminUser && (
+          <>
+
+            {/* Access Level */}
+            <div className="space-y-2">
+              <Label
+                className="font-semibold"
+              >
+                Select the user's access level.
+              </Label>
+
+              <Select
+                value={
+                  editUserData.accessLevel
+                }
+                onValueChange={(value)=>
+                  handleSelectChange(
+                    "accessLevel",
+                    value
+                  )
+                }
+              >
+                <SelectTrigger className="h-10 w-[550px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {accessLevels.map((item)=>(
+                    <SelectItem
+                      key={item.value}
+                      value={
+                        String(item.value)
+                      }
+                    >
+                      {item.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Status */}
+            <div className="space-y-2">
+              <Label
+                className="font-semibold"
+              >
+                Select the user's status.
+              </Label>
+
+              <Select
+                value={
+                  editUserData.userStatus
+                }
+                onValueChange={(value)=>
+                  handleSelectChange(
+                    "userStatus",
+                    value
+                  )
+                }
+              >
+
+                <SelectTrigger
+                  className="h-10 w-[390px]"
                 >
-                  Access Level
-                </InputContainer>
+                  <SelectValue placeholder="Select status"/>
+                </SelectTrigger>
+                <SelectContent>
+                  {userStatus.map((item)=>(
+                    <SelectItem
+                      key={item.value}
+                      value={
+                        String(item.value)
+                      }
+                    >
+                      {item.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </>
+        )}
 
-                <InputContainer
-                  type="select"
-                  name="user_status"
-                  id="user_status"
-                  onChange={handleChange}
-                  options={userStatus}
-                  property="name"
-                  value={editUserData.user_status}
-                  valueProperty="value"
-                >
-                  Status
-                </InputContainer>
-              </>
-            )}
+        {/* Root Folder */}
+        <div className="space-y-2">
+          <Label
+            className="font-semibold"
+          >
+            Select the user's top-level folder. Access is restricted to this folder.
+          </Label>
 
-            <InputContainer
-              type="select"
-              name="rootFolderId"
-              id="rootFolderId"
-              onChange={handleChange}
-              options={folderlist}
-              property="name"
-              value={editUserData.rootFolderId}
+          <Select
+            value={
+              editUserData.rootFolderId
+                ? String(
+                    editUserData.rootFolderId
+                  )
+                : undefined
+            }
+            onValueChange={(value)=>
+              handleSelectChange(
+                "rootFolderId",
+                value
+              )
+            }
+          >
+
+            <SelectTrigger
+              className="h-10 w-[390px]"
             >
-              Root Folder
-            </InputContainer>
-
-            {isAdmin() && (
-              <>
-                <InputContainer
-                  type="select"
-                  name="defaultFolderId"
-                  id="defaultFolderId"
-                  onChange={handleChange}
-                  options={folderlist}
-                  property="name"
-                  value={editUserData.defaultFolderId}
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {folderlist.map((folder)=>(
+                <SelectItem
+                  key={folder.id}
+                  value={
+                    String(folder.id)
+                  }
                 >
-                  Default Folder
-                </InputContainer>
+                  {folder.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        {adminUser && (
+          <>
 
-                <InputContainer
-                  type="checkbox"
-                  name="noPass"
-                  id="noPass"
-                  checked={editUserData.noPass}
-                  onChange={handleChange}
+            {/* Default Folder */}
+            <div className="space-y-2">
+              <Label
+                className="font-semibold"
+              >
+                Select the user's default folder. Root for Upload and Browse will be this folder.
+              </Label>
+
+              <Select
+                value={
+                  editUserData.defaultFolderId
+                    ? String(
+                        editUserData.defaultFolderId
+                      )
+                    : undefined
+                }
+                onValueChange={(value)=>
+                  handleSelectChange(
+                    "defaultFolderId",
+                    value
+                  )
+                }
+              >
+                <SelectTrigger
+                  className="h-10 w-[390px]"
                 >
-                  Require No-Password
-                </InputContainer>
-              </>
-            )}
+                  <SelectValue placeholder="Select default folder"/>
+                </SelectTrigger>
 
-            <InputContainer
-              name="pass1"
-              id="pass1"
+                <SelectContent>
+                  {folderlist.map((folder)=>(
+                    <SelectItem
+                      key={folder.id}
+                      value={
+                        String(folder.id)
+                      }
+                    >
+                      {folder.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* No password */}
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="noPass"
+                checked={
+                  editUserData.noPass
+                }
+                onCheckedChange={(checked)=>
+                  handleChange({
+                    target:{
+                      name:"noPass",
+                      type:"checkbox",
+                      checked,
+                    }
+                  })
+                }
+              />
+              <Label
+                htmlFor="noPass"
+                className="font-semibold"
+              >
+                Require no password.
+              </Label>
+            </div>
+          </>
+        )}
+
+        {/* Password */}
+        <div className="space-y-2">
+          <Label
+            className="font-semibold"
+          >
+            Password (Optional)
+          </Label>
+          <Input
+            type="password"
+            name="pass1"
+            value={rePass.pass1}
+            onChange={handleChange}
+            placeholder="Enter password"
+            className="h-10"
+          />
+        </div>
+
+        {/* Confirm Password */}
+        <div className="space-y-2">
+          <Label
+            className="font-semibold"
+          >
+            Re-enter password.
+          </Label>
+            <Input
               type="password"
-              onChange={handleChange}
-              value={rePass.pass1}
-            >
-              Password (optional)
-            </InputContainer>
-
-            <InputContainer
               name="pass2"
-              id="pass2"
-              type="password"
-              onChange={handleChange}
               value={rePass.pass2}
-            >
-              Re-enter password
-            </InputContainer>
-
-            <InputContainer
-              type="checkbox"
-              name="emailNotification"
-              id="emailNotification"
-              checked={editUserData.emailNotification}
               onChange={handleChange}
-            >
-              Enable Email Notification
-            </InputContainer>
-
-            <p className="font-demi mt-1">Default Upload Visibility</p>
-            <CommonFields
-              accessLevel={editUserData.defaultVisibility}
-              handleChange={handleChange}
+              placeholder="Re-enter password"
+              className={`h-10 ${
+                !passwordsMatch
+                  ? "border-red-500 focus-visible:ring-red-500"
+                  : ""
+              }`}
             />
 
-            <label className="font-demi my-1">Default Agents</label>
-            {Object.keys(editUserData.agents).map((key) => (
-              <InputContainer
-                key={key}
-                type="checkbox"
-                checked={editUserData.agents[key]}
-                name={key}
-                id={key}
-                onChange={handleChange}
-              >
-                {agents[key]}
-              </InputContainer>
-            ))}
-
-            <InputContainer
-              type="select"
-              name="defaultBucketpool"
-              id="defaultBucketpool"
-              onChange={handleChange}
-              options={bucketPool}
-              property="name"
-              value={editUserData.defaultBucketpool}
-            >
-              Default Bucketpool
-            </InputContainer>
-
-            <Button type="submit" className="mt-4">
-              {loading ? (
-                <Spinner
-                  as="span"
-                  animation="border"
-                  size="sm"
-                  role="status"
-                  aria-hidden="true"
-                />
-              ) : (
-                "Update User"
-              )}
-            </Button>
-          </form>
-
-          <hr />
-          <TokenSpace setMessage={setMessage} setShowMessage={setShowMessage} />
+            {!passwordsMatch && (
+              <p className="text-sm text-red-600">
+                Passwords do not match.
+              </p>
+            )}
         </div>
+      
+        {/* Default Upload Visibility */}
+        <div className="space-y-2">
+          <Label className="font-semibold">
+            Default upload visibility
+          </Label>
+          <CommonFields
+            accessLevel={
+              editUserData.defaultVisibility
+            }
+            handleChange={handleChange}
+          />
+        </div>
+
+        {/* Agents selected by default when uploading */}
+        <div className="space-y-2">
+          <Label className="font-semibold">
+            Agents selected by default when uploading
+          </Label>
+
+          <CommonFields
+            analysis={editUserData.agents}
+            handleChange={handleChange}
+            handleScanChange={(checked, name) => {
+              setEditUserData((prev) => ({
+                ...prev,
+                agents: {
+                  ...prev.agents,
+                  [name]: checked,
+                },
+              }));
+            }}
+          />
+        </div>
+
+        {/* Bucket Pool */}
+        <div className="space-y-2">
+          <Label
+            className="font-semibold"
+          >
+            Default Bucketpool
+          </Label>
+
+          <Select
+            value={
+              editUserData.defaultBucketpool
+                ? String(
+                    editUserData.defaultBucketpool
+                  )
+                : undefined
+            }
+            onValueChange={(value)=>
+              handleSelectChange(
+                "defaultBucketpool",
+                value
+              )
+            }
+          >
+            <SelectTrigger
+              className="h-10 w-[390px]"
+            >
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {bucketPool.map((pool)=>(
+                <SelectItem
+                  key={pool.id}
+                  value={
+                    String(pool.id)
+                  }
+                >
+                  {pool.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Default Group */}
+        <div className="space-y-2">
+          <Label
+            className="font-semibold"
+          >
+            Select user's default group
+          </Label>
+
+          <Select
+            value={editUserData.defaultGroup ?? ""}
+            onValueChange={(value) =>
+              handleSelectChange(
+                "defaultGroup",
+                value
+              )
+            }
+          >
+            <SelectTrigger
+              className="h-10 w-[390px]"
+            >
+              <SelectValue/>
+            </SelectTrigger>
+              <SelectContent>
+                {groups.map((group) => (
+                  <SelectItem
+                      key={group.id}
+                      value={String(group.id)}
+                  >
+                      {group.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+          </Select>
+        </div>
+
+        {/* Submit Button */}
+
+        <div className="pt-2">
+          <Button
+            type="submit"
+            disabled={
+              loading ||
+              (rePass.pass2 !== "" && !passwordsMatch)
+            }
+          >
+            {loading
+              ? "Updating Account..."
+              : "Update Account"}
+          </Button>
+        </div>
+      </form>
+
+      {/* REST API Tokens */}
+      <div className="mt-8">
+        <TokenSpace
+          setMessage={setMessage}
+          setShowMessage={setShowMessage}
+        />
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default EditUserPage;

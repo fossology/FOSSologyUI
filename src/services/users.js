@@ -21,10 +21,11 @@ import fetchTokenApi from "@/api/auth";
 import {
   getUserSelfApi,
   getAllUsersApi,
-  getUserByIdApi,
+  getUserByNameApi,
   addUserApi,
-  editUserByIdApi,
+  editUserByNameApi,
   deleteUserApi,
+  createTokenApi,
   getTokensApi,
   exportUsersCsvApi,
   exportUsersJsonApi,
@@ -68,8 +69,8 @@ export const getAllUsersName = () => {
 
 // USER BY ID
 
-export const getUserById = (id) => {
-  return getUserByIdApi(id).then((res) => res);
+export const getUserByName = (id) => {
+  return getUserByNameApi(id).then((res) => res);
 };
 
 
@@ -86,6 +87,9 @@ export const addUser = (data) => {
     defaultGroup: data.defaultGroup,
     defaultBucketpool: data.defaultBucketpool ?? null,
 
+    userPass: data.userPass,
+    defaultVisibility: data.defaultVisibility,
+
     agents: {
       bucket: data.agents?.bucket ?? false,
       copyrightEmailAuthor: data.agents?.copyrightEmailAuthor ?? false,
@@ -101,20 +105,48 @@ export const addUser = (data) => {
       softwareHeritage: data.agents?.softwareHeritage ?? false,
     },
   };
-
+console.log(payload);
   return addUserApi(payload).then((res) => res);
 };
 
 
 // UPDATE USER (DTO SAFE)
 
-export const editUserById = (id, data) => {
+export const editUserByName = (id, data) => {
   const payload = {
-    ...data,
+    name: data.name,
+    description: data.description,
+    email: data.email,
+    accessLevel: data.accessLevel,
+    rootFolderId: Number(data.rootFolderId),
+    defaultFolderId: Number(data.defaultFolderId),
+    defaultGroup: data.defaultGroup,
     defaultBucketpool: data.defaultBucketpool ?? null,
-  };
+    emailNotification: data.emailNotification,
+    defaultVisibility: data.defaultVisibility,
+    userStatus: data.userStatus,
 
-  return editUserByIdApi(id, payload).then((res) => res);
+    ...(data.userPass ? { userPass: data.userPass } : {}),
+
+    agents: {
+      bucket: data.agents?.bucket ?? false,
+      copyrightEmailAuthor:
+        data.agents?.copyrightEmailAuthor ?? false,
+      ecc: data.agents?.ecc ?? false,
+      ipra: data.agents?.ipra ?? false,
+      keyword: data.agents?.keyword ?? false,
+      mime: data.agents?.mime ?? false,
+      monk: data.agents?.monk ?? false,
+      nomos: data.agents?.nomos ?? false,
+      ojo: data.agents?.ojo ?? false,
+      pkgagent: data.agents?.pkgagent ?? false,
+      reso: data.agents?.reso ?? false,
+      softwareHeritage:
+        data.agents?.softwareHeritage ?? false,
+    },
+  };
+console.log(payload);
+  return editUserByNameApi(id, payload).then((res) => res);
 };
 
 
@@ -130,15 +162,15 @@ export const getTokens = (type) => {
   return getTokensApi(type).then((res) => res);
 };
 
-
-// CREATE TOKEN
-
+//Create Token
 export const createToken = (tokenDetails) => {
-  return fetchTokenApi(
-    tokenDetails.username,
-    tokenDetails.password,
-    tokenDetails
-  ).then((res) => res);
+  const payload = {
+    tokenName: tokenDetails.tokenName,
+    tokenScope: tokenDetails.tokenScope,
+    tokenExpire: tokenDetails.tokenExpire,
+  };
+
+  return createTokenApi(payload).then((res) => res);
 };
 // api endpoints not exposed
 // EXPORT USERS CSV
