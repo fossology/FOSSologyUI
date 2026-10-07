@@ -62,7 +62,7 @@ function SelectTrigger({ className, children, open, ...props }) {
           alt="Chevron"
           width={20}
           height={20}
-          className="ml-2 transition-transform duration-150 group-data-[state=open]:rotate-180 [filter:brightness(0)_invert(1)_brightness(0.38)] group-data-[state=open]:[filter:invert(17%)_sepia(99%)_saturate(2306%)_hue-rotate(204deg)_brightness(91%)_contrast(104%)] group-data-[disabled]:[filter:brightness(0)_invert(1)_brightness(0.808)]"
+          className="ml-2 transition-transform duration-150 group-data-[state=open]:rotate-180 [filter:invert(17%)_sepia(99%)_saturate(2306%)_hue-rotate(204deg)_brightness(91%)_contrast(104%)] group-data-[disabled]:[filter:brightness(0)_invert(1)_brightness(0.808)]"
         />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
@@ -81,10 +81,9 @@ function SelectContent({ className, children, position = "popper", ...props }) {
           className
         )}
         position={position}
-        avoidCollisions={false}
         {...props}
       >
-        <SelectPrimitive.Viewport className="max-h-64 overflow-y-auto p-0">
+        <SelectPrimitive.Viewport className="max-h-72 overflow-y-auto p-0">
           {children}
         </SelectPrimitive.Viewport>
       </SelectPrimitive.Content>

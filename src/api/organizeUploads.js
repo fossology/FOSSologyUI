@@ -37,7 +37,7 @@ export const getUploadsByFolderIdApi = ({
     headers: {
       Authorization: getToken(),
     },
-    params: {
+    queryParams: {
       folderId,
       groupName,
       recursive,
@@ -48,7 +48,7 @@ export const getUploadsByFolderIdApi = ({
 // Deleting a upload with its id
 export const deleteUploadsApi = (uploadId) => {
   return sendRequest({
-    url: endpoints.organize.uploads.delete(uploadId),
+    url: endpoints.uploads.delete(uploadId),
     method: "DELETE",
     headers: {
       Authorization: getToken(),
@@ -59,14 +59,14 @@ export const deleteUploadsApi = (uploadId) => {
 // Moving the upload into another folder
 export const moveUploadApi = ({ folderId, uploadId }) => {
   return sendRequest({
-    url: endpoints.organize.uploads.move(uploadId),
-    method: "PATCH",
+    url: endpoints.uploads.moveOrCopy(uploadId),
+    method: "PUT",
     headers: {
       Authorization: getToken(),
     },
-    params: {
+    queryParams: {
       folderId,
-      recursive: false,
+      action: "move",
     },
   });
 };
@@ -74,14 +74,33 @@ export const moveUploadApi = ({ folderId, uploadId }) => {
 // Copying the upload into another folder
 export const copyUploadApi = ({ folderId, uploadId }) => {
   return sendRequest({
-    url: endpoints.organize.uploads.copy(uploadId),
+    url: endpoints.uploads.moveOrCopy(uploadId),
     method: "PUT",
     headers: {
       Authorization: getToken(),
     },
-    params: {
+    queryParams: {
       folderId,
-      recursive: false,
+      action: "copy",
+    },
+  });
+};
+
+// Updating upload properties
+export const updateUploadApi = ({
+  uploadId,
+  uploadName,
+  uploadDescription,
+}) => {
+  return sendRequest({
+    url: endpoints.uploads.getById(uploadId),
+    method: "PATCH",
+    headers: {
+      Authorization: getToken(),
+    },
+    body: {
+      name: uploadName,
+      uploadDescription,
     },
   });
 };

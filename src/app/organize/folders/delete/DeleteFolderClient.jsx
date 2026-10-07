@@ -125,7 +125,7 @@ const DeleteFolderPage = () => {
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <p className="mb-3">Select the folder to delete.</p>
-          <ul className="list-disc pl-5 space-y-1 mb-6 text-sm">
+          <ul className="list-disc pl-5 space-y-1 mb-6">
             <li>This will delete the folder, all subfolders, and all uploaded files stored within the folder!</li>
             <li>Be very careful with your selection since you can delete a lot of work!</li>
             <li>All analysis only associated with the deleted uploads will also be deleted.</li>
