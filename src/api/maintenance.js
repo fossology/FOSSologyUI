@@ -35,3 +35,13 @@ export const createMaintenanceApi = (body) =>
     },
     body,
   });
+
+// Getting details about the last completed maintenance job
+export const getMaintenanceInfoApi = () =>
+  sendRequest({
+    url: endpoints.maintenance.info(),
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+  });
