@@ -163,6 +163,12 @@ const endpoints = {
   maintenance: {
     run: () => withBase("/maintenance"),
   },
+
+  // Tags
+  tags: {
+    create: () => withBase("/tags"),
+    setDisplayStatus: (uploadId) => withBase(`/uploads/${uploadId}/tags/display`),
+  },
 };
 
 export default endpoints;
