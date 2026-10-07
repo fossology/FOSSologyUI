@@ -36,8 +36,7 @@ const routes = {
     oneShotMonk: "/upload/oneShotMonk",
   },
   jobs: {
-    myRecentJobs: "/jobs/myRecentJobs",
-    allRecentJobs: "/jobs/allRecentJobs",
+    showJobs: "/jobs",
     scheduleAgents: "/jobs/scheduleAgents",
   },
   organize: {

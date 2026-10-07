@@ -17,34 +17,38 @@ SPDX-License-Identifier: GPL-2.0-only
 */
 
 import * as React from "react"
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  MoreHorizontalIcon,
-} from "lucide-react"
+import Image from "next/image";
 import { cva } from "class-variance-authority";
 
 import { cn } from "@/lib/utils"
 
 const paginationLinkVariants = cva(
-  "inline-flex items-center justify-center rounded border text-sm transition-colors",
+  "inline-flex items-center justify-center rounded-md text-sm transition-colors cursor-pointer",
   {
     variants: {
-      size: {
-        default: "h-8 min-w-8 px-2",
-        sm: "h-6 min-w-6 px-1.5 text-xs",
+      variant: {
+        page: "h-8 w-8",
+        nav: "h-8 px-2",
       },
       active: {
-        true: "border-tertiary1-800 bg-tertiary1-800 text-white",
-        false: "border-neutral-400 bg-white text-neutral-800 hover:bg-neutral-100",
+        true:
+          "bg-tertiary1-800 text-white",
+        false:
+          "bg-transparent hover:bg-neutral-200",
       },
     },
     defaultVariants: {
-      size: "default",
+      variant: "page",
       active: false,
     },
   }
-)
+);
+
+const arrowFilter =
+  "[filter:invert(17%)_sepia(99%)_saturate(2306%)_hue-rotate(204deg)_brightness(75%)_contrast(108%)]";
+
+const disabledArrowFilter =
+  "[filter:invert(82%)_sepia(13%)_saturate(585%)_hue-rotate(179deg)_brightness(92%)_contrast(89%)]";
 
 function Pagination({
   className,
@@ -67,7 +71,7 @@ function PaginationContent({
   return (
     <ul
       data-slot="pagination-content"
-      className={cn("flex flex-row items-center gap-1", className)}
+      className={cn("flex items-center gap-1", className)}
       {...props} />
   );
 }
@@ -81,30 +85,68 @@ function PaginationItem({
 function PaginationLink({
   className,
   isActive,
-  size = "default",
+  variant = "page",
+  disabled = false,
+  children,
+  onClick,
+  href,
   ...props
 }) {
   return (
     <a
       aria-current={isActive ? "page" : undefined}
-      data-slot="pagination-link"
-      data-active={isActive}
-      className={cn(paginationLinkVariants({ active: isActive, size }), className)}
-      {...props} />
+      aria-disabled={disabled}
+      href={disabled ? undefined : href}
+      onClick={
+        disabled
+          ? (e) => e.preventDefault()
+          : onClick
+      }
+      className={cn(
+        paginationLinkVariants({
+          variant,
+          active: isActive,
+        }),
+        disabled
+          ? "cursor-default pointer-events-none text-tertiary1-400"
+          : "",
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </a>
   );
 }
 
 function PaginationPrevious({
   className,
+  disabled = false,
   ...props
 }) {
   return (
     <PaginationLink
-      aria-label="Go to previous page"
-      size="default"
-      className={cn("gap-1 px-2.5", className)}
-      {...props}>
-      <ChevronLeftIcon />
+      variant="nav"
+      disabled={disabled}
+      className={cn(
+        "gap-1",
+        disabled
+          ? "text-tertiary1-400"
+          : "text-tertiary1-800 hover:bg-neutral-200",
+        className
+      )}
+      {...props}
+    >
+      <Image
+        src="/assets/icons/ArrowLeft_20px.svg"
+        width={20}
+        height={20}
+        alt=""
+          className={`h-5 w-5 ${
+            disabled ? disabledArrowFilter : arrowFilter
+          }`}
+      />
+
       <span>Previous</span>
     </PaginationLink>
   );
@@ -112,32 +154,48 @@ function PaginationPrevious({
 
 function PaginationNext({
   className,
+  disabled = false,
   ...props
 }) {
   return (
     <PaginationLink
-      aria-label="Go to next page"
-      size="default"
-      className={cn("gap-1 px-2.5", className)}
-      {...props}>
+      variant="nav"
+      disabled={disabled}
+      className={cn(
+        "gap-1",
+        disabled
+          ? "text-tertiary1-400"
+          : "text-tertiary1-800 hover:bg-neutral-200",
+        className
+      )}
+      {...props}
+    >
       <span>Next</span>
-      <ChevronRightIcon />
+
+      <Image
+        src="/assets/icons/ArrowRight_20px.svg"
+        width={20}
+        height={20}
+        alt=""
+          className={`h-5 w-5 ${
+            disabled ? disabledArrowFilter : arrowFilter
+          }`}
+      />
     </PaginationLink>
   );
 }
 
 function PaginationEllipsis({
   className,
-  ...props
 }) {
   return (
     <span
-      aria-hidden
-      data-slot="pagination-ellipsis"
-      className={cn("flex size-9 items-center justify-center", className)}
-      {...props}>
-      <MoreHorizontalIcon className="size-4" />
-      <span className="sr-only">More pages</span>
+      className={cn(
+        "px-2",
+        className
+      )}
+    >
+      ...
     </span>
   );
 }

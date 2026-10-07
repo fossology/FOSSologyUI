@@ -20,6 +20,7 @@ SPDX-License-Identifier: GPL-2.0-only
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import messages from "@/constants/messages";
 import CommonFields from "@/components/Upload/CommonFields";
 import { getAllFolders } from "@/services/folders";
@@ -121,12 +122,22 @@ const ScheduleAgentsPage = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await scheduleAnalysis(
+      const response = await scheduleAnalysis(
         scheduleAnalysisData.folderId,
         scheduleAnalysisData.uploadId,
         scanFileData
       );
-      setMessage({ type: "success", text: messages.jobsAdded });
+      setMessage({
+        type: "success",
+        text: (
+          <Link
+            href="/jobs"
+            className="hover:underline"
+          >
+            View Jobs
+          </Link>
+        ),
+      });
       setScheduleAnalysisData(initialScheduleAnalysisData);
       setScanFileData(initialScanFileData);
     } catch (error) {
@@ -210,14 +221,17 @@ const ScheduleAgentsPage = () => {
   }, []);
 
   useEffect(() => {
-    if (scheduleAnalysisData.folderId) {
-      getBrowseData({
-        ...initialBrowseData,
-        folderId: scheduleAnalysisData.folderId,
-      }).then((res) => {
-        setUploadList(res.res);
-      });
+    if (!scheduleAnalysisData.folderId) {
+      setUploadList([]);
+      return;
     }
+
+    getBrowseData({
+      ...initialBrowseData,
+      folderId: scheduleAnalysisData.folderId,
+    }).then((res) => {
+      setUploadList(res.uploads);
+    });
   }, [scheduleAnalysisData.folderId]);
 
   const isButtonDisabled =
@@ -295,17 +309,22 @@ const ScheduleAgentsPage = () => {
             <SelectTrigger className="w-[282px]">
               <SelectValue placeholder="Select Upload" />
             </SelectTrigger>
-            <SelectContent>
-              {uploadList && uploadList.length > 0 ? (
-                uploadList.map((upload) => (
-                  <SelectItem key={upload.id} value={upload.id.toString()}>
-                    {upload.uploadname}
-                  </SelectItem>
-                ))
-              ) : (
-                <div className="p-2 text-sm text-gray-500">{messages.noUploads}</div>
-              )}
-            </SelectContent>
+              <SelectContent>
+                {uploadList.length > 0 ? (
+                  uploadList.map((upload) => (
+                    <SelectItem
+                      key={upload.id}
+                      value={upload.id.toString()}
+                    >
+                      {upload.uploadName}
+                    </SelectItem>
+                  ))
+                ) : (
+                  <div className="p-2 text-sm text-gray-500">
+                    {messages.noUploads}
+                  </div>
+                )}
+              </SelectContent>
           </Select>
         </div>
 

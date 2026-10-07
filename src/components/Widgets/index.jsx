@@ -22,6 +22,8 @@ import Button from "./Button";
 import Image from "./Image";
 import InputContainer from "./Input";
 import Tooltip from "./Tooltip";
+import SearchableMultiSelect from "./SearchableMultiSelect";
+import PaginationControl from "./PaginationControl";
 
 const Spinner = ({ size = "default" }) => (
   <span
@@ -32,4 +34,4 @@ const Spinner = ({ size = "default" }) => (
   />
 );
 
-export { Alert, Button, Image, InputContainer, Tooltip, Spinner };
+export { Alert, Button, Image, InputContainer, Tooltip, SearchableMultiSelect, Spinner , PaginationControl};

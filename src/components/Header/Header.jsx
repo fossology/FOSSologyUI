@@ -20,7 +20,7 @@ SPDX-License-Identifier: GPL-2.0-only
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import { cva } from "class-variance-authority";
 
@@ -66,7 +66,6 @@ export default function Header({ variant = "default" }) {
   const [admin, setAdmin] = useState(false);
   const [userName, setUserName] = useState("");
   const pathname = usePathname();
-  const router = useRouter();
 
   const [isOpen, setIsOpen] = useState(false);
   const [isJobsOpen, setIsJobsOpen] = useState(false);
@@ -97,25 +96,48 @@ export default function Header({ variant = "default" }) {
     setAuthenticated(isAuth());
     setAdmin(isAdmin());
     setUserName(getUserName() || "");
-    const defaultGroup =
-      getLocalStorage("currentGroup") ||
-      getLocalStorage("user")?.defaultGroup;
-    setCurrentGroup(defaultGroup);
+
+    const user = getLocalStorage("user");
+    const storedGroup = getLocalStorage("currentGroup");
+    setCurrentGroup(storedGroup || user?.defaultGroup || "");
   }, [pathname]);
 
-  // Fetch groups once on mount
+  // Refresh memberships once on mount.
   useEffect(() => {
     const stored = getAllGroups();
+
     if (stored?.length) {
       setGroups(stored);
-    } else {
-      fetchAllGroups().then(setGroups).catch(() => {});
     }
+
+    fetchAllGroups()
+      .then(setGroups)
+      .catch(() => {
+        if (!stored?.length) {
+          setGroups([]);
+        }
+      });
   }, []);
 
   const handleGroupChange = (groupName) => {
+    if (!groupName || groupName === currentGroup) {
+      setIsGroupSelectOpen(false);
+      setIsGroupOpen(false);
+      return;
+    }
+
     setLocalStorage("currentGroup", groupName);
     setCurrentGroup(groupName);
+    setIsGroupSelectOpen(false);
+    setIsGroupOpen(false);
+
+    window.dispatchEvent(
+      new CustomEvent("groupChanged", {
+        detail: { groupName },
+      })
+    );
+
+    window.location.reload();
   };
 
   return (
@@ -189,11 +211,11 @@ export default function Header({ variant = "default" }) {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" sideOffset={4} className="p-0 m-0 min-w-[200px] bg-white shadow-lg border border-gray-200 z-50">
                   <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
-                    <Link href={routes.jobs.myRecentJobs}>My Recent Jobs</Link>
+                    <Link href={routes.jobs.showJobs}>My Recent Jobs</Link>
                   </DropdownMenuItem>
                   {admin && (
                     <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
-                      <Link href={routes.jobs.allRecentJobs}>All Recent Jobs</Link>
+                      <Link href={`${routes.jobs.showJobs}?scope=all`}>All Recent Jobs</Link>
                     </DropdownMenuItem>
                   )}
                   <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
@@ -487,13 +509,18 @@ export default function Header({ variant = "default" }) {
                   </div>
 
                     {isGroupSelectOpen && (
-                      <div className="mt-1 border rounded-[4px] border-border shadow bg-white overflow-hidden">
+                      <div className="mt-1 border rounded-lg border-border shadow bg-white overflow-hidden">
                         {groups.map((group) => (
                           <div
                             key={group.id}
-                            onClick={() => {
+                            role="button"
+                            tabIndex={0}
+                            onClick={(event) => {
+                              event.stopPropagation();
                               handleGroupChange(group.name);
-                              setIsGroupSelectOpen(false);
+                            }}
+                            onPointerDown={(event) => {
+                              event.stopPropagation();
                             }}
                             className={clsx(
                               "px-3 py-2 text-sm cursor-pointer hover:bg-secondary",
@@ -524,7 +551,7 @@ export default function Header({ variant = "default" }) {
                   hover:text-accent-foreground 
                   hover:border-accent-foreground 
                   cursor-pointer 
-                  rounded-[4px] h-10 
+                  rounded-lg h-10 
                   font-medium text-base px-4 py-2"
                   onClick={() => logout(null)}
                 >

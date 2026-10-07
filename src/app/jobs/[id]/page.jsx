@@ -1,7 +1,7 @@
 /*
- SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
+ SPDX-FileCopyrightText: 2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
-SPDX-License-Identifier: GPL-2.0-only
+ SPDX-License-Identifier: GPL-2.0-only
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -16,13 +16,14 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-
-import AllJobsClient from "./AllJobsClient";
+import JobDetailsClient from "@/components/JobsTable/[id]/JobDetailsClient";
 
 export const metadata = {
     title: "Show Jobs | FOSSology",
 };
 
-export default function AllJobsPage() {
-  return <AllJobsClient />;
-}
+export default async function JobDetailsPage ({ params }) {
+  const { id } = await params;
+
+  return <JobDetailsClient jobId={id} />;
+};

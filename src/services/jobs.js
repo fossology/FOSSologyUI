@@ -20,11 +20,17 @@ SPDX-License-Identifier: GPL-2.0-only
 
 import {
   getJobApi,
+  getJobLogApi,
+  downloadJobLogApi,
   scheduleReportApi,
   downloadReportApi,
   getAllJobApi,
   getAllAdminJobApi,
   importReportApi,
+  pauseJobApi,
+  cancelJobApi,
+  resumeJobApi,
+  importFossologyDumpApi,
 } from "@/api/jobs";
 import { getReportIdFromUrl } from "@/shared/helper";
 import { getLocalStorage } from "@/shared/storageHelper";
@@ -37,23 +43,88 @@ import {
   runSchedulerOperationApi,
 } from "@/api/jobs";
 
+const fetchAllJobPages = async (apiFunction, filters = {}) => {
+  const limit = 10;
+
+  // Fetch the first page.
+  const firstResponse = await apiFunction({
+    ...filters,
+    page: 1,
+    limit,
+  });
+
+  const firstPageJobs = firstResponse || [];
+
+  // The backend stores the total number of pages in localStorage.
+  const totalPages = Number(
+    getLocalStorage("pages") || 1
+  );
+
+  if (totalPages <= 1) {
+    return firstPageJobs;
+  }
+
+  // Fetch all remaining pages.
+  const remainingPages = await Promise.all(
+    Array.from(
+      { length: totalPages - 1 },
+      (_, index) =>
+        apiFunction({
+          ...filters,
+          page: index + 2,
+          limit,
+        })
+    )
+  );
+
+  return [
+    ...firstPageJobs,
+    ...remainingPages.flat(),
+  ];
+};
+
 // Fetching single job
 export const getJob = (jobId) =>
   getJobApi({ jobId }).then(res => res || null);
 
-// Fetching all jobs
-export const getAllJob = (filters) =>
-  getAllJobApi(filters).then(res => ({
-    res,
-    pages: getLocalStorage("pages"),
-  }));
+// Fetch all jobs for the current user.
+// Jobs are restricted to the selected group.
+export const getAllJob = async (filters = {}) => {
+  const jobs = await fetchAllJobPages(
+    getAllJobApi,
+    filters
+  );
 
-// Fetching all jobs for the Admin
-export const getAllAdminJob = (filters) =>
-  getAllAdminJobApi(filters).then(res => ({
-    res,
-    pages: getLocalStorage("pages"),
-  }));
+  return {
+    res: jobs,
+    totalPages: Number(
+      getLocalStorage("pages") || 1
+    ),
+  };
+};
+
+// Fetch the log contents for a job queue
+export const getJobLog = (jobId, queueId) =>
+  getJobLogApi({ jobId, queueId }).then((res) => res || null);
+
+export const downloadJobLog = (jobId, queueId) =>
+  downloadJobLogApi({ jobId, queueId });
+
+// Fetch all jobs for all users.
+// Admin only.
+export const getAllAdminJob = async (filters = {}) => {
+  const jobs = await fetchAllJobPages(
+    getAllAdminJobApi,
+    filters
+  );
+
+  return {
+    res: jobs,
+    totalPages: Number(
+      getLocalStorage("pages") || 1
+    ),
+  };
+};
 
 // Scheduling the analysis for the uploads
 export const scheduleAnalysis = (folderId, uploadId, scanData) => {
@@ -73,7 +144,7 @@ export const scheduleAnalysis = (folderId, uploadId, scanData) => {
 
   const body = {
     analysis: {
-      bucket: Number(analysis.bucket || 0),
+      bucket: !!analysis.bucket,
       copyrightEmailAuthor: !!analysis.copyrightEmailAuthor,
       ecc: !!analysis.ecc,
       ipra: !!analysis.ipra,
@@ -97,15 +168,6 @@ export const scheduleAnalysis = (folderId, uploadId, scanData) => {
       copyrightClutterRemoval: !!decider.copyrightClutterRemoval,
     },
 
-    reuse: {
-      reuse_upload: reuseUploadIds[0] ?? null,
-      reuse_group: reuse.reuseGroup ?? null,
-      reuse_main: reuse.reuseMain ?? null,
-      reuse_enhanced: reuse.reuseEnhanced ?? null,
-      reuse_report: reuse.reuseReport ?? null,
-      reuse_copyright: reuse.reuseCopyright ?? null,
-    },
-
     scancode: {
       license: !!scancode.license,
       copyright: !!scancode.copyright,
@@ -114,6 +176,26 @@ export const scheduleAnalysis = (folderId, uploadId, scanData) => {
     },
   };
 
+  if (
+    reuseUploadIds.length > 0 ||
+    reuse.reuseMain ||
+    reuse.reuseEnhanced ||
+    reuse.reuseReport ||
+    reuse.reuseCopyright
+  ) {
+    body.reuse = {
+      reuseGroup: reuse.reuseGroup,
+      reuseMain: reuse.reuseMain,
+      reuseEnhanced: reuse.reuseEnhanced,
+      reuseReport: reuse.reuseReport,
+      reuseCopyright: reuse.reuseCopyright,
+    };
+
+    if (reuseUploadIds.length > 0) {
+      body.reuse.reuseUpload = reuseUploadIds[0];
+    }
+  }
+
   return scheduleAnalysisApi({
     folderId: Number(folderId),
     uploadId: Number(uploadId),
@@ -121,21 +203,60 @@ export const scheduleAnalysis = (folderId, uploadId, scanData) => {
   });
 };
 
-export const scheduleReport = (uploadId, reportFormat) =>
-  scheduleReportApi({ uploadId, reportFormat });
+// Schedule report generation.
+export const scheduleReport = (
+  uploadId,
+  reportFormat
+) => {
+  return scheduleReportApi({
+    uploadId,
+    reportFormat,
+  });
+};
 
-export const downloadReport = (url) => {
-  const reportId = getReportIdFromUrl(url);
+export const generateAndDownloadReport = async (
+  uploadId,
+  reportFormat = "unifiedreport"
+) => {
+  const response = await scheduleReportApi({
+    uploadId,
+    reportFormat,
+  });
+
+  const reportId = getReportIdFromUrl(response?.message);
+
   if (!reportId) {
-    return Promise.reject(new Error("Invalid or missing report URL"));
+    throw new Error(
+      response?.message || "Report generation did not return a report URL"
+    );
   }
+
+  return downloadReportApi(reportId, 3);
+};
+
+export const downloadReport = (reportUrl) => {
+  const reportId = getReportIdFromUrl(reportUrl);
+
+  if (!reportId) {
+    return Promise.reject(
+      new Error("Invalid or missing report URL")
+    );
+  }
+
   return downloadReportApi(reportId);
 };
 
 export const importReport = (uploadId, reportFormat, reqBody) =>
   importReportApi({ uploadId, reportFormat, reqBody });
 
-export default getJob;
+export const importFossologyDump = (
+  uploadId,
+  reqBody
+) =>
+  importFossologyDumpApi({
+    uploadId,
+    reqBody,
+  });
 
 export const oneShotCEU = (reqBody) =>
   oneShotCEUApi({ reqBody });
@@ -163,3 +284,15 @@ export const runSchedulerOperation = (
     priority
   );
 };
+
+export const pauseJob = (jobId) =>
+  pauseJobApi(jobId);
+
+export const cancelJob = (jobId, queue) =>
+  cancelJobApi({
+    jobId,
+    queue,
+  });
+
+export const resumeJob = (jobId) =>
+  resumeJobApi(jobId);
