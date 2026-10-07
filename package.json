@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "jest"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -56,6 +57,7 @@
     "@eslint/eslintrc": "^3.3.1",
     "eslint": "^9.29.0",
     "eslint-config-next": "15.5.18",
+    "jest": "^30.5.0",
     "tw-animate-css": "^1.3.5"
   }
 }

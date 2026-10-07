@@ -28,6 +28,7 @@ import {
 } from "@/api/jobs";
 import { getReportIdFromUrl } from "@/shared/helper";
 import { getLocalStorage } from "@/shared/storageHelper";
+import messages from "@/constants/messages";
 import { scheduleAnalysisApi } from "@/api/jobs";
 import { oneShotCEUApi } from "@/api/jobs";
 import { oneShotMonkApi } from "@/api/jobs";
@@ -62,13 +63,13 @@ export const scheduleAnalysis = (folderId, uploadId, scanData) => {
   const reuse = scanData?.reuse || {};
   const scancode = scanData?.scancode || {};
 
-  // Normalize reuse properly
+  // Normalize the selected reuse upload(s) to positive integer ids.
   const reuseUploadIds = Array.isArray(reuse.reuseUpload)
     ? reuse.reuseUpload
         .map((item) =>
           typeof item === "object" ? Number(item.id) : Number(item)
         )
-        .filter((n) => Number.isFinite(n))
+        .filter((n) => Number.isInteger(n) && n > 0)
     : [];
 
   const body = {
@@ -97,15 +98,6 @@ export const scheduleAnalysis = (folderId, uploadId, scanData) => {
       copyrightClutterRemoval: !!decider.copyrightClutterRemoval,
     },
 
-    reuse: {
-      reuse_upload: reuseUploadIds[0] ?? null,
-      reuse_group: reuse.reuseGroup ?? null,
-      reuse_main: reuse.reuseMain ?? null,
-      reuse_enhanced: reuse.reuseEnhanced ?? null,
-      reuse_report: reuse.reuseReport ?? null,
-      reuse_copyright: reuse.reuseCopyright ?? null,
-    },
-
     scancode: {
       license: !!scancode.license,
       copyright: !!scancode.copyright,
@@ -114,10 +106,48 @@ export const scheduleAnalysis = (folderId, uploadId, scanData) => {
     },
   };
 
+  // Reuse is optional. The API v2 `Reuser` model only reads camelCase keys
+  // (`reuseUpload`, `reuseGroup`, `reuseMain`, `reuseEnhanced`, `reuseReport`,
+  // `reuseCopyright`). Sending the v1 snake_case keys made the backend ignore
+  // every reuse setting while still answering HTTP 201, and sending the block
+  // with an empty/`null` `reuseUpload` makes v2 reject the whole request. Only
+  // attach it when a real upload to reuse from was picked and reuse was not
+  // explicitly switched off.
+  const reuseEnabled =
+    reuseUploadIds.length > 0 && reuse.reuseChecked !== false;
+  if (reuseEnabled) {
+    body.reuse = {
+      reuseUpload: reuseUploadIds[0],
+      reuseGroup: reuse.reuseGroup ?? "",
+      reuseMain: !!reuse.reuseMain,
+      reuseEnhanced: !!reuse.reuseEnhanced,
+      reuseReport: !!reuse.reuseReport,
+      reuseCopyright: !!reuse.reuseCopyright,
+    };
+  }
+
   return scheduleAnalysisApi({
     folderId: Number(folderId),
     uploadId: Number(uploadId),
     body,
+  }).then((res) => {
+    // On success the scheduler returns { code: 201, message: <jobId>, type }.
+    // Anything else — a non-201 code or a response without a real, positive job
+    // id — means no job was actually created/queued, so surface it as an error
+    // instead of letting a false success reach the caller.
+    const jobId = Number(res?.message);
+    const scheduled =
+      Number(res?.code) === 201 && Number.isInteger(jobId) && jobId > 0;
+    if (!scheduled) {
+      // A non-201 code carries the backend's own error text; a 201 without a
+      // real job id is a false success, so fall back to a generic message.
+      const reason =
+        Number(res?.code) !== 201 && res && res.message != null
+          ? String(res.message)
+          : messages.scheduleAnalysisFailed;
+      return Promise.reject(new Error(reason));
+    }
+    return { ...res, jobId };
   });
 };
 

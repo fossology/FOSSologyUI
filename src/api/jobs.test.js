@@ -28,7 +28,7 @@ jest.mock("api/sendRequest");
 describe("jobs", () => {
   test("getJobApi", () => {
     const jobId = 1;
-    const url = endpoints.jobs.details(jobId);
+    const url = endpoints.jobs.getById(jobId);
     sendRequest.mockImplementation(() => true);
 
     expect(getJobApi({ jobId })).toBe(sendRequest({}));
@@ -36,44 +36,25 @@ describe("jobs", () => {
       expect.objectContaining({
         url,
         method: "GET",
+        headers: {
+          Authorization: getToken(),
+        },
       })
     );
   });
 
-  test("scheduleAnalysisApi", () => {
+  test("scheduleAnalysisApi forwards folder/upload as query params and the body verbatim", () => {
     const folderId = 1;
     const uploadId = 2;
-    const scanData = {
-      analysis: {
-        bucket: "bucket",
-        copyrightEmailAuthor: "copyrightEmailAuthor",
-        ecc: "ecc",
-        keyword: "keyword",
-        mime: "mime",
-        monk: "monk",
-        nomos: "nomos",
-        ojo: "ojo",
-        package: "package",
-      },
-      decider: {
-        nomosMonk: "nomosMonk",
-        bulkReused: "bulkReused",
-        newScanner: "newScanner",
-        ojoDecider: "ojoDecider",
-      },
-      reuse: {
-        reuseUpload: "reuseUpload",
-        reuseGroup: "reuseGroup",
-        reuseMain: "reuseMain",
-        reuseEnhanced: "reuseEnhanced",
-        reuseReport: "reuseReport",
-        reuseCopyright: "reuseCopyright",
-      },
+    const body = {
+      analysis: { monk: true, nomos: true, ojo: true },
+      decider: { nomosMonk: false },
+      scancode: { license: false },
     };
-    const url = endpoints.jobs.scheduleAnalysis();
+    const url = endpoints.jobs.create();
     sendRequest.mockImplementation(() => true);
 
-    expect(scheduleAnalysisApi(folderId, uploadId, scanData)).toBe(
+    expect(scheduleAnalysisApi({ folderId, uploadId, body })).toBe(
       sendRequest({})
     );
     expect(sendRequest).toHaveBeenCalledWith(
@@ -82,36 +63,12 @@ describe("jobs", () => {
         method: "POST",
         headers: {
           Authorization: getToken(),
+        },
+        queryParams: {
           folderId,
           uploadId,
         },
-        body: {
-          analysis: {
-            bucket: scanData.analysis.bucket,
-            copyright_email_author: scanData.analysis.copyrightEmailAuthor,
-            ecc: scanData.analysis.ecc,
-            keyword: scanData.analysis.keyword,
-            mime: scanData.analysis.mime,
-            monk: scanData.analysis.monk,
-            nomos: scanData.analysis.nomos,
-            ojo: scanData.analysis.ojo,
-            package: scanData.analysis.package,
-          },
-          decider: {
-            nomos_monk: scanData.decider.nomosMonk,
-            bulk_reused: scanData.decider.bulkReused,
-            new_scanner: scanData.decider.newScanner,
-            ojo_decider: scanData.decider.ojoDecider,
-          },
-          reuse: {
-            reuse_upload: scanData.reuse.reuseUpload,
-            reuse_group: scanData.reuse.reuseGroup,
-            reuse_main: scanData.reuse.reuseMain,
-            reuse_enhanced: scanData.reuse.reuseEnhanced,
-            reuse_report: scanData.reuse.reuseReport,
-            reuse_copyright: scanData.reuse.reuseCopyright,
-          },
-        },
+        body,
       })
     );
   });
@@ -119,16 +76,18 @@ describe("jobs", () => {
   test("scheduleReportApi", () => {
     const uploadId = 1;
     const reportFormat = "reportFormat";
-    const url = endpoints.jobs.scheduleReport();
+    const url = endpoints.report.schedule();
     sendRequest.mockImplementation(() => true);
 
-    expect(scheduleReportApi(uploadId, reportFormat)).toBe(sendRequest({}));
+    expect(scheduleReportApi({ uploadId, reportFormat })).toBe(sendRequest({}));
     expect(sendRequest).toHaveBeenCalledWith(
       expect.objectContaining({
         url,
         method: "GET",
         headers: {
           Authorization: getToken(),
+        },
+        queryParams: {
           uploadId,
           reportFormat,
         },
@@ -138,7 +97,7 @@ describe("jobs", () => {
 
   test("downloadReportApi", () => {
     const reportId = 1;
-    const url = endpoints.jobs.downloadReport(reportId);
+    const url = endpoints.report.download(reportId);
     sendRequest.mockImplementation(() => true);
 
     expect(downloadReportApi(reportId)).toBe(sendRequest({}));
