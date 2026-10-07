@@ -21,12 +21,13 @@ SPDX-License-Identifier: GPL-2.0-only
 // ─────────────────────────────────────────────────────────────────────────────
 // CHANGES v1 → v2
 // • deleteGroup(id)  → deleteGroup(name)  — now passes group name, not integer id
-// • editGroup        → REMOVED            — no v2 endpoint exists for renaming
+// • editGroup(id, newName) → editGroup(name, newName) — now passes group name, not integer id
 // ─────────────────────────────────────────────────────────────────────────────
 import {
   getAllGroupsApi,
   createGroupApi,
   deleteGroupApi,
+  editGroupApi,
   getAllDeletableGroupsApi,
 } from "@/api/groups";
 import { setLocalStorage, getLocalStorage } from "@/shared/storageHelper";
@@ -54,4 +55,6 @@ export const fetchAllDeletableGroups = () => {
   return getAllDeletableGroupsApi().then((res) => res);
 };
 
-// editGroup is REMOVED — v2 has no group-rename REST endpoint.
+export const editGroup = (name, newName) => {
+  return editGroupApi(name, newName).then((res) => res);
+};

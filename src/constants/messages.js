@@ -25,6 +25,7 @@ const messages = {
   noPageLong: "We could not find the page you were searching for",
   groupCreate: "Successfully created the group",
   deletedGroup: "Successfully deleted the group",
+  renamedGroup: "Successfully renamed the group",
   deletedUser: "Successfully deleted the user",
   addedUser: "Successfully added the user",
   confirmDeletion: "Deletion not confirmed",
