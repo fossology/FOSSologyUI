@@ -67,6 +67,7 @@ const endpoints = {
     delete:     (id) => withBase(`/uploads/${id}`),
     summary:    (id) => withBase(`/uploads/${id}/summary`),
     licenses:   (id) => withBase(`/uploads/${id}/licenses`),
+    copyrights: (id) => withBase(`/uploads/${id}/copyrights`),
     download:   (id) => withBase(`/uploads/${id}/download`),
     oneshotCEU: () => withBase("/uploads/oneshot/ceu"),
     oneShotMonk: () => withBase("/uploads/oneshot/monk"),

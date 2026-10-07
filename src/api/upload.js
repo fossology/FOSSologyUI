@@ -168,15 +168,73 @@ export const getUploadSummaryApi = ({ uploadId }) => {
 };
 
 // Getting a Upload License
-export const getUploadLicenseApi = ({ uploadId, agent }) => {
+export const getUploadLicenseApi = ({
+  uploadId,
+  agent,
+  containers,
+}) => {
+  const queryParams = {
+    agent: agent,
+  };
+
+  if (containers) {
+    queryParams.containers = true;
+  }
+
   return sendRequest({
     url: endpoints.uploads.licenses(uploadId),
     method: "GET",
     headers: {
       Authorization: getToken(),
     },
-    params: {
-      agent,
+    queryParams,
+  });
+};
+
+// Getting copyrights for an upload
+export const getUploadCopyrightsApi = ({ uploadId }) => {
+    return sendRequest({
+        url: endpoints.uploads.copyrights(uploadId),
+        method: "GET",
+        headers: {
+            Authorization: getToken(),
+        },
+    });
+};
+
+export const getItemTreeViewApi = ({
+  uploadId,
+  itemId,
+  agentId,
+  tagId,
+  scanLicenseFilter,
+  editedLicenseFilter,
+  flatten,
+  sort,
+  search,
+  showQuick,
+  filterOpen,
+  page,
+  limit,
+}) => {
+  return sendRequest({
+    url: endpoints.uploads.getItemTreeView(uploadId, itemId),
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+    queryParams: {
+      agentId,
+      tagId,
+      scanLicenseFilter,
+      editedLicenseFilter,
+      flatten,
+      sort,
+      search,
+      showQuick,
+      filterOpen,
+      page,
+      limit,
     },
   });
 };
