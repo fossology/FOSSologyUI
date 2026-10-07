@@ -22,69 +22,202 @@ import { defaultAgentsList, getLocalStorage } from "@/shared/storageHelper";
 
 export const statusOptions = [
   {
-    id: 0,
-    name: "open",
+    id: "Open",
+    name: "Open",
   },
   {
-    id: 1,
-    name: "in progress",
+    id: "InProgress",
+    name: "In Progress",
   },
   {
-    id: 2,
-    name: "closed",
+    id: "Closed",
+    name: "Closed",
   },
   {
-    id: 3,
-    name: "rejected",
+    id: "Rejected",
+    name: "Rejected",
   },
 ];
 
-export const assignOptions = [
+export const assigneeOptions = [
   {
-    id: 0,
-    name: "me",
+    value: "me",
+    label: "— Me —",
   },
   {
-    id: 1,
-    name: "unassigned",
+    value: "default-user",
+    label: "Default User",
+  },
+  {
+    value: "unassigned",
+    label: "Unassigned",
   },
 ];
-export const actionsOptions = [
+
+export const assigneeFilterOptions = [
   {
-    id: 0,
-    name: "-- select action --",
-    reportFormat: "0",
-    disabled: true,
+    value: "",
+    label: "All",
   },
   {
-    id: 1,
-    name: "Export DEP5",
+    value: "-me-",
+    label: "— Me —",
+  },
+  {
+    value: "Default User",
+    label: "Default User",
+  },
+  {
+    value: "-unassigned-",
+    label: "Unassigned",
+  },
+];
+
+export const actionsOptions = [
+  {
+    value: "exportOptions",
+    name: "Export Options",
+    type: "export",
+  },
+
+  // Navigation
+  {
+    value: "fileBrowser",
+    name: "File Browser",
+    type: "navigation",
+  },
+  {
+    value: "view",
+    name: "View",
+    type: "navigation",
+  },
+  {
+    value: "conf",
+    name: "Conf",
+    type: "navigation",
+  },
+  {
+    value: "info",
+    name: "Info",
+    type: "navigation",
+  },
+  {
+    value: "compare",
+    name: "Compare",
+    type: "navigation",
+  },
+  {
+    value: "copyrightEmailUrl",
+    name: "Copy/Email/URL",
+    type: "navigation",
+  },
+
+  // Upload actions
+  {
+    value: "delete",
+    name: "Delete",
+    type: "api",
+  },
+  {
+    value: "download",
+    name: "Download",
+    type: "api",
+  },
+
+  // Imports
+  {
+    value: "importFossologyDump",
+    name: "Import FOSSology Dump",
+    type: "import",
+  },
+  {
+    value: "importReport",
+    name: "Import Report",
+    type: "import",
+  },
+
+  // Other actions
+  {
+    value: "licenses",
+    name: "Licenses",
+    type: "navigation",
+  },
+  {
+    value: "tag",
+    name: "Tag",
+    type: "api",
+  },
+  {
+    value: "history",
+    name: "History",
+    type: "api",
+  },
+];
+export const exportOptions = [
+  {
+    id: "clixml",
+    label: "Export clixml",
+    reportFormat: "clixml",
+  },
+  {
+    id: "spdx2csv",
+    label: "Export csv report (spdx)",
+    reportFormat: "spdx2csv",
+  },
+  {
+    id: "cyclonedx",
+    label: "Export CycloneDX Report",
+    reportFormat: "cyclonedx",
+  },
+  {
+    id: "dep5",
+    label: "Export DEP5 report",
     reportFormat: "dep5",
   },
   {
-    id: 2,
-    name: "Export ReadMe_OSS",
+    id: "decisionexporter",
+    label: "Export FOSSology Dump",
+    reportFormat: "decisionexporter",
+  },
+  {
+    id: "readmeoss",
+    label: "Export ReadMe_OSS",
     reportFormat: "readmeoss",
   },
   {
-    id: 3,
-    name: "Export SPDX RDF",
+    id: "spdx2",
+    label: "Export SPDX RDF report",
     reportFormat: "spdx2",
   },
   {
-    id: 4,
-    name: "Export SPDX tag:value",
+    id: "spdx2tv",
+    label: "Export SPDX tag:value report",
     reportFormat: "spdx2tv",
   },
   {
-    id: 5,
-    name: "Export Unified Report",
-    reportFormat: "unifiedreport",
+    id: "spdx3json",
+    label: "Export SPDX3.0 JSON report",
+    reportFormat: "spdx3json",
   },
   {
-    id: 6,
-    name: "Import Report",
-    reportFormat: "importReport",
+    id: "spdx3jsonld",
+    label: "Export SPDX3.0 JSON-LD report",
+    reportFormat: "spdx3jsonld",
+  },
+  {
+    id: "spdx3rdf",
+    label: "Export SPDX3.0 RDF report",
+    reportFormat: "spdx3rdf",
+  },
+  {
+    id: "spdx3tv",
+    label: "Export SPDX3.0 tag/value report",
+    reportFormat: "spdx3tv",
+  },
+  {
+    id: "unifiedreport",
+    label: "Export Unified Report",
+    reportFormat: "unifiedreport",
   },
 ];
 export const initialMessage = {
