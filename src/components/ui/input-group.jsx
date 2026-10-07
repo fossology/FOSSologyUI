@@ -35,17 +35,26 @@ function InputGroup({
       data-slot="input-group"
       role="group"
       className={cn(
-        "group/input-group relative flex w-full items-center rounded-md border border-input shadow-xs transition-[color,box-shadow] outline-none dark:bg-input/30",
-        "h-9 min-w-0 has-[>textarea]:h-auto",
-        // Variants based on alignment.
+        "group/input-group relative flex w-full items-center",
+        "min-w-0 px-3 py-2",
+        "rounded",
+        "bg-white",
+        "border border-neutral-800",
+        "transition-colors",
+        "caret-primary",
+        "placeholder:text-neutral-800",
+
+        // active state exactly like Input.jsx
+        "has-[[data-slot=input-group-control]:focus-visible]:border-primary",
+        "has-[[data-slot=input-group-control]:focus-visible]:shadow-[0px_0px_3px_2px_#00449440]",
+        "has-[[data-slot=input-group-control]:focus-visible]:outline-none",
+
+        // alignment
         "has-[>[data-align=inline-start]]:[&>input]:pl-2",
         "has-[>[data-align=inline-end]]:[&>input]:pr-2",
         "has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-start]]:flex-col has-[>[data-align=block-start]]:[&>input]:pb-3",
         "has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-end]]:flex-col has-[>[data-align=block-end]]:[&>input]:pt-3",
-        // Focus state.
-        "has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-[3px] has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50",
-        // Error state.
-        "has-[[data-slot][aria-invalid=true]]:border-destructive has-[[data-slot][aria-invalid=true]]:ring-destructive/20 dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40",
+
         className
       )}
       {...props} />
@@ -148,7 +157,8 @@ function InputGroupInput({
     <Input
       data-slot="input-group-control"
       className={cn(
-        "flex-1 rounded-none border-0 bg-transparent shadow-none focus-visible:ring-0 dark:bg-transparent",
+        "flex-1 border-0 rounded-none bg-transparent shadow-none",
+        "focus-visible:ring-0 focus-visible:outline-none",
         className
       )}
       {...props} />

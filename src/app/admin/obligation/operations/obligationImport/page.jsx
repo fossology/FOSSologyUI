@@ -1,8 +1,7 @@
 /*
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
  SPDX-FileCopyrightText: 2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
- SPDX-License-Identifier: GPL-2.0
+SPDX-License-Identifier: GPL-2.0-only
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -17,20 +16,8 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import Alert from "./Alert";
-import Button from "./Button";
-import Image from "./Image";
-import InputContainer from "./Input";
-import Tooltip from "./Tooltip";
-import SearchableMultiSelect from "./SearchableMultiSelect";
+import ObligationImportClient from "./ObligationImportClient";
 
-const Spinner = ({ size = "default" }) => (
-  <span
-    className={`inline-block rounded-full border-2 border-current border-t-transparent animate-spin ${
-      size === "sm" ? "w-4 h-4" : "w-6 h-6"
-    }`}
-    aria-hidden="true"
-  />
-);
-
-export { Alert, Button, Image, InputContainer, Tooltip, SearchableMultiSelect, Spinner };
+export default function ObligationImportPage() {
+  return <ObligationImportClient />;
+}
