@@ -325,7 +325,7 @@ export default function Header({ variant = "default" }) {
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
                     <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
-                    <Link href={""}>Fossdash</Link>
+                    <Link href={routes.admin.fossdash}>Fossdash</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
                       <Link href={routes.admin.group.index}>Groups</Link>

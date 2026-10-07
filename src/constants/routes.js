@@ -69,6 +69,8 @@ const routes = {
     monk: "/admin/agent/monk",
     customize:"/admin/customize",
     scheduler:"/admin/scheduler",
+    dupBucketpool:"/admin/buckets/dupBucketpool",
+    fossdash:"/admin/fossdash",
     group: {
       index: "/admin/group",
       create: "/admin/group/create",
