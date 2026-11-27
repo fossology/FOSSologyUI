@@ -157,7 +157,7 @@ export default function Header({ variant = "default" }) {
                   <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={routes.upload.server}>From Server</Link></DropdownMenuItem>
                   <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={routes.upload.url}>From URL</Link></DropdownMenuItem>
                   <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={routes.upload.vcs}>From Version Control System</Link></DropdownMenuItem>
-                  <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={""}>Import FOSSology Dump</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={routes.upload.importFossologyDump}>Import FOSSology Dump</Link></DropdownMenuItem>
                   <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={routes.upload.importReport}>Import Report</Link></DropdownMenuItem>
                   <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={routes.upload.instructions}>Instructions</Link></DropdownMenuItem>
                   <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={routes.upload.oneShotCopyright}>One-Shot Copyright/Email/URL</Link></DropdownMenuItem>
