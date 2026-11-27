@@ -331,10 +331,10 @@ export default function Header({ variant = "default" }) {
                       <Link href={routes.admin.group.index}>Groups</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
-                      <Link href={""}>Standard Comments</Link>
+                      <Link href={routes.admin.stdcomments}>Standard Comments</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
-                      <Link href={""}>Acknowledgements</Link>
+                      <Link href={routes.admin.acknowledgements}>Acknowledgements</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
                       <Link href={routes.admin.compatibility.selectCompatibility}>Compatibility Rules</Link>

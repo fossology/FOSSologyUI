@@ -47,6 +47,41 @@ export const getAllLicenseApi = ({
   });
 };
 
+export const createLicenseApi = ({
+  shortName,
+  fullName,
+  text,
+  url,
+  risk,
+  mergeRequest = false,
+}) => {
+  return sendRequest({
+    url: endpoints.license.create(),
+    method: "POST",
+    headers: {
+      Authorization: getToken(),
+    },
+    body: {
+      shortName,
+      fullName,
+      text,
+      url,
+      risk,
+      mergeRequest,
+    },
+  });
+};
+
+export const getCustomiseDataApi = () => {
+  return sendRequest({
+    url: endpoints.customise.get(),
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+};
+
 export const createCandidateLicenseApi = ({
   shortName,
   fullName,
@@ -175,5 +210,71 @@ export const exportLicenseRulesApi = () => {
       Authorization: getToken(),
     },
     isFile: true,
+  });
+};
+
+// Fetching admin license acknowledgements
+export const getAdminLicenseAcknowledgementsApi = () => {
+  return sendRequest({
+    url: endpoints.license.adminAcknowledgements(),
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+};
+
+export const mutateAdminLicenseAcknowledgementApi = (
+  acknowledgements
+) => {
+  return sendRequest({
+    url: endpoints.license.adminAcknowledgements(),
+    method: "PUT",
+    headers: {
+      Authorization: getToken(),
+    },
+    body: acknowledgements,
+  });
+};
+
+// Fetching standard license comments
+export const getStandardLicenseCommentsApi = () => {
+  return sendRequest({
+    url: endpoints.license.standardComments(),
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+};
+
+// Adding and updating standard license comments
+export const mutateStandardLicenseCommentsApi = (
+  comments
+) => {
+  return sendRequest({
+    url: endpoints.license.standardComments(),
+    method: "PUT",
+    headers: {
+      Authorization: getToken(),
+    },
+    body: comments,
+  });
+};
+
+// Fetch licenses for compatibility rule dropdowns
+export const getCompatibilityLicenseOptionsApi = () => {
+  return sendRequest({
+    url: endpoints.license.get(),
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+    queryParams: {
+      page: 1,
+      limit: 10000,
+      kind: "all",
+      active: true,
+    },
   });
 };
