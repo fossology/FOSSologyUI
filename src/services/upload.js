@@ -23,6 +23,7 @@ import {
   createUploadServerApi,
   getUploadSummaryApi,
   getUploadLicenseApi,
+  getUploadCopyrightsApi,
 } from "@/api/upload";
 
 // Create Uploads from File
@@ -56,6 +57,17 @@ export const getUploadSummary = (uploadId) => {
 };
 
 // Getting a Upload License
-export const getUploadLicense = (uploadId, agent) => {
-  return getUploadLicenseApi({ uploadId, agent }).then((res) => res);
+export const getUploadLicense = (uploadId, agent, containers) => {
+  return getUploadLicenseApi({
+    uploadId,
+    agent,
+    containers,
+  }).then((res) => res);
+};
+
+// Getting copyrights for an upload
+export const getUploadCopyrights = (uploadId) => {
+    return getUploadCopyrightsApi({
+        uploadId,
+    }).then((res) => res);
 };
