@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Stevie Gill (cakeisaliegaming@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -36,6 +37,11 @@ const messages = {
   movedFolder: "Successfully moved the folder",
   copiedFolder: "Successfully copied the folder",
   unlinkedFolder: "Successfully unlinked the folder",
+  movedUpload: "Successfully moved the upload",
+  copiedUpload: "Successfully copied the upload",
+  unlinkedUpload: "Successfully unlinked the upload",
+  uploadPropertiesUpdated: "Upload properties updated successfully.",
+  selectUploadToEdit: "Please select an upload to edit.",
   createdLicense: "Successfully created the license",
   scheduleUploadDeletion:
     "Successfully scheduled selected uploads for deletion",

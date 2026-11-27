@@ -152,7 +152,7 @@ const EditFolderPage = () => {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <p className="mb-3 text-sm">
+          <p className="mb-3">
             The folder properties that can be changed are the folder name and description. First select the folder to edit. Then enter the new values. If no value is entered, then the corresponding field will not be changed.
           </p>
         </div>

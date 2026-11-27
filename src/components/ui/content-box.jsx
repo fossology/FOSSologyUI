@@ -33,7 +33,7 @@ function ContentBox({
         "h-[300px] max-h-[300px]",
         "overflow-y-auto",
         "rounded",
-        "border border-neutral-800",
+        "border border-neutral-400",
         "bg-white",
         "p-3",
         "flex flex-col gap-2.5",

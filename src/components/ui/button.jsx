@@ -32,7 +32,9 @@ const buttonVariants = cva(
           "bg-tertiary1-800 text-white hover:bg-tertiary1-900 disabled:bg-tertiary1-400 disabled:text-white",
         outline:
           "border border-tertiary1-800 text-tertiary1-800 bg-white hover:bg-tertiary1-200 hover:border-tertiary1-800 disabled:border-tertiary1-400 disabled:text-tertiary1-400 disabled:bg-white disabled:opacity-100",
-        link:
+        inactive: 
+        "bg-neutral-200 text-neutral-900 border border-transparent hover:bg-neutral-200 hover:text-neutral-900 active:bg-neutral-200",
+          link:
           "text-tertiary1-800 bg-transparent border-none underline-offset-4 hover:underline hover:text-tertiary1-900 hover:decoration-tertiary1-900 disabled:text-tertiary1-400 disabled:underline disabled:decoration-tertiary1-400 disabled:opacity-100",
 
         // Alert / Red
