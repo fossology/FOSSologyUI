@@ -20,7 +20,7 @@ import CompatibilityTabsNav from "./CompatibilityTabsNav";
 
 export default function CompatibilityLayout({ children }) {
   return (
-    <div className="mx-40 px-4">
+    <div className="mx-20 px-4">
       <h1 className="text-2xl font-semibold text-gray-900 mt-6 mb-4">License Compatibility Rules</h1>
       <CompatibilityTabsNav />
       <div className="mt-6">{children}</div>
