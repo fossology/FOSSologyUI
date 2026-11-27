@@ -25,27 +25,37 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { AlertBanner } from "@/components/ui/alert";
+import { createTag } from "@/services/tags";
 
 const CreateTagClient = () => {
   const [tagName, setTagName] = useState("");
   const [tagDescription, setTagDescription] = useState("");
   const [message, setMessage] = useState(null);
   const [showMessage, setShowMessage] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
-    // TODO: Replace after API integration
-    setMessage({
-      type: "error",
-      text: "Create Tag API has not been implemented yet.",
-    });
-    setShowMessage(true);
-
-    console.log({
-      tagName,
-      tagDescription,
-    });
+    createTag({ name: tagName.trim(), description: tagDescription })
+      .then(() => {
+        setMessage({
+          type: "success",
+          text: `Tag '${tagName.trim()}' created successfully.`,
+        });
+        setShowMessage(true);
+        setTagName("");
+        setTagDescription("");
+      })
+      .catch((error) => {
+        setMessage({
+          type: "error",
+          text: error?.message || "Failed to create tag.",
+        });
+        setShowMessage(true);
+      })
+      .finally(() => setIsSubmitting(false));
   };
 
   const isFormValid = tagName.trim() !== "";
@@ -104,7 +114,7 @@ const CreateTagClient = () => {
 
         <Button
           type="submit"
-          disabled={!isFormValid}
+          disabled={!isFormValid || isSubmitting}
         >
           Create
         </Button>
