@@ -31,6 +31,7 @@ const chipVariants = cva(
       variant: {
         primary: "bg-tertiary1-200 text-tertiary1-900",
         secondary: "bg-neutral-200 text-neutral-900",
+        custom: "",
       },
       interactive: {
         true: "hover:bg-neutral-300",
@@ -57,9 +58,11 @@ const Chip = ({
   variant = "secondary",
   interactive = true,
   disabled = false,
+  style,
 }) => {
   return (
     <div
+      style={style}
       className={cn(chipVariants({ variant, interactive, disabled }), className)}
       aria-disabled={disabled}
     >
@@ -96,9 +99,10 @@ Chip.propTypes = {
   onRemove: PropTypes.func,
   className: PropTypes.string,
   removable: PropTypes.bool,
-  variant: PropTypes.oneOf(["primary", "secondary"]),
+  variant: PropTypes.oneOf(["primary", "secondary", "custom"]),
   interactive: PropTypes.bool,
   disabled: PropTypes.bool,
+  style: PropTypes.object,
 };
 
 export default Chip;
