@@ -32,6 +32,7 @@ const sendRequest = ({
   headers = {},
   queryParams,
   isMultipart = false,
+  isFormEncoded = false,
   noHeaders = false,
   addGroupName = true,
   retries = 0,
@@ -44,6 +45,12 @@ const sendRequest = ({
 
   if (noHeaders) {
     mergedHeaders = undefined;
+  } else if (isFormEncoded) {
+    mergedHeaders = new Headers({
+      "content-type": "application/x-www-form-urlencoded",
+      accept: "application/json",
+      ...headers,
+    });
   } else {
     const baseHeaders =
       isMultipart || isFile
@@ -98,9 +105,14 @@ const sendRequest = ({
   };
 
   if (body !== undefined && body !== null) {
-    options.body = isMultipart || body instanceof FormData
-      ? body
-      : JSON.stringify(body);
+    // Body encoding precedence: multipart/FormData > form-encoded > JSON (default)
+    if (isMultipart || body instanceof FormData) {
+      options.body = body;
+    } else if (isFormEncoded) {
+      options.body = new URLSearchParams(body).toString();
+    } else {
+      options.body = JSON.stringify(body);
+    }
   }
 
   

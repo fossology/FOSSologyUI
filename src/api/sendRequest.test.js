@@ -68,6 +68,29 @@ describe("sendRequest", () => {
     );
   });
 
+  test("sendRequest handles isFormEncoded", async () => {
+    defaultArgs.method = "POST";
+    defaultArgs.body = { username: "user", password: "pass" };
+    defaultArgs.isFormEncoded = true;
+    fetch.mockResponse(JSON.stringify({}));
+
+    await sendRequest(defaultArgs);
+
+    expect(fetch).toHaveBeenCalledWith(
+      defaultArgs.url,
+      expect.objectContaining({
+        body: new URLSearchParams(defaultArgs.body).toString(),
+        headers: new Headers({
+          "content-type": "application/x-www-form-urlencoded",
+          accept: "application/json",
+          groupName: "myGroupName",
+          ...defaultArgs.headers,
+        }),
+        method: defaultArgs.method,
+      })
+    );
+  });
+
   test("sendRequest handles isMultipart", async () => {
     defaultArgs.method = "POST";
     defaultArgs.body = {};
