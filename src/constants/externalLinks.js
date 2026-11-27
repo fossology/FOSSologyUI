@@ -25,6 +25,7 @@ const externalLinks = {
     "https://github.com/fossology/fossology/releases/tag/3.10.0",
   latestReleaseDownload:
     "https://api.github.com/repos/fossology/fossology/zipball/3.10.0",
+  maintenanceAgent: "https://github.com/fossology/fossology/wiki/Maintenance-Agent",
 };
 
 export default externalLinks;

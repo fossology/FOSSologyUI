@@ -1,7 +1,8 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
- SPDX-License-Identifier: GPL-2.0
+SPDX-License-Identifier: GPL-2.0-only
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -18,6 +19,16 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label'
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const InputContainer = ({
   type,
@@ -35,84 +46,130 @@ const InputContainer = ({
   property,
   valueProperty,
   noDataMessage = "No Data Found",
-  defaultValue = null,
+  helperText,
+  cta = false,
+  ctaLabel = "Action",
+  onCtaClick,
+  fullWidth = false,
+  labelPosition = "left",
 }) => {
-  if (type === "radio" || type === "checkbox") {
+if (type === "radio") {
+  return (
+    <div className="flex items-start gap-2">
+      <RadioGroupItem
+        value={value}
+        id={id}
+        disabled={disabled}
+        className="w-4 h-4 mt-[2px]"
+      />
+
+      <Label
+        htmlFor={id}
+        className="leading-none cursor-pointer"
+      >
+        {children}
+      </Label>
+    </div>
+  );
+}
+  if (type === "checkbox") {
     return (
-      <div className="my-0">
-        <input
-          type={type}
+      <div className="flex items-center gap-3">
+        <Checkbox
+          className={className}
           name={name}
           value={value}
-          className={className && `mr-2 ${className}`}
-          onChange={onChange}
+          onCheckedChange={onChange}
           checked={checked}
           disabled={disabled}
           id={id}
         />
-        <label htmlFor={id} className="font-medium ml-2">
-          {children}
-        </label>
+        <Label htmlFor={id}>{children} </Label>
       </div>
     );
   }
   if (type === "select") {
     return (
-      <div className="my-0 py-0">
-        {children && (
-          <label htmlFor={id} className="font-demi">
-            {children}
-          </label>
-        )}
-        &emsp;
-        <select
-          name={name}
-          className={
-            className ? `mr-2 form-control ${className}` : `mr-2 form-control`
-          }
-          value={value}
-          onChange={onChange}
-          multiple={multiple && multiple}
-          size={multiple ? "15" : ""}
-          id={id}
-          defaultValue={defaultValue}
-        >
-          {options.length > 0 ? (
-            options.map((option, index) => (
-              <option
-                key={option.id || index}
-                value={valueProperty ? option[valueProperty] : option.id}
-                disabled={option.disabled}
-              >
-                {property ? option[property] : option}
-              </option>
-            ))
-          ) : (
-            <option className="font-demi" disabled>
-              {noDataMessage}
-            </option>
+      <div className="my-1">
+        <div className={`flex items-center gap-3 ${fullWidth ? "w-full" : ""} ${labelPosition === "top" ? "flex-col items-start" : ""}`}>
+          {children && (
+            <Label htmlFor={id} className={`whitespace-nowrap ${disabled ? "text-neutral-600" : ""}`}>
+              {children}
+            </Label>
           )}
-        </select>
+          <Select
+            name={name}
+            value={value === null ? "" : value}
+            onValueChange={(val) => onChange(val)}
+            id={id}
+            disabled={disabled}
+          >
+            <SelectTrigger className={`h-8 text-sm flex items-center ${fullWidth ? "w-full" : ""}`} disabled={disabled}>
+              <SelectValue placeholder={placeholder ?? "Select..."} />
+            </SelectTrigger>
+            <SelectContent className="max-h-48 overflow-y-auto">
+              {options.length > 0 ? (
+                options.map((option, index) => (
+                  <SelectItem
+                    key={option.id || index}
+                    value={valueProperty ? option[valueProperty] : option.id}
+                    disabled={option.disabled}
+                  >
+                    {property ? option[property] : option}
+                  </SelectItem>
+                ))
+              ) : (
+                <SelectItem key="__no_data__" value="__no_data__" className="font-demi" disabled>
+                  {noDataMessage}
+                </SelectItem>
+              )}
+            </SelectContent>
+          </Select>
+        </div>
+        {helperText ? (
+          <p className={`mt-1 text-xs ${disabled ? "text-neutral-600" : "text-neutral-700"}`}>{helperText}</p>
+        ) : null}
       </div>
     );
   }
+
   return (
     <div className="my-2">
-      <label htmlFor={id} className="font-demi">
-        {children}
-      </label>
-      <input
-        type={type}
-        name={name}
-        value={value}
-        className={
-          type === "file" ? `ml-3 ${className}` : `form-control ${className}`
-        }
-        onChange={onChange}
-        checked={checked}
-        placeholder={placeholder}
-        id={id}
-      />
+      <div className={`flex items-center gap-3 ${fullWidth ? "w-full" : ""} ${labelPosition === "top" ? "flex-col items-start" : ""}`}>
+        <Label htmlFor={id} className={`font-demi ${disabled ? "text-neutral-600" : ""}`}>
+          {children}
+        </Label>
+        <div className={`flex items-center gap-2 ${fullWidth ? "w-full" : ""}`}>
+          <input
+            type={type}
+            name={name}
+            value={value}
+            className={
+              type === "file"
+                ? `ml-3 ${className}`
+                : `form-control ${fullWidth ? "w-full" : ""} ${className}`
+            }
+            onChange={onChange}
+            checked={checked}
+            placeholder={placeholder}
+            id={id}
+            disabled={disabled}
+          />
+          {cta ? (
+            <button
+              type="button"
+              onClick={onCtaClick}
+              disabled={disabled}
+              className="h-8 rounded border border-tertiary1-800 px-3 text-sm text-tertiary1-800 hover:bg-tertiary1-200 disabled:pointer-events-none disabled:opacity-50"
+            >
+              {ctaLabel}
+            </button>
+          ) : null}
+        </div>
+      </div>
+      {helperText ? (
+        <p className={`mt-1 text-xs ${disabled ? "text-neutral-600" : "text-neutral-700"}`}>{helperText}</p>
+      ) : null}
     </div>
   );
 };
@@ -141,7 +198,12 @@ InputContainer.propTypes = {
   property: PropTypes.string,
   valueProperty: PropTypes.string,
   noDataMessage: PropTypes.string,
-  defaultValue: PropTypes.string,
+  helperText: PropTypes.string,
+  cta: PropTypes.bool,
+  ctaLabel: PropTypes.string,
+  onCtaClick: PropTypes.func,
+  fullWidth: PropTypes.bool,
+  labelPosition: PropTypes.oneOf(["left", "top"]),
 };
 
 export default InputContainer;

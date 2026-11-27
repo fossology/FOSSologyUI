@@ -1,7 +1,8 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
+ SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
- SPDX-License-Identifier: GPL-2.0
+SPDX-License-Identifier: GPL-2.0-only
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -16,25 +17,26 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import searchApi from "api/search";
-import { getLocalStorage } from "shared/storageHelper";
+import searchApi from "@/api/search";
+import { getLocalStorage } from "@/shared/storageHelper";
 
 // Fetching all the uploads on the basis of search criteria
-const search = (searchData) => {
-  return searchApi(searchData).then((res) => {
-    // Sending the required data to the search page
-    const modifiedSearchData = [];
-    res.forEach((data) => {
-      modifiedSearchData.push({
-        uploadTreeId: data.upload.uploadTreeId,
-        uploadName: data.upload.uploadname,
-        folderName: data.upload.foldername,
-        description: data.upload.description,
-        fileName: data.filename,
-      });
-    });
-    return { search: modifiedSearchData, pages: getLocalStorage("pages") };
-  });
+const search = async (searchData) => {
+  const res = await searchApi(searchData);
+
+  const safeRes = Array.isArray(res) ? res : [];
+
+  const modifiedSearchData = safeRes.map((data) => ({
+    uploadTreeId: data?.uploadTreeId,
+    uploadName: data?.uploadName || data?.uploadname,
+    folderName: data?.folderName || data?.foldername,
+    fileName: data?.fileName || data?.filename,
+  }));
+
+  return {
+    search: modifiedSearchData,
+    pages: getLocalStorage("pages"),
+  };
 };
 
 export default search;

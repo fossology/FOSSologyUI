@@ -1,7 +1,8 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
- SPDX-License-Identifier: GPL-2.0
+SPDX-License-Identifier: GPL-2.0-only
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -16,16 +17,16 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import { stringify } from "query-string";
-import { logout } from "shared/authHelper";
+import queryString from "query-string";
+import { logout } from "@/shared/authHelper";
+import messages from "@/constants/messages";
 
 // Helper function for setting the item in Localstorage
-import { getLocalStorage, setLocalStorage } from "shared/storageHelper";
+import { getLocalStorage, setLocalStorage } from "@/shared/storageHelper";
 
 const sendRequest = ({
   url,
   method,
-  credentials = false,
   body,
   groupName,
   headers = {},
@@ -36,95 +37,150 @@ const sendRequest = ({
   retries = 0,
   isFile = false,
 }) => {
+  
+  // 1. Build headers safely
+  
   let mergedHeaders;
-  if (isMultipart) {
-    mergedHeaders = new Headers({
-      ...headers,
-    });
+
+  if (noHeaders) {
+    mergedHeaders = undefined;
   } else {
+    const baseHeaders =
+      isMultipart || isFile
+        ? {}
+        : {
+            "content-type": "application/json",
+            accept: "application/json",
+          };
+
     mergedHeaders = new Headers({
-      "content-type": "application/json",
-      accept: "application/json",
+      ...baseHeaders,
       ...headers,
     });
   }
-  if (isFile) {
-    mergedHeaders = new Headers({
-      ...headers,
-    });
-  }
-  if (addGroupName) {
+
+  
+  // 2. Inject groupName header
+  
+  if (addGroupName && mergedHeaders instanceof Headers) {
     mergedHeaders.append(
       "groupName",
       groupName ||
         getLocalStorage("currentGroup") ||
-        getLocalStorage("user")?.default_group
+        getLocalStorage("user")?.defaultGroup
     );
   }
-  if (noHeaders) {
-    mergedHeaders = {};
+
+  
+  // 3. Build final URL safely
+  
+  let finalURL = url;
+
+  if (queryParams && Object.keys(queryParams).length > 0) {
+    const cleanedParams = Object.fromEntries(
+      Object.entries(queryParams).filter(
+        ([_, v]) => v !== undefined && v !== null && v !== ""
+      )
+    );
+
+    const query = queryString.stringify(cleanedParams);
+    if (query) {
+      finalURL = `${url}?${query}`;
+    }
   }
+
+  
+  // 4. Build fetch options
+  
   const options = {
     method,
     headers: mergedHeaders,
-    body,
   };
-  let URL = url;
-  if (body) {
-    if (isMultipart) {
-      options.body = body;
-    } else {
-      options.body = JSON.stringify(body);
-    }
-  } else {
-    options.body = null;
+
+  if (body !== undefined && body !== null) {
+    options.body = isMultipart || body instanceof FormData
+      ? body
+      : JSON.stringify(body);
   }
 
-  if (credentials) {
-    options.credentials = credentials;
-  }
-  if (queryParams) {
-    URL = `${url}?${stringify(queryParams)}`;
-  }
-  return fetch(URL, options).then((res) => {
+  
+  // 5. Fetch request
+  
+  return fetch(finalURL, options).then((res) => {
+    // SUCCESS
     if (res.ok) {
-      // eslint-disable-next-line no-restricted-syntax
-      for (const pair of res.headers.entries()) {
-        if (pair[0] === "x-total-pages") {
-          setLocalStorage("pages", pair[1]);
-        }
+      const totalPages = res.headers.get("x-total-pages");
+      if (totalPages) {
+        setLocalStorage("pages", totalPages);
       }
-      if (isFile) {
-        return res;
+
+  if (isFile) {
+    return res.blob().then((blob) => {
+      const disposition = res.headers.get("content-disposition");
+
+      let filename;
+
+      if (disposition) {
+        const match = disposition.match(
+          /filename\*=UTF-8''([^;]+)|filename="?([^"]+)"?/i
+        );
+
+        filename = decodeURIComponent(
+          match?.[1] || match?.[2] || ""
+        );
       }
-      return res.json();
+
+      return {
+        blob,
+        filename, // undefined if not provided by backend
+      };
+    });
+  }
+
+    return res.json();
     }
-    // Checking the retries for hitting the request several times
+
+    
+    // RETRY LOGIC
+    
     if (retries > 0) {
-      return setTimeout(() => {
-        const retriesLeft = retries - 1;
-        sendRequest({
-          url,
-          method,
-          headers,
-          retries: retriesLeft,
-        });
-      }, 10000);
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          sendRequest({
+            url,
+            method,
+            body,
+            groupName,
+            headers,
+            queryParams,
+            isMultipart,
+            noHeaders,
+            addGroupName,
+            retries: retries - 1,
+            isFile,
+          })
+            .then(resolve)
+            .catch(reject);
+        }, 10000);
+      });
     }
+
+    
+    // ERROR HANDLING
+    
     return res.json().then((json) => {
-      const error = {
+      if (json.code === 403) {
+        logout({
+          message: json.message || messages.forbiddenResource,
+        });
+      }
+
+      return Promise.reject({
         status: res.status,
         ok: false,
         message: json.message,
         body: json,
-      };
-      if (json.code === 403) {
-        if (json.message) {
-          return logout({ message: json.message });
-        }
-        return logout({ message: "Requested resource is forbidden" });
-      }
-      return Promise.reject(error);
+      });
     });
   });
 };

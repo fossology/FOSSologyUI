@@ -1,0 +1,15 @@
+<!--
+SPDX-FileCopyrightText: 2025 Devanshi Sachan <devs221102@gmail.com>
+SPDX-License-Identifier: CC-BY-4.0
+-->
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Size=24px">
+<g id="Group 9">
+<path id="Vector" d="M12 20H6.66667C5.95942 20 4.66668 20 4.00001 20C4.00002 19.5556 4 18.6937 4 18.2222V5.77778C4 5.30628 4.00002 4.44444 4.00002 4.00004C4.66669 4 5.95942 4 6.66667 4H12" stroke="black" stroke-width="2" stroke-linecap="square"/>
+<g id="Group 11">
+<path id="Vector_2" d="M16 16L20 12L16 8" stroke="black" stroke-width="2" stroke-linecap="square"/>
+<path id="Vector_3" d="M19 12L11 12" stroke="black" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+</g>
+</g>
+</g>
+</svg>

@@ -1,7 +1,9 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
+ Copyright (C) 2022 Krishna Mahato <krishhtrishh9304@gmail.com>
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
- SPDX-License-Identifier: GPL-2.0
+SPDX-License-Identifier: GPL-2.0-only
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -27,9 +29,9 @@ const routes = {
     server: "/upload/server",
     url: "/upload/url",
     vcs: "/upload/vcs",
-    report: "/upload/report",
+    importReport: "/upload/reportImport",
     instructions: "/upload/instructions",
-    oneShotAnalysis: "/upload/oneShotAnalysis",
+    oneShotNomos: "/upload/oneShotNomos",
     oneShotCopyright: "/upload/oneShotCopyright",
     oneShotMonk: "/upload/oneShotMonk",
   },
@@ -61,28 +63,69 @@ const routes = {
     licenseBrowser: "/help/licenseBrowser",
     about: "/help/about",
     thirdPartyLicenses: "/help/thirdPartyLicenses",
-    thirdPartyLicensesHTML: "/thirdPartyLicenses.html",
   },
+  thirdPartyLicensesHTML: "/thirdPartyLicenses.html",
   admin: {
+    monk: "/admin/agent/monk",
+    customize:"/admin/customize",
+    scheduler:"/admin/scheduler",
     group: {
+      index: "/admin/group",
       create: "/admin/group/create",
       delete: "/admin/group/delete",
+      edit: "/admin/group/edit",
+      manageUsers: "/admin/group/manageUsers",
     },
     users: {
+      add: "/admin/users/add",
       delete: "/admin/users/delete",
+      edit: "/admin/users/edit",
+      operations: "/admin/users/operations",
+      userImport: "/admin/users/operations/userImport"
+    },
+    compatibility:{
+      selectCompatibility: "/admin/compatibility/selectCompatibility",
+      operations: "/admin/compatibility/operations",
+      rulesImport: "/admin/compatibility/operations/rulesImport",
     },
     license: {
-      create: "/admin/license/create",
-      selectLicense: "/admin/selectLicense",
-      licenseCSV: "/licenseCSV/fossology-license-export.csv",
+      create: "/admin/licenseAdmin/addLicense",
+      selectLicense: "/admin/licenseAdmin/selectLicense",
+      candidates: "/admin/licenseAdmin/candidates",
+      operations: "/admin/licenseAdmin/operations",
+      licenseCSV: "/admin/licenseAdmin/operations/licenseCSV/fossology-license-export.csv",
+      licenseImport: "/admin/licenseAdmin/operations/licenseImport"
+    },
+    maintenance: "/admin/maintenance",
+    tag: {
+      create: "/admin/tag/create",
+      enableDisable: "/admin/tag/enableDisable"
+    },
+    obligation: {
+      add: "/admin/obligation/add",
+      select: "/admin/obligation/select",
+      operations: "/admin/obligation/operations",
+      obligationImport: "/admin/obligation/operations/obligationImport"
     },
   },
   browseUploads: {
-    softwareHeritage: "/browse/softwareHeritage",
-    licenseBrowser: "/browse/licenseBrowser",
-    fileBrowser: "/browse/fileBrowser",
-    copyright: "/browse/copyright",
-    ecc: "/browse/ecc",
+    licenseBrowser: "/browseUploads/licenseBrowser",
+    copyright: "/browseUploads/copyright",
+    ecc: "/browseUploads/ecc",
+    ipra: "/browseUploads/ipra",
+    conf: "/browseUploads/conf",
+    more: {
+      softwareHeritage: "/browseUploads/more/softwareHeritage",
+      fileBrowser: "/browseUploads/more/fileBrowser",
+      email: "/browseUploads/more/email",
+      spasht: "/browseUploads/more/spasht",
+      keyword: "/browseUploads/more/keyword",
+      exportList: "/browseUploads/more/exportList",
+      search: "/browseUploads/more/search",
+      bucket: "/browseUploads/more/bucket",
+      view: "/browseUploads/more/view",
+      info: "/browseUploads/more/info",
+    }
   },
 };
 

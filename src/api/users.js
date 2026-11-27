@@ -1,7 +1,8 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
+ SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
- SPDX-License-Identifier: GPL-2.0
+SPDX-License-Identifier: GPL-2.0-only
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -16,19 +17,20 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import endpoints from "constants/endpoints";
+import endpoints from "@/constants/endpoints";
 
 // Getting Authorization Token
-import { getToken } from "shared/authHelper";
+import { getToken } from "@/shared/authHelper";
 
 // Function for calling the fetch function for the APIs
 import sendRequest from "./sendRequest";
 
-// Fetching the self information
+
+// GET current user
+
 export const getUserSelfApi = () => {
-  const url = endpoints.users.self();
   return sendRequest({
-    url,
+    url: endpoints.users.getSelf(),
     method: "GET",
     headers: {
       Authorization: getToken(),
@@ -37,28 +39,136 @@ export const getUserSelfApi = () => {
   });
 };
 
-// Fetching all the users and returning their complete info
+
+// GET all users
+
 export const getAllUsersApi = () => {
-  const url = endpoints.users.getAll();
   return sendRequest({
-    url,
+    url: endpoints.users.getAll(),
     method: "GET",
-    credentials: "include",
     headers: {
       Authorization: getToken(),
     },
   });
 };
 
-// Deleting the user info
-export const deleteUserApi = (id) => {
-  const url = endpoints.users.delete(id);
+
+// GET user by ID
+
+export const getUserByIdApi = (id) => {
   return sendRequest({
-    url,
-    method: "DELETE",
-    credentials: "include",
+    url: endpoints.users.getByName(id),
+    method: "GET",
     headers: {
       Authorization: getToken(),
     },
+  });
+};
+
+
+// CREATE user
+
+export const addUserApi = (userData) => {
+  return sendRequest({
+    url: endpoints.users.create(),
+    method: "POST",
+    headers: {
+      Authorization: getToken(),
+    },
+    body: userData,
+  });
+};
+
+
+// UPDATE user
+
+export const editUserByIdApi = (id, userData) => {
+  return sendRequest({
+    url: endpoints.users.updateByName(id),
+    method: "PUT",
+    headers: {
+      Authorization: getToken(),
+    },
+    body: userData,
+  });
+};
+
+
+// DELETE user
+
+export const deleteUserApi = (id) => {
+  return sendRequest({
+    url: endpoints.users.deleteByName(id),
+    method: "DELETE",
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+};
+
+
+// GET user tokens
+
+export const getTokensApi = (type) => {
+  return sendRequest({
+    url: endpoints.users.tokensByType(type),
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+};
+// api endpoints not exposed
+// EXPORT USERS CSV
+
+export const exportUsersCsvApi = () => {
+  return sendRequest({
+    url: endpoints.users.exportCsv(),
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+    isFile: true,
+  });
+};
+
+// EXPORT USERS JSON
+
+export const exportUsersJsonApi = () => {
+  return sendRequest({
+    url: endpoints.users.exportJson(),
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+    isFile: true,
+  });
+};
+
+// IMPORT USERS CSV
+
+export const importUsersCsvApi = (formData) => {
+  return sendRequest({
+    url: endpoints.users.importCsv(),
+    method: "POST",
+    headers: {
+      Authorization: getToken(),
+    },
+    body: formData,
+    isMultipart: true,
+  });
+};
+
+// IMPORT USERS JSON
+
+export const importUsersJsonApi = (formData) => {
+  return sendRequest({
+    url: endpoints.users.importJson(),
+    method: "POST",
+    headers: {
+      Authorization: getToken(),
+    },
+    body: formData,
+    isMultipart: true,
   });
 };

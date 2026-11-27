@@ -1,7 +1,8 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
- SPDX-License-Identifier: GPL-2.0
+SPDX-License-Identifier: GPL-2.0-only
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -16,42 +17,150 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import { getUserSelfApi, getAllUsersApi, deleteUserApi } from "api/users";
-import { setLocalStorage } from "shared/storageHelper";
+import fetchTokenApi from "@/api/auth";
+import {
+  getUserSelfApi,
+  getAllUsersApi,
+  getUserByIdApi,
+  addUserApi,
+  editUserByIdApi,
+  deleteUserApi,
+  getTokensApi,
+  exportUsersCsvApi,
+  exportUsersJsonApi,
+  importUsersCsvApi,
+  importUsersJsonApi,
+} from "@/api/users";
+import { setLocalStorage } from "@/shared/storageHelper";
 
-// Fetching the self information
+
+// SELF USER
+
 export const getUserSelf = () => {
   return getUserSelfApi().then((res) => {
-    setLocalStorage("user", res);
-    setLocalStorage("currentGroup", res.default_group);
+    if (!res || typeof res !== "object") return res;
+
+    const safeUser = {
+      id: res.id,
+      name: res.name,
+      email: res.email,
+      defaultGroup: res.defaultGroup,
+      accessLevel: res.accessLevel,
+      agents: res.agents,
+    };
+
+    setLocalStorage("user", safeUser);
+    setLocalStorage("currentGroup", res.defaultGroup);
+
     return res;
   });
 };
 
-// Fetching all the users and returning their complete info
+// ALL USERS
+
 export const getAllUsers = () => {
-  return getAllUsersApi().then((res) => {
-    return res;
-  });
+  return getAllUsersApi().then((res) => res);
 };
 
-// Fetching all the users and returning their names
 export const getAllUsersName = () => {
-  return getAllUsersApi().then((res) => {
-    const modifiedUser = [];
-    res.forEach((user) => {
-      modifiedUser.push({
-        id: user?.id,
-        name: user?.name,
-      });
-    });
-    return modifiedUser;
-  });
+  return getAllUsers();
 };
 
-// Deleting the user info
-export const deleteUser = (id) => {
-  return deleteUserApi(id).then((res) => {
-    return res;
-  });
+// USER BY ID
+
+export const getUserById = (id) => {
+  return getUserByIdApi(id).then((res) => res);
+};
+
+
+// CREATE USER (DTO SAFE)
+
+export const addUser = (data) => {
+  const payload = {
+    name: data.name,
+    description: data.description,
+    email: data.email,
+    accessLevel: data.accessLevel,
+    rootFolderId: data.rootFolderId,
+    emailNotification: data.emailNotification,
+    defaultGroup: data.defaultGroup,
+    defaultBucketpool: data.defaultBucketpool ?? null,
+
+    agents: {
+      bucket: data.agents?.bucket ?? false,
+      copyrightEmailAuthor: data.agents?.copyrightEmailAuthor ?? false,
+      ecc: data.agents?.ecc ?? false,
+      ipra: data.agents?.ipra ?? false,
+      keyword: data.agents?.keyword ?? false,
+      mime: data.agents?.mime ?? false,
+      monk: data.agents?.monk ?? false,
+      nomos: data.agents?.nomos ?? false,
+      ojo: data.agents?.ojo ?? false,
+      pkgagent: data.agents?.pkgagent ?? false,
+      reso: data.agents?.reso ?? false,
+      softwareHeritage: data.agents?.softwareHeritage ?? false,
+    },
+  };
+
+  return addUserApi(payload).then((res) => res);
+};
+
+
+// UPDATE USER (DTO SAFE)
+
+export const editUserById = (id, data) => {
+  const payload = {
+    ...data,
+    defaultBucketpool: data.defaultBucketpool ?? null,
+  };
+
+  return editUserByIdApi(id, payload).then((res) => res);
+};
+
+
+// DELETE USER
+
+export const deleteUser = (name) => {
+  return deleteUserApi(name).then((res) => res);
+};
+
+// TOKENS
+
+export const getTokens = (type) => {
+  return getTokensApi(type).then((res) => res);
+};
+
+
+// CREATE TOKEN
+
+export const createToken = (tokenDetails) => {
+  return fetchTokenApi(
+    tokenDetails.username,
+    tokenDetails.password,
+    tokenDetails
+  ).then((res) => res);
+};
+// api endpoints not exposed
+// EXPORT USERS CSV
+
+export const exportUsersCsv = () => {
+  return exportUsersCsvApi().then((res) => res);
+};
+
+// EXPORT USERS JSON
+
+export const exportUsersJson = () => {
+  return exportUsersJsonApi().then((res) => res);
+};
+
+// IMPORT USERS CSV
+
+export const importUsersCsv = (formData) => {
+  return importUsersCsvApi(formData).then((res) => res);
+};
+
+// IMPORT USERS JSON
+
+export const importUsersJson = (formData) => {
+  return importUsersJsonApi(formData).then((res) => res);
 };

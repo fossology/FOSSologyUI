@@ -1,0 +1,478 @@
+/*
+ Copyright (C) 2022 Soham Banerjee(sohambanerjee4abc@hotmail.com), Krishna Mahato (krishhtrishh9304@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
+
+SPDX-License-Identifier: GPL-2.0-only
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License
+ version 2 as published by the Free Software Foundation.
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License along
+ with this program; if not, write to the Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*/
+
+// constants used in Browse component
+import { defaultAgentsList, getLocalStorage } from "@/shared/storageHelper";
+
+export const statusOptions = [
+  {
+    id: 0,
+    name: "open",
+  },
+  {
+    id: 1,
+    name: "in progress",
+  },
+  {
+    id: 2,
+    name: "closed",
+  },
+  {
+    id: 3,
+    name: "rejected",
+  },
+];
+
+export const assignOptions = [
+  {
+    id: 0,
+    name: "me",
+  },
+  {
+    id: 1,
+    name: "unassigned",
+  },
+];
+export const actionsOptions = [
+  {
+    id: 0,
+    name: "-- select action --",
+    reportFormat: "0",
+    disabled: true,
+  },
+  {
+    id: 1,
+    name: "Export DEP5",
+    reportFormat: "dep5",
+  },
+  {
+    id: 2,
+    name: "Export ReadMe_OSS",
+    reportFormat: "readmeoss",
+  },
+  {
+    id: 3,
+    name: "Export SPDX RDF",
+    reportFormat: "spdx2",
+  },
+  {
+    id: 4,
+    name: "Export SPDX tag:value",
+    reportFormat: "spdx2tv",
+  },
+  {
+    id: 5,
+    name: "Export Unified Report",
+    reportFormat: "unifiedreport",
+  },
+  {
+    id: 6,
+    name: "Import Report",
+    reportFormat: "importReport",
+  },
+];
+export const initialMessage = {
+  type: "success",
+  text: "",
+};
+
+export const initialState = {
+  searchType: "allfiles",
+  uploadId: "",
+  filename: "",
+  tag: "",
+  filesizemin: "",
+  filesizemax: "",
+  license: "",
+  copyright: "",
+  page: 1,
+  limit: 10,
+};
+// constants used in the Search component
+export const initialMessageSearch = {
+  type: "danger",
+  text: "",
+};
+
+// constants used in Upload/file component
+export const initialStateFile = {
+  folderId: 1,
+  uploadDescription: "",
+  accessLevel: "protected",
+  ignoreScm: false,
+  applyGlobal: false,
+  fileInput: [],
+};
+export const initialScanFileDataFile = {
+  analysis: defaultAgentsList(),
+  decider: {
+    nomosMonk: false,
+    bulkReused: false,
+    newScanner: false,
+    ojoDecider: false,
+    autoConclude: false,
+    autoConcludeType: "permissive",
+    copyrightDeactivation: false,
+    copyrightClutterRemoval: false,
+  },
+  reuse: {
+    reuseUpload: [],
+    reuseGroup: getLocalStorage("user")?.defaultGroup,
+    reuseChecked: false,
+    reuseMain: false,
+    reuseEnhanced: false,
+    reuseReport: false,
+    reuseCopyright: false,
+    reuseApplied: false,
+  },
+  scancode: {
+    license: false,
+    copyright: false,
+    email: false,
+    url: false,
+  }
+};
+export const initialFolderListFile = [
+  {
+    id: 1,
+    name: "Software Repository",
+    description: "Top Folder",
+    parent: null,
+  },
+];
+// constants for upload/ImportReport
+export const initialStateImportReport = {
+  folder: 1,
+  upload: "",
+  report: null,
+  reportFormat: "spdx",
+  addNewLicensesAs: "candidate",
+  matchLicenseUsing: "spdxid",
+  addConcludedAsDecisions: true,
+  addLicenseInfoFromInfoInFile: true,
+  addLicenseInfoFromConcluded: false,
+  addConcludedAsDecisionsOverwrite: true,
+  addConcludedAsDecisionsTBD: true,
+  addCopyrights: false,
+};
+
+// constants for upload/UploadFromServer
+export const initialStateUploadFromServer = {
+  folderId: "",
+  uploadDescription: "",
+  accessLevel: "protected",
+  ignoreScm: false,
+  applyGlobal: false,
+  uploadType: "server",
+  groupName: "",
+  filePath: "",
+  viewableName: "",
+  description: "",
+};
+
+// constants for upload/url
+export const initialStateUrl = {
+  folderId: "",
+  uploadDescription: "",
+  accessLevel: "protected",
+  ignoreScm: false,
+  applyGlobal: false,
+  uploadType: "url",
+};
+
+export const initialUrlData = {
+  url: "",
+  name: "",
+};
+
+// constants from upload/vcs
+export const initialStateVcs = {
+  folderId: "",
+  uploadDescription: "",
+  accessLevel: "protected",
+  ignoreScm: false,
+  applyGlobal: false,
+  uploadType: "vcs",
+};
+
+export const initialVcsData = {
+  vcsType: "git",
+  vcsUrl: "",
+  vcsBranch: "",
+  vcsName: "",
+  vcsUsername: "",
+  vcsPassword: "",
+};
+export const typeVcs = [
+  { id: "git", type: "Git" },
+  { id: "svn", type: "SVN" },
+];
+
+// common & reused
+export const entriesOptions = [
+  {
+    id: 10,
+    entry: "10",
+  },
+  {
+    id: 25,
+    entry: "25",
+  },
+  {
+    id: 50,
+    entry: "50",
+  },
+  {
+    id: 100,
+    entry: "100",
+  },
+];
+export const initialScanFileData = {
+  analysis: defaultAgentsList(),
+  decider: {
+    nomosMonk: false,
+    bulkReused: false,
+    newScanner: false,
+    ojoDecider: false,
+    autoConclude: false,
+    autoConcludeType: "permissive",
+    copyrightDeactivation: false,
+    copyrightClutterRemoval: false,
+  },
+  reuse: {
+    reuseUpload: [],
+    reuseGroup: getLocalStorage("user")?.defaultGroup,
+    reuseChecked: false,
+    reuseMain: false,
+    reuseEnhanced: false,
+    reuseReport: false,
+    reuseCopyright: false,
+  },
+};
+export const initialFolderList = [
+  {
+    id: 1,
+    name: "Software Repository",
+    description: "Top Folder",
+    parent: null,
+  },
+];
+
+export const maintenanceOptions = [
+  { key: "a", label: "Run all non slow maintenance operations." },
+  { key: "A", label: "Run all maintenance operations." },
+  { key: "F", label: "Validate folder contents." },
+  { key: "g", label: "Remove orphaned gold files." },
+  { key: "E", label: "Remove orphaned rows from database." },
+  { key: "L", label: "Remove orphaned log files from file system." },
+  { key: "N", label: "Normalize priority." },
+  { key: "R", label: "Remove uploads with no pfiles." },
+  { key: "t", label: "Remove expired personal access tokens." },
+  { key: "T", label: "Remove orphaned temp tables." },
+  { key: "D", label: "Vacuum Analyze the database." },
+  {
+    key: "Z",
+    label: "Remove orphaned files from the repository (slow).",
+  },
+  {
+    key: "I",
+    label:
+      "Reindexing of database (This activity may take 5-10 mins. Execute only when system is not in use).",
+  },
+  {
+    key: "v",
+    label: "Verbose (turns on debugging output).",
+  },
+  {
+    key: "o",
+    label: "Remove older gold files from repository.",
+  },
+  {
+    key: "l",
+    label: "Remove older log files from repository.",
+  },
+];
+
+export const initialMaintenanceFields = {
+  a: false,
+  A: false,
+  F: false,
+  g: false,
+  E: false,
+  L: false,
+  N: false,
+  R: false,
+  t: false,
+  T: false,
+  D: false,
+  Z: false,
+  I: false,
+  v: false,
+  o: false,
+  l: false,
+  logsDate: "",
+  goldDate: "",
+};
+
+export const accessLevels = [
+  {
+    id: 0,
+    name: "None (very basic, no database access)",
+    disabled: false,
+    value: "none",
+  },
+  {
+    id: 1,
+    name: "Read-only (read, but no writes or downloads)",
+    disabled: false,
+    value: "read_only",
+  },
+  {
+    id: 2,
+    name: "Read-Write (read, download, or edit information)",
+    disabled: false,
+    value: "read_write",
+  },
+  {
+    id: 3,
+    name: "Clearing Administrator (read, download, edit information and edit decisions)",
+    disabled: false,
+    value: "clearing_admin",
+  },
+  {
+    id: 4,
+    name: "Full Administrator (all access including adding and deleting users)",
+    disabled: false,
+    value: "admin",
+  },
+];
+
+export const userStatus = [
+  {
+    id: 0,
+    name: "Active",
+    disabled: false,
+    value: "active",
+  },
+  {
+    id: 1,
+    name: "Inactive",
+    disabled: false,
+    value: "inactive",
+  },
+];
+
+export const initialAddUserData = {
+  name: "",
+  userPass: null,
+  description: "",
+  accessLevel: "",
+  rootFolderId: 0,
+  emailNotification: true,
+  email: "",
+  defaultVisibility: "public",
+  defaultBucketpool: 2,
+  agents: {
+    mime: false,
+    monk: false,
+    ojo: false,
+    bucket: false,
+    copyrightEmailAuthor: false,
+    ecc: false,
+    ipra: false,
+    keyword: false,
+    nomos: false,
+    pkgagent: false,
+    reso: false,
+    softwareHeritage: false,
+  }
+};
+
+export const bucketPool = [
+  {
+    id: 0,
+    name: "GPL Demo bucket pool, v1",
+    disabled: false,
+  },
+];
+
+export const agents = {
+  bucket: "Bucket Analysis",
+  copyright_email_author: "Copyright/Email/URL/Author Analysis",
+  ecc: "ECC Analysis, scanning for text fragments potentially relevant for export control",
+  keyword: "Keyword Analysis",
+  mime: "MIME-type Analysis (Determine mimetype of every file. Not needed for licenses or buckets)",
+  monk: "Monk License Analysis, scanning for licenses performing a text comparison",
+  nomos:
+    "Nomos License Analysis, scanning for licenses using regular expressions",
+  ojo: "Ojo License Analysis, scanning for licenses using SPDX-License-Identifier",
+  package: "Package Analysis (Parse package headers)",
+  reso: "REUSE.Software Analysis (forces *Ojo License Analysis*)",
+  heritage: "Software Heritage Analysis",
+};
+
+export const schedulerOperations = [
+  {
+    value: "status",
+    label: "Status",
+    description: "Display job or scheduler status.",
+  },
+  {
+    value: "database",
+    label: "Check job queue",
+    description: "Check for new jobs.",
+  },
+  {
+    value: "reload",
+    label: "Reload",
+    description: "Reload fossology.conf.",
+  },
+  {
+    value: "agents",
+    label: "Agents",
+    description: "Show a list of enabled agents.",
+  },
+  {
+    value: "verbose",
+    label: "Verbose",
+    description:
+      "Change the verbosity level of the scheduler or a job.",
+  },
+  {
+    value: "stop",
+    label: "Shutdown Scheduler",
+    description:
+      "Shutdown the scheduler gracefully and stop all background processing. This can take a while for all the agents to quit.",
+  },
+  {
+    value: "restart",
+    label: "Unpause a job",
+    description: "Unpause a job.",
+  },
+  {
+    value: "pause",
+    label: "Pause a running job",
+    description: "Pause a running job.",
+  },
+  {
+    value: "priority",
+    label: "Priority",
+    description: "Change the priority of a job.",
+  },
+];

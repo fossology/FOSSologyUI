@@ -1,7 +1,8 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
- SPDX-License-Identifier: GPL-2.0
+SPDX-License-Identifier: GPL-2.0-only
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -17,9 +18,9 @@
 */
 
 // query-string library to sanitize url
-import { stringify } from "query-string";
+import queryString from "query-string";
 // Routes
-import routes from "constants/routes";
+import routes from "@/constants/routes";
 
 // Helper Functions
 import {
@@ -51,7 +52,7 @@ export const logout = (message) => {
   removeLocalStorage("currentGroup");
   let Url = routes.home;
   if (message) {
-    Url = `${routes.home}?${stringify(message)}`;
+    Url = `${routes.home}?${queryString.stringify(message)}`;
   }
   window.location.href = Url;
 };
@@ -75,7 +76,7 @@ export const getUser = () => {
 
 // Getting the user name
 export const getUserName = () => {
-  return getLocalStorage("user").name;
+  return getLocalStorage("user")?.name;
 };
 
 // Checking the role of a user

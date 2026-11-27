@@ -1,0 +1,78 @@
+/*
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
+
+SPDX-License-Identifier: GPL-2.0-only
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License
+ version 2 as published by the Free Software Foundation.
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License along
+ with this program; if not, write to the Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*/
+
+"use client";
+
+import { useState, useEffect } from "react";
+import { getFossologyVersion } from "@/services/info";
+import { getSessionStorage, setSessionStorage } from "@/shared/storageHelper";
+import { cva } from "class-variance-authority";
+
+import { cn } from "@/lib/utils";
+
+const footerVariants = cva("w-full text-xs px-4", {
+  variants: {
+    variant: {
+      default: "bg-neutral-300 text-gray-900 py-3",
+      subtle: "bg-neutral-100 text-neutral-800 py-2",
+      dark: "bg-neutral-900 text-neutral-100 py-3",
+    },
+  },
+  defaultVariants: {
+    variant: "default",
+  },
+});
+
+const Footer = ({ variant = "default", showBuildInfo = true, className }) => {
+  const [version, setVersion] = useState(null);
+
+  const fetchVersion = () => {
+    return getFossologyVersion()
+      .then((res) => {
+        setSessionStorage("fossologyVersion", res);
+        setVersion(res);
+        return res;
+      })
+      .catch(() => null);
+  };
+
+  useEffect(() => {
+    const cached = getSessionStorage("fossologyVersion");
+    if (cached) {
+      setVersion(cached);
+    } else {
+      fetchVersion();
+    }
+  }, []);
+
+  return (
+    <footer className={cn(footerVariants({ variant }), className)}>
+      <div className="max-w-screen-xl mx-auto text-center">
+        Version: [{version?.version}]
+        {showBuildInfo ? (
+          <>
+            , Branch: [{version?.branchName}], Commit: [#{version?.commitHash}] {" "}
+            {version?.commitDate} built @ {version?.buildDate}
+          </>
+        ) : null}
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;

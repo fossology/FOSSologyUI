@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com)
+ SPDX-FileCopyrightText: 2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -16,11 +17,19 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import Spinner from "react-bootstrap/Spinner";
 import Alert from "./Alert";
 import Button from "./Button";
 import Image from "./Image";
 import InputContainer from "./Input";
 import Tooltip from "./Tooltip";
+
+const Spinner = ({ size = "default" }) => (
+  <span
+    className={`inline-block rounded-full border-2 border-current border-t-transparent animate-spin ${
+      size === "sm" ? "w-4 h-4" : "w-6 h-6"
+    }`}
+    aria-hidden="true"
+  />
+);
 
 export { Alert, Button, Image, InputContainer, Tooltip, Spinner };

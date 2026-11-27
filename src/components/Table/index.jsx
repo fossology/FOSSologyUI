@@ -16,15 +16,21 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+"use client";
+
 import React from "react";
-import { useTable, usePagination, useRowSelect, useSortBy } from "react-table";
-import CloseIcon from "assets/images/close.png";
+import {
+  useTable,
+  usePagination,
+  useRowSelect,
+  useSortBy,
+} from "react-table";
+import Image from "next/image";
+import CloseIcon from "public/assets/icons/Close/Close_16px.svg";
 import IndeterminateCheckbox from "./IndeterminateCheckbox";
 import "./index.css";
 
-/* eslint-disable react/prop-types */
 const Table = ({ columns, data }) => {
-  // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
     getTableBodyProps,
@@ -50,18 +56,13 @@ const Table = ({ columns, data }) => {
     useRowSelect,
     (hooks) => {
       hooks.visibleColumns.push((columnList) => [
-        // Let's make a column for selection
         {
           id: "selection",
-          // The header can use the table's getToggleAllRowsSelectedProps method
-          // to render a checkbox
           Header: ({ getToggleAllPageRowsSelectedProps }) => (
             <div>
               <IndeterminateCheckbox {...getToggleAllPageRowsSelectedProps()} />
             </div>
           ),
-          // The cell can use the individual row's getToggleRowSelectedProps method
-          // to the render a checkbox
           Cell: ({ row }) => (
             <div>
               <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
@@ -73,7 +74,6 @@ const Table = ({ columns, data }) => {
     }
   );
 
-  // Render the UI for your table
   return (
     <>
       <table
@@ -82,17 +82,12 @@ const Table = ({ columns, data }) => {
       >
         <thead>
           {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
+            <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                <th key={column.id} {...column.getHeaderProps(column.getSortByToggleProps())}>
                   {column.render("Header")}
                   <span>
-                    {/* eslint-disable no-nested-ternary */}
-                    {column.isSorted
-                      ? column.isSortedDesc
-                        ? " 🔽"
-                        : " 🔼"
-                      : ""}
+                    {column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}
                   </span>
                 </th>
               ))}
@@ -103,11 +98,11 @@ const Table = ({ columns, data }) => {
           {page.map((row) => {
             prepareRow(row);
             return (
-              <tr {...row.getRowProps()}>
+              <tr key={row.id} {...row.getRowProps()}>
                 {row.cells.map((cell) => {
                   if (cell.column.id === "delete") {
                     return (
-                      <td {...cell.getCellProps()}>
+                      <td key={cell.column.id} {...cell.getCellProps()}>
                         <input
                           type="checkbox"
                           className="delete-checkbox"
@@ -115,8 +110,7 @@ const Table = ({ columns, data }) => {
                           name={cell.row.id}
                         />
                         <label htmlFor={cell.row.id}>
-                          {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/click-events-have-key-events */}
-                          <img src={CloseIcon} alt="cross" />
+                          <Image src={CloseIcon} alt="cross" />
                           <span>
                             <b>
                               deactivated <br />
@@ -128,7 +122,9 @@ const Table = ({ columns, data }) => {
                     );
                   }
                   return (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    <td key={cell.column.id} {...cell.getCellProps()}>
+                      {cell.render("Cell")}
+                    </td>
                   );
                 })}
               </tr>
@@ -136,40 +132,23 @@ const Table = ({ columns, data }) => {
           })}
         </tbody>
       </table>
+
       <div className="paginationTable">
-        <button
-          type="button"
-          onClick={() => gotoPage(0)}
-          disabled={!canPreviousPage}
-        >
+        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
           {"<<"}
-        </button>{" "}
-        <button
-          type="button"
-          onClick={() => previousPage()}
-          disabled={!canPreviousPage}
-        >
+        </button>
+        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
           {"<"}
-        </button>{" "}
-        <button
-          type="button"
-          onClick={() => nextPage()}
-          disabled={!canNextPage}
-        >
+        </button>
+        <button onClick={() => nextPage()} disabled={!canNextPage}>
           {">"}
-        </button>{" "}
-        <button
-          type="button"
-          onClick={() => gotoPage(pageCount - 1)}
-          disabled={!canNextPage}
-        >
+        </button>
+        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
           {">>"}
-        </button>{" "}
+        </button>
+
         <span>
-          Page{" "}
-          <strong>
-            {pageIndex + 1} of {pageOptions.length}
-          </strong>{" "}
+          Page <strong>{pageIndex + 1} of {pageOptions.length}</strong>
         </span>
         <span>
           | Go to page:{" "}
@@ -177,23 +156,20 @@ const Table = ({ columns, data }) => {
             type="number"
             defaultValue={pageIndex + 1}
             onChange={(e) => {
-              const pageNumber = e.target.value
-                ? Number(e.target.value) - 1
-                : 0;
+              const pageNumber = e.target.value ? Number(e.target.value) - 1 : 0;
               gotoPage(pageNumber);
             }}
             style={{ width: "100px" }}
           />
-        </span>{" "}
+        </span>
+
         <select
           value={pageSize}
-          onChange={(e) => {
-            setPageSize(Number(e.target.value));
-          }}
+          onChange={(e) => setPageSize(Number(e.target.value))}
         >
-          {[10, 20, 30, 40, 50].map((pageCapacity) => (
-            <option key={pageCapacity} value={pageCapacity}>
-              Show {pageCapacity}
+          {[10, 20, 30, 40, 50].map((size) => (
+            <option key={size} value={size}>
+              Show {size}
             </option>
           ))}
         </select>

@@ -1,7 +1,8 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
- SPDX-License-Identifier: GPL-2.0
+SPDX-License-Identifier: GPL-2.0-only
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -20,52 +21,121 @@ import React from "react";
 import PropTypes from "prop-types";
 
 // Widgets
-import { InputContainer, Tooltip } from "components/Widgets";
+import { InputContainer, Tooltip } from "@/components/Widgets";
 
-function LicenseDecider({ decider, handleChange }) {
+const LicenseDecider = ({ decider, handleChange }) => {
   return (
-    <div id="upload-concluded-license-decider" className="mt-4">
-      <p className="font-demi">
-        Automatic Concluded License Decider,
-        <Tooltip title="only for relevant files" /> based on
+    <div id="upload-concluded-license-decider" className="mt-4 space-y-2">
+      <p className="font-semibold text-base inline-flex items-center gap-1">
+        Automatic Concluded License Decider, based on 
+        <Tooltip title="Only for relevant files" />
       </p>
       <InputContainer
         type="checkbox"
         checked={decider.nomosMonk}
         name="nomosMonk"
         id="upload-decider-nomos-monk"
-        onChange={(e) => handleChange(e)}
+        onChange={(checked) => handleChange(checked, "nomosMonk")}
       >
-        ... scanners matches if all Nomos findings are within the Monk findings
+        Scanners matches if all Nomos findings are within the Monk findings
       </InputContainer>
       <InputContainer
         type="checkbox"
         checked={decider.ojoDecider}
         name="ojoDecider"
         id="upload-decider-ojo-decider"
-        onChange={(e) => handleChange(e)}
+        onChange={(checked) => handleChange(checked, "ojoDecider")}
       >
-        .. scanners matches if Ojo findings are no contradiction with other
-        findings
+        Scanners matches if Ojo or REUSE.Software findings are no contradiction with other findings
       </InputContainer>
       <InputContainer
         type="checkbox"
         checked={decider.bulkReused}
         name="bulkReused"
         id="upload-decider-bulk-reused"
-        onChange={(e) => handleChange(e)}
+        onChange={(checked) => handleChange(checked, "bulkReused")}
       >
-        ... bulk phrases from reused packages
+        Bulk phrases from reused packages
       </InputContainer>
       <InputContainer
         type="checkbox"
         checked={decider.newScanner}
         name="newScanner"
         id="upload-decider-new-scanner"
-        onChange={(e) => handleChange(e)}
+        onChange={(checked) => handleChange(checked, "newScanner")}
       >
-        ... new scanner results, i.e., decisions were marked as work in progress
-        if new scanner finds additional licenses
+        New scanner results, i.e., decisions were marked as work in progress if new scanner finds additional licenses
+      </InputContainer>
+      <div className="flex items-center gap-3">
+        <InputContainer
+          type="checkbox"
+          checked={decider.autoConclude}
+          name="autoConclude"
+          id="upload-decider-auto-conclude"
+          onChange={(checked) => handleChange(checked, "autoConclude")}
+        >
+          Auto conclude license finding if they are of type
+        </InputContainer>
+        <div className="w-[200px]">
+          <InputContainer
+            type="select"
+            name="autoConcludeType"
+            id="upload-decider-auto-conclude-type"
+            onChange={(val) => handleChange(val, "autoConcludeType")}
+            options={[
+              { id: "permissive", name: "Permissive" },
+              { id: "strong_copyleft", name: "Strong Copyleft" },
+              { id: "weak_copyleft", name: "Weak Copyleft" },
+            ]}
+            value={decider.autoConcludeType}
+            property="name"
+            valueProperty="id"
+            disabled={!decider.autoConclude}
+            placeholder=""
+          />
+        </div>
+      </div>
+      <InputContainer
+        type="checkbox"
+        checked={decider.copyrightDeactivation}
+        name="copyrightDeactivation"
+        id="upload-decider-fp-copyright-deactivation"
+        onChange={(checked) => handleChange(checked, "copyrightDeactivation")}
+      >
+        <span className="inline-flex items-center gap-1">
+          False Positive Copyright Deactivation
+
+          <span className="text-warning-500 font-bold">
+            (experimental)
+          </span>
+
+          <img
+            src="/assets/icons/Alert/WarningNotFilled.svg"
+            alt=""
+            className="h-6 w-6"
+          />
+        </span>
+      </InputContainer>
+      <InputContainer
+        type="checkbox"
+        checked={decider.copyrightClutterRemoval}
+        name="copyrightClutterRemoval"
+        id="upload-decider-fp-copyright-clutter"
+        onChange={(checked) => handleChange(checked, "copyrightClutterRemoval")}
+      >
+        <span className="inline-flex items-center gap-1">
+          False Positive Copyright Deactivation and clutter removal
+
+          <span className="text-warning-500 font-bold">
+            (experimental)
+          </span>
+
+          <img
+            src="/assets/icons/Alert/WarningNotFilled.svg"
+            alt=""
+            className="h-6 w-6"
+          />
+        </span>
       </InputContainer>
     </div>
   );
@@ -77,6 +147,10 @@ LicenseDecider.propTypes = {
     bulkReused: PropTypes.bool.isRequired,
     newScanner: PropTypes.bool.isRequired,
     ojoDecider: PropTypes.bool.isRequired,
+    autoConclude: PropTypes.bool.isRequired,
+    autoConcludeType: PropTypes.string.isRequired,
+    copyrightDeactivation: PropTypes.string.isRequired,
+    copyrightClutterRemoval: PropTypes.string.isRequired,
   }).isRequired,
   handleChange: PropTypes.func,
 };

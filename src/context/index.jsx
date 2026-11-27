@@ -1,7 +1,7 @@
 /*
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
- SPDX-License-Identifier: GPL-2.0
+SPDX-License-Identifier: GPL-2.0-only
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -16,41 +16,44 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import React, { useState } from "react";
+"use client";
+
+import React, { useState, useEffect, createContext } from "react";
 import PropTypes from "prop-types";
 
-// Helper Functions for setting and getting the item from localstorage
-import { setLocalStorage, getLocalStorage } from "shared/storageHelper";
+// Helper functions to persist theme
+import { setLocalStorage, getLocalStorage } from "@/shared/storageHelper";
 
-// Initial state
-const initialState = {
-  theme: getLocalStorage("theme") || "light",
+// Static default — must not read localStorage here (causes SSR/client hydration mismatch)
+const defaultState = {
+  theme: "light",
 };
 
 // Create context
-export const GlobalContext = React.createContext(initialState);
+export const GlobalContext = createContext(defaultState);
 
 // Provider component
 export const GlobalProvider = ({ children }) => {
-  const [state, setState] = useState(initialState);
+  const [state, setState] = useState(defaultState);
 
-  // Actions
+  // Read saved theme only after hydration to keep server/client render in sync
+  useEffect(() => {
+    const savedTheme = getLocalStorage("theme");
+    if (savedTheme) setState({ theme: savedTheme });
+  }, []);
+
   const setTheme = (theme) => {
-    setState(theme);
+    setState({ theme });
     setLocalStorage("theme", theme);
-    window.location.reload();
   };
 
   return (
-    <GlobalContext.Provider
-      value={{
-        ...state,
-        setTheme,
-      }}
-    >
+    <GlobalContext.Provider value={{ state, setTheme }}>
       {children}
     </GlobalContext.Provider>
   );
 };
 
-GlobalProvider.propTypes = { children: PropTypes.node.isRequired };
+GlobalProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};

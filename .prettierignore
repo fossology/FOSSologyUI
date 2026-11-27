@@ -15,3 +15,10 @@ package-lock.json
 /public
 .min.js
 .min.css
+
+#Dockerfile
+.dockerignore
+Dockerfile.dev
+Dockerfile
+docker-compose.yml
+docker-compose.dev.yml

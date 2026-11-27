@@ -1,7 +1,8 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
+ SPDX-FileCopyrightText: 2025 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
- SPDX-License-Identifier: GPL-2.0
+SPDX-License-Identifier: GPL-2.0-only
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -21,32 +22,32 @@ import {
   deleteUploadsApi,
   moveUploadApi,
   copyUploadApi,
-} from "api/organizeUploads";
+} from "@/api/organizeUploads";
 
 // Getting uploads with folder id
-export const getUploadsFolderId = (folderId, groupName, recursive = false) => {
-  return getUploadsByFolderIdApi(folderId, groupName, recursive).then((res) => {
-    return res;
-  });
+export const getUploadsFolderId = ({
+  folderId,
+  groupName,
+  recursive = false,
+}) => {
+  return getUploadsByFolderIdApi({
+    folderId,
+    groupName,
+    recursive,
+  }).then((res) => res);
 };
 
 // Deleting a upload its upload id
-export const deleteUploadsbyId = (deleteId) => {
-  return deleteUploadsApi(deleteId).then((res) => {
-    return res;
-  });
+export const deleteUploadsbyId = (uploadId) => {
+  return deleteUploadsApi(uploadId).then((res) => res);
 };
 
 // Moving the upload into another folder
-export const moveUpload = (folderId, id) => {
-  return moveUploadApi(folderId, id).then((res) => {
-    return res;
-  });
+export const moveUpload = (folderId, uploadId) => {
+  return moveUploadApi({ folderId, uploadId }).then((res) => res);
 };
 
 // Copying the upload into another folder
-export const copyUpload = (folderId, id) => {
-  return copyUploadApi(folderId, id).then((res) => {
-    return res;
-  });
+export const copyUpload = (folderId, uploadId) => {
+  return copyUploadApi({ folderId, uploadId }).then((res) => res);
 };

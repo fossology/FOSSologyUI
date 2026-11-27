@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
+ SPDX-FileCopyrightText: 2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
  SPDX-License-Identifier: GPL-2.0
 
@@ -20,20 +21,28 @@ import React from "react";
 import PropTypes from "prop-types";
 
 // Widgets
-import { InputContainer, Tooltip } from "components/Widgets";
+import { InputContainer, Tooltip } from "@/components/Widgets";
 
 function IgnoreScm({ ignoreScm, handleChange }) {
   return (
-    <div id="upload-ignore-files" className="mt-4">
+    <div id="upload-ignore-files" className="mt-1">
       <InputContainer
         type="checkbox"
         checked={ignoreScm}
         name="ignoreScm"
         id="upload-ignore-scm"
-        onChange={(e) => handleChange(e)}
+        onChange={(checked) =>
+          handleChange({
+            target: {
+              type: "checkbox",
+              name: "ignoreScm",
+              checked,
+            },
+          })
+        }
       >
         Ignore SCM files (Git, SVN, TFS) and files with particular
-        Mimetype&nbsp;
+        Mimetype
         <Tooltip title="Configure mimetypes from Admin-Customize-Skip MimeTypes from scanning" />
       </InputContainer>
     </div>

@@ -1,7 +1,8 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
- SPDX-License-Identifier: GPL-2.0
+SPDX-License-Identifier: GPL-2.0-only
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -16,19 +17,18 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import endpoints from "constants/endpoints";
+import endpoints from "@/constants/endpoints";
 
 // Getting Authorization Token
-import { getToken } from "shared/authHelper";
+import { getToken } from "@/shared/authHelper";
 
 // Function for calling the fetch function for the APIs
 import sendRequest from "./sendRequest";
 
-// Fetching all the folders
+// GET /folders
 export const getAllFoldersApi = (groupName) => {
-  const url = endpoints.folders.getAll();
   return sendRequest({
-    url,
+    url: endpoints.folders.getAll(),
     method: "GET",
     headers: {
       Authorization: getToken(),
@@ -37,11 +37,10 @@ export const getAllFoldersApi = (groupName) => {
   });
 };
 
-// Fetching a single folder by its id
+// GET /folders/{id}
 export const getSingleFolderApi = (id) => {
-  const url = endpoints.folders.getSingle(id);
   return sendRequest({
-    url,
+    url: endpoints.folders.getById(id),   // v1: getSingle(id)
     method: "GET",
     headers: {
       Authorization: getToken(),
@@ -49,11 +48,10 @@ export const getSingleFolderApi = (id) => {
   });
 };
 
-// Deleting a folder by its id
+// DELETE /folders/{id}
 export const deleteFolderApi = (id) => {
-  const url = endpoints.folders.delete(id);
   return sendRequest({
-    url,
+    url: endpoints.folders.deleteById(id), // v1: delete(id)
     method: "DELETE",
     headers: {
       Authorization: getToken(),
@@ -61,18 +59,15 @@ export const deleteFolderApi = (id) => {
   });
 };
 
-// Creating a folder
-export const createFolderApi = (
-  parentFolder,
-  folderName,
-  folderDescription
-) => {
-  const url = endpoints.folders.create();
+// POST /folders?parentFolder=…&folderName=…&folderDescription=…
+export const createFolderApi = (parentFolder, folderName, folderDescription) => {
   return sendRequest({
-    url,
+    url: endpoints.folders.create(),
     method: "POST",
     headers: {
       Authorization: getToken(),
+    },
+    queryParams: {
       parentFolder,
       folderName,
       folderDescription,
@@ -80,30 +75,42 @@ export const createFolderApi = (
   });
 };
 
-// Editing a folder properties
+// PATCH /folders/{id}?name=…&description=…
 export const editFolderApi = (name, description, id) => {
-  const url = endpoints.folders.edit(id);
   return sendRequest({
-    url,
+    url: endpoints.folders.updateById(id), // v1: edit(id)
     method: "PATCH",
     headers: {
       Authorization: getToken(),
+    },
+    queryParams: {
       name,
       description,
     },
   });
 };
 
-// Moving and copying a folder into another folder
+// PUT /folders/{id}?parent=…&action=move|copy
 export const moveCopyFolderApi = (parent, id, action) => {
-  const url = endpoints.folders.move(id);
   return sendRequest({
-    url,
+    url: endpoints.folders.moveOrCopy(id), // v1: move(id)
     method: "PUT",
     headers: {
       Authorization: getToken(),
+    },
+    queryParams: {
       parent,
       action,
+    },
+  });
+};
+
+export const getFolderContentsApi = ({ folderId }) => {
+  return sendRequest({
+    url: endpoints.folders.contents(folderId),
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
     },
   });
 };

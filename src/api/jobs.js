@@ -1,7 +1,8 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
- SPDX-License-Identifier: GPL-2.0
+SPDX-License-Identifier: GPL-2.0-only
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -16,92 +17,96 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import endpoints from "constants/endpoints";
+import endpoints from "@/constants/endpoints";
 
 // Getting Authorization Token
-import { getToken } from "shared/authHelper";
+import { getToken } from "@/shared/authHelper";
+
 
 // Function for calling the fetch function for the APIs
 import sendRequest from "./sendRequest";
 
-// Fetching the jobs
-export const getJobApi = ({ jobId }) => {
-  const url = endpoints.jobs.details(jobId);
+// GET /jobs — jobs for the current user
+export const getAllJobApi = ({ page = 1, limit = 10, status, sort, upload }) => {
   return sendRequest({
-    url,
+    url: endpoints.jobs.getAll(),   
     method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+    params: {
+      page,
+      limit,
+      status,
+      sort,
+      upload,
+    },
   });
 };
 
-// Scheduling the analysis for the uploads
-export const scheduleAnalysisApi = (folderId, uploadId, scanData) => {
-  const url = endpoints.jobs.scheduleAnalysis();
-  const { bucket, copyrightEmailAuthor, ecc, keyword, mime, monk, nomos, ojo } =
-    scanData?.analysis;
-  const { nomosMonk, bulkReused, newScanner, ojoDecider } = scanData?.decider;
-  const {
-    reuseUpload,
-    reuseGroup,
-    reuseMain,
-    reuseEnhanced,
-    reuseReport,
-    reuseCopyright,
-  } = scanData?.reuse;
+// GET /jobs/all — all jobs (admin only)
+export const getAllAdminJobApi = ({ page = 1, limit = 10, status, sort }) => {
   return sendRequest({
-    url,
+    url: endpoints.jobs.getAllAdmin(), 
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+    params: {
+      page,
+      limit,
+      status,
+      sort,
+    },
+  });
+};
+
+// GET /jobs/{id}
+export const getJobApi = ({ jobId }) => {
+  return sendRequest({
+    url: endpoints.jobs.getById(jobId), 
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+};
+
+// POST /jobs?folderId=…&uploadId=…  body: ScanOptions JSON
+export const scheduleAnalysisApi = ({ folderId, uploadId, body }) => {
+  return sendRequest({
+    url: endpoints.jobs.create(),
     method: "POST",
     headers: {
       Authorization: getToken(),
+    },
+    queryParams: {
       folderId,
       uploadId,
     },
-    body: {
-      analysis: {
-        bucket,
-        copyright_email_author: copyrightEmailAuthor,
-        ecc,
-        keyword,
-        mime,
-        monk,
-        nomos,
-        ojo,
-        package: scanData.analysis.package,
-      },
-      decider: {
-        nomos_monk: nomosMonk,
-        bulk_reused: bulkReused,
-        new_scanner: newScanner,
-        ojo_decider: ojoDecider,
-      },
-      reuse: {
-        reuse_upload: reuseUpload,
-        reuse_group: reuseGroup,
-        reuse_main: reuseMain,
-        reuse_enhanced: reuseEnhanced,
-        reuse_report: reuseReport,
-        reuse_copyright: reuseCopyright,
-      },
-    },
+    body,
   });
 };
 
-export const scheduleReportApi = (uploadId, reportFormat) => {
-  const url = endpoints.jobs.scheduleReport();
+// GET /report?uploadId=…&reportFormat=…
+export const scheduleReportApi = ({ uploadId, reportFormat }) => {
   return sendRequest({
-    url,
+    url: endpoints.report.schedule(), 
     method: "GET",
     headers: {
       Authorization: getToken(),
+    },
+    queryParams: {
       uploadId,
       reportFormat,
     },
   });
 };
 
+// GET /report/{id}
 export const downloadReportApi = (reportId) => {
-  const url = endpoints.jobs.downloadReport(reportId);
   return sendRequest({
-    url,
+    url: endpoints.report.download(reportId), 
     method: "GET",
     headers: {
       Authorization: getToken(),
@@ -110,4 +115,89 @@ export const downloadReportApi = (reportId) => {
   });
 };
 
-export default getJobApi;
+export const importReportApi = ({ uploadId, reportFormat, reqBody }) => {
+  return sendRequest({
+    url: endpoints.report.import(),
+    method: "POST",
+    headers: {
+      Authorization: getToken(),
+    },
+    queryParams: {
+      upload: uploadId,
+      reportFormat: "spdxrdf",
+    },
+    isMultipart: true,
+    body: reqBody,
+  });
+};
+
+export const oneShotCEUApi = ({ reqBody }) => {
+  return sendRequest({
+    url: endpoints.uploads.oneshotCEU(),
+    method: "POST",
+    headers: {
+      Authorization: getToken(),
+    },
+    isMultipart: true,
+    body: reqBody,
+  });
+};
+
+export const oneShotMonkApi = ({ reqBody }) => {
+  return sendRequest({
+    url: endpoints.uploads.oneShotMonk(),
+    method: "POST",
+    headers: {
+      Authorization: getToken(),
+    },
+    isMultipart: true,
+    body: reqBody,
+  });
+};
+
+export const oneShotNomosApi = ({ reqBody }) => {
+  return sendRequest({
+    url: endpoints.uploads.oneShotNomos(),
+    method: "POST",
+    headers: {
+      Authorization: getToken(),
+    },
+    isMultipart: true,
+    body: reqBody,
+  });
+};
+
+// GET /jobs/scheduler/operation/{operation}
+export const getSchedulerOptionsApi = (operation) => {
+  return sendRequest({
+    url: endpoints.jobs.schedulerOperation(operation),
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+};
+
+// POST /jobs/scheduler/operation/run
+export const runSchedulerOperationApi = (
+  operation,
+  job,
+  level,
+  priority
+) => {
+  return sendRequest({
+    url: endpoints.jobs.schedulerRun(),
+    method: "POST",
+    headers: {
+      Authorization: getToken(),
+    },
+    queryParams: {
+      ...(job && { job }),
+      ...(level && { level }),
+      ...(priority && { priority }),
+    },
+    body: {
+      operation,
+    },
+  });
+};

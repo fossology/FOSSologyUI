@@ -1,18 +1,12 @@
 # Contributing
 
 We welcome contributions in several forms, e.g.
-
 - Improve end user documenting on the [Wiki](https://github.com/fossology/FOSSologyUI/wiki)
-
 - Write unit tests and learn how the code works
-
 - Verify available [patches (pull requests)](https://github.com/fossology/FOSSologyUI/pulls)
-
 - Working on [issues](https://github.com/fossology/FOSSologyUI/issues)
-
   - Fix a bug
   - Add a new feature
-
 - etc.
 
 ## Reporting Bugs

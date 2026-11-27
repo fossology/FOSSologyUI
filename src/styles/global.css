@@ -1,7 +1,7 @@
 /*
- Copyright (C) 2021 Shruti Agarwal (mail2shruti.ag@gmail.com), Aman Dwivedi (aman.dwivedi5@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
- SPDX-License-Identifier: GPL-2.0
+SPDX-License-Identifier: GPL-2.0-only
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -19,61 +19,94 @@
 /*
 * This file contains all styling which is common for all theme (which defines basic layout)
 */
+@config "../../tailwind.config.mjs";
+@import 'tailwindcss' important; 
+/* @import "tailwindcss/preflight"; */
+/* @tailwind components; */
+/* @tailwind utilities; */
+@import "tw-animate-css";
+/*
+---break---
+*/
+@custom-variant dark (&:is(.dark *));
 
-/* Main wrapper for the header and pages */
-.wrapper {
-  min-height: calc(100vh - 3.3125rem); /* pushes the footer at bottom*/
-  margin: auto;
-}
-.main-container {
-  width: 95%;
-  margin: auto;
+:root {
+  /* Base */
+  --background: #FFFFFF;
+  --foreground: #101010;
+
+  /* Card / Popover */
+  --card: #FFFFFF;
+  --card-foreground: #101010;
+  --popover: #FFFFFF;
+  --popover-foreground: #101010;
+
+  /* Primary action — FOSSology blue */
+  --primary: #004494;
+  --primary-foreground: #ffffff;
+
+  /* Secondary — neutral surface */
+  --secondary: #EDEDED;
+  --secondary-foreground: #101010;
+
+  /* Muted — subtle background */
+  --muted: #F6F6F6;
+  --muted-foreground: #888888;
+
+  /* Accent — outline button hover */
+  --accent: #E2EFFF;
+  --accent-foreground: #000B54;
+
+  /* Destructive — Alert button red */
+  --destructive: #D02216;
+
+  /* Border / Input / Ring */
+  --border: #CECECE;
+  --input: #CECECE;
+  --ring: #004494;
+
+  /* Radius */
+  --radius: 0.375rem;
+
+  /* Sidebar */
+  --sidebar: #F6F6F6;
+  --sidebar-foreground: #101010;
+  --sidebar-primary: #004494;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #DEE7F2;
+  --sidebar-accent-foreground: #000B54;
+  --sidebar-border: #CECECE;
 }
 
-/* Font family */
-@font-face {
-  font-family: Mulish-bold;
-  src: url("../assets/fonts/Mulish-Bold.ttf");
-  font-display: swap;
-}
-@font-face {
-  font-family: Mulish-demi;
-  src: url("../assets/fonts/Mulish-Demi.ttf");
-  font-display: swap;
-}
-@font-face {
-  font-family: Mulish-medium;
-  src: url("../assets/fonts/Mulish-Medium.ttf");
-  font-display: swap;
-}
-@font-face {
-  font-family: Mulish-regular;
-  src: url("../assets/fonts/Mulish-Regular.ttf");
-  font-display: swap;
-}
-@font-face {
-  font-family: IndieFlower-regular;
-  src: url("../assets/fonts/IndieFlower-Regular.ttf");
-  font-display: swap;
+/* Dark theme override */
+[data-theme="dark"] {
+  --background: #212121;
+  --foreground: #ffffff;
+  --card: #2C2C2C;
+  --card-foreground: #ffffff;
+  --popover: #2C2C2C;
+  --popover-foreground: #ffffff;
+  --primary: #4D7CB7;
+  --primary-foreground: #ffffff;
+  --secondary: #3A3A3A;
+  --secondary-foreground: #ffffff;
+  --muted: #303030;
+  --muted-foreground: #A9A9A9;
+  --accent: #1a3a5c;
+  --accent-foreground: #B0C4DE;
+  --destructive: #EC4958;
+  --border: #616161;
+  --input: #616161;
+  --ring: #4D7CB7;
+  --sidebar: #1a1a1a;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #4D7CB7;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1a3a5c;
+  --sidebar-accent-foreground: #B0C4DE;
+  --sidebar-border: #616161;
 }
 
-/* Font weight */
-.font-bold {
-  margin: 0;
-  font-family: Mulish-bold;
-}
-.font-demi {
-  margin: 0;
-  font-family: Mulish-demi;
-}
-.font-medium {
-  margin: 0;
-  font-family: Mulish-medium;
-}
-.font-regular {
-  margin: 0;
-  font-family: Mulish-regular;
-}
 
 /* Font size */
 .font-size-small {
@@ -94,16 +127,14 @@
   list-style-type: disclosure-closed;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: Mulish-bold;
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
 }
 
 /* Header */
+
+
 @media (max-width: 991px) {
   .dropleft .dropdown-menu {
     right: unset !important;
@@ -126,4 +157,103 @@ h6 {
 /* Font for License textarea */
 .license-textarea {
   font-family: monospace;
+}
+
+/* Width for pagination UI */
+.pagination-div {
+  min-width: 71.5%;
+}
+.right-pagination {
+  width: 100%;
+  padding-left: 65%;
+}
+
+/* Height for textarea in pagination module */
+.pagination-textarea {
+  height: 30px;
+}
+
+body {
+  @apply antialiased;
+}
+
+/*
+---break---
+*/
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+}
+/*
+---break---
+*/
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+}
+/*
+---break---
+*/
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+  }
 }

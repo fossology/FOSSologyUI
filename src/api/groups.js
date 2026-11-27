@@ -1,7 +1,8 @@
 /*
  Copyright (C) 2021 Aman Dwivedi (aman.dwivedi5@gmail.com), Shruti Agarwal (mail2shruti.ag@gmail.com)
+ SPDX-FileCopyrightText: 2025-2026 Tiyasa Kundu (tiyasakundu20@gmail.com)
 
- SPDX-License-Identifier: GPL-2.0
+SPDX-License-Identifier: GPL-2.0-only
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -16,19 +17,18 @@
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import endpoints from "constants/endpoints";
+import endpoints from "@/constants/endpoints";
 
 // Getting Authorization Token
-import { getToken } from "shared/authHelper";
+import { getToken } from "@/shared/authHelper";
 
 // Function for calling the fetch function for the APIs
 import sendRequest from "./sendRequest";
 
-// Fetching all the groups
+// GET /groups
 export const getAllGroupsApi = () => {
-  const url = endpoints.admin.groups.getAll();
   return sendRequest({
-    url,
+    url: endpoints.groups.getAll(),
     method: "GET",
     headers: {
       Authorization: getToken(),
@@ -37,15 +37,39 @@ export const getAllGroupsApi = () => {
   });
 };
 
-// Creating a group
-export const createGroupApi = (name) => {
-  const url = endpoints.admin.groups.create();
+// GET /groups/deletable
+export const getAllDeletableGroupsApi = () => {
   return sendRequest({
-    url,
+    url: endpoints.groups.deletable(),
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+    addGroupName: false,
+  });
+};
+
+// POST /groups?name=…
+export const createGroupApi = (name) => {
+  return sendRequest({
+    url: endpoints.groups.create(),
     method: "POST",
     headers: {
       Authorization: getToken(),
+    },
+    queryParams: {
       name,
+    },
+  });
+};
+
+// DELETE /groups/{name}
+export const deleteGroupApi = (name) => {
+  return sendRequest({
+    url: endpoints.groups.deleteByName(name),
+    method: "DELETE",
+    headers: {
+      Authorization: getToken(),
     },
     addGroupName: false,
   });
