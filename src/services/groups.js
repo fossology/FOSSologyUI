@@ -18,18 +18,22 @@ SPDX-License-Identifier: GPL-2.0-only
 */
 
 // services/groups.js
-// ─────────────────────────────────────────────────────────────────────────────
-// CHANGES v1 → v2
-// • deleteGroup(id)  → deleteGroup(name)  — now passes group name, not integer id
-// • editGroup        → REMOVED            — no v2 endpoint exists for renaming
-// ─────────────────────────────────────────────────────────────────────────────
+
 import {
   getAllGroupsApi,
   createGroupApi,
   deleteGroupApi,
   getAllDeletableGroupsApi,
+  getGroupMembersApi,
+  addGroupUserApi,
+  updateGroupUserPermissionApi,
+  deleteGroupUserApi,
 } from "@/api/groups";
-import { setLocalStorage, getLocalStorage } from "@/shared/storageHelper";
+
+import {
+  setLocalStorage,
+  getLocalStorage,
+} from "@/shared/storageHelper";
 
 export const getAllGroups = () => {
   return getLocalStorage("groups");
@@ -52,6 +56,50 @@ export const deleteGroup = (name) => {
 
 export const fetchAllDeletableGroups = () => {
   return getAllDeletableGroupsApi().then((res) => res);
+};
+
+// GET group members
+export const getGroupMembers = (groupName) => {
+  return getGroupMembersApi(groupName).then(
+    (res) => res
+  );
+};
+
+// ADD group member
+export const addGroupUser = ({
+  groupName,
+  userName,
+  perm,
+}) => {
+  return addGroupUserApi(
+    groupName,
+    userName,
+    perm
+  ).then((res) => res);
+};
+
+// UPDATE group member permission
+export const updateGroupUserPermission = ({
+  groupName,
+  userName,
+  perm,
+}) => {
+  return updateGroupUserPermissionApi(
+    groupName,
+    userName,
+    perm
+  ).then((res) => res);
+};
+
+// DELETE group member
+export const deleteGroupUser = ({
+  groupName,
+  userName,
+}) => {
+  return deleteGroupUserApi(
+    groupName,
+    userName
+  ).then((res) => res);
 };
 
 // editGroup is REMOVED — v2 has no group-rename REST endpoint.

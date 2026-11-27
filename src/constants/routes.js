@@ -74,7 +74,7 @@ const routes = {
       create: "/admin/group/create",
       delete: "/admin/group/delete",
       edit: "/admin/group/edit",
-      manageUsers: "/admin/group/manageUsers",
+      manageGroupUsers: "/admin/group/manageGroupUsers",
     },
     users: {
       add: "/admin/users/add",

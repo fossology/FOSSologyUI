@@ -74,3 +74,62 @@ export const deleteGroupApi = (name) => {
     addGroupName: false,
   });
 };
+
+// GET /groups/{name}/members
+export const getGroupMembersApi = (name) => {
+  return sendRequest({
+    url: endpoints.groups.members(name),
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+    addGroupName: false,
+  });
+};
+
+// POST /groups/{name}/user/{userName}
+export const addGroupUserApi = (name, userName, perm) => {
+  return sendRequest({
+    url: endpoints.groups.addUser(name, userName),
+    method: "POST",
+    headers: {
+      Authorization: getToken(),
+    },
+    body: {
+      perm,
+    },
+  });
+};
+
+// PUT /groups/{name}/user/{userName}
+export const updateGroupUserPermissionApi = (
+  name,
+  userName,
+  perm
+) => {
+  return sendRequest({
+    url: endpoints.groups.updateUserPermission(
+      name,
+      userName
+    ),
+    method: "PUT",
+    headers: {
+      Authorization: getToken(),
+    },
+    body: {
+      perm,
+    },
+  });
+};
+
+// DELETE /groups/{name}/user/{userName}
+export const deleteGroupUserApi = (name, userName) => {
+  return sendRequest({
+    url: endpoints.groups.deleteUser(name, userName),
+    method: "DELETE",
+    headers: {
+      Authorization: getToken(),
+    },
+    addGroupName: false,
+  });
+};
