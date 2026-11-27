@@ -84,7 +84,7 @@ export const importLicenseCsvApi = (formData) => {
     body: formData,
   });
 };
-// api endpoint not exposed
+
 export const importLicenseJsonApi = (formData) => {
   return sendRequest({
     url: endpoints.license.importJson(),
@@ -110,7 +110,7 @@ export const exportLicenseCsvApi = (id = 0) => {
     isFile: true,
   });
 };
-// api endpoint not exposed
+
 export const exportLicenseJsonApi = (id = 0) => {
   return sendRequest({
     url: endpoints.license.exportJson(),
@@ -124,7 +124,7 @@ export const exportLicenseJsonApi = (id = 0) => {
     isFile: true,
   });
 };
-// api endpoints not yet exposed
+
 // Export Marydone JSON
 
 export const marydoneExportJsonApi = () => {
