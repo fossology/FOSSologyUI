@@ -81,7 +81,8 @@ const config = {
             700: "#663C00",
         },
         yellow: {
-            100: "#FFD23F",
+            100: "#FFFFE4",
+            500: "#FFD23F",
         },
         info: {
             100: "#E1F5FE",
@@ -97,9 +98,6 @@ const config = {
         },
         fontFamily: {
         inter: ['var(--font-inter)', 'sans-serif'],
-        },
-        fontSize: {
-            base: ["14px", "20px"], // 14px font size with ~20px line-height
         },
         letterSpacing: {
             normal: "0px",

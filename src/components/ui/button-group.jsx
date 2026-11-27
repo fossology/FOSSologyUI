@@ -20,24 +20,21 @@ import { cva } from "class-variance-authority";
 import { Slot } from "radix-ui"
 
 import { cn } from "@/lib/utils"
-import { Separator } from "@/components/ui/separator"
 
 const buttonGroupVariants = cva(
-  "flex w-fit items-stretch has-[>[data-slot=button-group]]:gap-2 [&>*]:focus-visible:relative [&>*]:focus-visible:z-10 has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-md [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1",
+  "inline-flex items-center justify-center",
   {
     variants: {
       orientation: {
-        horizontal:
-          "[&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none",
-        vertical:
-          "flex-col [&>*:not(:first-child)]:rounded-t-none [&>*:not(:first-child)]:border-t-0 [&>*:not(:last-child)]:rounded-b-none",
+        horizontal: "flex-row",
+        vertical: "flex-col",
       },
     },
     defaultVariants: {
       orientation: "horizontal",
     },
   }
-)
+);
 
 function ButtonGroup({
   className,
@@ -54,43 +51,27 @@ function ButtonGroup({
   );
 }
 
-function ButtonGroupText({
-  className,
-  asChild = false,
-  ...props
-}) {
-  const Comp = asChild ? Slot.Root : "div"
-
-  return (
-    <Comp
-      className={cn(
-        "flex items-center gap-2 rounded-md border bg-muted px-4 text-sm font-medium shadow-xs [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4",
-        className
-      )}
-      {...props} />
-  );
-}
-
 function ButtonGroupSeparator({
   className,
   orientation = "vertical",
   ...props
 }) {
   return (
-    <Separator
+    <div
       data-slot="button-group-separator"
-      orientation={orientation}
       className={cn(
-        "relative m-0! self-stretch bg-input data-[orientation=vertical]:h-auto",
+        orientation === "vertical"
+          ? "mx-2 h-5 w-px shrink-0 bg-tertiary1-800"
+          : "my-2 h-px w-full shrink-0 bg-tertiary1-800",
         className
       )}
-      {...props} />
+      {...props}
+    />
   );
 }
 
 export {
   ButtonGroup,
   ButtonGroupSeparator,
-  ButtonGroupText,
   buttonGroupVariants,
 }

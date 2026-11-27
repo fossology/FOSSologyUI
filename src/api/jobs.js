@@ -27,14 +27,22 @@ import { getToken } from "@/shared/authHelper";
 import sendRequest from "./sendRequest";
 
 // GET /jobs — jobs for the current user
-export const getAllJobApi = ({ page = 1, limit = 10, status, sort, upload }) => {
+export const getAllJobApi = ({
+  page = 1,
+  limit = 10,
+  status,
+  sort,
+  upload,
+  groupName,
+} = {}) => {
   return sendRequest({
-    url: endpoints.jobs.getAll(),   
+    url: endpoints.jobs.getAll(),
     method: "GET",
     headers: {
       Authorization: getToken(),
     },
-    params: {
+    groupName,
+    queryParams: {
       page,
       limit,
       status,
@@ -45,14 +53,21 @@ export const getAllJobApi = ({ page = 1, limit = 10, status, sort, upload }) => 
 };
 
 // GET /jobs/all — all jobs (admin only)
-export const getAllAdminJobApi = ({ page = 1, limit = 10, status, sort }) => {
+export const getAllAdminJobApi = ({
+  page = 1,
+  limit = 10,
+  status,
+  sort,
+  groupName,
+} = {}) => {
   return sendRequest({
     url: endpoints.jobs.getAllAdmin(), 
     method: "GET",
     headers: {
       Authorization: getToken(),
     },
-    params: {
+    groupName,
+    queryParams: {
       page,
       limit,
       status,
@@ -71,6 +86,25 @@ export const getJobApi = ({ jobId }) => {
     },
   });
 };
+
+// GET /jobs/{jobId}/{queueId}/log
+export const getJobLogApi = ({ jobId, queueId }) => {
+  return sendRequest({
+    url: endpoints.jobs.getLog(jobId, queueId),
+    method: "GET",
+    headers: { Authorization: getToken() },
+  });
+};
+
+export const downloadJobLogApi = ({ jobId, queueId }) =>
+  sendRequest({
+    url: endpoints.jobs.downloadLog(jobId, queueId),
+    method: "GET",
+    headers: {
+      Authorization: getToken(),
+    },
+    isFile: true,
+  });
 
 // POST /jobs?folderId=…&uploadId=…  body: ScanOptions JSON
 export const scheduleAnalysisApi = ({ folderId, uploadId, body }) => {
@@ -104,14 +138,15 @@ export const scheduleReportApi = ({ uploadId, reportFormat }) => {
 };
 
 // GET /report/{id}
-export const downloadReportApi = (reportId) => {
+export const downloadReportApi = (reportId, retries = 0) => {
   return sendRequest({
-    url: endpoints.report.download(reportId), 
+    url: endpoints.report.download(reportId),
     method: "GET",
     headers: {
       Authorization: getToken(),
     },
     isFile: true,
+    retries,
   });
 };
 
@@ -199,5 +234,72 @@ export const runSchedulerOperationApi = (
     body: {
       operation,
     },
+  });
+};
+
+// POST /jobs/scheduler/operation/run
+// Pause a running/queued job
+export const pauseJobApi = (jobId) => {
+  return sendRequest({
+    url: endpoints.jobs.schedulerRun(),
+    method: "POST",
+    headers: {
+      Authorization: getToken(),
+    },
+    queryParams: {
+      job: jobId,
+    },
+    body: {
+      operation: "pause",
+    },
+  });
+};
+
+// DELETE /jobs/{id}/{queue}
+// Cancel a running/queued job
+export const cancelJobApi = ({ jobId, queue }) => {
+  return sendRequest({
+    url: endpoints.jobs.deleteJob(jobId, queue),
+    method: "DELETE",
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+};
+
+// api/jobs.js
+export const resumeJobApi = (jobId) => {
+  return sendRequest({
+    url: endpoints.jobs.schedulerRun(),
+    method: "POST",
+    headers: {
+      Authorization: getToken(),
+    },
+    queryParams: {
+      job: jobId,
+    },
+    body: {
+      operation: "restart",
+    },
+  });
+};
+
+// POST /report/import?upload=...&reportFormat=decisionimporter
+export const importFossologyDumpApi = ({
+  uploadId,
+  reqBody,
+}) => {
+  return sendRequest({
+    url: endpoints.report.import(),
+    method: "POST",
+    headers: {
+      Authorization: getToken(),
+    },
+    queryParams: {
+      upload: uploadId,
+      reportFormat: "decisionimporter",
+    },
+    isMultipart: true,
+    body: reqBody,
   });
 };

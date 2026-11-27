@@ -54,7 +54,7 @@ describe("sendRequest", () => {
     await sendRequest(defaultArgs);
 
     expect(fetch).toHaveBeenCalledWith(
-      defaultArgs.url,
+      `${defaultArgs.url}?${stringify({ groupName: "myGroupName" })}`,
       expect.objectContaining({
         body: defaultArgs.body,
         headers: new Headers({
@@ -77,7 +77,7 @@ describe("sendRequest", () => {
     await sendRequest(defaultArgs);
 
     expect(fetch).toHaveBeenCalledWith(
-      defaultArgs.url,
+      `${defaultArgs.url}?${stringify({ groupName: "myGroupName" })}`,
       expect.objectContaining({
         body: defaultArgs.body,
         headers: new Headers({
@@ -98,7 +98,7 @@ describe("sendRequest", () => {
     await sendRequest(defaultArgs);
 
     expect(fetch).toHaveBeenCalledWith(
-      defaultArgs.url,
+      `${defaultArgs.url}?${stringify({ groupName: "myGroupName" })}`,
       expect.objectContaining({
         body: JSON.stringify(defaultArgs.body),
         headers: new Headers({
@@ -137,7 +137,7 @@ describe("sendRequest", () => {
     await sendRequest(defaultArgs);
 
     expect(fetch).toHaveBeenCalledWith(
-      defaultArgs.url,
+      `${defaultArgs.url}?${stringify({ groupName: "myGroupName" })}`,
       expect.objectContaining({
         body: defaultArgs.body,
         headers: {},
@@ -156,7 +156,10 @@ describe("sendRequest", () => {
     await sendRequest(defaultArgs);
 
     expect(fetch).toHaveBeenCalledWith(
-      `${defaultArgs.url}?${stringify(defaultArgs.queryParams)}`,
+      `${defaultArgs.url}?${stringify({
+        ...defaultArgs.queryParams,
+        groupName: "myGroupName",
+      })}`,
       expect.objectContaining({
         body: defaultArgs.body,
         headers: new Headers({
@@ -219,25 +222,20 @@ describe("sendRequest", () => {
     );
   });
 
-  test("sendRequest handles 403", async () => {
+  test("sendRequest rejects 403 without logging out", async () => {
     const message = "message";
     const status = 403;
-    fetch.mockResponses(
-      [JSON.stringify({ data: {}, code: status, message }), { status }],
-      [JSON.stringify({ data: {}, code: status }), { status }]
-    );
+    const body = { data: {}, code: status, message };
+    fetch.mockResponse(JSON.stringify(body), { status });
 
-    await sendRequest(defaultArgs);
-    expect(logout).toHaveBeenCalledWith(
+    await expect(sendRequest(defaultArgs)).rejects.toEqual(
       expect.objectContaining({
+        status,
+        ok: false,
         message,
+        body,
       })
     );
-    await sendRequest(defaultArgs);
-    expect(logout).toHaveBeenCalledWith(
-      expect.objectContaining({
-        message: "Requested resource is forbidden",
-      })
-    );
+    expect(logout).not.toHaveBeenCalled();
   });
 });
