@@ -31,8 +31,7 @@ import {
   getAllUsersName,
   getUserById,
 } from "@/services/users";
-
-// utils
+import { fetchAllGroupsForManagement } from "@/services/groups";
 import { isAdmin } from "@/shared/authHelper";
 
 // constants
@@ -106,9 +105,36 @@ const EditUserPage = () => {
   const fetchAllUsers = async () => {
     try {
       const users = await getAllUsersName();
-      setAllUsers(users.map((u) => ({ ...u, disabled: false })));
-      const currentUserId = JSON.parse(localStorage.getItem("user")).id;
-      setSelectedUserId(currentUserId);
+
+      setAllUsers(
+        users.map((user)=>({
+          ...user,
+          disabled:false,
+        }))
+      );
+
+      const currentUser =
+        JSON.parse(
+          localStorage.getItem("user")
+        );
+
+      setSelectedUserName(currentUser.name);
+    } catch(error){
+
+      setMessage({
+        type:"error",
+        text:error.message,
+      });
+
+      setShowMessage(true);
+    }
+  };
+
+  const fetchGroups = async () => {
+    try {
+      const response = await fetchAllGroupsForManagement();
+
+      setGroups(response);
     } catch (error) {
       setMessage({ type: "danger", text: error.message });
       setShowMessage(true);

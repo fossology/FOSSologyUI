@@ -26,7 +26,7 @@ import { getToken } from "@/shared/authHelper";
 import sendRequest from "./sendRequest";
 
 // GET /groups
-export const getAllGroupsApi = () => {
+export const getAllGroupsApi = (includeAll = false) => {
   return sendRequest({
     url: endpoints.groups.getAll(),
     method: "GET",
@@ -34,6 +34,7 @@ export const getAllGroupsApi = () => {
       Authorization: getToken(),
     },
     addGroupName: false,
+    queryParams: includeAll ? { all: true } : undefined,
   });
 };
 
