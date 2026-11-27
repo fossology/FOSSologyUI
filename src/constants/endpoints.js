@@ -162,6 +162,7 @@ const endpoints = {
   // Maintenance
   maintenance: {
     run: () => withBase("/maintenance"),
+    info: () => withBase("/maintenance"),
   },
 };
 

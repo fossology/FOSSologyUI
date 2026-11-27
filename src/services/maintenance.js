@@ -17,7 +17,10 @@ SPDX-License-Identifier: GPL-2.0-only
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import { createMaintenanceApi } from "@/api/maintenance";
+import { createMaintenanceApi, getMaintenanceInfoApi } from "@/api/maintenance";
 
 export const createMaintenance = (data) =>
   createMaintenanceApi(data);
+
+export const getMaintenanceInfo = () =>
+  getMaintenanceInfoApi();

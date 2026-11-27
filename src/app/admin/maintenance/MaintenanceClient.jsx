@@ -18,17 +18,18 @@ SPDX-License-Identifier: GPL-2.0-only
 
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // External Links
 import externalLinks from "@/constants/externalLinks";
 
-import { createMaintenance } from "@/services/maintenance";
+import { createMaintenance, getMaintenanceInfo } from "@/services/maintenance";
 import {
   maintenanceOptions,
   initialMaintenanceFields,
   initialMessage,
 } from "@/constants/constants";
+import { isAdmin } from "@/shared/authHelper";
 
 import { AlertBanner } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
@@ -44,6 +45,22 @@ const ManageMaintenance = () => {
   const [fields, setFields] = useState(initialMaintenanceFields);
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState(initialMessage);
+  const [lastRun, setLastRun] = useState(null);
+
+  useEffect(() => {
+    if (!isAdmin()) {
+      return;
+    }
+    getMaintenanceInfo()
+      .then((res) => setLastRun(res?.lastRun ?? null))
+      .catch(() => setLastRun(null));
+  }, []);
+
+  const formatLastRun = (date) =>
+    new Date(date).toLocaleString("en-US", {
+      dateStyle: "long",
+      timeStyle: "short",
+    });
 
   const handleChange = (value, name) => {
     if (name === "logsDate" || name === "goldDate") {
@@ -112,6 +129,15 @@ const ManageMaintenance = () => {
           <h1 className="text-2xl font-semibold text-gray-900 mb-6">
             FOSSology Maintenance
           </h1>
+          {lastRun && (
+            <div className="mb-4">
+              <AlertBanner
+                type="Info"
+                description={`Last maintenance job was executed on ${formatLastRun(lastRun)}`}
+                showClose={false}
+              />
+            </div>
+          )}
           <form
             onSubmit={handleSubmit}
             className="space-y-7"
