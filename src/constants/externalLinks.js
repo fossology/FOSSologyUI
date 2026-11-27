@@ -26,6 +26,7 @@ const externalLinks = {
   latestReleaseDownload:
     "https://api.github.com/repos/fossology/fossology/zipball/3.10.0",
   maintenanceAgent: "https://github.com/fossology/fossology/wiki/Maintenance-Agent",
+  createBucketPools: "https://github.com/fossology/fossology/wiki/Buckets",
 };
 
 export default externalLinks;

@@ -302,7 +302,7 @@ export default function Header({ variant = "default" }) {
                       )}>Buckets
                       </DropdownMenuSubTrigger>
                       <DropdownMenuSubContent className="p-0 m-0 bg-white border border-gray-200">
-                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={""}>Duplicate Bucketpool</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild className="hover:font-bold focus:font-bold"><Link href={routes.admin.dupBucketpool}>Duplicate Bucketpool</Link></DropdownMenuItem>
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
                     <DropdownMenuItem asChild className="hover:font-bold focus:font-bold">
